@@ -1,0 +1,414 @@
+body{
+    background-color: paleturquoise;
+    position:fixed;
+    display:flexbox;    
+}
+
+.UIlayer {
+    height: 100vh;
+    width: 100vw;
+    display: flex; /* Corrected */
+    z-index: 10;
+}
+
+#gamegestion {
+    display: flex; /* Corrected */
+    flex-direction: row;
+    align-items: center; /* Added */
+    justify-content: space-around; /* Added */
+    height: 100%;
+    width: 100%;
+}
+
+.choiceBox {
+    display: flex; /* Corrected */
+    flex-direction: column;
+    align-items: center; /* Added */
+    background-color: greenyellow;
+    border: solid darkgreen 3px;
+    border-radius: 12px;
+    height: 70vh;
+    width: 40vw;
+}
+
+
+.choiceBox h3{
+    font-size: 7vh;
+    align-self:flex-start;
+    margin-top: 2vh;
+    flex:1;
+}
+
+.choiceBox h2{
+    font-size: 5vh;
+    align-self:flex-start;
+    flex:1;
+}
+
+
+.choiceText{
+    flex:0.7 0.7;
+    color:darkgreen;
+    border-radius: 15px;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    
+    margin: 0 auto;
+    width:60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-justify:center;
+    font-size: 3vh;
+}
+
+#createGameButton{
+    margin-top:1vh;
+    flex:1;    
+    aspect-ratio: 1/1;
+    overflow:hidden;
+    background:transparent;
+    border:none;
+}
+
+#createGameButton > img{
+    width:100%;
+    height:100%;    
+    transition: transform .7s ease-in-out;
+}
+
+
+#terrainSettings{
+    
+    display:flex;
+    flex-direction: column;
+    width:95%;
+    flex:3
+}
+
+.terrainSettingsRow{
+    width:100%;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.terrainSettingsRow .choiceText{
+    width:15%;
+    max-width: 15%;
+    text-justify: center;
+    text-align: center;
+}
+
+#nbPlaine{
+    background-color: lightgreen;
+}
+#nbEau{
+    background-color: aqua;
+}
+#nbRocher{
+    background-color: slategray;
+}
+
+#nbMontagne{
+    background-color: brown;
+}
+
+.checkSettings{
+    display:flex;
+    flex-direction: column;
+    size:30%;
+    
+}
+
+.checkSettings >p{
+    color:darkgreen;
+    text-align: center;
+    max-height:50%;
+    text-justify: center;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-size: 3vh;
+    
+}
+.checkSettings >input{
+    height:50%;
+    max-height:50%
+}
+
+#gameList{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    overflow:scroll;
+    flex:5;
+    width:100%;
+    justify-self: center;
+}
+
+#gameList .gameLine{
+        height:15%;
+    margin-top:2.5%;
+    width:90%;
+    margin-bottom: 2.5%;
+    display:flex;
+    flex-direction:row;
+    border:5px solid darkgreen;
+    border-radius: 15px;
+    justify-content: center;
+    align-items:center;
+    background-color: palegreen;
+}
+.gameLine>p{
+    color:darkgreen;
+    text-align: center;
+    max-height:100%;
+    text-justify: center;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-size: 3vh;
+    
+    width:80%
+}
+
+.gameLine>img{
+    max-height: 90%;
+    cursor: pointer;
+
+}
+.gameLine>img:hover{
+    filter: contrast(500%);
+    
+}
+
+
+
+@media (max-width: 768px) {
+    .choiceBox {
+        justify-content: space-around; /* Align items to the top on larger screens */
+        width: 100vw; /* Adjust width for larger screens */
+        height: 50vh;
+        align-self:flex-start;
+        border: solid darkgreen 5px;
+        
+    }
+    
+    .choiceBox h3 {
+        font-size: 10vw;
+        width:80%;
+        margin-top:2.5%;
+        margin-bottom: 2.5%;
+        flex:0.5
+    }
+    
+    .choiceBox h2 {
+        font-size: 7vw;
+        width:80%;
+        flex:0.5;
+        margin-top:2.5%;
+        margin-bottom: 2.5%;
+    }
+    
+    #gamegestion {
+        display: flex; /* Corrected */
+        flex-direction: column;
+        align-items: center; /* Added */
+        justify-content:center; /* Added */
+        height: 100%;
+        width: 100%;
+    }
+    
+    .choiceText{
+        font-size:4vw;
+        flex:0.13;
+        margin-top:2.5%;
+        margin-bottom: 2.5%;
+        
+    }
+    
+    #createGameButton{
+        flex:0.2;
+    }
+    .gameLine>p{
+        font-size:4vw;
+    }
+    #createGameButton{
+        margin-top:1vh;
+        flex:3;    
+        aspect-ratio: 1/1;
+        overflow:hidden;
+        background:transparent;
+        border:none;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pannel{
+    position:fixed;
+    display: flex;
+    height : 150px;
+    
+    
+    border-radius: 12px;
+    z-index: 3;
+    margin-left: 1px;
+    width:100%;
+    
+}
+.tiers{
+    flex:1;
+    display:flex;
+    flex-direction: column;
+    background-color: greenyellow;
+    border: solid darkgreen 3px;
+    border-radius: 12px;
+    height: 100%;}
+    
+    
+    .pannelText{
+        text-align: center;
+        color:darkgreen;
+        border-radius: 15px;
+        font-family:Georgia, 'Times New Roman', Times, serif;
+        padding: 5px;
+        margin: 0 auto;
+        height: 0.9cm;
+        display: block;
+        
+    }
+    #systeme{
+        color:crimson;
+    }
+    
+    #afficheCase{
+        overflow: scroll;
+    }
+    
+    #jeu{
+        width:100vw;
+        height:100vh;
+        overflow-y: scroll;
+        overflow-x: scroll;
+        position:fixed;
+        
+    }
+    
+    input{
+        background-color: aliceblue;
+        
+        border: darkgreen solid;
+    }
+    
+    #gameRow{
+        margin-left:0;
+        position:fixed;
+        overflow:scroll;
+        margin-top: 6%;
+        z-index: 14;
+    }
+    
+    .playButton{
+        
+    }
+    
+    #background{
+        z-index:-1;
+        width: 100%;
+        height: 100%;
+        position:fixed;
+        top:0
+    }
+    
+    #tanière{
+        z-index: 4;
+        position: fixed;
+        margin-left: 10%;
+        margin-top:15%;
+    }
+    
+    
+    
+    .pannelBas{
+        position:fixed;
+        height : 250px;
+        background-color: greenyellow;
+        border: solid darkgreen 3px;
+        border-radius: 12px;
+        
+        
+        border-radius: 12px;
+        z-index: 5;
+        bottom: 0;
+        margin-left: 1px;
+        width:100%;
+        
+    }
+    
+    .power{
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        height: 50%;
+    }
+    .powerBouton{
+        background-color: aliceblue;
+        cursor:pointer;
+        font-size: 300%;
+        font-weight: bold;
+        text-align: center;
+        width: 5%; 
+        box-sizing: border-box;
+        border:solid 9px black;
+        border-radius: 100%;
+        user-select: none;
+    }
+    .powerImage{
+        
+        height: 100%;
+        padding:20px;
+    }
+    .powerText{
+        position: fixed;
+        bottom:0px;
+        overflow-y:scroll;
+        height:13%;
+        width: 100%;
+        text-align: center;
+        color:darkgreen;
+        border:3px darkgreen solid;
+        
+        font-family:Georgia, 'Times New Roman', Times, serif;
+        padding: 15px;
+        margin: 0 auto;
+        
+        
+    }
+    .winner{
+        color:crimson;
+        background-color: aliceblue;
+        width: 50%;
+        text-align: center;
+        padding: 1%;
+        border:5px solid goldenrod;
+        border-radius: 105px;
+        z-index: 0;
+        margin-left: 25%;
+        margin-top:25%;
+        position:fixed;
+        font-size: 400%;
+        font-family: "playfair display";
+        font-weight:bold;
+    }
