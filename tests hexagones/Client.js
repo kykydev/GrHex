@@ -3,9 +3,9 @@ const bod = document.body
 document.addEventListener("DOMContentLoaded", function () {
 
     width=15
-    height=17
+    height=10
     créerDamier(height,width,20)
-    console.log("drawing")
+    
 
     var terrain = []
 
@@ -18,18 +18,85 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    function casesAdjacentes(pos,width,height){
-        console.log("pos:"+(Math.floor(pos/height)))
+
+    
+    function casesAdjacentes(pos, width, height) {
         var adj = [pos];
+        var row = pos%height;
+        var col = Math.floor(pos / height)  ;
+        if (col > 0) { // not left
+            adj.push(pos - height); // left
+        }
+        if (col < width - 1) { // not right
+            adj.push(pos + height); // right
+        }
+       
+        if (col%2==0){//even col
 
-        //Utiliser mathfloor pour les /
-    return adj
-}
+            if (row%2==0){//even row
+                if (row>0){
+                    if (col>0){adj.push(pos-height-1)}
+                    adj.push(pos-1)
+                }
+                if (row<height-1){
+                    if (col>0){adj.push(pos-height+1)}
+                    adj.push(pos+1)
+
+
+                }
+            }
+            if (row%2!=0){
+                if (row<width-1){
+                    if (col<width-1){adj.push(pos+height+1)}
+                    adj.push(pos-1)
+                }
+                if (row>0){
+                    if (col>0){adj.push(pos+height-1)}
+                    adj.push(pos-1)
+
+
+                }
+            }
+        }
+        if (col%2!=0){//odd column
+
+            if (row%2==0){//even row
+                if (row>0){
+                    if (col>0){adj.push(pos-height-1)}
+                    adj.push(pos-1)
+                }
+                if (row<height-1){
+                    if (col>0){adj.push(pos-height+1)}
+                    adj.push(pos+1)
+                }
+            }
+            if (row%2!=0){//odd row
+                if (row>0){
+                    if (col<width-1){adj.push(pos+height-1)}
+                    adj.push(pos-1)
+                }
+                if (row<width-1){
+                    if (col>0){adj.push(pos+height+1)}
+                    adj.push(pos+1)
+
+
+                }
+            }
+        }
 
 
 
+        return adj; 
+    }
+    
 
-    console.log(casesAdjacentes(238,width,height))
+
+
+ 
+
+
+
+    console.log(casesAdjacentes(33,width,height))
 
 
 
@@ -89,8 +156,8 @@ function créerDamier(nbColumns, nbLines, rayon) {
             d3.select("#jeu")
                 .append("path")
                 .attr("d", d)
-                .attr("stroke", "none")
-                .attr("fill", "aliceblue")
+                .attr("stroke", "black")
+                .attr("fill", "url(./HEX/prairie_1.jpg)")
                 .attr("id", "h" + (l * nbColumns + c));
 
 
@@ -109,7 +176,6 @@ function fill(id,couleur){
 //Coloriage du damier
 
 function actualiserDamier(longueur,largeur,jeu){
-document.getElementById("jeu").innerHTML+='<defs><pattern id="image" patternUnits="userSpaceOnUse" width="20" height="20"><image href="./HEX/prairie_1.jpg" x="0" y="0" width="20" height="20" /></pattern> </defs>'
 
 
 for (i=0;i<longueur*largeur;i++){
@@ -117,7 +183,7 @@ for (i=0;i<longueur*largeur;i++){
 if (jeu[i]=="eau"){color="DodgerBlue";}
 if (jeu[i]=="rocher"){color="darkgray"}
 if (jeu[i]=="montagne"){color="brown"}
-if (jeu[i]=="plaine"){color="url(#image)";}//lightgreen
+if (jeu[i]=="plaine"){color="lightgreen";}//lightgreen
 if (jeu[i]=="pasteque"){color ="lightcoral"}
 
 fill(i,color)
