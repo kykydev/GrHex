@@ -109,7 +109,7 @@ function fill(id,couleur){
 //Coloriage du damier
 
 function actualiserDamier(longueur,largeur,jeu){
-//document.getElementById("jeu").innerHTML+='<defs><pattern id="image" patternUnits="userSpaceOnUse" width="20" height="20"><image href="./HEX/prairie_1.jpg" x="0" y="0" width="20" height="20" /></pattern> </defs>'
+document.getElementById("jeu").innerHTML+='<defs><pattern id="image" patternUnits="userSpaceOnUse" width="20" height="20"><image href="./HEX/prairie_1.jpg" x="0" y="0" width="20" height="20" /></pattern> </defs>'
 
 
 for (i=0;i<longueur*largeur;i++){
@@ -117,7 +117,7 @@ for (i=0;i<longueur*largeur;i++){
 if (jeu[i]=="eau"){color="DodgerBlue";}
 if (jeu[i]=="rocher"){color="darkgray"}
 if (jeu[i]=="montagne"){color="brown"}
-if (jeu[i]=="plaine"){color="lightgreen";}//lightgreen
+if (jeu[i]=="plaine"){color="url(#image)";}//lightgreen
 if (jeu[i]=="pasteque"){color ="lightcoral"}
 
 fill(i,color)
