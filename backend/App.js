@@ -18,3 +18,9 @@ server.listen(PORT, () => {
 app.get("/",(request,response)=>{
     response.sendFile("index.html",{root:__dirname+"/../frontend"})
 })
+
+app.get("/script/:nomFichier",(request,response)=>{
+    console.log(__dirname);
+    response.sendFile(request.params.nomFichier,{root:__dirname+"/../frontend"})
+})
+
