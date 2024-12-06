@@ -20,7 +20,6 @@ app.get("/",(request,response)=>{
 })
 
 app.get("/script/:nomFichier",(request,response)=>{
-    console.log(__dirname);
     response.sendFile(request.params.nomFichier,{root:__dirname+"/../frontend"})
 })
 
