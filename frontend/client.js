@@ -149,8 +149,8 @@ function appelsAjoutTextures(){
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    width=15
-    height=11
+    width=25
+    height=25
     créerDamier(height,width,40)
     
 
