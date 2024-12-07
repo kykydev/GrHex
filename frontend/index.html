@@ -13,17 +13,44 @@
 
 <body>
 
-    <div class="droite">
-
+    <div class="accueil">
+        <!-- <input type="text" id="username" placeholder="Entrez votre nom"> -->
+        <button id="0">Commencer le jeu</button>
     </div>
 
-    <div class="haut">
-        
-    </div>
+    <div class="partie">
+        <div class="droite">
+            <div class="bouton1">
+                <button>
+                    Fin de tour
+                </button>
+            </div>
+        </div>
 
-    <div class="damier">
-        <svg id="jeu"></svg>
+        <div class="haut">
+            <div class="bouton2">
+                <button id="1">
+                    Quitter
+                </button>
+                <button>
+                    Menu
+                </button>
+            </div>
+        </div>
+
+        <div class="damier">
+            <svg id="jeu"></svg>
+        </div>
     </div>
+    
+    <script>
+        document.getElementById('0').addEventListener('click', function() {
+            document.querySelector('.accueil').style.display = 'none';
+            document.querySelector('.partie').style.display = 'block';
+        });
+    </script>
+
+
 
 </body>
 </html>

@@ -44,7 +44,9 @@ function créerDamier(nbColumns, nbLines, rayon) {
             d3.select("#jeu")
                 .append("path")
                 .attr("d", d)
-                .attr("stroke", "rgba(0, 0, 0, 0.2)")
+                // .attr("stroke", "rgba(0, 0, 0, 0.2)")
+                .attr("stroke", "transparent")  // Bordure transparente
+                .attr("shape-rendering", "crispEdges")
                 .attr("fill", "url(./HEX/prairie_1.jpg)")
                 .attr("id", "h" + (l * nbColumns + c));
 
@@ -185,7 +187,6 @@ document.addEventListener("DOMContentLoaded", function () {
             terrain.push(texturesEau[Math.floor(Math.random() * texturesEau.length)]);  // Eau
         }
     }
-    
 
     appelsAjoutTextures();
 
