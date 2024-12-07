@@ -1,4 +1,6 @@
 
+
+
 function casesAdjacentes(pos, width, height) {
     var adj = [];
     var row = pos%height;
@@ -94,48 +96,69 @@ function distance(pos1,pos2,height){
     return Math.max(Math.abs(vec[0]),Math.abs(vec[1]),Math.abs(vec[2]))
 }
 
-/*
+
 function pathFind(pos1,pos2,height,width,rules){//pos1 and pos2 are hexagon ID's, height and width are the grid's dimensions, rules is a table of "O"'s and "X"'s where the X's represent obstacles
 path = []//Return path, will be composed of hexagons identified by indexes
 
 var open = [[pos1,0,distance(pos1,pos2,height),distance(pos1,pos2,height)]]//Hexagons will be represented as follows: [index,g,h,f], with g the distance to start, h the distance to destination and f=g+h
 var closed = []
 while (open.length>0){
-console.log(closed)
-    current = open[0]
-    fill(open[0][0],"red")
+    current = open[0]//Take the first open case
+    closed.push(current)
     open.splice(0,1)
+
     for (test of casesAdjacentes(current[0],width,height)){
+        
         //CREATION DU TABLEAU DE L HEXAGONE PUIS JE CHECK SI IL EST DEDANS POUR ECONOMISER DES RESSOURCES
-        let g = current[1];let h=distance(test,pos2,height);let f=g+h
+        let g = current[1]+1;let h=distance(test,pos2,height);let f=g+h
         let ajouted = [test,g,h,f]
-        if (test==pos2){console.log("aaa")}
-        if (rules[test]!="O"){
-            if (!closed.includes(ajouted)){
-                console.log(ajouted)
-                var inopen = false
-                for (j of open){
-                    if (j[0]==ajouted[0]){
-                        if (j[1]<ajouted[1]+1){
-                            j[1]=ajouted[1]+1                     
-                            inopen=true
+
+                    if (test==pos2){//End of algorithm, calculation of solution
+                        var path = [test]
+                        lastTile = ajouted
+                        while (path[path.length-1]!=pos1){
+                            aj = casesAdjacentes(lastTile[0],width,height)
+                            for (j of closed){
+                                if (j[1]==lastTile[1]-1 && aj.includes(j[0])){
+                                    path.push(j[0])
+                                    lastTile = j
+                            }
                         }
                     }
-                    if (!inopen){
-                    open.push(ajouted)
-                    fill(ajouted[0],"green")
+                    return path.reverse()
                 }
-
+        
+        let inclosed = false
+        for (j of closed){
+            if (j[0]==test){
+                inclosed = true
             }
         }
+
+        if (!inclosed){//If case is already closed, we ignore it
+        if (rules[test]=="O"){
+                var inopen = false
+                for (j of open){//checking if it's already in open and, if so, updating the values
+                    if (j[0] == ajouted[0]) {
+                        if (j[1] < ajouted[1] + 1) {
+                            j[1] = ajouted[1] + 1
+                            j[3]=j[1]+j[2]
+                            inopen = true
+                        }
+                    }
+                }
+                    if (!inopen){
+                    open.push(ajouted)
+                }
         
     }
-    
-    
 }
-closed.push(current)
+}
+open.sort((a, b) => {if (a[3] !== b[3]) {return a[3] - b[3];} else{return a[2] - b[2];}});
+  
 }
 return false//Case where the path to the target does't exist
 }
-*/
+
+
 
