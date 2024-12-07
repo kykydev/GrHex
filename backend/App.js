@@ -5,6 +5,7 @@ const { isNumberObject } = require('util/types');
 const server = http.createServer(app);
 const io = new require("socket.io")(server);
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
+const {createMap} = require('./modules/mapGeneration')
 
 app.use(express.static(__dirname));
 
@@ -33,12 +34,11 @@ app.get("/script/:nomFichier",(request,response)=>{
 //---------------------SOCKET------------------------------
 
 io.on('connection', (socket) => {
-console.log("ça connecte")
-
 
   socket.on('nouvellemap', (data) => {
     console.log("il veut une map")
   });
 
-  socket.emit("map","a")
+  carte =  createMap(20,15)
+  socket.emit("map",carte)
 });
