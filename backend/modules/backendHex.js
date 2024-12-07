@@ -76,11 +76,7 @@ function getX(pos,height){return Math.floor(pos/height);}
 function getY(pos,height){return pos%height}
 function getCoords(pos,height){return [getX(pos,height),getY(pos,height)]}
 
-function canCross(pos,jeu){//Basis for the function that will tell whether an hexagon can be crossed by another or not. Will have variants for certain units
-    if (jeu[pos]=="montagne"){return false}
-    if (jeu[pos]=="eau"){return false}
-    return true
-}   
+
 
 
 function offset_to_cube(pos,height){//This function will convert our hexagon's coordinates from the X-Y ones to cube ones, allowing for more complex algorithms to be used
@@ -162,3 +158,8 @@ return false//Case where the path to the target does't exist
 
 
 
+
+
+module.exports = {
+    casesAdjacentes,getX,getY,getCoords,offset_to_cube,distance,pathFind
+  };
