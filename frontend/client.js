@@ -1,9 +1,8 @@
 
 const socket = io('http://localhost:8888');
 
+
 //-------------------Création d'hexagone sous forme de tableau de points----------------------------------------
-
-
 
 function creerHexagone(rayon) {
     var points = new Array();
@@ -49,14 +48,20 @@ function créerDamier(nbColumns, nbLines, rayon) {
             d3.select("#jeu")
                 .append("path")
                 .attr("d", d)
-                // .attr("stroke", "rgba(0, 0, 0, 0.2)")
-                .attr("stroke", "transparent")  // Bordure transparente
+                .attr("stroke", "transparent")
                 .attr("shape-rendering", "crispEdges")
-                .attr("fill", "url(./HEX/prairie_1.jpg)")
-                .attr("id", "h" + (l * nbColumns + c));
+                .attr("id", "h" + (l * nbColumns + c))
 
+                .on("mouseover", function() {
+                    d3.select(this)
+                    .attr("stroke", "orange")
+                    .style("stroke-width", 2)
+                })
 
-
+                .on("mouseout", function() {
+                    d3.select(this)
+                        .attr("stroke", "transparent")
+                });
         }
     }
 }
@@ -67,15 +72,13 @@ function fill(id,couleur){
     d3.select(("#h"+id)).attr("fill", couleur);
 }
 
-//-------------------Fonction d'actualisation du damier----------------------------------------
+//-------------------Fonction d'actualisation des textures du damier----------------------------------------
 
 function actualiserDamier(longueur, largeur, jeu) {
     for (i = 0; i < longueur * largeur; i++) {
         fill(i, "url(#"+jeu[i]+"-pattern)")
     }
 }
-
-//-------------------Fonction d'actualisation du damier----------------------------------------
 
 function ajouterTextures(id, url) {
     let defs = d3.select("svg").append("defs");
@@ -145,18 +148,16 @@ function appelsAjoutTextures(){
 
 
 
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+//------------------------------TESTS---------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 
 
-//--------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------
-//------------------------------TESTS--------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", function () {
-
-    
 
     socket.on("map",data=>{
         console.log(data)
@@ -167,10 +168,4 @@ document.addEventListener("DOMContentLoaded", function () {
         actualiserDamier(data.width,data.height,data.terrain)
         
     })
-
-
-
-    
-
-
 });
