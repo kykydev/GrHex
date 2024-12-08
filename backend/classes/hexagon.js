@@ -15,9 +15,10 @@ class hexagon {
 
 class forestHexagon extends hexagon{
 
-constructor(type,pattern,nbTrees,pos){
-    super(type,pattern,pos)
-    this.nbTrees=nbTrees
+constructor(pos){
+    let arbres = Math.floor(Math.random()*maxTrees+1)
+    super("foret","foret"+arbres+"_"+Math.floor(Math.random()*forestvariants+1),pos)
+    this.nbTrees=arbres
 }
 }
 class carriereHexagon extends hexagon{

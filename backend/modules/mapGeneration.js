@@ -23,7 +23,7 @@ function addMontagne(width,height,cart){
     var soldeMontagnes = Math.floor(Math.random()*((width*height)*0.02)+(width*height)*0.05)
     while (soldeMontagnes>0){
         var pos =  Math.floor(Math.random()*((width*height)))
-        var soldeExtension = Math.floor(Math.random()*((width*height)*0.01)+1)
+        var soldeExtension = Math.floor(Math.random()*((width*height)*0.005)+1)
         replacing = [pos]
         //create a clutter
         while (soldeExtension>0){
@@ -65,12 +65,89 @@ function addMontagne(width,height,cart){
     }
 
 
-function addForest(width,height){
-return
+function addForest(width,height,cart){
+
+    map = []
+    for (j of cart){map.push(j)}
+
+    var soldeForet = Math.floor(Math.random()*((width*height)*0.02)+(width*height)*0.20)
+    while (soldeForet>0){
+        var pos =  Math.floor(Math.random()*((width*height)))
+        var soldeExtension = Math.floor(Math.random()*((width*height)*0.02)+2)
+        replacing = [pos]
+        //create a clutter
+        while (soldeExtension>0){
+            let selectcase = replacing[Math.floor(Math.random()*(replacing.length))]
+            let potcases = casesAdjacentes(selectcase,width,height)
+        let added=potcases[Math.floor(Math.random()*(potcases.length))]
+        if (!replacing.includes(added)){
+            replacing.push(added)
+            soldeExtension-=1
+        }
+        }
+        
+       for (z of replacing){
+            if (map[z].type=="plaine"){
+                map[z] = new forestHexagon(z)
+                soldeForet--
+            }
+        }
+        
+    }
+
+
+return map
+
+
+
 }
 
-function addRivers(width,height){//Adds rivers using pathfinding
-return
+function addWater(width,height,cart){//Adds rivers using pathfinding
+
+    riverCount = 5
+
+    merStarts = [0,height,width*(height-1)-1,width*height-1]
+
+    merPos = []
+    map = []
+    for (j of cart){map.push(j)}
+
+        var pos =  merStarts[Math.floor(Math.random()*merStarts.length+1)]
+        var soldeMer = Math.floor(((width*height)*0.2)+2)
+        replacing = [pos]
+        while (soldeMer>0){
+            let selectcase = replacing[Math.floor(Math.random()*(replacing.length))]
+            let potcases = casesAdjacentes(selectcase,width,height)
+        let added=potcases[Math.floor(Math.random()*(potcases.length))]
+        if (!replacing.includes(added)){
+            replacing.push(added)
+            soldeMer-=1
+        }
+        }
+        
+       for (z of replacing){
+                map[z] = new hexagon("eau","eau",z)
+                merPos.push(z)
+                soldeMer--
+        }
+        
+    
+        fausseCarte = []
+        for (z in map){
+            if (map[z].type=="Montagne"){
+                fausseCarte.push(["X"])
+        }
+        else{
+            fausseCarte.push("O")
+        }
+    }
+//--------------Adding the rivers
+
+
+
+
+
+return map
 }
 
 function simplifyMap(map){
@@ -85,7 +162,8 @@ function simplifyMap(map){
 function createMap(width,height){
 map = baseGreenMap(width,height)
 map = addMontagne(width,height,map)
-
+map = addForest(width,height,map)
+map = addWater(width,height,map)
 
 return {"infos":map,"terrain":simplifyMap(map),"height":height,"width":width}
 
