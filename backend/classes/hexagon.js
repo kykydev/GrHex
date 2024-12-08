@@ -1,3 +1,9 @@
+const plainvariants = 4//Number of different plains, for randomization
+const forestvariants = 4
+const carrierevariants = 3
+const maxTrees = 3
+
+
 class hexagon {
     constructor(type,pattern,pos) {
     this.type=type;
@@ -14,15 +20,15 @@ constructor(type,pattern,nbTrees,pos){
     this.nbTrees=nbTrees
 }
 }
-class clairiereHexagon extends hexagon{
+class carriereHexagon extends hexagon{
 
-    constructor(type,pattern,nbstone,pos){
-        super(type,pattern,pos)
-        this.nbstone=nbstone
+    constructor(pos){
+        super("carriere","carriere_"+Math.floor(Math.random()*carrierevariants+1),pos)
+        this.nbstone=Math.floor(Math.random(5)+2)
     }
     
 }
 
 
 
-module.exports = { hexagon,forestHexagon,clairiereHexagon };
+module.exports = { hexagon,forestHexagon,carriereHexagon };

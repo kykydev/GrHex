@@ -2,6 +2,9 @@
 
 
 function casesAdjacentes(pos, width, height) {
+    pos = parseInt(pos, 10);
+    width = parseInt(width,10)
+    height = parseInt(height,10)
     var adj = [];
     var row = pos%height;
     var col = Math.floor(pos / height)  ;
@@ -65,7 +68,11 @@ function casesAdjacentes(pos, width, height) {
         }
     }
 
-
+    for (j in adj){ 
+        if (adj[j]<0 || adj[j]>height*width-1){
+            adj.splice(j,1)
+        }
+    }
 
     return adj; 
 }
