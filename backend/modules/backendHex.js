@@ -1,3 +1,4 @@
+const {MinHeap} = require("../classes/MinHeap")
 
 
 
@@ -100,67 +101,53 @@ function distance(pos1,pos2,height){
 }
 
 
-function pathFind(pos1,pos2,height,width,rules){//pos1 and pos2 are hexagon ID's, height and width are the grid's dimensions, rules is a table of "O"'s and "X"'s where the X's represent obstacles
-path = []//Return path, will be composed of hexagons identified by indexes
 
-var open = [[pos1,0,distance(pos1,pos2,height),distance(pos1,pos2,height)]]//Hexagons will be represented as follows: [index,g,h,f], with g the distance to start, h the distance to destination and f=g+h
-var closed = []
-while (open.length>0){
-    current = open[0]//Take the first open case
-    closed.push(current)
-    open.splice(0,1)
 
-    for (test of casesAdjacentes(current[0],width,height)){
-        
-        //CREATION DU TABLEAU DE L HEXAGONE PUIS JE CHECK SI IL EST DEDANS POUR ECONOMISER DES RESSOURCES
-        let g = current[1]+1;let h=distance(test,pos2,height);let f=g+h
-        let ajouted = [test,g,h,f]
 
-                    if (test==pos2){//End of algorithm, calculation of solution
-                        var path = [test]
-                        lastTile = ajouted
-                        while (path[path.length-1]!=pos1){
-                            aj = casesAdjacentes(lastTile[0],width,height)
-                            for (j of closed){
-                                if (j[1]==lastTile[1]-1 && aj.includes(j[0])){
-                                    path.push(j[0])
-                                    lastTile = j
-                            }
-                        }
-                    }
-                    return path.reverse()
-                }
-        
-        let inclosed = false
-        for (j of closed){
-            if (j[0]==test){
-                inclosed = true
+function pathFind(pos1, pos2, height, width, rules) {
+    const open = new MinHeap((a, b) => a.f - b.f); // Use a priority queue for open list
+    const closed = new Set(); // Closed set to track visited nodes
+    const cameFrom = {}; // To reconstruct the path
+
+    open.insert({ pos: pos1, g: 0, h: distance(pos1, pos2, height), f: distance(pos1, pos2, height) });
+
+    while (!open.isEmpty()) {
+        const current = open.extractMin(); // Get the node with the lowest f-score
+        const { pos, g } = current;
+
+        if (pos === pos2) {
+            // Reconstruct path
+            const path = [];
+            let currentPos = pos2;
+            while (currentPos !== undefined) {
+                path.push(currentPos);
+                currentPos = cameFrom[currentPos];
             }
+            return path.reverse(); // Return the path from start to end
         }
 
-        if (!inclosed){//If case is already closed, we ignore it
-        if (rules[test]=="O"){
-                var inopen = false
-                for (j of open){//checking if it's already in open and, if so, updating the values
-                    if (j[0] == ajouted[0]) {
-                        if (j[1] < ajouted[1] + 1) {
-                            j[1] = ajouted[1] + 1
-                            j[3]=j[1]+j[2]
-                            inopen = true
-                        }
-                    }
-                }
-                    if (!inopen){
-                    open.push(ajouted)
-                }
-        
+        closed.add(pos);
+
+        for (const neighbor of casesAdjacentes(pos, width, height)) {
+            if (closed.has(neighbor) || rules[neighbor] !== "O") {
+                continue; // Skip visited or blocked nodes
+            }
+
+            const tentativeG = g + 1;
+            const h = distance(neighbor, pos2, height);
+            const f = tentativeG + h;
+
+            const existing = open.find(n => n.pos === neighbor);
+            if (existing && tentativeG >= existing.g) {
+                continue; // Skip if we already have a better path
+            }
+
+            cameFrom[neighbor] = pos; // Track the path
+            open.insert({ pos: neighbor, g: tentativeG, h, f });
+        }
     }
-}
-}
-open.sort((a, b) => {if (a[3] !== b[3]) {return a[3] - b[3];} else{return a[2] - b[2];}});
-  
-}
-return false//Case where the path to the target does't exist
+
+    return false; // No path found
 }
 
 

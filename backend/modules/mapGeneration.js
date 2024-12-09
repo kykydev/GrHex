@@ -104,7 +104,7 @@ return map
 
 function addWater(width,height,cart){//Adds rivers using pathfinding
 
-    riverCount = 5
+    riverCount = 3
 
     merStarts = [0,height,width*(height-1)-1,width*height-1]
 
@@ -113,7 +113,7 @@ function addWater(width,height,cart){//Adds rivers using pathfinding
     for (j of cart){map.push(j)}
 
         var pos =  merStarts[Math.floor(Math.random()*merStarts.length+1)]
-        var soldeMer = Math.floor(((width*height)*0.2)+2)
+        var soldeMer = Math.floor(((width*height)*0.15)+2)
         replacing = [pos]
         while (soldeMer>0){
             let selectcase = replacing[Math.floor(Math.random()*(replacing.length))]
@@ -128,22 +128,97 @@ function addWater(width,height,cart){//Adds rivers using pathfinding
        for (z of replacing){
                 map[z] = new hexagon("eau","eau",z)
                 merPos.push(z)
-                soldeMer--
         }
         
     
         fausseCarte = []
         for (z in map){
-            if (map[z].type=="Montagne"){
+            if (map[z].type=="montagne"){
                 fausseCarte.push(["X"])
         }
         else{
             fausseCarte.push("O")
         }
     }
-//--------------Adding the rivers
+
+    var possibleGoals = []//Will contain all of the lake hexagons and border hexagons. This table is the possible destinations for a river
+
+//---------------------Creating lakes
+
+var soldeLac = Math.floor((width*height)*0.06)
+while (soldeLac>0){
+    var pos =  Math.floor(Math.random()*((width*height)))
+    if (map[pos].type!="eau"){
+    var soldeExtension = Math.floor(Math.random()*((width*height)*0.01)+4)
+    replacing = [pos]
+    //create a clutter
+    while (soldeExtension>0){
+        let selectcase = replacing[Math.floor(Math.random()*(replacing.length))]
+        let potcases = casesAdjacentes(selectcase,width,height)
+    let added=potcases[Math.floor(Math.random()*(potcases.length))]
+    if (!replacing.includes(added)){
+        replacing.push(added)
+        soldeExtension-=1
+    }
+    }
+    
+   for (z of replacing){
+        if (map[z].type!="montagne"){
+            map[z] = new hexagon("eau","eau",z)
+            possibleGoals.push(z)
+            merPos.push(z)
+            soldeLac--
+        }
+    }
+    }
+}
 
 
+
+
+//--------------Adding fake mountains
+
+    for (var z=0;z<8;z++){
+        var pos =  Math.floor(Math.random()*map.length+1)
+        var solde = Math.floor(((width*height)*0.04)+2)
+        replacing = [pos]
+        while (solde>0){
+            let selectcase = replacing[Math.floor(Math.random()*(replacing.length))]
+            let potcases = casesAdjacentes(selectcase,width,height)
+        let added=potcases[Math.floor(Math.random()*(potcases.length))]
+        if (!replacing.includes(added)){
+            replacing.push(added)
+            solde-=1
+        }
+        }
+        
+       for (z of replacing){
+            fausseCarte[z]="X"
+            }
+    }
+
+
+    while (riverCount>0){
+        let depart = merPos[Math.floor(Math.random()*merPos.length+1)]
+        let arrive = possibleGoals[Math.floor(Math.random()*possibleGoals.length+1)]
+        if (distance(depart,arrive,height)>0){
+            let route = pathFind(depart,arrive,height,width,fausseCarte)
+            if (route!=false){
+                for (z of route){
+                    map[z] = new hexagon("eau","eau",z)
+                    merPos.push(z)
+                }
+                riverCount--
+            }
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
 
 
 
