@@ -39,6 +39,6 @@ io.on('connection', (socket) => {
     console.log("il veut une map")
   });
 
-  carte =  createMap(50,50)
+  carte =  createMap(80,50)
   socket.emit("map",carte)
 });

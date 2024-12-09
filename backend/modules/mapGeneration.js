@@ -133,7 +133,7 @@ function addWater(width,height,cart){//Adds rivers using pathfinding
     
         fausseCarte = []
         for (z in map){
-            if (map[z].type=="montagne"){
+            if (map[z].type=="montagne"||map[z].type=="carriere"||map[z].type=="foret"){
                 fausseCarte.push(["X"])
         }
         else{
