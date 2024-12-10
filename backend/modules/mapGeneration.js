@@ -247,6 +247,7 @@ return {"infos":map,"terrain":simplifyMap(map),"height":height,"width":width}
 }
 
 
+
 module.exports = {
     createMap: createMap,
 }
