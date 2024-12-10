@@ -25,7 +25,7 @@ button {
     }
 
 
-/*----------Damier/Plateau----------*/
+/*----------Damier/Plateau/Mini----------*/
 
 .damier{
     position: fixed;
@@ -42,6 +42,17 @@ button {
     height: 1000vh;
 }
 
+.mini-map{
+    width: 100%;
+    height: 35%;
+}
+
+#mini{
+    margin-left: 20px;
+    width: 80%;
+    height: 50%;
+}
+
 /*----------Composants droit----------*/
 
 .droite {
@@ -53,7 +64,6 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     background-color: #6c757d;
     border: 4px solid #212529;
     z-index: 2;

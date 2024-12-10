@@ -66,10 +66,52 @@ function créerDamier(nbColumns, nbLines, rayon) {
     }
 }
 
+function créerMiniMap(nbColumns, nbLines, rayon) {
+    document.getElementById("mini").style.visibility="visible";
+    document.getElementById("mini").innerHTML = "";
+    Hexagone = creerHexagone(rayon);
+
+    for (var l = 0; l < nbLines; l++) {
+        for (var c = 0; c < nbColumns; c++) {
+            var d = "";
+            var x, y;
+
+            for (var i = 0; i < 6; i++) {
+                h = Hexagone[i];
+                x = h[0] + (Hexagone[1][0] - Hexagone[0][0]) * l * 2;
+                if (c % 2 == 1) {
+                    x += (Hexagone[1][0] - Hexagone[0][0]);
+                }
+                y = h[1] + (Hexagone[1][1] - Hexagone[0][1]) * c * 3;
+
+                if (i == 0) {
+                    d += "M" + x + "," + y + " L";
+                } else {
+                    d += x + "," + y + " ";
+                }
+            }
+            d += "Z";
+
+
+
+            d3.select("#mini")
+                .append("path")
+                .attr("d", d)
+                .attr("stroke", "transparent")
+                .attr("shape-rendering", "crispEdges")
+                .attr("id", "m" + (l * nbColumns + c))
+        }
+    }
+}
+
 //-------------------Coloriage d'un hexagone----------------------------------------
 
 function fill(id,couleur){
     d3.select(("#h"+id)).attr("fill", couleur);
+}
+
+function fillMini(id,couleur){
+    d3.select(("#m"+id)).attr("fill", couleur);
 }
 
 //-------------------Fonction d'actualisation des textures du damier----------------------------------------
@@ -77,6 +119,12 @@ function fill(id,couleur){
 function actualiserDamier(longueur, largeur, jeu) {
     for (i = 0; i < longueur * largeur; i++) {
         fill(i, "url(#"+jeu[i]+"-pattern)")
+    }
+}
+
+function actualiserMini(longueur, largeur, jeu) {
+    for (i = 0; i < longueur * largeur; i++) {
+        fillMini(i, "url(#"+jeu[i]+"-pattern)")
     }
 }
 
@@ -163,9 +211,11 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(data)
 
         créerDamier(data.height,data.width,30)
+        créerMiniMap(data.height, data.width, 2)
         
         appelsAjoutTextures();
         actualiserDamier(data.width,data.height,data.terrain)
+        actualiserMini(data.width,data.height,data.terrain)
         
     })
 });
