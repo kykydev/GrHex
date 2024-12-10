@@ -82,8 +82,8 @@ function addForest(width,height,cart){
         let added=potcases[Math.floor(Math.random()*(potcases.length))]
         if (!replacing.includes(added)){
             replacing.push(added)
-            soldeExtension-=1
         }
+        soldeExtension-=1
         }
         
        for (z of replacing){
@@ -104,7 +104,7 @@ return map
 
 function addWater(width,height,cart){//Adds rivers using pathfinding
 
-    riverCount = 3
+    riverCount = 6
 
     merStarts = [0,height,width*(height-1)-1,width*height-1]
 
@@ -113,7 +113,7 @@ function addWater(width,height,cart){//Adds rivers using pathfinding
     for (j of cart){map.push(j)}
 
         var pos =  merStarts[Math.floor(Math.random()*merStarts.length+1)]
-        var soldeMer = Math.floor(((width*height)*0.15)+2)
+        var soldeMer = Math.floor(((width*height)*0.2)+2)
         replacing = [pos]
         while (soldeMer>0){
             let selectcase = replacing[Math.floor(Math.random()*(replacing.length))]
@@ -121,8 +121,8 @@ function addWater(width,height,cart){//Adds rivers using pathfinding
         let added=potcases[Math.floor(Math.random()*(potcases.length))]
         if (!replacing.includes(added)){
             replacing.push(added)
-            soldeMer-=1
         }
+        soldeMer-=1
         }
         
        for (z of replacing){
@@ -149,7 +149,7 @@ var soldeLac = Math.floor((width*height)*0.06)
 while (soldeLac>0){
     var pos =  Math.floor(Math.random()*((width*height)))
     if (map[pos].type!="eau"){
-    var soldeExtension = Math.floor(Math.random()*((width*height)*0.01)+4)
+    var soldeExtension = Math.floor(Math.random()*((width*height)*0.01)+((width*height)*0.01))
     replacing = [pos]
     //create a clutter
     while (soldeExtension>0){
@@ -158,8 +158,8 @@ while (soldeLac>0){
     let added=potcases[Math.floor(Math.random()*(potcases.length))]
     if (!replacing.includes(added)){
         replacing.push(added)
-        soldeExtension-=1
     }
+    soldeExtension-=1
     }
     
    for (z of replacing){
@@ -201,7 +201,7 @@ while (soldeLac>0){
     while (riverCount>0){
         let depart = merPos[Math.floor(Math.random()*merPos.length+1)]
         let arrive = possibleGoals[Math.floor(Math.random()*possibleGoals.length+1)]
-        if (distance(depart,arrive,height)>0){
+        if (distance(depart,arrive,height)>0 &&(distance(depart,arrive,height)<height/1.3)){
             let route = pathFind(depart,arrive,height,width,fausseCarte)
             if (route!=false){
                 for (z of route){

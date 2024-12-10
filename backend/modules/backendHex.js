@@ -69,11 +69,8 @@ function casesAdjacentes(pos, width, height) {
         }
     }
 
-    for (j in adj){ 
-        if (adj[j]<0 || adj[j]>height*width-1){
-            adj.splice(j,1)
-        }
-    }
+    adj = adj.filter(j => j >= 0 && j < height * width);
+    
 
     return adj; 
 }
