@@ -52,7 +52,9 @@ function addMontagne(width,height,cart){
            gargl = casesAdjacentes(z,width,height)
             for (zz of gargl){
                 if (map[zz].type=="plaine"){
+                    if (Math.random()<0.3){
                     map[zz] = new carriereHexagon(pos)
+                    }
                 }
                 }
             }
