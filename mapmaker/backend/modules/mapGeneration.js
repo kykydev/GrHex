@@ -16,6 +16,16 @@ for (var j=0;j<width*height;j++){
     return map
 }
 
+
+function baseBlueMap(width,height){
+    map = []
+for (var j=0;j<width*height;j++){
+    variant = Math.floor(Math.random()*plainvariants+1)
+    map.push(new hexagon("eau","eau",j))
+}
+    return map
+}
+
 function addMontagne(width,height,cart){
     map = []
     for (j of cart){map.push(j)}
@@ -237,7 +247,7 @@ function simplifyMap(map){
 
 
 function createMap(width,height){
-map = baseGreenMap(width,height)
+map = baseBlueMap(width,height)
 //map = addMontagne(width,height,map)
 //map = addForest(width,height,map)
 //map = addWater(width,height,map)

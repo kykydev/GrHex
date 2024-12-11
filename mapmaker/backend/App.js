@@ -7,6 +7,7 @@ const io = new require("socket.io")(server);
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
 const {createMap} = require('./modules/mapGeneration');
 const { on } = require('events');
+const { hexagon } = require('./classes/hexagon');
 
 app.use(express.static(__dirname));
 
@@ -30,6 +31,32 @@ app.get("/script/:nomFichier",(request,response)=>{
 
 
 
+function simpleToMap(carte){
+map = []
+for (z in carte){
+  switch(carte[z]){
+    case "plaine":
+      map.push("plaine_1")
+      break
+  case "eau":
+      map.push("eau")
+      break
+    case "montagne":
+        map.push("montagne")
+        break
+
+  case "carriere":
+          map.push("carriere_1")
+          break
+    case "foret":
+            map.push("foret2_"+(Math.floor(Math.random()*3+1)))
+            break
+  }
+}
+
+  return map
+}
+
 
 
 //---------------------SOCKET------------------------------
@@ -40,7 +67,12 @@ io.on('connection', (socket) => {
     console.log("il veut une map")
   }); 
 
-  carte =  createMap(40,30)
+  var h = 40
+  var w = 30
+
+  var aaaa = ['eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','eau','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','eau','plaine','eau','plaine','eau','plaine','eau','plaine','eau','plaine','eau','plaine','eau','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau',]
+  carte = simpleToMap(aaaa)
+  carte = {"width":h,"height":w,"terrain":carte}
   socket.emit("map",carte)
 
   socket.on("saveçastp",data=>{
