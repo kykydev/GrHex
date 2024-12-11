@@ -238,9 +238,9 @@ function simplifyMap(map){
 
 function createMap(width,height){
 map = baseGreenMap(width,height)
-map = addMontagne(width,height,map)
-map = addForest(width,height,map)
-map = addWater(width,height,map)
+//map = addMontagne(width,height,map)
+//map = addForest(width,height,map)
+//map = addWater(width,height,map)
 
 return {"infos":map,"terrain":simplifyMap(map),"height":height,"width":width}
 

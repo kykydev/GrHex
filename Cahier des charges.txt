@@ -1,0 +1,36 @@
+Jouable à 3 MAX 
+
+Basé sur la période entre guerre du péloponaise/Corrinthe (-350)
+
+Ligues de Thèbes/Athènes/Spartes (dirigée par corinthes)
+
++ Delphe (neutre, à gauche)
+
+
+
+Athènes: Port fortifié
+
+Corinthie: Cité portuaire
+
+
+
+Recrutement de citoyens OU de mercenaires
+
+Unités: Hoplites, peu de cavaliers, archers/frondeurs 
+
+Trucs FIXES:
+MAP qui représente la grèce
+Système de revenu
+
+Quelques milliers de personnes par cité
+
+Non-négociable: envoyer un messager qui doit se déplacer jusqu'à ne unité pour lui donner les ordres
+Hoplite se déplace de 30km par jour (tour)
+
+Notion de civilisation: Créer des nouvelles villes/faire des alliances
+
+
+Les troupes sont soit payées grâce au revenu (mercenaires) soit des habitants (mais du coup les villes génèrent moins)
+
+
+

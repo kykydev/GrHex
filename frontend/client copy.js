@@ -61,58 +61,7 @@ function créerDamier(nbColumns, nbLines, rayon) {
                 .on("mouseout", function() {
                     d3.select(this)
                         .attr("stroke", "transparent")
-                })
-                .on("click", function () {
-                    // Extract the numeric part of the hexagon ID
-                    const fullId = d3.select(this).attr("id"); // Get the full ID, e.g., "h5"
-                    const id = parseInt(fullId.substring(1)); // Extract the numeric part, e.g., 5
-                
-                    let patterne = "plaine_1-pattern";
-                    let terrain = "plaine";
-                
-                    // Determine the pattern and terrain based on the selected tool
-                    switch (outil) {
-                        case "plaine":
-                            patterne = "plaine_1-pattern";
-                            terrain = "plaine";
-                            break;
-                
-                        case "eau":
-                            patterne = "eau-pattern";
-                            terrain = "eau";
-                            break;
-                
-                        case "montagne":
-                            patterne = "montagne-pattern";
-                            terrain = "montagne";
-                            break;
-                
-                        case "foret":
-                            patterne = "foret1_1-pattern";
-                            terrain = "foret1";
-                            break;
-                
-                        case "carriere":
-                            patterne = "carriere_1-pattern";
-                            terrain = "carriere";
-                            break;
-                
-                        default:
-                            console.warn("Unknown tool selected:", outil);
-                            return; // Exit if the tool is not valid
-                    }
-                
-                    // Apply the pattern fill to the clicked hexagon
-                    fill(id, `url(#${patterne})`);
-                
-                    // Update the map array with the new terrain value
-                    if (map.length > id) {
-                        map[id] = terrain;
-                    }
-                
-                    console.log(`Hexagon ${id} updated to terrain: ${terrain}, pattern: ${patterne}`);
                 });
-                
         }
     }
 }
@@ -151,7 +100,6 @@ function créerMiniMap(nbColumns, nbLines, rayon) {
                 .attr("stroke", "transparent")
                 .attr("shape-rendering", "crispEdges")
                 .attr("id", "m" + (l * nbColumns + c))
-
         }
     }
 }
@@ -195,41 +143,6 @@ function ajouterTextures(id, url) {
         .attr("height", 1)
         .attr("preserveAspectRatio", "none");
 }
-
-var outil = "plaine"
-
-function mapprint(){
-    console.log(map)
-    socket.emit("saveçastp",map)
-}
-
-function plaine(){
-    console.log("choisi plaine")
-    outil= "plaine"
-}
-
-function carriere(){
-    console.log("choisi carriere")
-    outil= "carriere"
-}
-
-function montagne(){
-    console.log("choisi montagne")
-    outil= "montagne"
-}
-
-function foret(){
-    console.log("choisi foret")
-    outil="foret"    
-}
-
-function eau(){
-    console.log("choisi eau")
-    outil= "eau"
-}
-
-
-
 
 function appelsAjoutTextures(){
     
@@ -290,7 +203,7 @@ function appelsAjoutTextures(){
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 
-var map = []
+
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -304,7 +217,5 @@ document.addEventListener("DOMContentLoaded", function () {
         actualiserDamier(data.width,data.height,data.terrain)
         actualiserMini(data.width,data.height,data.terrain)
         
-        map = data.terrain
-        for (z in map){map[z]="plaine"}
     })
 });

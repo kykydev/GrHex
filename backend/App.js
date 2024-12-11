@@ -5,7 +5,8 @@ const { isNumberObject } = require('util/types');
 const server = http.createServer(app);
 const io = new require("socket.io")(server);
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
-const {createMap} = require('./modules/mapGeneration')
+const {createMap} = require('./modules/mapGeneration');
+const { on } = require('events');
 
 app.use(express.static(__dirname));
 
@@ -39,6 +40,15 @@ io.on('connection', (socket) => {
     console.log("il veut une map")
   }); 
 
-  carte =  createMap(60,45)
+  carte =  createMap(40,30)
   socket.emit("map",carte)
+
+  socket.on("saveçastp",data=>{
+    const fs = require('fs');
+    savedstring = "["
+    for (z of data){savedstring=savedstring+"'"+z+"',"}
+    savedstring += "]"
+
+    fs.writeFileSync('lastmap.json', savedstring);
+  })
 });
