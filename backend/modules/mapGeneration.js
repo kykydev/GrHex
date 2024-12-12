@@ -1,6 +1,9 @@
 const {hexagon,forestHexagon,carriereHexagon} = require("../classes/hexagon")
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./backendHex');
 
+const mapBase = ['plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','plaine','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','plaine','plaine','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','plaine','plaine','plaine','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','eau','plaine','plaine','plaine','plaine','plaine','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','eau','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','plaine','eau','plaine','plaine','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','eau','eau','eau','eau','plaine','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','eau','eau','eau','eau','plaine','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','plaine','eau','eau','plaine','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','plaine','plaine','eau','plaine','plaine','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','plaine','eau','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','plaine','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','eau','eau','eau','eau','eau','eau','eau','eau','eau','eau','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine','plaine',]
+const mapWidth = 40 //width of the current mal
+const mapHeight = 30 //height of the current map
 
 const plainvariants = 4//Number of different plains, for randomization
 const forestvariants = 4
@@ -20,7 +23,7 @@ function addMontagne(width,height,cart){
     map = []
     for (j of cart){map.push(j)}
 
-    var soldeMontagnes = Math.floor(Math.random()*((width*height)*0.02)+(width*height)*0.05)
+    var soldeMontagnes = Math.floor(Math.random()*((width*height)*0.013)+(width*height)*0.05)
     while (soldeMontagnes>0){
         var pos =  Math.floor(Math.random()*((width*height)))
         var soldeExtension = Math.floor(Math.random()*((width*height)*0.005)+1)
@@ -236,13 +239,41 @@ function simplifyMap(map){
 }
 
 
-function createMap(width,height){
-map = baseGreenMap(width,height)
-map = addMontagne(width,height,map)
-map = addForest(width,height,map)
-map = addWater(width,height,map)
+function createMap(){
+map = []
+index = 0
+for (z of mapBase){
+    let hex
+    switch (z){
+        case "plaine":
+            hex = new hexagon("plaine","plaine_"+Math.floor(Math.random()*plainvariants+1),index)
+        break
+        case "montagne":
+            hex = new hexagon("montagne","montagne",index)
+        break
+        case "eau":
+            hex = new hexagon("eau","eau",index)
+        break
+        case "carriere":
+            hex = new carriereHexagon(index)
+        break
+        case "foret":
+            hex = new forestHexagon(index)
+        break
 
-return {"infos":map,"terrain":simplifyMap(map),"height":height,"width":width}
+
+
+    }
+    map.push(hex)
+    index++
+}
+map = addMontagne(mapWidth,mapHeight,map)
+map = addForest(mapWidth,mapHeight,map)
+/*
+map = baseGreenMap(width,height)
+map = addWater(width,height,map)
+*/
+return {"infos":map,"terrain":simplifyMap(map),"height":mapHeight,"width":mapWidth}
 
 }
 

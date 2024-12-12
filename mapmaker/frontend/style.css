@@ -32,14 +32,14 @@ button {
     bottom: 0;
     left: 0;
     width: 80%;
-    height: 95%;
+    height: 97%;
     overflow:scroll;
     z-index: 0;
 }
 
 #jeu{
-    width: 2800px;
-    height: 1630px;
+    width: 1000vw;
+    height: 1000vh;
 }
 
 .mini-map{

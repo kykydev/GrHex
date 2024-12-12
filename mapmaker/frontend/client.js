@@ -55,13 +55,64 @@ function créerDamier(nbColumns, nbLines, rayon) {
                 .on("mouseover", function() {
                     d3.select(this)
                     .attr("stroke", "orange")
-                    .style("stroke-width", 2);
+                    .style("stroke-width", 2)
                 })
 
                 .on("mouseout", function() {
                     d3.select(this)
                         .attr("stroke", "transparent")
+                })
+                .on("click", function () {
+                    // Extract the numeric part of the hexagon ID
+                    const fullId = d3.select(this).attr("id"); // Get the full ID, e.g., "h5"
+                    const id = parseInt(fullId.substring(1)); // Extract the numeric part, e.g., 5
+                
+                    let patterne = "plaine_1-pattern";
+                    let terrain = "plaine";
+                
+                    // Determine the pattern and terrain based on the selected tool
+                    switch (outil) {
+                        case "plaine":
+                            patterne = "plaine_1-pattern";
+                            terrain = "plaine";
+                            break;
+                
+                        case "eau":
+                            patterne = "eau-pattern";
+                            terrain = "eau";
+                            break;
+                
+                        case "montagne":
+                            patterne = "montagne-pattern";
+                            terrain = "montagne";
+                            break;
+                
+                        case "foret":
+                            patterne = "foret1_1-pattern";
+                            terrain = "foret1";
+                            break;
+                
+                        case "carriere":
+                            patterne = "carriere_1-pattern";
+                            terrain = "carriere";
+                            break;
+                
+                        default:
+                            console.warn("Unknown tool selected:", outil);
+                            return; // Exit if the tool is not valid
+                    }
+                
+                    // Apply the pattern fill to the clicked hexagon
+                    fill(id, `url(#${patterne})`);
+                
+                    // Update the map array with the new terrain value
+                    if (map.length > id) {
+                        map[id] = terrain;
+                    }
+                
+                    console.log(`Hexagon ${id} updated to terrain: ${terrain}, pattern: ${patterne}`);
                 });
+                
         }
     }
 }
@@ -100,6 +151,7 @@ function créerMiniMap(nbColumns, nbLines, rayon) {
                 .attr("stroke", "transparent")
                 .attr("shape-rendering", "crispEdges")
                 .attr("id", "m" + (l * nbColumns + c))
+
         }
     }
 }
@@ -143,6 +195,41 @@ function ajouterTextures(id, url) {
         .attr("height", 1)
         .attr("preserveAspectRatio", "none");
 }
+
+var outil = "plaine"
+
+function mapprint(){
+    console.log(map)
+    socket.emit("saveçastp",map)
+}
+
+function plaine(){
+    console.log("choisi plaine")
+    outil= "plaine"
+}
+
+function carriere(){
+    console.log("choisi carriere")
+    outil= "carriere"
+}
+
+function montagne(){
+    console.log("choisi montagne")
+    outil= "montagne"
+}
+
+function foret(){
+    console.log("choisi foret")
+    outil="foret"    
+}
+
+function eau(){
+    console.log("choisi eau")
+    outil= "eau"
+}
+
+
+
 
 function appelsAjoutTextures(){
     
@@ -195,87 +282,29 @@ function appelsAjoutTextures(){
 }
 
 
-function setupScroll(){
-    var x ;
-    var y ;
-    document.addEventListener("mousemove",(event)=>{
-        x = event.clientX
-        y = event.clientY
-    })
 
-    
-    const plateaujeu = document.getElementById("damier");
-    function scroll() {
-        let threshold = 150;
-        let scrollAmount = 15;
-        const rect = plateaujeu.getBoundingClientRect();
-
-            // x <= rect.left + threshold ||
-            // x >= rect.right - threshold ||
-            // y <= rect.top + threshold ||
-            // y >= rect.bottom - threshold
-
-
-            if(x >= rect.right - threshold && x<rect.right){ 
-                d3.select("#damier").property("scrollLeft", d3.select("#damier").property("scrollLeft") +scrollAmount);
-            }else if(x <= rect.left + threshold && x>rect.left){
-                d3.select("#damier").property("scrollLeft", d3.select("#damier").property("scrollLeft") -scrollAmount);
-            }
-
-            if(y <= rect.top + threshold && y>rect.top){
-                d3.select("#damier").property("scrollTop", d3.select("#damier").property("scrollTop") -scrollAmount);
-            }else  if(y >= rect.bottom - threshold  && y<rect.bottom){
-                d3.select("#damier").property("scrollTop", d3.select("#damier").property("scrollTop") +scrollAmount);
-            }
-
-
-    }   
-    setInterval(scroll, 30);
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 //------------------------------TESTS---------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+
+var map = []
+
 document.addEventListener("DOMContentLoaded", function () {
-
-
-    document.getElementById('0').addEventListener('click', function() {
-        document.querySelector('.accueil').style.display = 'none';
-        document.querySelector('.partie').style.display = 'block';
-    });
-    
-    
 
     socket.on("map",data=>{
         console.log(data)
 
-        créerDamier(data.height,data.width,32)
-        //créerMiniMap(data.height, data.width, 2)
+        créerDamier(data.height,data.width,16)
+        créerMiniMap(data.height, data.width, 2)
         
         appelsAjoutTextures();
         actualiserDamier(data.width,data.height,data.terrain)
-        //actualiserMini(data.width,data.height,data.terrain)
-        setupScroll()//Function that sets up the scrolling so that it works with the game div
-     
-    });//---------------fin du socket
-    
-
-
-    document.querySelector('.accueil').style.display = 'none';
-    document.querySelector('.partie').style.display = 'block';
-
+        actualiserMini(data.width,data.height,data.terrain)
+        
+        map = data.terrain
+        for (z in map){map[z]="eau"}
+    })
 });

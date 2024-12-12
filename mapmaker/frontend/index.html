@@ -32,19 +32,45 @@
 
         <div class="haut">
             <div class="bouton2">
-                <button id="1">
-                    Quitter
+                <button id="1" onclick="plaine()">
+                    plaine
                 </button>
-                <button>
-                    Menu
+                <button id="1" onclick="eau()">
+                    eau
                 </button>
+                <button id="1" onclick="montagne()">
+                    montagne
+                </button>
+                <button id="1" onclick="carriere()">
+                    carriere
+                </button>
+                <button id="1" onclick="foret()">
+                    foret
+                </button>
+
+                <button id="1" onclick="mapprint()">
+                    print map
+                </button>
+                      
+
+
+                
+               
             </div>
         </div>
 
-        <div class="damier" id="damier">
+        <div class="damier">
             <svg id="jeu"></svg>
         </div>
     </div>
+    
+    <script>
+        document.getElementById('0').addEventListener('click', function() {
+            document.querySelector('.accueil').style.display = 'none';
+            document.querySelector('.partie').style.display = 'block';
+        });
+    </script>
+
 
 
 </body>
