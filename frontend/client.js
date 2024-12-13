@@ -114,7 +114,7 @@ function fillMini(id,couleur){
     d3.select(("#m"+id)).attr("fill", couleur);
 }
 
-//-------------------Fonction d'actualisation des textures du damier----------------------------------------
+//-------------------Fonction d'actualisation des textures du damier-----------------
 
 function actualiserDamier(longueur, largeur, jeu) {
     for (i = 0; i < longueur * largeur; i++) {
@@ -194,6 +194,7 @@ function appelsAjoutTextures(){
     
 }
 
+//-------------------Fonction qui déplace vue damier selon la position de la souris-----------------
 
 function setupScroll(){
     var x ;
@@ -231,25 +232,34 @@ function setupScroll(){
 
     }   
     setInterval(scroll, 30);
+}
 
+//-------------------Fonctions pour afficher les unités-----------------
 
+function afficherUnites(unite, couleur, pos) {
+    let hexagone = document.getElementById("h" + pos);
+    if (hexagone) {
+        let bbox = hexagone.getBBox();
+        let damier = document.getElementById("jeu");
 
+        damier.innerHTML += `
+            <image class="unite"
+                xlink:href="http://localhost:8888/img/personnages/${couleur}/${unite}.png"
+                x="${bbox.x -10}"  
+                y="${bbox.y -15}"  
+                width="70"         
+                height="80"
+            />
+        `;
+    } else {
+        console.log("L'élément avec l'ID h" + pos + " n'existe pas.");
+    }
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 //------------------------------TESTS---------------------------------------------------------------
+
 document.addEventListener("DOMContentLoaded", function () {
 
 
@@ -269,8 +279,9 @@ document.addEventListener("DOMContentLoaded", function () {
         appelsAjoutTextures();
         actualiserDamier(data.width,data.height,data.terrain)
         //actualiserMini(data.width,data.height,data.terrain)
-        setupScroll()//Function that sets up the scrolling so that it works with the game div
-     
+        setupScroll()
+        afficherUnites("epeeiste", "rouge", 343);
+
     });//---------------fin du socket
     
 
