@@ -22,11 +22,16 @@ app.get("/",(request,response)=>{
 })
 
 app.get("/script/:nomFichier",(request,response)=>{
-    response.sendFile(request.params.nomFichier,{root:__dirname+"/../frontend"})
+    response.sendFile(request.params.nomFichier,{root:__dirname+"/../frontend/"})
 })
 
+app.get("/script/:dossier/:nomFichier",(request,response)=>{
+  response.sendFile(request.params.nomFichier,{root:__dirname+"/../frontend/"+request.params.dossier});
+});
 
-
+app.get("/creerpartie",(request,response)=>{
+  response.sendFile("pageCreation.html",{root:__dirname+"/../frontend/creationpartie"});
+});
 
 
 
