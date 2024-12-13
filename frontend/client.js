@@ -66,6 +66,45 @@ function créerDamier(nbColumns, nbLines, rayon) {
     }
 }
 
+function créerDamierPrev(nbColumns, nbLines, rayon) {
+    
+    document.getElementById("jeuprev").style.visibility="visible";
+    document.getElementById("jeuprev").innerHTML = "";
+    Hexagone = creerHexagone(rayon);
+
+    for (var l = 0; l < nbLines; l++) {
+        for (var c = 0; c < nbColumns; c++) {
+            var d = "";
+            var x, y;
+
+            for (var i = 0; i < 6; i++) {
+                h = Hexagone[i];
+                x = h[0] + (Hexagone[1][0] - Hexagone[0][0]) * l * 2;
+                if (c % 2 == 1) {
+                    x += (Hexagone[1][0] - Hexagone[0][0]);
+                }
+                y = h[1] + (Hexagone[1][1] - Hexagone[0][1]) * c * 3;
+
+                if (i == 0) {
+                    d += "M" + x + "," + y + " L";
+                } else {
+                    d += x + "," + y + " ";
+                }
+            }
+            d += "Z";
+
+
+
+            d3.select("#jeuprev")
+                .append("path")
+                .attr("d", d)
+                .attr("stroke", "transparent")
+                .attr("shape-rendering", "crispEdges")
+                .attr("id", "prev" + (l * nbColumns + c))
+        }
+    }
+}
+
 function créerMiniMap(nbColumns, nbLines, rayon) {
     document.getElementById("mini").style.visibility="visible";
     document.getElementById("mini").innerHTML = "";
@@ -113,6 +152,9 @@ function fill(id,couleur){
 function fillMini(id,couleur){
     d3.select(("#m"+id)).attr("fill", couleur);
 }
+function fillPrev(id,couleur){
+    d3.select(("#prev"+id)).attr("fill", couleur);
+}
 
 //-------------------Fonction d'actualisation des textures du damier-----------------
 
@@ -122,14 +164,20 @@ function actualiserDamier(longueur, largeur, jeu) {
     }
 }
 
+function actualiserDamierPrev(longueur, largeur, jeu) {
+    for (i = 0; i < longueur * largeur; i++) {
+        fillPrev(i, "url(#"+jeu[i]+"-pattern)")
+    }
+}
+
 function actualiserMini(longueur, largeur, jeu) {
     for (i = 0; i < longueur * largeur; i++) {
         fillMini(i, "url(#"+jeu[i]+"-pattern)")
     }
 }
 
-function ajouterTextures(id, url) {
-    let defs = d3.select("svg").append("defs");
+function ajouterTextures(id, url,selected) {
+    let defs = d3.select("#"+selected).append("defs");
 
     // Plaines
     defs.append("pattern")
@@ -144,7 +192,7 @@ function ajouterTextures(id, url) {
         .attr("preserveAspectRatio", "none");
 }
 
-function appelsAjoutTextures(){
+function appelsAjoutTextures(selected){
     
     var images = [
         
@@ -189,14 +237,14 @@ function appelsAjoutTextures(){
     ]
 
     for(let terrain of images){
-        ajouterTextures(terrain.id,terrain.url);
+        ajouterTextures(terrain.id,terrain.url,selected);
     }
     
 }
 
 //-------------------Fonction qui déplace vue damier selon la position de la souris-----------------
 
-function setupScroll(){
+function setupScroll(id){
     var x ;
     var y ;
     document.addEventListener("mousemove",(event)=>{
@@ -205,7 +253,7 @@ function setupScroll(){
     })
 
     
-    const plateaujeu = document.getElementById("damier");
+    const plateaujeu = document.getElementById(id);
     function scroll() {
         let threshold = 150;
         let scrollAmount = 15;
@@ -218,15 +266,15 @@ function setupScroll(){
 
 
             if(x >= rect.right - threshold && x<rect.right){ 
-                d3.select("#damier").property("scrollLeft", d3.select("#damier").property("scrollLeft") +scrollAmount);
+                d3.select("#"+id).property("scrollLeft", d3.select("#"+id).property("scrollLeft") +scrollAmount);
             }else if(x <= rect.left + threshold && x>rect.left){
-                d3.select("#damier").property("scrollLeft", d3.select("#damier").property("scrollLeft") -scrollAmount);
+                d3.select("#"+id).property("scrollLeft", d3.select("#"+id).property("scrollLeft") -scrollAmount);
             }
 
             if(y <= rect.top + threshold && y>rect.top){
-                d3.select("#damier").property("scrollTop", d3.select("#damier").property("scrollTop") -scrollAmount);
+                d3.select("#"+id).property("scrollTop", d3.select("#"+id).property("scrollTop") -scrollAmount);
             }else  if(y >= rect.bottom - threshold  && y<rect.bottom){
-                d3.select("#damier").property("scrollTop", d3.select("#damier").property("scrollTop") +scrollAmount);
+                d3.select("#"+id).property("scrollTop", d3.select("#"+id).property("scrollTop") +scrollAmount);
             }
 
 
@@ -258,17 +306,42 @@ function afficherUnites(unite, couleur, pos) {
 
 
 
+
 //------------------------------TESTS---------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    document.getElementById("creerPartie").addEventListener("click",()=>{
+        const nbJoueurs = document.getElementById("nbJoueurs");
+        const nbTours = document.getElementById("nbTours");
+        socket.emit("creerPartie",{"nbJoueurs":parseInt(nbJoueurs.value),"nbTours":parseInt(nbTours.value)});
 
-    document.getElementById('0').addEventListener('click', function() {
         document.querySelector('.accueil').style.display = 'none';
-        document.querySelector('.partie').style.display = 'block';
+        document.querySelector('.rejoindrePartie').style.display = 'block';
+
     });
-    
-    
+
+   socket.on("lobbyPartie",(data)=>{
+        //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
+
+        
+        document.querySelector('.accueil').style.display = 'none';
+        document.querySelector('.rejoindrePartie').style.display = 'block';
+
+        console.log(data)
+
+        créerDamierPrev(data.map.height,data.map.width,32);
+        appelsAjoutTextures("jeuprev")
+        actualiserDamierPrev(data.map.width,data.map.height,data.map.terrain);
+
+        let cite = data.positionCites;
+
+        
+        fillPrev(cite.béotie,"red");
+        fillPrev(cite.attique,"red");
+        fillPrev(cite.argolide,"red");
+        setupScroll("damierPrev");
+   });
 
     socket.on("map",data=>{
         console.log(data)
@@ -279,14 +352,9 @@ document.addEventListener("DOMContentLoaded", function () {
         appelsAjoutTextures();
         actualiserDamier(data.width,data.height,data.terrain)
         //actualiserMini(data.width,data.height,data.terrain)
-        setupScroll()
+        setupScroll("damier")
         afficherUnites("epeeiste", "rouge", 343);
 
     });//---------------fin du socket
     
-
-
-    document.querySelector('.accueil').style.display = 'none';
-    document.querySelector('.partie').style.display = 'block';
-
 });

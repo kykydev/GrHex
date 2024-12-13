@@ -14,11 +14,83 @@
 <body>
 
     <div class="accueil">
-        <!-- <input type="text" id="username" placeholder="Entrez votre nom"> -->
-        <button id="0">Commencer le jeu</button>
+
+        <h1 id="titreP2">Creer une nouvelle partie</h1>
+        <div id="form2">
+            <label for="nbJ">Nombre de Joueurs</label>
+            <select name="nbJ" id="nbJoueurs">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+            <label for="nbTours">Nombre de tours</label>
+            <input type="number" name="nbTours" min="5" step="1" id="nbTours"  value="5">
+            <button id="creerPartie" onsubmit="return false">Creer</button>
+        </div>
+    
+        <h2 id="titreP2-2">Liste des parties existantes</h2>
+    
+        <div id="divListeJoueurs">
+            <table id="listeJoueurs">
+                <tr>
+                    <th>
+                        ID partie 
+                    </th>
+                    <th>
+                        nombre de tours
+                    </th>
+                    <th>
+                        nombre de joueurs
+                    </th>
+                    <th>
+                        Rejoindre
+                    </th>
+                </tr>
+    
+            </table>
+        </div>
+    
+
+
+
     </div>
 
-    <div class="partie">
+    <div class="rejoindrePartie" id="rejoindrePartie" >
+        <div class="droite">
+            <fieldset>
+                <div>
+                    <input type="radio" name="cite" id="beotie" checked value="beotie"/>
+                    <label for="beotie" > Béotie </label>
+                </div>
+                <div>
+                    <input type="radio" name="cite" id="attique" value="attique"/>
+                    <label for="attique" > Attique </label>
+                </div>
+                <div>
+                    <input type="radio" id="argolide" name="cite" value="argolide"/>
+                    <label for="argolide" > Argolide </label>
+                </div>
+            </fieldset>
+
+        </div>
+        <div class="haut">
+            <div class="bouton2">
+                <button id="1">
+                    Quitter
+                </button>
+                <button>
+                    Menu
+                </button>
+            </div>
+        </div>
+
+        <div class="damier" id="damierPrev">
+            <svg id="jeuprev"></svg>
+        </div>
+    </div>
+
+
+<div class="partie">
         <div class="droite">
             <div class="mini-map">
                 <svg id="mini"></svg>

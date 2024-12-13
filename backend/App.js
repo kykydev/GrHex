@@ -6,6 +6,7 @@ const server = http.createServer(app);
 const io = new require("socket.io")(server);
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
 const {createMap} = require('./modules/mapGeneration')
+const {game} = require('./classes/game')
 
 app.use(express.static(__dirname));
 
@@ -34,6 +35,8 @@ app.get("/creerpartie",(request,response)=>{
 });
 
 
+var parties = {}
+
 
 
 //---------------------SOCKET------------------------------
@@ -44,6 +47,23 @@ io.on('connection', (socket) => {
     console.log("il veut une map")
   });
 
-  carte =  createMap()
-  socket.emit("map",carte)
+  socket.on("creerPartie",data=>{
+    var nbJoueurs = data.nbJoueurs
+    var nbTours = data.nbTours
+
+    var partie = new game(nbJoueurs,nbTours)
+    parties[partie.id]=partie
+    
+    var createur = partie.addPlayer()
+    if (createur!=false){
+    //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
+      socket.join(partie.id)
+      socket.emit("lobbyPartie",{"idPartie":partie.id,"idJoueur":createur,"map":partie.map,"positionCites":partie.positionsDepart})
+    }
+
+
+  })
+
+   
+
 });
