@@ -94,8 +94,8 @@ button {
     position: fixed;
     display: flex;
     flex-direction:row;
-    align-items:baseline;
-    justify-content: baseline;
+    /* align-items:baseline; */
+    justify-content: space-between;
     left: 0;
     top: 0;
     width: 80%;
@@ -103,6 +103,10 @@ button {
     background-color: #6c757d;
     border: 4px solid #212529;
     z-index: 1;
+}
+
+#nomPartie{
+    font-size: xx-large;
 }
 
 /*----------Page d'accueil + vues----------*/
@@ -176,6 +180,17 @@ button {
     width: 100%;
 }
 
+#usernameInput{
+    background-color: #b5b4b4; 
+    color: #000000;
+    border: solid #555 2px;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 2.5vh;
+    width: 50%;
+}
+
+
 #form2 input[type="number"] {
     background-color: #b5b4b4; 
     color: #000000;
@@ -185,6 +200,8 @@ button {
     font-size: 2.5vh;
     width: 100%;
 }
+
+
 
 #form2 button {
     font-family: inherit;
@@ -287,4 +304,26 @@ button:hover {
 #creerPartie{
     justify-self: center;
     align-self: center;
+}
+
+.radioInput{
+    font-family: inherit;
+    border: none;
+    outline: 1px dotted rgb(37, 37, 37);
+    outline-offset: -4px;
+    background: hsl(0deg 0% 75%);
+    box-shadow: inset -1px -1px #292929, inset 1px 1px #fff, inset -2px -2px rgb(158, 158, 158), inset 2px 2px #ffffff;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 5px 30px;
+}
+
+.fieldMoche{
+    border: none;
+}
+
+#droiteAll{
+    align-items: center;
+    justify-content: center;
 }

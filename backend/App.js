@@ -34,8 +34,19 @@ app.get("/creerpartie",(request,response)=>{
   response.sendFile("pageCreation.html",{root:__dirname+"/../frontend/creationpartie"});
 });
 
-
+var lobbies = {}
 var parties = {}
+
+
+//-----------------------Fonctions de gestion des parties-----------------------------
+
+function testStartPartie(partie){
+if (partie.canStart()){
+    parties[partie.id]=partie
+    delete lobbies[partie.id]
+    io.to(partie.id).emit("commencerPartie",null)
+}
+}
 
 
 
@@ -52,18 +63,78 @@ io.on('connection', (socket) => {
     var nbTours = data.nbTours
 
     var partie = new game(nbJoueurs,nbTours)
-    parties[partie.id]=partie
+    lobbies[partie.id]=partie
     
     var createur = partie.addPlayer()
     if (createur!=false){
     //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
       socket.join(partie.id)
-      socket.emit("lobbyPartie",{"idPartie":partie.id,"idJoueur":createur,"map":partie.map,"positionCites":partie.positionsDepart})
+      socket.emit("lobbyPartie",{"idPartie":partie.id,"idJoueur":createur,"map":partie.map,"positionCites":partie.positionsDepart,"nom":partie.name})
     }
 
 
   })
 
+  socket.on("rejoindreLobby",data=>{
+    var partie = lobbies[data]
+    if (partie!=undefined && partie!=null){
+      if (partie.players.length>=partie.nbJoueurs){//Send error socket
+        socket.emit("erreurRejoindreLobby",false)
+        return
+      }
+      else{//Add player to the game
+        var joueur = partie.addPlayer()
+        if (joueur==false){
+          socket.emit("erreurRejoindreLobby",false)
+        }
+        else{
+        //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
+          socket.join(partie.id)
+          socket.emit("lobbyPartie",{"idPartie":partie.id,"idJoueur":joueur,"map":partie.map,"positionCites":partie.positionsDepart,"nom":partie.name})
+        }
+        }
+      }
+    })
+
+
+  socket.on("getListeParties",data=>{
+      var retour = []
+         for (z of Object.keys(lobbies)){
+          par = lobbies[z]
+          retour.push({"nom":par.name,"nbJoueurs":par.nbJoueurs,"nbTours":par.nbTours,"idPartie":par.id,"currentPlayers":Object.keys(par.players).length})
+         }
+         socket.emit("getListeParties",retour)
+  })
    
+
+  socket.on("rejoindrePartie",data=>{
+        var partie = lobbies[data.idPartie]
+        if (partie==undefined){return}
+        var player = partie.players[data.idJoueur]
+        if (player==undefined){return}
+
+
+        if (partie.citePrise(data.maCite)){
+          socket.emit("rejoindrePartie",false)
+          return
+        }
+
+        if (player.choseCite(data.maCite)==false){
+          socket.emit("rejoindrePartie",false);
+        }
+        else{
+          player.name=data.nom
+          socket.emit("rejoindrePartie",true);
+        }
+
+  })
+
+
+
+
+
+
+
+
 
 });
