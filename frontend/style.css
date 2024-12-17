@@ -127,7 +127,10 @@ button {
 }
 
 .partie{
-    display: none;
+    background-color: #adb5bd;
+    width:100vw;
+    height:100vh;
+    display:none
 }
 
 .rejoindrePartie{

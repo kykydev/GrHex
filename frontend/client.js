@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     beotie.addEventListener("click",()=>{
         maCite = "beotie";
-        fill(cite.béotie,"red","prev");
+        fill(cite.beotie,"red","prev");
         fill(cite.attique,"url(#"+map.terrain[cite.attique]+"-pattern","prev");
         fill(cite.argolide,"url(#"+map.terrain[cite.argolide]+"-pattern","prev");
     });
@@ -105,16 +105,16 @@ document.addEventListener("DOMContentLoaded", function () {
     attique.addEventListener("click",()=>{
         maCite = "attique"
         fill(cite.attique,"red","prev");
-        fill(cite.béotie,"url(#"+map.terrain[cite.béotie]+"-pattern","prev");
+        fill(cite.beotie,"url(#"+map.terrain[cite.beotie]+"-pattern","prev");
         fill(cite.argolide,"url(#"+map.terrain[cite.argolide]+"-pattern","prev");
     });
 
     argolide.addEventListener("click",()=>{
         maCite = "argolide"
         fill(cite.argolide,"red","prev");
-        fill(cite.béotie,"url(#"+map.terrain[cite.béotie]+"-pattern","prev");
+        fill(cite.beotie,"url(#"+map.terrain[cite.beotie]+"-pattern","prev");
         fill(cite.attique,"url(#"+map.terrain[cite.attique]+"-pattern","prev");
-    });
+    }); 
 
    socket.on("lobbyPartie",(data)=>{
         //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
    });
 
    socket.on("erreurRejoindreLobby",()=>{
-
+    console.log("peut pas rejoindre aaa")
    });
 
     socket.on("rejoindrePartie",data=>{
@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             switch(maCite){
                 case "beotie":
-                    fill(cite.béotie,"green","prev");
+                    fill(cite.beotie,"green","prev");
                     break;
                 default:
                     fill(cite[maCite],"green","prev");
@@ -158,27 +158,31 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    socket.on("map",data=>{
-        console.log(data)
+   
 
-        créerDamier(data.height,data.width,32,"jeu","h") // damier de jeu
-        //créerDamier(data.height, data.width, 2,"mini","m") // damier de mini map
-        
-        appelsAjoutTextures("jeu");
-        actualiserDamier(data.width,data.height,data.terrain,"h")
-        //actualiserDamier(data.width,data.height,data.terrain,"m")
-        setupScroll("damier")
-        afficherUnites("epeeiste", "rouge", 343);
+socket.on("commencerPartie",data=>{
+    document.querySelector('.rejoindrePartie').innerHTML=""
+    document.querySelector('.rejoindrePartie').style.display = 'none';
+    document.querySelector('.partie').style.display = 'block';
 
-    });//---------------fin du socket
+    socket.emit("demandeDamier",idJoueur)
+})
 
-    /*pour les déconnections plus tard, ignorer pour l'instant
-    window.addEventListener("beforeunload", (event)=>{
-        if (idPartie!=undefined && idPartie!=null){
-        socket.emit("disconnect",idid)
-        }
-    });
-*/
+
+socket.on("demandeDamier",data=>{
+    console.log(data)
+    terrain = data.terrain
+    board = terrain.board
+    créerDamier(data.height,data.width,32,"jeu","h") // damier de jeu
+    
+    actualiserDamier(data.width,data.height,data.terrain,"h")
+    appelsAjoutTextures("jeu");
+    setupScroll("damierjeu")
+    ajouterUnites(data.board,"jeu")
+
+
+})
+
 
 });
 

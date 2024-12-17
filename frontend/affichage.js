@@ -122,7 +122,11 @@ function fillMini(id,couleur){
 
 function actualiserDamier(longueur, largeur, jeu,idHexa) {
     for (i = 0; i < longueur * largeur; i++) {
+        if (jeu[i]=="?"){fill(i, "gray",idHexa)
+        }
+    else{
         fill(i, "url(#"+jeu[i]+"-pattern)",idHexa)
+    }
     }
 }
 
@@ -202,11 +206,11 @@ function appelsAjoutTextures(selected){
 
 //-------------------Fonctions pour afficher les unités-----------------
 
-function afficherUnites(unite, couleur, pos) {
+function afficherUnites(unite, couleur, pos,dam) {
     let hexagone = document.getElementById("h" + pos);
     if (hexagone) {
         let bbox = hexagone.getBBox();
-        let damier = document.getElementById("jeu");
+        let damier = document.getElementById(dam);
 
         damier.innerHTML += `
             <image class="unite"
@@ -219,6 +223,13 @@ function afficherUnites(unite, couleur, pos) {
         `;
     } else {
         console.log("L'élément avec l'ID h" + pos + " n'existe pas.");
+    }
+}
+
+function ajouterUnites(board,dam){
+    for (var z of Object.keys(board)){
+        afficherUnites(board[z].name, board[z].couleur, board[z].position,dam) 
+
     }
 }
 
