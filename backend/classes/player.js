@@ -1,8 +1,12 @@
 
 const { v4: uuidv4 } = require('uuid');
+const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('../modules/backendHex');
+
 class player {
-    constructor(){
+    constructor(couleur){
         this.id = uuidv4()
+        this.units = {}
+        this.couleur=couleur
     }
 
     choseCite(citer){
@@ -10,6 +14,17 @@ class player {
     if (!cites.includes(citer)){return false}
     this.cite = citer
     }
+
+
+    addUnit(unit,position){
+        this.units[position]=unit
+    }
+
+
+
+
+
+
 
 }
 

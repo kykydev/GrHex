@@ -40,11 +40,13 @@ var parties = {}
 
 //-----------------------Fonctions de gestion des parties-----------------------------
 
-function testStartPartie(partie){
+function testStartPartie(partie,io){
 if (partie.canStart()){
     parties[partie.id]=partie
     delete lobbies[partie.id]
+    partie.init()
     io.to(partie.id).emit("commencerPartie",null)
+
 }
 }
 
@@ -69,13 +71,15 @@ io.on('connection', (socket) => {
     if (createur!=false){
     //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
       socket.join(partie.id)
+      socket.idJoueur = createur
+      socket.idPartie = partie.id
       socket.emit("lobbyPartie",{"idPartie":partie.id,"idJoueur":createur,"map":partie.map,"positionCites":partie.positionsDepart,"nom":partie.name})
     }
 
 
   })
 
-  socket.on("rejoindreLobby",data=>{
+  socket.on("rejoindreLobby",data=>{//Rejoindre un lobby depuis la liste des parties de l'écran titre
     var partie = lobbies[data]
     if (partie!=undefined && partie!=null){
       if (partie.players.length>=partie.nbJoueurs){//Send error socket
@@ -90,6 +94,8 @@ io.on('connection', (socket) => {
         else{
         //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
           socket.join(partie.id)
+          socket.idJoueur = joueur
+          socket.idPartie = partie.id
           socket.emit("lobbyPartie",{"idPartie":partie.id,"idJoueur":joueur,"map":partie.map,"positionCites":partie.positionsDepart,"nom":partie.name})
         }
         }
@@ -107,7 +113,7 @@ io.on('connection', (socket) => {
   })
    
 
-  socket.on("rejoindrePartie",data=>{
+  socket.on("rejoindrePartie",data=>{//Rejoindre la partie depuis un lobby, donc choix de cité
         var partie = lobbies[data.idPartie]
         if (partie==undefined){return}
         var player = partie.players[data.idJoueur]
@@ -125,12 +131,17 @@ io.on('connection', (socket) => {
         else{
           player.name=data.nom
           socket.emit("rejoindrePartie",true);
+          testStartPartie(partie,io)
         }
 
   })
 
 
-
+  socket.on("demandeDamier",data=>{//Socket demandant le damier qui doit s'afficher pendant la partie côté client
+    var partie = parties[socket.idPartie]
+    var retour = partie.calculVue(socket.idJoueur)
+    socket.emit("demandeDamier",retour)
+  })
 
 
 

@@ -15,6 +15,7 @@ function casesAdjacentes(pos, width, height) {
     if (col < width - 1) { // not right
         adj.push(pos + height); // right
     }
+
    
     if (col%2==0){//even col
 
@@ -33,7 +34,7 @@ function casesAdjacentes(pos, width, height) {
         if (row%2!=0){
             if (row<width-1){
                 if (col<width-1){adj.push(pos+height+1)}
-                adj.push(pos-1)
+                adj.push(pos+1)
             }
             if (row>0){
                 if (col>0){adj.push(pos+height-1)}

@@ -56,7 +56,7 @@ function addMontagne(width,height,cart){
             for (zz of gargl){
                 if (map[zz].type=="plaine"){
                     if (Math.random()<0.3){
-                    map[zz] = new carriereHexagon(pos)
+                    map[zz] = new carriereHexagon(zz)
                     }
                 }
                 }
@@ -267,6 +267,7 @@ for (z of mapBase){
     map.push(hex)
     index++
 }
+
 map = addMontagne(mapWidth,mapHeight,map)
 map = addForest(mapWidth,mapHeight,map)
 /*
