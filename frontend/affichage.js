@@ -219,6 +219,7 @@ function afficherUnites(unite, couleur, pos,dam) {
                 y="${bbox.y -15}"  
                 width="70"         
                 height="80"
+                id="`+pos+`"
             />
         `;
     } else {
@@ -226,7 +227,7 @@ function afficherUnites(unite, couleur, pos,dam) {
     }
 }
 
-function ajouterUnites(board,dam){
+function ajouterUnites(board,dam){//Prend en entrée un board comme ceux envoyés par le serveur et les affiche grâce à la fonction afficherUnites
     for (var z of Object.keys(board)){
         afficherUnites(board[z].name, board[z].couleur, board[z].position,dam) 
 

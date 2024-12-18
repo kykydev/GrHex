@@ -32,7 +32,7 @@ function casesAdjacentes(pos, width, height) {
             }
         }
         if (row%2!=0){
-            if (row<width-1){
+            if (row<height-1){
                 if (col<width-1){adj.push(pos+height+1)}
                 adj.push(pos+1)
             }
@@ -61,7 +61,7 @@ function casesAdjacentes(pos, width, height) {
                 if (col<width-1){adj.push(pos+height-1)}
                 adj.push(pos-1)
             }
-            if (row<width-1){
+            if (row<height-1){
                 if (col>0){adj.push(pos+height+1)}
                 adj.push(pos+1)
 
