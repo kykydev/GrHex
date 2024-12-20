@@ -160,28 +160,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
    
 
-socket.on("commencerPartie",data=>{
-    document.querySelector('.rejoindrePartie').innerHTML=""
-    document.querySelector('.rejoindrePartie').style.display = 'none';
-    document.querySelector('.partie').style.display = 'block';
+    socket.on("commencerPartie",data=>{
+        document.querySelector('.rejoindrePartie').innerHTML=""
+        document.querySelector('.rejoindrePartie').style.display = 'none';
+        document.querySelector('.partie').style.display = 'block';
 
-    socket.emit("demandeDamier",idJoueur)
-})
-
-
-socket.on("demandeDamier",data=>{
-    console.log(data)
-    terrain = data.terrain
-    board = terrain.board
-    créerDamier(data.height,data.width,32,"jeu","h") // damier de jeu
-    
-    actualiserDamier(data.width,data.height,data.terrain,"h")
-    appelsAjoutTextures("jeu");
-    setupScroll("damierjeu")
-    ajouterUnites(data.board,"jeu")
+        socket.emit("demandeDamier",idJoueur)
+    })
 
 
-})
+    socket.on("demandeDamier",data=>{
+        console.log(data)
+        terrain = data.terrain
+        board = terrain.board
+        créerDamier(data.height,data.width,32,"jeu","h") // damier de jeu
+        
+        actualiserDamier(data.width,data.height,data.terrain,"h")
+        appelsAjoutTextures("jeu");
+        setupScroll("damierjeu");
+        ajouterUnites(data.board,"jeu");
+
+
+    })
 
 
 });

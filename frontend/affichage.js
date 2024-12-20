@@ -1,5 +1,9 @@
 //-------------------Création d'hexagone sous forme de tableau de points----------------------------------------
-
+/**
+ * creer une liste des points des hexagones
+ * @param {Number} rayon 
+ * @returns {Array} - la liste des points 
+ */
 function creerHexagone(rayon) {
     var points = new Array();
     for (var i = 0; i < 6; i++) {
@@ -15,7 +19,7 @@ function creerHexagone(rayon) {
 
 
 /** 
- * créer un damier
+ * créer un damier dans une div donnée
  * @param {number} nbColumns - nombre de colonnes
  * @param {number} nbLines - nombre de lignes
  * @param {number} rayon - rayon des hexagones
@@ -110,7 +114,12 @@ function créerMiniMap(nbColumns, nbLines, rayon) {
 }
 
 //-------------------Coloriage d'un hexagone----------------------------------------
-
+/**
+ * actualise la texture/couleur d'un hexagone
+ * @param {String} id - id de l'hexagone (position)
+ * @param {String} couleur 
+ * @param {String} idHexa - type d'hexagone (mini, h, prev)
+ */
 function fill(id,couleur,idHexa){
     d3.select(("#"+idHexa+id)).attr("fill", couleur);
 }
@@ -119,7 +128,13 @@ function fillMini(id,couleur){
     d3.select(("#m"+id)).attr("fill", couleur);
 }
 //-------------------Fonction d'actualisation des textures du damier-----------------
-
+/**
+ * actualise les textures des hexagones
+ * @param {Number} longueur 
+ * @param {Number} largeur 
+ * @param {Array} jeu - liste des terrains  
+ * @param {String} idHexa - type d'Hexagone
+ */
 function actualiserDamier(longueur, largeur, jeu,idHexa) {
     for (i = 0; i < longueur * largeur; i++) {
         if (jeu[i]=="?"){fill(i, "gray",idHexa)
@@ -137,7 +152,12 @@ function actualiserMini(longueur, largeur, jeu) {
 }
 
 
-
+/**
+ * ajoute une texture à un hexagone 
+ * @param {String} id - id de l'hexagone
+ * @param {String} url - lien vers la texture
+ * @param {String} selected - id de la div du damier 
+ */
 function ajouterTextures(id, url,selected) {
     let defs = d3.select("#"+selected).append("defs");
 
@@ -153,7 +173,10 @@ function ajouterTextures(id, url,selected) {
         .attr("height", 1)
         .attr("preserveAspectRatio", "none");
 }
-
+/**
+ * ajoute les textures d'un damier
+ * @param {String} selected - div où les textures doivent être ajouté
+ */
 function appelsAjoutTextures(selected){
     
     var images = [
@@ -206,35 +229,63 @@ function appelsAjoutTextures(selected){
 
 //-------------------Fonctions pour afficher les unités-----------------
 
-function afficherUnites(unite, couleur, pos,dam) {
-    let hexagone = document.getElementById("h" + pos);
+
+/**
+ * affiche une unitée sur le damier
+ * @param {Object} unite - Object ayant les attributs name, couleur, position, etc
+ * @param {String} dam - id du damier sur lequel mettre l'unité 
+ */
+function afficherUnites(unite,dam) {
+    let hexagone = document.getElementById("h" + unite.position);
     if (hexagone) {
         let bbox = hexagone.getBBox();
-        let damier = document.getElementById(dam);
+        d3.select("#"+dam)
+            .append("image")
+            .attr("class","unite")
+            .attr("xlink:href",`/img/personnages/${unite.couleur}/${unite.name}.png`)
+            .attr("x",`${bbox.x -10}`)
+            .attr("y",`${bbox.y -15}`)
+            .attr("width","70")
+            .attr("height","80")
+            .attr("id","uni"+unite.position)
+            .on("mouseover",()=>statsUnite(unite));
 
-        damier.innerHTML += `
-            <image class="unite"
-                xlink:href="/img/personnages/${couleur}/${unite}.png"
-                x="${bbox.x -10}"  
-                y="${bbox.y -15}"  
-                width="70"         
-                height="80"
-                id="uni`+pos+`"
-            />
-        `;
     } else {
-        console.log("L'élément avec l'ID h" + pos + " n'existe pas.");
+        console.log("L'élément avec l'ID h" + unite.position + " n'existe pas.");
     }
 }
 
-function ajouterUnites(board,dam){//Prend en entrée un board comme ceux envoyés par le serveur et les affiche grâce à la fonction afficherUnites
-    for (var z of Object.keys(board)){
-        afficherUnites(board[z].name, board[z].couleur, board[z].position,dam) 
+/**
+ * affiche les stats d'une unité lors d'un mouseover sur la div à droite
+ * @param {Object} unite - Object ayant les attributs name, attack, hp, defense
+ */
+function statsUnite(unite){
+    let stats = d3.select("#statsUnite");
+    stats.selectAll("*").remove();
+    stats.append("div").attr("id","uniteName").text("uniteName : "+unite.name);
+    stats.append("div").attr("id","uniteAttack").text("uniteAttack : "+unite.attack);
+    stats.append("div").attr("id","uniteHp").text("uniteHp : "+unite.hp);
+    stats.append("div").attr("id","uniteDefence").text("uniteDefence : "+unite.defense);
+}
 
+/**
+ * ajoute les unités sur le damier avec la fonction afficherUnites
+ * @param {Object} board - une liste d'unité
+ * @param {String} dam - le nom de la div du damier
+ */
+function ajouterUnites(board,dam){
+    for (let position of Object.keys(board)){
+        afficherUnites(board[position],dam);
     }
 }
 
 
+
+
+/**
+ * affiche la liste des parties sur le menu principal
+ * @param {Array} data - liste de parties
+ */
 function afficherListeParties(data){
     document.getElementById("listeJoueurs").innerHTML="<tr><th>nom partie</th><th>nombre de tours</th><th>nombre de joueurs</th><th>Rejoindre</th></tr>";
 
@@ -255,7 +306,10 @@ function afficherListeParties(data){
     
 }
 
-// afficher le nom de la partie
+/**
+ * affiche le nom de la partie haut de la page
+ * @param {String} nom 
+ */
 function afficherNomPartie(nom){
     d3.select("#nomPartie").text(nom)
 
