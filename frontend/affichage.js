@@ -219,7 +219,7 @@ function afficherUnites(unite, couleur, pos,dam) {
                 y="${bbox.y -15}"  
                 width="70"         
                 height="80"
-                id="`+pos+`"
+                id="uni`+pos+`"
             />
         `;
     } else {

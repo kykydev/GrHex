@@ -7,7 +7,7 @@ const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFi
 const {createMap} = require('../modules/mapGeneration')
 const {player} = require('./player');
 const { hexagon } = require('./hexagon');
-const { hoplite,stratege} = require('./unit');
+const { hoplite,stratege,archer} = require('./unit');
 class game {
     constructor(nbJoueurs,nbTours){
         this.nbJoueurs = nbJoueurs;
@@ -62,13 +62,45 @@ class game {
     }
 
 
+    initBeotie(joueur){
+        
+        var boardBoetie = {
+            185:new stratege(185,joueur),
+            154:new archer(154,joueur),
+            332:new archer(332,joueur)
+        }
+
+        for (var position of Object.keys(boardBoetie)){
+            this.addUnit(boardBoetie[position],position,joueur)
+            this.map.infos[position] = new hexagon("plaine","plaine_1",position)
+            this.map.terrain[position]=this.map.infos[position].pattern
+            }       
+    }
+
+    initArgolide(joueur){
+
+    }
+    initAttique(joueur){
+
+    }
+
     initCites(){//Initialise les cités
         
         for (var joueur of Object.keys(this.players)){
                 var ville = this.players[joueur].cite 
                 var position = this.positionsDepart[ville]
-                this.map[position] = new hexagon("plaine","plaine_1",position)
-                this.addUnit(new stratege(position,this.players[joueur]),position,this.players[joueur])
+                switch(ville){
+                    case "beotie":
+                        this.initBeotie(this.players[joueur])
+                        break
+                    case "argolide":
+                        this.initArgolide(this.players[joueur])
+                        break
+                    case "attique":
+                        this.initAttique(this.players[joueur])
+                        break
+
+                }
             }
         }
 
