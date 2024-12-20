@@ -78,10 +78,30 @@ class game {
     }
 
     initArgolide(joueur){
+        var boardArgolide  = {
+            328:new stratege(328,joueur),
+            327:new archer(327,joueur),
+            237:new archer(237,joueur)
+        }
 
+        for (var position of Object.keys(boardArgolide)){
+            this.addUnit(boardArgolide[position],position,joueur)
+            this.map.infos[position] = new hexagon("plaine","plaine_1",position)
+            this.map.terrain[position]=this.map.infos[position].pattern
+            }    
     }
     initAttique(joueur){
+        var boardAttique  = {
+            1011:new stratege(1011,joueur),
+            1101:new archer(1101,joueur),
+            1073:new archer(1073,joueur)
+        }
 
+        for (var position of Object.keys(boardAttique)){
+            this.addUnit(boardAttique[position],position,joueur)
+            this.map.infos[position] = new hexagon("plaine","plaine_1",position)
+            this.map.terrain[position]=this.map.infos[position].pattern
+            }    
     }
 
     initCites(){//Initialise les cités
