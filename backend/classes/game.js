@@ -182,9 +182,41 @@ class game {
 
     }
         
+    couldMove(unit,destination){//Regarde si l'unité pourrait aller à destination dans l'état actuel des choses et, si oui, tente de le faire
+        if (!casesAdjacentes(unit.position,this.map.width,this.map.height).includes(destination)){return false}//Déplacement une case par une case, si la destination n'est pas adjacente on annule
+        if (!unit.canGo(this.map.terrain[destination])){return false}//Si l'unité ne peut pas se déplacer à destination, on annule
+        
+        //A faire: Check si il y a une unité appartenant au même propriétaire
+    }
+
+    move(unit,destination){//Tente de déplacer unit sur la case destination. Retourne "false" si impossible, "true" sinon. Si la destination est occupée, initie un combat
+        if (unit==undefined){return false}
+        if (destination<0 || destination>this.map.terrain.length){return false}
+        console.log(destination)
+        console.log(casesAdjacentes(unit.position,this.map.width,this.map.height))
+        if (!casesAdjacentes(unit.position,this.map.width,this.map.height).includes(destination)){return false}//Déplacement une case par une case, si la destination n'est pas adjacente on annule
+        console.log("gargl")
+        if (!unit.canGo(this.map.terrain[destination])){return false}//Si l'unité ne peut pas se déplacer à destination, on annule
+      
+        let unitOwner = this.players[unit.owner]
+        if (this.board[destination]==undefined){//Cas où la case est libre
+            unitOwner[unit.position]=undefined
+            this.board[unit.position]=undefined
+            this.board[destination] = unit
+            unit.position = destination
+            unitOwner[unit.position]=unit
+            return true
+        }
+
+        else{//Cas où la case est occupée
+            target = this.board[destination]
+            targetOwner = this.players[target.owner]
 
 
+        }
 
+
+    }
 
 
     }

@@ -11,7 +11,7 @@ const {game} = require('./classes/game')
 app.use(express.static(__dirname));
 
 const PORT = 8888;
-const IP = "localhost"
+const IP = "http://localhost"
 server.listen(PORT, () => {
   console.log(`Server is running on ${IP}:${PORT}`);
 });
