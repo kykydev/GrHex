@@ -13,6 +13,10 @@ class unit {
         this.vision=vision
     }
 
+    canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
+        if (dest=="X" || dest=="eau"){return false}
+        return true
+    }
 }
 
 
