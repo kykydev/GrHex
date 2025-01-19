@@ -6,7 +6,7 @@ const socket = io('http://localhost:8888');
  * @param {Number} rayon 
  * @returns {Array} - la liste des points 
  */
-function creerHexagone(rayon) {
+function creerHexagone(rayon) { 
     var points = new Array();
     for (var i = 0; i < 6; i++) {
         var angle = i * Math.PI / 3;
@@ -342,10 +342,12 @@ function afficherUnites(unite,dam) {
 function statsUnite(unite){
     let stats = d3.select("#statsUnite");
     stats.selectAll("*").remove();
+    stats.append("div").attr("id","position").text("unitePos : "+unite.position);
     stats.append("div").attr("id","uniteName").text("uniteName : "+unite.name);
     stats.append("div").attr("id","uniteAttack").text("uniteAttack : "+unite.attack);
     stats.append("div").attr("id","uniteHp").text("uniteHp : "+unite.hp);
     stats.append("div").attr("id","uniteDefence").text("uniteDefence : "+unite.defense);
+
 }
 
 /**

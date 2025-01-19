@@ -119,39 +119,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // mouvement
     document.getElementById('envoieMouvement').addEventListener('click', function() {
-        const mouvementInputValue = document.getElementById('mouvementInput').value;
-        const selectedDirection = document.querySelector('input[name="direction"]:checked').value;
-        console.log('Mouvement Input:', mouvementInputValue);
-        console.log('Selected Direction:', selectedDirection);
-        
+        let départ = document.getElementById('mouvementInput1').value;
+        let arrivée = document.getElementById('mouvementInput2').value;
 
-        let mouvement=0;
-        switch(selectedDirection){
-            case "droite":
-                mouvement+=30;
-                break;
-            case "gauche":
-                mouvement-=30;
-                break;
-            case "hautDroite":
-                mouvement+=29;
-                break;
-            case "hautGauche":
-                mouvement-=1;
-                break;
-            
-            case "basDroite":
-                mouvement+=31;
-                break;
-
-            case "basGauche":
-                mouvement+=1;
-                break;
-
-        }
-
-        socket.emit("mouvement",{anciennePosition:mouvementInputValue,nouvellePosition:mouvementInputValue+mouvement});
-
+        socket.emit("mouvement",{départ:départ,arrivée:arrivée});
 
 
     });
