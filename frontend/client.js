@@ -1,5 +1,4 @@
 
-const socket = io('http://localhost:8888');
 
 
 //-------------------Fonction qui déplace vue damier selon la position de la souris-----------------
@@ -116,6 +115,47 @@ document.addEventListener("DOMContentLoaded", function () {
         fill(cite.attique,"url(#"+map.terrain[cite.attique]+"-pattern","prev");
     }); 
 
+
+
+    // mouvement
+    document.getElementById('envoieMouvement').addEventListener('click', function() {
+        const mouvementInputValue = document.getElementById('mouvementInput').value;
+        const selectedDirection = document.querySelector('input[name="direction"]:checked').value;
+        console.log('Mouvement Input:', mouvementInputValue);
+        console.log('Selected Direction:', selectedDirection);
+        
+
+        let mouvement=0;
+        switch(selectedDirection){
+            case "droite":
+                mouvement+=30;
+                break;
+            case "gauche":
+                mouvement-=30;
+                break;
+            case "hautDroite":
+                mouvement+=29;
+                break;
+            case "hautGauche":
+                mouvement-=1;
+                break;
+            
+            case "basDroite":
+                mouvement+=31;
+                break;
+
+            case "basGauche":
+                mouvement+=1;
+                break;
+
+        }
+
+        socket.emit("mouvement",{anciennePosition:mouvementInputValue,nouvellePosition:mouvementInputValue+mouvement});
+
+
+
+    });
+
    socket.on("lobbyPartie",(data)=>{
         //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
 
@@ -170,7 +210,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     socket.on("demandeDamier",data=>{
-        console.log(data)
         terrain = data.terrain
         board = terrain.board
         créerDamier(data.height,data.width,32,"jeu","h") // damier de jeu

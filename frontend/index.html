@@ -110,6 +110,43 @@
             <div id="statsUnite">
             </div>
 
+            <div id="mouvement">
+
+                <input type="number" id="mouvementInput" placeholder="place de l'unite" min="0"/>
+
+                <fieldset class = "deplacement">
+                    <div class="mouvementRadio">
+                        <input type="radio" name="direction" id="droite"   value="droite"/>
+                        <label for="droite" > Droite</label>
+                    </div>
+                    <div class="mouvementRadio">
+                        <input type="radio" name="direction" id="gauche" value="gauche"/>
+                        <label for="gauche">Gauche</label>
+                    </div>
+                    <div class="mouvementRadio">
+                        <input type="radio" name="direction" id="hautDroite" value="hautDroite"/>
+                        <label for="hautDroite">Haut Droite</label>
+                    </div>
+                    <div class="mouvementRadio">
+                        <input type="radio" name="direction" id="hautGauche" value="hautGauche"/>
+                        <label for="hautGauche">Haut Gauche</label>
+                    </div>
+                    <div class="mouvementRadio">
+                        <input type="radio" name="direction" id="basDroite" value="basDroite"/>
+                        <label for="basDroite">Bas Droite</label>
+                    </div>
+                    <div class="mouvementRadio">
+                        <input type="radio" name="direction" id="basGauche" value="basGauche"/>
+                        <label for="basGauche">Bas Gauche</label>
+                    </div>
+
+
+
+                </fieldset>
+                <button id="envoieMouvement">Valider déplacement</button>
+                
+            </div>
+
             <div class="bouton1">
                 <button>
                     Fin de tour
