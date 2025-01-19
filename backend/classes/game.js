@@ -182,7 +182,7 @@ class game {
 
     }
         
-    couldMove(unit,destination){//Regarde si l'unité pourrait aller à destination dans l'état actuel des choses et, si oui, tente de le faire
+    couldMove(unit,destination){//Regarde si l'unité pourrait aller à destination dans l'état actuel des choses 
         if (!casesAdjacentes(unit.position,this.map.width,this.map.height).includes(destination)){return false}//Déplacement une case par une case, si la destination n'est pas adjacente on annule
         if (!unit.canGo(this.map.terrain[destination])){return false}//Si l'unité ne peut pas se déplacer à destination, on annule
         if (this.board[destination]!=undefined){
@@ -193,6 +193,11 @@ class game {
         return true
         }
 
+        moveCost(unit,destination){//Calcule le coût de mouvement d'une unité d'un point A à un point B
+        }
+
+
+
     move(unit,destination){//Tente de déplacer unit sur la case destination. Retourne "false" si impossible, "true" sinon. Si la destination est occupée, initie un combat
         if (unit==undefined){return false}
         if (destination<0 || destination>this.map.terrain.length){return false}
@@ -202,11 +207,11 @@ class game {
       
         let unitOwner = this.players[unit.owner]
         if (this.board[destination]==undefined){//Cas où la case est libre
-            unitOwner[unit.position]=undefined
-            this.board[unit.position]=undefined
+            delete unitOwner.units[unit.position]
+            delete this.board[unit.position]
             this.board[destination] = unit
             unit.position = destination
-            unitOwner[unit.position]=unit
+            unitOwner.units[unit.position]=unit
             return true
         }
 
@@ -222,7 +227,7 @@ class game {
 
 
 
-
+    
 
     combat(unit1,unit2){//Fait se battre l'unité 1 avec l'unité 2. Renvoie false s'il n'y a pas de mort, 1 ou 2 pour dire qui est mort si un seul et 3 si les deux unités sont mortes
         

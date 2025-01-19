@@ -144,6 +144,17 @@ io.on('connection', (socket) => {
   })
 
 
+
+  socket.on("mouvement",data=>{
+    var partie = parties[socket.idPartie]
+    var idJoueur = socket.idJoueur
+    let départ = parseInt(data.départ)
+    let arrivée = parseInt(data.arrivée)
+    partie.move(partie.players[idJoueur].units[départ],arrivée)
+
+    socket.emit("demandeDamier", partie.calculVue(socket.idJoueur))
+
+  })
    
 
 

@@ -7,6 +7,7 @@ class unit {
        this.defense=defense
        this.initiative=initiative
        this.movement=movement
+       this.movementLeft = this.movement
        this.name=name
         this.position=position
         this.owner=player.id
@@ -17,6 +18,7 @@ class unit {
         if (dest=="X" || dest=="eau"){return false}
         return true
     }
+    
 }
 
 
