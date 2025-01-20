@@ -62,6 +62,7 @@ function créerDamier(nbColumns, nbLines, rayon,idDamier,idHexa) {
                 .attr("stroke", "transparent")
                 .attr("shape-rendering", "crispEdges")
                 .attr("id", idHexa + (l * nbColumns + c))
+                .attr("class","hexagones    ")
 
                 .on("mouseover", function() {
                     d3.select(this)
@@ -239,97 +240,19 @@ function appelsAjoutTextures(selected){
  */
 function afficherUnites(unite,dam) {
     let hexagone = document.getElementById("h" + unite.position);
-
-    console.log(unite.position)
-
-    let anciennepostion = unite.position;
     if (hexagone) {
         let bbox = hexagone.getBBox();
-
-        
-
-        let xdebut = 0;
-        let ydebut = 0;
-
-
-        let xfin = 0;
-        let yfin = 0;
-        let mousedrag = false
 
 
         d3.select("#"+dam)
             .append("image")
             .attr("class","unite")
-            .attr("xlink:href",`/img/personnages/${unite.couleur}/${unite.name}.png`)
+            .attr("xlink:href",`/img/personnages/${unite.couleur}/${unite.name.toLowerCase()}.png`)
             .attr("x",`${bbox.x -10}`)
             .attr("y",`${bbox.y -15}`)
             .attr("width","70")
             .attr("height","80")
             .attr("id","uni"+unite.position)
-            
-
-        d3.select("#uni"+unite.position)
-            .on("mouseover",function(event){
-                statsUnite(unite)
-
-                // mise à jour de la distance parcouru par la souris
-                if(mousedrag){
-                    console.log("slaut")
-                    xfin = event.x-xdebut;
-                    yfin = event.y -ydebut;
-                }
-            })
-            .on("mousedown",function(event){
-
-                // position initial de la souris quand tu commences le drag
-                mousedrag = true;
-                console.log(event);
-                
-                xdebut = event.x;
-                ydebut = event.y;
-
-            })
-            .on("mouseup",function(event){
-                console.log("x:"+xfin)
-                console.log("y:"+yfin)
-
-                mousedrag = false
-
-
-                // si la distance parcouru sur x est > à y alors je décalle l'unite à droite ou à gauche
-                if(xfin> yfin){
-                    if (xfin>0)
-                        unite.position = unite.position+30
-                    else
-                        unite.position = unite.position-30
-
-
-                }else if(xfin< yfin){ // sinon
-                    if(yfin>0){
-                        // en fonction du x je déplace sur la diagonale droite ou gauche
-                        // bas
-                        if(xfin>0)
-                            unite.position = unite.position+31
-                        else
-                            unite.position = unite.position-1
-                    }else{
-                        // haut
-                        if(xfin>0)
-                            unite.position = unite.position-31
-                        else
-                            unite.position = unite.position+1
-                    }
-                }
-                
-                d3.select("#uni"+anciennepostion).remove();
-                afficherUnites(unite,dam);
-                socket("unitedeplacer",{avant:anciennepostion,apres:unite.position});
-                
-                
-            });
-
-
-
     } else {
         console.log("L'élément avec l'ID h" + unite.position + " n'existe pas.");
     }
