@@ -81,7 +81,10 @@ class game {
         var boardArgolide  = {
             328:new stratege(328,joueur),
             327:new archer(327,joueur),
-            237:new archer(237,joueur)
+            327:new archer(327,joueur),
+            237:new archer(237,joueur),
+
+            304:new archer(304,joueur)
         }
 
         for (var position of Object.keys(boardArgolide)){
@@ -89,6 +92,7 @@ class game {
             this.map.infos[position] = new hexagon("plaine","plaine_1",position)
             this.map.terrain[position]=this.map.infos[position].pattern
             }    
+            joueur.units[304].hp=20
     }
     initAttique(joueur){
         var boardAttique  = {
@@ -230,7 +234,19 @@ class game {
             targetOwner = this.players[target.owner]
 
             res = this.combat(unit,target)
-
+            if (res==2){
+                delete unitOwner.units[unit.position]
+                delete this.board[unit.position]
+                this.board[destination] = unit
+                unit.position = destination
+                unitOwner.units[unit.position]=unit
+                unit.movementLeft-=this.moveCost(unit,destination)
+                return true
+            }
+            else{
+                 unit.movementLeft-=this.moveCost(unit,destination)
+                 return true
+            }
         }
 
 
@@ -249,6 +265,53 @@ class game {
 
     combat(unit1,unit2){//Fait se battre l'unité 1 avec l'unité 2. Renvoie false s'il n'y a pas de mort, 1 ou 2 pour dire qui est mort si un seul et 3 si les deux unités sont mortes
 
+        if (unit1.initiative > unit2.initiative){//L'unité 1 attaque avant
+            let damage =  unit2.hp - (unit1.attack-unit2.defense)
+            if (damage<0) {damage=0}
+                if (damage>=unit2.hp){//Cas où l'unité 1 a tué
+                    this.kill(unit2)
+                    return 2
+                }
+                else{//Cas où l'unité 1 n'a pas tué
+                    unit2.hp = unit2.hp-damage
+                    let damage = unit1.hp  - (unit2.attack-unit1.defense)
+                    if (damage<0) {damage=0}
+                    if (damage>=unit1.hp){//Cas où l'unité 1 a tué
+                        this.kill(unit1)
+                        return 1
+                    }
+                    else{//Cas où personne n'est mort
+                        unit1.hp = unit1.hp-damage
+                        return false
+
+                    }
+                    
+                }
+        }
+        else{//Cas où l'unité 2 attaque avant
+            let damage =  unit1.hp - (unit2.attack-unit1.defense)
+            if (damage<0) {damage=0}
+                if (damage>=unit1.hp){//Cas où l'unité 2 a tué
+                    this.kill(unit1)
+                    return 1
+                }
+                else{//Cas où l'unité 2 n'a pas tué
+                    unit1.hp = unit1.hp-damage
+                    let damage = unit2.hp  - (unit1.attack-unit2.defense)
+                    if (damage<0) {damage=0}
+                    if (damage>=unit2.hp){//Cas où l'unité 1 a tué
+                        this.kill(unit2)
+                        return 2
+                    }
+                    else{//Cas où personne n'est mort
+                        unit2.hp = unit1.hp-damage
+                        return false
+
+                    }
+                    
+                }
+
+        }
 
     }
 

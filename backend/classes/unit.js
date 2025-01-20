@@ -1,6 +1,7 @@
 
 class unit {
     constructor(hp,attack,defense,initiative,movement,name,position,player,vision, range){
+        this.maxhp = this.hp
        this.hp=hp
        this.couleur=player.couleur
        this.attack=attack
