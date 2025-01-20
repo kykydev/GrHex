@@ -188,14 +188,17 @@ class game {
         if (this.board[destination]!=undefined){
             if (this.board[destination].owner==unit.owner){return false}
         }
-
+        if (unit.movementLeft<this.moveCost(unit,destination)){return false}
 
         return true
         }
 
         moveCost(unit,destination){//Calcule le coût de mouvement d'une unité d'un point A à un point B
-        if (this.couldMove(unit,destination)==false){return false}
-        
+        let desthex = this.map.terrain[destination]
+        if (desthex=="montagne" || desthex=="deepwater"){
+            return 2
+        }
+        return 1
 
 
         }
@@ -208,7 +211,9 @@ class game {
         if (this.board[destination]!=undefined){ if (this.board[destination].owner==unit.owner){return false} }
         if (!casesAdjacentes(unit.position,this.map.width,this.map.height).includes(destination)){return false}//Déplacement une case par une case, si la destination n'est pas adjacente on annule
         if (!unit.canGo(this.map.terrain[destination])){return false}//Si l'unité ne peut pas se déplacer à destination, on annule
-      
+        if (!this.couldMove(unit,destination)){return false}//Si l'unité ne peut pas se déplacer à destination, on annule
+
+
         let unitOwner = this.players[unit.owner]
         if (this.board[destination]==undefined){//Cas où la case est libre
             delete unitOwner.units[unit.position]
@@ -216,6 +221,7 @@ class game {
             this.board[destination] = unit
             unit.position = destination
             unitOwner.units[unit.position]=unit
+            unit.movementLeft-=this.moveCost(unit,destination)
             return true
         }
 
@@ -223,18 +229,26 @@ class game {
             target = this.board[destination]
             targetOwner = this.players[target.owner]
 
+            res = this.combat(unit,target)
 
         }
+
 
 
     }
 
 
+    kill(unit){
+        if (unit==undefined){return false}
+        delete board[unit.position]
+        delete this.players[unit.owner].units[unit.position]
+        return true
+    }
 
     
 
     combat(unit1,unit2){//Fait se battre l'unité 1 avec l'unité 2. Renvoie false s'il n'y a pas de mort, 1 ou 2 pour dire qui est mort si un seul et 3 si les deux unités sont mortes
-        
+
 
     }
 

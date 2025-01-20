@@ -7,7 +7,7 @@ class unit {
        this.defense=defense
        this.initiative=initiative
        this.movement=movement
-       this.movementLeft = this.movement
+       this.movementLeft = this.movement    
        this.name=name
         this.position=position
         this.owner=player.id
@@ -24,7 +24,7 @@ class unit {
 
 class hoplite extends unit{
     constructor(position,player){
-        super(100,15,5,2,3,"Hoplite",position,player,0,1)
+        super(100,15,5,2,2,"Hoplite",position,player,0,1)
     }
 }
 
@@ -35,7 +35,7 @@ class stratege extends unit{
 }
 class archer extends unit{
     constructor(position,player){
-        super(70,10,0,4,3,"Archer",position,player,0,2)
+        super(70,10,0,4,1,"Archer",position,player,0,2)
     }
 }
 

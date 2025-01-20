@@ -343,6 +343,7 @@ function statsUnite(unite){
     let stats = d3.select("#statsUnite");
     stats.selectAll("*").remove();
     stats.append("div").attr("id","position").text("unitePos : "+unite.position);
+    stats.append("div").attr("id","mov").text("movement : "+unite.movementLeft+"/"+unite.movement);
     stats.append("div").attr("id","uniteName").text("uniteName : "+unite.name);
     stats.append("div").attr("id","uniteAttack").text("uniteAttack : "+unite.attack);
     stats.append("div").attr("id","uniteHp").text("uniteHp : "+unite.hp);
