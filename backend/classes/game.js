@@ -43,7 +43,7 @@ class game {
     canStart(){
         if (this.currentPlayers()<this.nbJoueurs){return false}
         var cites = ["argolide","beotie","attique"]
-        for (zz of Object.keys(this.players)){
+        for (let zz of Object.keys(this.players)){
             var z = this.players[zz]
             if (z.cite==undefined || z.cite=="none" || !cites.includes(z.cite) ){return false}            
         }
