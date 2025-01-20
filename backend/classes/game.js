@@ -194,6 +194,10 @@ class game {
         }
 
         moveCost(unit,destination){//Calcule le coût de mouvement d'une unité d'un point A à un point B
+        if (this.couldMove(unit,destination)==false){return false}
+        
+
+
         }
 
 
