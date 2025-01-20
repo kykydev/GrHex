@@ -1,5 +1,7 @@
 
-
+String.prototype.supprimerPrefixId = function(prefix){
+    return this.startsWith(prefix) ? this.slice(prefix.length) : this.toString();
+}   
 
 //-------------------Fonction qui déplace vue damier selon la position de la souris-----------------
 
@@ -127,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+
    socket.on("lobbyPartie",(data)=>{
         //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
 
@@ -189,6 +192,76 @@ document.addEventListener("DOMContentLoaded", function () {
         appelsAjoutTextures("jeu");
         setupScroll("damierjeu");
         ajouterUnites(data.board,"jeu");
+
+        // mouvement
+        let unites = document.getElementsByClassName("unite");
+        let hexagones = document.getElementsByClassName("hexagones");
+
+        let uniteSelectionnee="";
+        let hexagoneSelectionnee="";
+
+        
+
+        Array.from(hexagones).forEach(element => {
+            element.addEventListener("mouseover", (event) => {
+                d3.select("#uniteTemp").remove();
+
+                if(uniteSelectionnee ){
+                    hexagoneSelectionnee = event.target.id.supprimerPrefixId("h");
+                    
+                    let bbox = element.getBBox();
+
+                    d3.select("#jeu")
+                        .append("image")
+                        .attr("id","uniteTemp")
+                        .attr("xlink:href",d3.select("#uni"+uniteSelectionnee).attr("href"))
+                        .attr("x",`${bbox.x -10}`)
+                        .attr("y",`${bbox.y -15}`)
+                        .attr("width","70")
+                        .attr("height","80")
+                        .style("opacity",0.4)
+
+                    
+                    document.getElementById("uniteTemp").addEventListener("mouseup",()=>{
+                        if(uniteSelectionnee && hexagoneSelectionnee){
+                            socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+                        }
+                    });
+
+
+                }
+            });
+
+            element.addEventListener("mouseup",(event)=>{
+                if(uniteSelectionnee && hexagoneSelectionnee){
+                    socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+                }
+            });
+        });
+
+
+        Array.from(unites).forEach(element=>{
+            element.addEventListener("mouseover",(event)=>{
+                hexagoneSelectionnee="";
+                d3.select("#uniteTemp").remove();
+            });
+            element.addEventListener("mousedown",(event)=>{
+                uniteSelectionnee=event.target.id.supprimerPrefixId("uni");
+            });
+            element.addEventListener("mouseup",(event)=>{
+                uniteSelectionnee="";
+                hexagoneSelectionnee="";
+                d3.select("#uniteTemp").remove();
+
+            })
+            
+            element.addEventListener("mouseleave",(event)=>{
+
+            });
+
+        });
+
+        
 
 
     })

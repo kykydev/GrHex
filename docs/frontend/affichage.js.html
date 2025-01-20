@@ -1,14 +1,45 @@
-const socket = io('http://localhost:8888');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: affichage.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: affichage.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module affichage
+ * @author clement  joigneault
+ */
 
 //-------------------Création d'hexagone sous forme de tableau de points----------------------------------------
 /**
- * creer une liste des points des hexagones
- * @param {Number} rayon 
+ * creer une liste des points pour un hexagone
+ * @param {Number} rayon - rayon de l'hexagone
  * @returns {Array} - la liste des points 
  */
-function creerHexagone(rayon) { 
+function creerHexagone(rayon) {
     var points = new Array();
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i &lt; 6; i++) {
         var angle = i * Math.PI / 3;
         var x = Math.sin(angle) * rayon + 40;
         var y = -Math.cos(angle) * rayon + 40;
@@ -33,12 +64,12 @@ function créerDamier(nbColumns, nbLines, rayon,idDamier,idHexa) {
     document.getElementById(idDamier).innerHTML = "";
     Hexagone = creerHexagone(rayon);
 
-    for (var l = 0; l < nbLines; l++) {
-        for (var c = 0; c < nbColumns; c++) {
+    for (var l = 0; l &lt; nbLines; l++) {
+        for (var c = 0; c &lt; nbColumns; c++) {
             var d = "";
             var x, y;
 
-            for (var i = 0; i < 6; i++) {
+            for (var i = 0; i &lt; 6; i++) {
                 h = Hexagone[i];
                 x = h[0] + (Hexagone[1][0] - Hexagone[0][0]) * l * 2;
                 if (c % 2 == 1) {
@@ -62,7 +93,6 @@ function créerDamier(nbColumns, nbLines, rayon,idDamier,idHexa) {
                 .attr("stroke", "transparent")
                 .attr("shape-rendering", "crispEdges")
                 .attr("id", idHexa + (l * nbColumns + c))
-                .attr("class","hexagones    ")
 
                 .on("mouseover", function() {
                     d3.select(this)
@@ -83,12 +113,12 @@ function créerMiniMap(nbColumns, nbLines, rayon) {
     document.getElementById("mini").innerHTML = "";
     Hexagone = creerHexagone(rayon);
 
-    for (var l = 0; l < nbLines; l++) {
-        for (var c = 0; c < nbColumns; c++) {
+    for (var l = 0; l &lt; nbLines; l++) {
+        for (var c = 0; c &lt; nbColumns; c++) {
             var d = "";
             var x, y;
 
-            for (var i = 0; i < 6; i++) {
+            for (var i = 0; i &lt; 6; i++) {
                 h = Hexagone[i];
                 x = h[0] + (Hexagone[1][0] - Hexagone[0][0]) * l * 2;
                 if (c % 2 == 1) {
@@ -139,7 +169,7 @@ function fillMini(id,couleur){
  * @param {String} idHexa - type d'Hexagone
  */
 function actualiserDamier(longueur, largeur, jeu,idHexa) {
-    for (i = 0; i < longueur * largeur; i++) {
+    for (i = 0; i &lt; longueur * largeur; i++) {
         if (jeu[i]=="?"){fill(i, "gray",idHexa)
         }
     else{
@@ -149,7 +179,7 @@ function actualiserDamier(longueur, largeur, jeu,idHexa) {
 }
 
 function actualiserMini(longueur, largeur, jeu) {
-    for (i = 0; i < longueur * largeur; i++) {
+    for (i = 0; i &lt; longueur * largeur; i++) {
         fillMini(i, "url(#"+jeu[i]+"-pattern)")
     }
 }
@@ -242,17 +272,17 @@ function afficherUnites(unite,dam) {
     let hexagone = document.getElementById("h" + unite.position);
     if (hexagone) {
         let bbox = hexagone.getBBox();
-
-
         d3.select("#"+dam)
             .append("image")
             .attr("class","unite")
-            .attr("xlink:href",`/img/personnages/${unite.couleur}/${unite.name.toLowerCase()}.png`)
+            .attr("xlink:href",`/img/personnages/${unite.couleur}/${unite.name}.png`)
             .attr("x",`${bbox.x -10}`)
             .attr("y",`${bbox.y -15}`)
             .attr("width","70")
             .attr("height","80")
             .attr("id","uni"+unite.position)
+            .on("mouseover",()=>statsUnite(unite));
+
     } else {
         console.log("L'élément avec l'ID h" + unite.position + " n'existe pas.");
     }
@@ -265,12 +295,10 @@ function afficherUnites(unite,dam) {
 function statsUnite(unite){
     let stats = d3.select("#statsUnite");
     stats.selectAll("*").remove();
-    stats.append("div").attr("id","position").text("unitePos : "+unite.position);
     stats.append("div").attr("id","uniteName").text("uniteName : "+unite.name);
     stats.append("div").attr("id","uniteAttack").text("uniteAttack : "+unite.attack);
     stats.append("div").attr("id","uniteHp").text("uniteHp : "+unite.hp);
     stats.append("div").attr("id","uniteDefence").text("uniteDefence : "+unite.defense);
-
 }
 
 /**
@@ -292,7 +320,7 @@ function ajouterUnites(board,dam){
  * @param {Array} data - liste de parties
  */
 function afficherListeParties(data){
-    document.getElementById("listeJoueurs").innerHTML="<tr><th>nom partie</th><th>nombre de tours</th><th>nombre de joueurs</th><th>Rejoindre</th></tr>";
+    document.getElementById("listeJoueurs").innerHTML="&lt;tr>&lt;th>nom partie&lt;/th>&lt;th>nombre de tours&lt;/th>&lt;th>nombre de joueurs&lt;/th>&lt;th>Rejoindre&lt;/th>&lt;/tr>";
 
     for(partie of data){
         d3.select("#listeJoueurs").append("tr").attr("id","tr"+partie.idPartie).append("td").text(partie.nom);
@@ -318,4 +346,26 @@ function afficherListeParties(data){
 function afficherNomPartie(nom){
     d3.select("#nomPartie").text(nom)
 
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-affichage.html">affichage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Fri Dec 20 2024 21:19:52 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
