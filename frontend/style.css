@@ -39,12 +39,16 @@ button {
 }
 
 #jeu{
-    width: 2800px;
-    height: 1630px;
+    width: 2230px;
+    height: 1440px;
+    margin-top: -24px;
+    margin-left: -40px;
 }
 #jeuprev{
-    width: 2800px;
-    height: 1630px;
+    width: 2230px;
+    height: 1440px;
+    margin-top: -24px;
+    margin-left: -40px;
 }
 
 .mini-map{
