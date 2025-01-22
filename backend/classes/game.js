@@ -7,6 +7,10 @@ const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFi
 const {createMap} = require('../modules/mapGeneration')
 const {player} = require('./player');
 const { hexagon } = require('./hexagon');
+const {createMap} = require('../modules/mapGeneration')
+const { turnAction,moveAction,newUnitAction,buildAction} = require('./turnAction')
+
+
 const { hoplite,stratege,archer} = require('./unit');
 class game {
     constructor(nbJoueurs,nbTours){
@@ -316,11 +320,25 @@ class game {
 
     }
 
-
-
+    canTour(){//Check si tous les joueurs ont passé leur tour
+        for (z of Object.keys(this.players)){
+            if ((this.players[z]).played==false){return false}
+            }
+            return true
+    }
     tour(){//Fait se jouer un tour avec une liste d'actions
-
         //------------Itère au travers des unités pour générer les actions du tour--------------
+        for (uni of this.board){
+            if (uni.destination==uni.position){uni.destination=undefined}
+            if (uni.destination != undefined){
+                this.actions.push(new moveAction(uni.position,this.players[uni.owner]))
+            }
+
+
+
+
+
+        }
 
         //trie les actions par priorité
 

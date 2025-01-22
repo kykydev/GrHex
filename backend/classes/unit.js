@@ -14,6 +14,8 @@ class unit {
         this.position=position
         this.owner=player.id
         this.vision=vision
+        this.destination = undefined
+        this.path = []
     }
 
     canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
@@ -41,5 +43,10 @@ class archer extends unit{
         this.range=2
     }
 }
+class stratege extends unit{
+    constructor(position,player){
+        super(30,0,15,0,4,"Messager",position,player,4,1)
+    }
+}
 
-module.exports = { hoplite,stratege,archer };
+module.exports = { hoplite,stratege,archer,messager };

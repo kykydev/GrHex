@@ -5,6 +5,8 @@ String.prototype.supprimerPrefixId = function(prefix){
 
 //-------------------Fonction qui déplace vue damier selon la position de la souris-----------------
 
+
+
 function setupScroll(id){
     var x ;
     var y ;
@@ -40,6 +42,7 @@ function setupScroll(id){
 //------------------------------MAIN---------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", function () {
+
     
 
 
@@ -278,6 +281,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-
+    document.getElementById("fintour").addEventListener("click",()=>{
+        socket.emit("finTour");
+    })
 });
 

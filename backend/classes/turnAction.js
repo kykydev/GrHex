@@ -9,20 +9,27 @@ constructor(type,priorité,joueur){
 }
 
 class moveAction{
-constructor(start,dest,joueur){
+constructor(pos,joueur){
     super("movement",(100+joueur.units[start]),joueur)
-    this.start=start
-    this.dest=dest
+    this.pos = pos
 }
 }
 
 
 class newUnitAction{
     constructor(caserne,joueur){
-        super("newUnit",1,joueur)
+        super("newUnit",10,joueur)
         this.origin = caserne
     }
     }
+
+class buildAction{
+        constructor(zone,building,joueur){
+            super("newBuilding",5,joueur)
+            this.origin = zone
+            this.building = building
+        }
+        }
 
 
 
