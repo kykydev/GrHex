@@ -317,6 +317,13 @@ class game {
 
 
 
+    tour(){//Fait se jouer un tour avec une liste d'actions
+    //----------------Phase 1: création d'unités/autres actions joueur--------------------
+    //----------------Phase 2: Déplacement des unités dans l'ordre--------------------
+
+
+
+    }
 
 
 

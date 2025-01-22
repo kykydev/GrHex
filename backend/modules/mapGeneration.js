@@ -38,7 +38,7 @@ function addMontagne(width,height,cart){
         if (!replacing.includes(added)){
             replacing.push(added)
             soldeExtension-=1
-        }
+            }
         }
         
        for (z of replacing){
