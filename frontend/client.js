@@ -145,20 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fill(cite.beotie, "url(#" + map.terrain[cite.beotie] + "-pattern", "prev");
         fill(cite.attique, "url(#" + map.terrain[cite.attique] + "-pattern", "prev");
     });
-
-
-
-    // mouvement
-    document.getElementById('envoieMouvement').addEventListener('click', function () {
-        let départ = document.getElementById('mouvementInput1').value;
-        let arrivée = document.getElementById('mouvementInput2').value;
-
-        socket.emit("mouvement", { départ: départ, arrivée: arrivée });
-
-
-    });
-
-
+    
     socket.on("lobbyPartie", (data) => {
         //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
 
