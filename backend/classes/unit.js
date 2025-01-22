@@ -6,6 +6,7 @@ class unit {
        this.couleur=player.couleur
        this.attack=attack
        this.defense=defense
+       this.range=1
        this.initiative=initiative
        this.movement=movement
        this.movementLeft = this.movement    
@@ -37,6 +38,7 @@ class stratege extends unit{
 class archer extends unit{
     constructor(position,player){
         super(70,10,0,4,1,"Archer",position,player,0,2)
+        this.range=2
     }
 }
 
