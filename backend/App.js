@@ -163,12 +163,17 @@ io.on('connection', (socket) => {
    
     if (partie==undefined || idJoueur==undefined){return}
     if (partie.players[idJoueur].played==true){return}//Le joueur a déjà passé son tour
+    partie.players[idJoueur].played=true
     if (partie.canTour()){
-      
+      partie.tour()
 
+
+      
+      io.to(partie.id).emit("finTour",true)
     }
     else{//Le tour n'est pas fini, renvoi de l'info au client pour qu'il affiche correctement
       socket.emit("finTour",false)
+      return
     }
 
 

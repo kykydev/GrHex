@@ -218,6 +218,12 @@ document.addEventListener("DOMContentLoaded", function () {
         socket.emit("demandeDamier", idJoueur)
     })
 
+    //----------------Pour test, faudra faire ça mieux plus tard-------------------
+    socket.on("finTour",data=>{
+        if (data){socket.emit("demandeDamier", idJoueur)
+        }
+    })
+        //-----------------------------------------------------------------------
 
     socket.on("demandeDamier", data => {
         terrain = data.terrain

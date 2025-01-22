@@ -8,12 +8,13 @@ const {createMap} = require('../modules/mapGeneration')
 const {player} = require('./player');
 const { hexagon } = require('./hexagon');
 const { turnAction,moveAction,newUnitAction,buildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne } = require('./unit')
 
 class game {
     constructor(nbJoueurs,nbTours){
         this.nbJoueurs = nbJoueurs;
         this.nbTours = nbTours;
+        this.tourCourant=0
         this.id = uuidv4()
         this.players = {}
         this.actions = []
@@ -69,7 +70,8 @@ class game {
         var boardBoetie = {
             185:new stratege(185,joueur),
             154:new archer(154,joueur),
-            332:new archer(332,joueur)
+            332:new archer(332,joueur),
+            333:new paysanne(333,joueur)
         }
 
         for (var position of Object.keys(boardBoetie)){
@@ -85,6 +87,7 @@ class game {
             327:new archer(327,joueur),
             327:new archer(327,joueur),
             237:new archer(237,joueur),
+            207:new paysanne(207,joueur),
 
             155:new archer(155,joueur)
         }
@@ -100,7 +103,8 @@ class game {
         var boardAttique  = {
             1011:new stratege(1011,joueur),
             1101:new archer(1101,joueur),
-            1073:new archer(1073,joueur)
+            1073:new archer(1073,joueur),
+            1071:new paysanne(1071,joueur)
         }
 
         for (var position of Object.keys(boardAttique)){
@@ -320,16 +324,16 @@ class game {
 
     canTour(){//Check si tous les joueurs ont passé leur tour
         for (z of Object.keys(this.players)){
-            if ((this.players[z]).played==false){return false}
+            if ((this.players[z]).played==false && this.players[z].eliminated==false){return false}
             }
             return true
     }
     tour(){//Fait se jouer un tour avec une liste d'actions
         //------------Itère au travers des unités pour générer les actions du tour--------------
-        for (uni of this.board){
-            if (uni.destination==uni.position){uni.destination=undefined}
-            if (uni.destination != undefined){
-                this.actions.push(new moveAction(uni.position,this.players[uni.owner]))
+        for (let uni of Object.keys(this.board)){
+            if (this.board[uni].destination==this.board[uni].position){this.board[uni].destination=undefined}
+            if (this.board[uni].destination != undefined){
+                this.actions.push(new moveAction(this.board[uni].position,this.players[this.board[uni].owner]))
             }
 
 
