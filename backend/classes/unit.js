@@ -43,9 +43,9 @@ class archer extends unit{
         this.range=2
     }
 }
-class stratege extends unit{
+class messager extends unit{
     constructor(position,player){
-        super(30,0,15,0,4,"Messager",position,player,4,1)
+        super(30,0,15,0,4,"Messager",position,player,1,1)
     }
 }
 

@@ -5,22 +5,8 @@ String.prototype.supprimerPrefixId = function (prefix) {
 
 //-------------------Fonction qui déplace vue damier selon la position de la souris-----------------
 
-<<<<<<< HEAD
-
-
-function setupScroll(id){
-    var x ;
-    var y ;
-    document.addEventListener("mousemove",(event)=>{
-        x = event.clientX
-        y = event.clientY
-    })
-
-    
-=======
 function setupBoutonScroll(id) {
     let scrollAmount = 15;
->>>>>>> 96a89d9c99db5f07c385237818730e6d5924829d
     const plateaujeu = document.getElementById(id);
 
     let btnGaucheEnfonce = false;
@@ -84,10 +70,6 @@ function setupBoutonScroll(id) {
 
 document.addEventListener("DOMContentLoaded", function () {
 
-<<<<<<< HEAD
-    
-=======
->>>>>>> 96a89d9c99db5f07c385237818730e6d5924829d
 
 
     // attributs global
@@ -320,12 +302,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-
+        document.getElementById("fintour").addEventListener("click",()=>{
+            socket.emit("finTour");
+        })
 
     });
 
-    document.getElementById("fintour").addEventListener("click",()=>{
-        socket.emit("finTour");
-    })
+
 });
 

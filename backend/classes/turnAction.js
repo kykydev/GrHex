@@ -8,7 +8,7 @@ constructor(type,priorité,joueur){
 }
 }
 
-class moveAction{
+class moveAction extends turnAction{
 constructor(pos,joueur){
     super("movement",(100+joueur.units[start]),joueur)
     this.pos = pos
@@ -16,14 +16,14 @@ constructor(pos,joueur){
 }
 
 
-class newUnitAction{
+class newUnitAction extends turnAction{
     constructor(caserne,joueur){
         super("newUnit",10,joueur)
         this.origin = caserne
     }
     }
 
-class buildAction{
+class buildAction extends turnAction{
         constructor(zone,building,joueur){
             super("newBuilding",5,joueur)
             this.origin = zone

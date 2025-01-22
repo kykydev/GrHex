@@ -7,11 +7,9 @@ const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFi
 const {createMap} = require('../modules/mapGeneration')
 const {player} = require('./player');
 const { hexagon } = require('./hexagon');
-const {createMap} = require('../modules/mapGeneration')
 const { turnAction,moveAction,newUnitAction,buildAction} = require('./turnAction')
+const { hoplite,stratege,archer,messager } = require('./unit')
 
-
-const { hoplite,stratege,archer} = require('./unit');
 class game {
     constructor(nbJoueurs,nbTours){
         this.nbJoueurs = nbJoueurs;
