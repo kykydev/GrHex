@@ -129,6 +129,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+    document.getElementById("finTour").addEventListener("onclick",()=>{
+        socket.emit("finTour");
+    })
+
+    socket.on("finTour",data=>{
+        // true si tout le monde à fini false sino
+    });
+
 
    socket.on("lobbyPartie",(data)=>{
         //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
@@ -232,9 +240,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            element.addEventListener("mouseup",(event)=>{
+            element.addEventListener("click",(event)=>{
+                hexagoneSelectionnee = event.target.id.supprimerPrefixId("h");
                 if(uniteSelectionnee && hexagoneSelectionnee){
                     socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+                    uniteSelectionnee="";
+                    hexagoneSelectionnee="";
                 }
             });
         });
@@ -242,40 +253,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
         Array.from(unites).forEach(element=>{
             element.addEventListener("mouseover",(event)=>{
-                hexagoneSelectionnee="";
-                // d3.select("#uniteTemp").remove();
+                d3.select("#uniteTemp").remove();
 
                 if(uniteSelectionnee!=event.target.id.supprimerPrefixId("uni") && !event.target.id.startsWith("uniteTemp")){
                     hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
                 }
 
-                
+             
             });
-            element.addEventListener("mousedown",(event)=>{
-                uniteSelectionnee=event.target.id.supprimerPrefixId("uni");
-            });
-            element.addEventListener("mouseup",(event)=>{
-                
-                if(uniteSelectionnee!=hexagoneSelectionnee && uniteSelectionnee && hexagoneSelectionnee){
+            element.addEventListener("click",(event)=>{
+                console.log("salut");
+
+                if(uniteSelectionnee){
+                    hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
                     socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
                     console.log("combat");
-                }else{
+                }else if(uniteSelectionnee==event.target.id.supprimerPrefixId("uni")){
                     uniteSelectionnee="";
-                    hexagoneSelectionnee="";
+                }else{
+                    uniteSelectionnee=event.target.id.supprimerPrefixId("uni");
+                    
                 }
-                d3.select("#uniteTemp").remove();
-
-            })
-            
-            element.addEventListener("mouseleave",(event)=>{
 
             });
-
         });
-
-        
-
-
     });
 
 
