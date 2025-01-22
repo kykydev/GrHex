@@ -49,4 +49,11 @@ class messager extends unit{
     }
 }
 
-module.exports = { hoplite,stratege,archer,messager };
+class paysanne extends unit{
+    constructor(position,player){
+        super(40,0,0,0,1,"Paysanne",position,player,0,0)
+    }
+}
+
+
+module.exports = { hoplite,stratege,archer,messager,paysanne };

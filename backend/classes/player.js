@@ -8,6 +8,7 @@ class player {
         this.units = {}
         this.couleur=couleur
         this.played = false
+        this.eliminated=false
     }
 
     choseCite(citer){
