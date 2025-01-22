@@ -1,10 +1,11 @@
 
-String.prototype.supprimerPrefixId = function(prefix){
+String.prototype.supprimerPrefixId = function (prefix) {
     return this.startsWith(prefix) ? this.slice(prefix.length) : this.toString();
-}   
+}
 
 //-------------------Fonction qui déplace vue damier selon la position de la souris-----------------
 
+<<<<<<< HEAD
 
 
 function setupScroll(id){
@@ -16,26 +17,66 @@ function setupScroll(id){
     })
 
     
+=======
+function setupBoutonScroll(id) {
+    let scrollAmount = 15;
+>>>>>>> 96a89d9c99db5f07c385237818730e6d5924829d
     const plateaujeu = document.getElementById(id);
-    function scroll() {
-        let threshold = 150;
-        let scrollAmount = 15;
-        const rect = plateaujeu.getBoundingClientRect();
-            if(x >= rect.right - threshold && x<rect.right){ 
-                d3.select("#"+id).property("scrollLeft", d3.select("#"+id).property("scrollLeft") +scrollAmount);
-            }else if(x <= rect.left + threshold && x>rect.left){
-                d3.select("#"+id).property("scrollLeft", d3.select("#"+id).property("scrollLeft") -scrollAmount);
-            }
 
-            if(y <= rect.top + threshold && y>rect.top){
-                d3.select("#"+id).property("scrollTop", d3.select("#"+id).property("scrollTop") -scrollAmount);
-            }else  if(y >= rect.bottom - threshold  && y<rect.bottom){
-                d3.select("#"+id).property("scrollTop", d3.select("#"+id).property("scrollTop") +scrollAmount);
-            }
+    let btnGaucheEnfonce = false;
+    document.getElementById("btngauche").addEventListener("mousedown", function () {
+        btnGaucheEnfonce = true;
+        scrollEnfonce();
+    });
+    document.getElementById("btngauche").addEventListener("mouseup", function () {
+        btnGaucheEnfonce = false;
+    });
 
+    let btnDroitEnfonce = false;
+    document.getElementById("btndroite").addEventListener("mousedown", function () {
+        btnDroitEnfonce = true;
+        scrollEnfonce();
+    });
+    document.getElementById("btndroite").addEventListener("mouseup", function () {
+        btnDroitEnfonce = false;
+    });
 
-    }   
-    return setInterval(scroll, 30);
+    let btnHautEnfonce = false;
+    document.getElementById("btnhaut").addEventListener("mousedown", function () {
+        btnHautEnfonce = true;
+        scrollEnfonce();
+    });
+    document.getElementById("btnhaut").addEventListener("mouseup", function () {
+        btnHautEnfonce = false;
+    });
+
+    let btnBasEnfonce = false;
+    document.getElementById("btnbas").addEventListener("mousedown", function () {
+        btnBasEnfonce = true;
+        scrollEnfonce();
+    });
+    document.getElementById("btnbas").addEventListener("mouseup", function () {
+        btnBasEnfonce = false;
+    });
+
+    function scrollEnfonce() {
+        if (btnHautEnfonce) {
+            d3.select("#" + id).property("scrollTop", d3.select("#" + id).property("scrollTop") - scrollAmount);
+            setTimeout(scrollEnfonce, 50);
+        }
+        if (btnBasEnfonce) {
+            d3.select("#" + id).property("scrollTop", d3.select("#" + id).property("scrollTop") + scrollAmount);
+            setTimeout(scrollEnfonce, 50);
+        }
+        if (btnGaucheEnfonce) {
+            d3.select("#" + id).property("scrollLeft", d3.select("#" + id).property("scrollLeft") - scrollAmount);
+            setTimeout(scrollEnfonce, 50);
+        }
+        if (btnDroitEnfonce) {
+            d3.select("#" + id).property("scrollLeft", d3.select("#" + id).property("scrollLeft") + scrollAmount);
+            setTimeout(scrollEnfonce, 50);
+        }
+    }
 }
 
 
@@ -43,7 +84,10 @@ function setupScroll(id){
 
 document.addEventListener("DOMContentLoaded", function () {
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> 96a89d9c99db5f07c385237818730e6d5924829d
 
 
     // attributs global
@@ -63,29 +107,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const pseudoInput = document.getElementById("usernameInput")
 
-    socket.emit("getListeParties","")
-    socket.on("getListeParties",data=>{
+    socket.emit("getListeParties", "")
+    socket.on("getListeParties", data => {
         afficherListeParties(data);
 
     });
 
-    function  refreshGame(){
+    function refreshGame() {
         console.log("je rafraichi")
-        if (idPartie==undefined){
-            socket.emit("getListeParties","")
-           setTimeout(refreshGame, 1000);;
+        if (idPartie == undefined) {
+            socket.emit("getListeParties", "")
+            setTimeout(refreshGame, 1000);;
         }
 
     }
     refreshGame();
 
-    
+
 
     // créer une partie
-    document.getElementById("creerPartie").addEventListener("click",()=>{
+    document.getElementById("creerPartie").addEventListener("click", () => {
         const nbJoueurs = document.getElementById("nbJoueurs");
         const nbTours = document.getElementById("nbTours");
-        socket.emit("creerPartie",{"nbJoueurs":parseInt(nbJoueurs.value),"nbTours":parseInt(nbTours.value)});
+        socket.emit("creerPartie", { "nbJoueurs": parseInt(nbJoueurs.value), "nbTours": parseInt(nbTours.value) });
 
         document.querySelector('.accueil').style.display = 'none';
         document.querySelector('.rejoindrePartie').style.display = 'block';
@@ -93,141 +137,140 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // rejoindre le lobby
-    document.getElementById("rejoindrePartie").addEventListener("click",()=>{
+    document.getElementById("rejoindrePartie").addEventListener("click", () => {
         pseudo = pseudoInput.value;
-        socket.emit("rejoindrePartie",{"idPartie":idPartie,"idJoueur":idJoueur,"maCite":maCite,nom:pseudoInput.value});
+        socket.emit("rejoindrePartie", { "idPartie": idPartie, "idJoueur": idJoueur, "maCite": maCite, nom: pseudoInput.value });
     });
-    
-    
-    beotie.addEventListener("click",()=>{
+
+
+    beotie.addEventListener("click", () => {
         maCite = "beotie";
-        fill(cite.beotie,"red","prev");
-        fill(cite.attique,"url(#"+map.terrain[cite.attique]+"-pattern","prev");
-        fill(cite.argolide,"url(#"+map.terrain[cite.argolide]+"-pattern","prev");
+        fill(cite.beotie, "red", "prev");
+        fill(cite.attique, "url(#" + map.terrain[cite.attique] + "-pattern", "prev");
+        fill(cite.argolide, "url(#" + map.terrain[cite.argolide] + "-pattern", "prev");
     });
 
-    attique.addEventListener("click",()=>{
+    attique.addEventListener("click", () => {
         maCite = "attique"
-        fill(cite.attique,"red","prev");
-        fill(cite.beotie,"url(#"+map.terrain[cite.beotie]+"-pattern","prev");
-        fill(cite.argolide,"url(#"+map.terrain[cite.argolide]+"-pattern","prev");
+        fill(cite.attique, "red", "prev");
+        fill(cite.beotie, "url(#" + map.terrain[cite.beotie] + "-pattern", "prev");
+        fill(cite.argolide, "url(#" + map.terrain[cite.argolide] + "-pattern", "prev");
     });
 
-    argolide.addEventListener("click",()=>{
+    argolide.addEventListener("click", () => {
         maCite = "argolide"
-        fill(cite.argolide,"red","prev");
-        fill(cite.beotie,"url(#"+map.terrain[cite.beotie]+"-pattern","prev");
-        fill(cite.attique,"url(#"+map.terrain[cite.attique]+"-pattern","prev");
-    }); 
+        fill(cite.argolide, "red", "prev");
+        fill(cite.beotie, "url(#" + map.terrain[cite.beotie] + "-pattern", "prev");
+        fill(cite.attique, "url(#" + map.terrain[cite.attique] + "-pattern", "prev");
+    });
 
 
 
     // mouvement
-    document.getElementById('envoieMouvement').addEventListener('click', function() {
+    document.getElementById('envoieMouvement').addEventListener('click', function () {
         let départ = document.getElementById('mouvementInput1').value;
         let arrivée = document.getElementById('mouvementInput2').value;
 
-        socket.emit("mouvement",{départ:départ,arrivée:arrivée});
+        socket.emit("mouvement", { départ: départ, arrivée: arrivée });
 
 
     });
 
 
-   socket.on("lobbyPartie",(data)=>{
+    socket.on("lobbyPartie", (data) => {
         //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
 
-        
+
         document.querySelector('.accueil').style.display = 'none';
         document.querySelector('.rejoindrePartie').style.display = 'block';
 
-    
-        créerDamier(data.map.height,data.map.width,32,"jeuprev","prev");
+
+        créerDamier(data.map.height, data.map.width, 32, "jeuprev", "prev");
         appelsAjoutTextures("jeuprev")
-        actualiserDamier(data.map.width,data.map.height,data.map.terrain,"prev");
+        actualiserDamier(data.map.width, data.map.height, data.map.terrain, "prev");
 
         cite = data.positionCites;
         map = data.map;
-        idPartie= data.idPartie;
+        idPartie = data.idPartie;
         nomPartie = data.nom
         idJoueur = data.idJoueur;
 
-
-        setupScroll("damierPrev");
+        setupBoutonScroll("damierPrev");
         afficherNomPartie(nomPartie);
-   });
+    });
 
-   socket.on("erreurRejoindreLobby",()=>{
-    console.log("peut pas rejoindre aaa")
-   });
+    socket.on("erreurRejoindreLobby", () => {
+        console.log("peut pas rejoindre aaa")
+    });
 
-    socket.on("rejoindrePartie",data=>{
-        if (data){
-            document.getElementById("droiteAll").innerHTML="";
-            d3.select("#droiteAll").append("div").text("Connecté en tant que "+pseudo);
+    socket.on("rejoindrePartie", data => {
+        if (data) {
+            document.getElementById("droiteAll").innerHTML = "";
+            d3.select("#droiteAll").append("div").text("Connecté en tant que " + pseudo);
 
-            switch(maCite){
+            switch (maCite) {
                 case "beotie":
-                    fill(cite.beotie,"green","prev");
+                    fill(cite.beotie, "green", "prev");
                     break;
                 default:
-                    fill(cite[maCite],"green","prev");
+                    fill(cite[maCite], "green", "prev");
             }
         }
     });
 
-   
 
-    socket.on("commencerPartie",data=>{
-        document.querySelector('.rejoindrePartie').innerHTML=""
+
+    socket.on("commencerPartie", data => {
+        document.querySelector('.rejoindrePartie').innerHTML = ""
         document.querySelector('.rejoindrePartie').style.display = 'none';
         document.querySelector('.partie').style.display = 'block';
 
-        socket.emit("demandeDamier",idJoueur)
+        socket.emit("demandeDamier", idJoueur)
     })
 
 
-    socket.on("demandeDamier",data=>{
+    socket.on("demandeDamier", data => {
         terrain = data.terrain
         board = terrain.board
-        créerDamier(data.height,data.width,32,"jeu","h") // damier de jeu
-        
-        actualiserDamier(data.width,data.height,data.terrain,"h")
+        créerDamier(data.height, data.width, 32, "jeu", "h") // damier de jeu
+
+        actualiserDamier(data.width, data.height, data.terrain, "h")
         appelsAjoutTextures("jeu");
-        setupScroll("damierjeu");
-        ajouterUnites(data.board,"jeu");
+        setupBoutonScroll("damierjeu");
+        ajouterUnites(data.board, "jeu");
 
         // mouvement
         let unites = document.getElementsByClassName("unite");
         let hexagones = document.getElementsByClassName("hexagones");
 
-        let uniteSelectionnee="";
-        let hexagoneSelectionnee="";
+        let uniteSelectionnee = "";
+        let hexagoneSelectionnee = "";
 
-        
+
 
         Array.from(hexagones).forEach(element => {
             element.addEventListener("mouseover", (event) => {
                 d3.select("#uniteTemp").remove();
 
-                if(uniteSelectionnee ){
+                if (uniteSelectionnee) {
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("h");
-                    
+
                     let bbox = element.getBBox();
 
                     d3.select("#jeu")
                         .append("image")
-                        .attr("id","uniteTemp")
-                        .attr("xlink:href",d3.select("#uni"+uniteSelectionnee).attr("href"))
-                        .attr("x",`${bbox.x -10}`)
-                        .attr("y",`${bbox.y -15}`)
-                        .attr("width","70")
-                        .attr("height","80")
-                        .style("opacity",0.4)
+                        .attr("id", "uniteTemp")
+                        .attr("xlink:href", d3.select("#uni" + uniteSelectionnee).attr("href"))
+                        .attr("x", `${bbox.x - 10}`)
+                        .attr("y", `${bbox.y - 15}`)
+                        .attr("width", "70")
+                        .attr("height", "80")
+                        .style("opacity", 0.4)
 
-                    
-                    document.getElementById("uniteTemp").addEventListener("mouseup",()=>{
-                        if(uniteSelectionnee && hexagoneSelectionnee){
-                            socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+
+                    document.getElementById("uniteTemp").addEventListener("mouseup", () => {
+                        if (uniteSelectionnee && hexagoneSelectionnee) {
+                            socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
                         }
                     });
 
@@ -235,48 +278,48 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            element.addEventListener("mouseup",(event)=>{
-                if(uniteSelectionnee && hexagoneSelectionnee){
-                    socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+            element.addEventListener("mouseup", (event) => {
+                if (uniteSelectionnee && hexagoneSelectionnee) {
+                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
                 }
             });
         });
 
 
-        Array.from(unites).forEach(element=>{
-            element.addEventListener("mouseover",(event)=>{
-                hexagoneSelectionnee="";
+        Array.from(unites).forEach(element => {
+            element.addEventListener("mouseover", (event) => {
+                hexagoneSelectionnee = "";
                 // d3.select("#uniteTemp").remove();
 
-                if(uniteSelectionnee!=event.target.id.supprimerPrefixId("uni") && !event.target.id.startsWith("uniteTemp")){
-                    hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
+                if (uniteSelectionnee != event.target.id.supprimerPrefixId("uni") && !event.target.id.startsWith("uniteTemp")) {
+                    hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                 }
 
-                
+
             });
-            element.addEventListener("mousedown",(event)=>{
-                uniteSelectionnee=event.target.id.supprimerPrefixId("uni");
+            element.addEventListener("mousedown", (event) => {
+                uniteSelectionnee = event.target.id.supprimerPrefixId("uni");
             });
-            element.addEventListener("mouseup",(event)=>{
-                
-                if(uniteSelectionnee!=hexagoneSelectionnee && uniteSelectionnee && hexagoneSelectionnee){
-                    socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+            element.addEventListener("mouseup", (event) => {
+
+                if (uniteSelectionnee != hexagoneSelectionnee && uniteSelectionnee && hexagoneSelectionnee) {
+                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
                     console.log("combat");
-                }else{
-                    uniteSelectionnee="";
-                    hexagoneSelectionnee="";
+                } else {
+                    uniteSelectionnee = "";
+                    hexagoneSelectionnee = "";
                 }
                 d3.select("#uniteTemp").remove();
 
             })
-            
-            element.addEventListener("mouseleave",(event)=>{
+
+            element.addEventListener("mouseleave", (event) => {
 
             });
 
         });
 
-        
+
 
 
     });
