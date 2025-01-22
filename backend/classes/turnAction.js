@@ -10,7 +10,7 @@ constructor(type,priorité,joueur){
 
 class moveAction extends turnAction{
 constructor(pos,joueur){
-    super("movement",(100+joueur.units[start]),joueur)
+    super("movement",(120-joueur.units[pos].initiative),joueur)
     this.pos = pos
 }
 }

@@ -1,8 +1,8 @@
 
 class unit {
     constructor(hp,attack,defense,initiative,movement,name,position,player,vision, range){
+        this.hp=hp
         this.maxhp = this.hp
-       this.hp=hp
        this.couleur=player.couleur
        this.attack=attack
        this.defense=defense
@@ -15,7 +15,7 @@ class unit {
         this.owner=player.id
         this.vision=vision
         this.destination = undefined
-        this.path = []
+        this.path = undefined
     }
 
     canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
@@ -34,12 +34,12 @@ class hoplite extends unit{
 
 class stratege extends unit{
     constructor(position,player){
-        super(800,40,15,0,3,"Stratege",position,player,4,1)
+        super(800,40,15,0,2,"Stratege",position,player,4,1)
     }
 }
 class archer extends unit{
     constructor(position,player){
-        super(70,10,0,4,1,"Archer",position,player,0,2)
+        super(70,10,0,4,2,"Archer",position,player,0,2)
         this.range=2
     }
 }
@@ -51,7 +51,7 @@ class messager extends unit{
 
 class paysanne extends unit{
     constructor(position,player){
-        super(40,0,0,0,1,"Paysanne",position,player,0,0)
+        super(40,0,0,0,2,"Paysanne",position,player,0,0)
     }
 }
 

@@ -251,7 +251,7 @@ class game {
             }
             else{
                  unit.movementLeft-=this.moveCost(unit,destination)
-                 return true
+                 return false
             }
         }
 
@@ -331,23 +331,79 @@ class game {
     tour(){//Fait se jouer un tour avec une liste d'actions
         //------------Itère au travers des unités pour générer les actions du tour--------------
         for (let uni of Object.keys(this.board)){
+            this.board[uni].movementLeft = this.board[uni].movement
             if (this.board[uni].destination==this.board[uni].position){this.board[uni].destination=undefined}
             if (this.board[uni].destination != undefined){
+                if (this.board[uni].path!=undefined && this.board[uni].path.length==0){this.board[uni].path=undefined}
+
                 this.actions.push(new moveAction(this.board[uni].position,this.players[this.board[uni].owner]))
             }
 
-
-
-
-
         }
+            
+            for (var act of this.actions){
+                switch (act.type) {
+                    case "movement":
+                        let uni = this.board[act.pos]
+                        this.moveTurn(uni)
+                        
+                        break;
+                
+                    default:
+                        break;
+                }
+            }
+            
+            
 
         //trie les actions par priorité
 
         //Fait les actions dans l'ordre
 
+
+        //Reset les mouvements et tours
+
+        for (z of Object.keys(this.players)){
+            this.players[z].played=false
+        }
+        for (let uni of Object.keys(this.board)){
+            this.board[uni].movementLeft=this.board[uni].movement
+            if (this.board[uni].path==[]){this.board[uni].path=undefined}
+        }
+
     }
 
+
+    moveTurn(uni){//Fait jouer le tour de l'unité (la déplace case par case vers sa destination. Si le pathfind n'a pas été fait, le fait aussi)
+        if (uni==undefined){return}
+        
+        if (uni.destination!=undefined && uni.destination!=uni.position && uni.path==undefined){//Calcul de la route voulue
+            var rules = []
+            for (var z in this.map.terrain){
+                let zz = this.map.terrain[z]
+                if (zz=="eau" || (this.board[z]!=undefined && this.board[z].owner==uni.owner)){rules.push("X")}
+                else if (zz=="montagne"){rules.push(1)}
+                    else{rules.push(0)}
+                }
+                
+                let route = pathFind(uni.position,uni.destination,this.map.height,this.map.width,rules)
+                uni.path = route
+                if (uni.path==undefined || uni.path==false){return}
+                uni.path.shift()
+            
+        }
+        let moved = true
+        while (uni!=undefined && uni.movementLeft>0 && moved!=false){
+            if (uni.path==undefined || uni.path==false){return}
+
+            moved = this.move(uni,uni.path[0])
+            if (moved!=false){uni.path.shift()}
+        }
+
+        if (uni.path.length==0){uni.path=undefined}
+
+
+    }
 
 
 

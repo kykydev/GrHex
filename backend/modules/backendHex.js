@@ -127,20 +127,20 @@ function pathFind(pos1, pos2, height, width, rules) {
         closed.add(pos);
 
         for (const neighbor of casesAdjacentes(pos, width, height)) {
-            if (closed.has(neighbor) || rules[neighbor] !== "O") {
-                continue; // Skip visited or blocked nodes
+            if (closed.has(neighbor) || rules[neighbor] == "X") {
+                continue; 
             }
 
-            const tentativeG = g + 1;
+            const tentativeG = g + 1 + rules[neighbor];
             const h = distance(neighbor, pos2, height);
             const f = tentativeG + h;
 
             const existing = open.find(n => n.pos === neighbor);
             if (existing && tentativeG >= existing.g) {
-                continue; // Skip if we already have a better path
+                continue;
             }
 
-            cameFrom[neighbor] = pos; // Track the path
+            cameFrom[neighbor] = pos; 
             open.insert({ pos: neighbor, g: tentativeG, h, f });
         }
     }

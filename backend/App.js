@@ -150,10 +150,7 @@ io.on('connection', (socket) => {
     var idJoueur = socket.idJoueur
     let départ = parseInt(data.départ)
     let arrivée = parseInt(data.arrivée)
-    if (partie==undefined || idJoueur==undefined || départ==undefined || arrivée==undefined){return}
-    partie.move(partie.players[idJoueur].units[départ],arrivée)
-
-    socket.emit("demandeDamier", partie.calculVue(socket.idJoueur))
+    partie.board[départ].destination = arrivée
 
   })
    

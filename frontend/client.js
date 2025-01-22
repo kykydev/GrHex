@@ -149,21 +149,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // mouvement
-    document.getElementById('envoieMouvement').addEventListener('click', function() {
-        let départ = document.getElementById('mouvementInput1').value;
-        let arrivée = document.getElementById('mouvementInput2').value;
+   
 
-        socket.emit("mouvement",{départ:départ,arrivée:arrivée});
-
-
-    });
-
-    document.getElementById("finTour").addEventListener("onclick",()=>{
+    document.getElementById("finTour").addEventListener("click",()=>{
         socket.emit("finTour");
     })
 
     socket.on("finTour",data=>{
         // true si tout le monde à fini false sino
+        console.log("tour passe")
+        socket.emit("demandeDamier", idJoueur)
+
+
     });
 
 
