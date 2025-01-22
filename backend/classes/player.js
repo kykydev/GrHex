@@ -7,6 +7,7 @@ class player {
         this.id = uuidv4()
         this.units = {}
         this.couleur=couleur
+        this.played = false
     }
 
     choseCite(citer){

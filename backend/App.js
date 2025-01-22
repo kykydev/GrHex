@@ -7,7 +7,7 @@ const io = new require("socket.io")(server);
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
 const {createMap} = require('./modules/mapGeneration')
 const {game} = require('./classes/game')
-
+const { turnAction,moveAction,newUnitAction,buildAction} = require('./classes/turnAction')
 app.use(express.static(__dirname));
 
 const PORT = 8888;
@@ -150,13 +150,30 @@ io.on('connection', (socket) => {
     var idJoueur = socket.idJoueur
     let départ = parseInt(data.départ)
     let arrivée = parseInt(data.arrivée)
+    if (partie==undefined || idJoueur==undefined || départ==undefined || arrivée==undefined){return}
     partie.move(partie.players[idJoueur].units[départ],arrivée)
 
     socket.emit("demandeDamier", partie.calculVue(socket.idJoueur))
 
   })
    
+  socket.on("finTour",data=>{
+    var partie = parties[socket.idPartie]
+    var idJoueur = socket.idJoueur
+   
+    if (partie==undefined || idJoueur==undefined){return}
+    if (partie.players[idJoueur].played==true){return}//Le joueur a déjà passé son tour
+    if (partie.canTour()){
+      
 
+    }
+    else{//Le tour n'est pas fini, renvoi de l'info au client pour qu'il affiche correctement
+      socket.emit("finTour",false)
+    }
+
+
+
+  })
 
 
 });
