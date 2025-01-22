@@ -253,6 +253,7 @@ function afficherUnites(unite,dam) {
             .attr("width","70")
             .attr("height","80")
             .attr("id","uni"+unite.position)
+            .on("mouseover",()=>statsUnite(unite));
     } else {
         console.log("L'élément avec l'ID h" + unite.position + " n'existe pas.");
     }

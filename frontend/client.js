@@ -243,14 +243,26 @@ document.addEventListener("DOMContentLoaded", function () {
         Array.from(unites).forEach(element=>{
             element.addEventListener("mouseover",(event)=>{
                 hexagoneSelectionnee="";
-                d3.select("#uniteTemp").remove();
+                // d3.select("#uniteTemp").remove();
+
+                if(uniteSelectionnee!=event.target.id.supprimerPrefixId("uni") && !event.target.id.startsWith("uniteTemp")){
+                    hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
+                }
+
+                
             });
             element.addEventListener("mousedown",(event)=>{
                 uniteSelectionnee=event.target.id.supprimerPrefixId("uni");
             });
             element.addEventListener("mouseup",(event)=>{
-                uniteSelectionnee="";
-                hexagoneSelectionnee="";
+                
+                if(uniteSelectionnee!=hexagoneSelectionnee && uniteSelectionnee && hexagoneSelectionnee){
+                    socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+                    console.log("combat");
+                }else{
+                    uniteSelectionnee="";
+                    hexagoneSelectionnee="";
+                }
                 d3.select("#uniteTemp").remove();
 
             })
@@ -264,7 +276,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
 
 
-    })
+    });
 
 
 });
