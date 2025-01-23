@@ -299,9 +299,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         .style("opacity", 0.4)
 
 
-                    document.getElementById("uniteTemp").addEventListener("mouseup", () => {
-                        if (uniteSelectionnee && hexagoneSelectionnee) {
+                    document.getElementById("uniteTemp").addEventListener("click", () => {
+                        if (uniteSelectionnee ) {
+                            console.log("mouvement",uniteSelectionnee,hexagoneSelectionnee);
                             socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+                            uniteSelectionnee = "";
+                            hexagoneSelectionnee = "";
+                            
+
                         }
                     });
 
@@ -311,6 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             element.addEventListener("click",(event)=>{
                 hexagoneSelectionnee = event.target.id.supprimerPrefixId("h");
+            
                 if(uniteSelectionnee && hexagoneSelectionnee){
                     socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
                     uniteSelectionnee="";
@@ -336,6 +342,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 if(uniteSelectionnee){
                     hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
                     socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+                    uniteSelectionnee="";
+                    hexagoneSelectionnee="";
+
                     console.log("combat");
                 }else if(uniteSelectionnee==event.target.id.supprimerPrefixId("uni")){
                     uniteSelectionnee="";
