@@ -3,7 +3,7 @@ String.prototype.supprimerPrefixId = function (prefix) {
     return this.startsWith(prefix) ? this.slice(prefix.length) : this.toString();
 }
 
-//-------------------Fonction qui déplace vue damier selon la position de la souris-----------------
+//-------------------Fonction qui déplace vue damier selon boutons/touches-----------------
 
 function setupBoutonScroll(id) {
     let scrollAmount = 15;
@@ -48,21 +48,59 @@ function setupBoutonScroll(id) {
     function scrollEnfonce() {
         if (btnHautEnfonce) {
             d3.select("#" + id).property("scrollTop", d3.select("#" + id).property("scrollTop") - scrollAmount);
-            setTimeout(scrollEnfonce, 50);
+            setTimeout(scrollEnfonce, 15);
         }
         if (btnBasEnfonce) {
             d3.select("#" + id).property("scrollTop", d3.select("#" + id).property("scrollTop") + scrollAmount);
-            setTimeout(scrollEnfonce, 50);
+            setTimeout(scrollEnfonce, 15);
         }
         if (btnGaucheEnfonce) {
             d3.select("#" + id).property("scrollLeft", d3.select("#" + id).property("scrollLeft") - scrollAmount);
-            setTimeout(scrollEnfonce, 50);
+            setTimeout(scrollEnfonce, 15);
         }
         if (btnDroitEnfonce) {
             d3.select("#" + id).property("scrollLeft", d3.select("#" + id).property("scrollLeft") + scrollAmount);
-            setTimeout(scrollEnfonce, 50);
+            setTimeout(scrollEnfonce, 15);
         }
     }
+
+    document.addEventListener("keydown", function (e) {
+        switch (e.key) {
+            case "z":
+                btnHautEnfonce = true;
+                scrollEnfonce();
+                break;
+            case "s":
+                btnBasEnfonce = true;
+                scrollEnfonce();
+                break;
+            case "q":
+                btnGaucheEnfonce = true;
+                scrollEnfonce();
+                break;
+            case "d":
+                btnDroitEnfonce = true;
+                scrollEnfonce();
+                break;
+        }
+    });
+
+    document.addEventListener("keyup", function (e) {
+        switch (e.key) {
+            case "z":
+                btnHautEnfonce = false;
+                break;
+            case "s":
+                btnBasEnfonce = false;
+                break;
+            case "q":
+                btnGaucheEnfonce = false;
+                break;
+            case "d":
+                btnDroitEnfonce = false;
+                break;
+        }
+    });
 }
 
 

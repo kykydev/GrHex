@@ -7,7 +7,7 @@ body {
 
 /*----------Boutons----------*/
 
-button {
+.buttonretro {
     font-family: inherit;
     border: none;
     outline: 1px dotted rgb(37, 37, 37);
@@ -18,45 +18,46 @@ button {
     text-transform: uppercase;
     letter-spacing: 2px;
     padding: 5px 30px;
-    
-    }
 
-    button:active {
+}
+
+.buttonretro:active {
     box-shadow: inset -1px -1px #fff, inset 1px 1px #292929, inset -2px -2px #ffffff, inset 2px 2px rgb(158, 158, 158);
-    }
+}
 
 
 /*----------Damier/Plateau/Mini----------*/
 
-.damier{
+.damier {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 80%;
     height: 95%;
-    overflow:scroll;
+    overflow: scroll;
     z-index: 0;
 }
 
-#jeu{
-    width: 2230px;
-    height: 1440px;
-    margin-top: -24px;
-    margin-left: -40px;
-}
-#jeuprev{
+#jeu {
     width: 2230px;
     height: 1440px;
     margin-top: -24px;
     margin-left: -40px;
 }
 
-.mini-map{
+#jeuprev {
+    width: 2230px;
+    height: 1440px;
+    margin-top: -24px;
+    margin-left: -40px;
+}
+
+.mini-map {
     width: 100%;
     height: 35%;
 }
 
-#mini{
+#mini {
     margin-left: 20px;
     width: 80%;
     height: 50%;
@@ -78,7 +79,7 @@ button {
     z-index: 2;
 }
 
-.bouton1{
+.bouton1 {
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -97,7 +98,7 @@ button {
 .haut {
     position: fixed;
     display: flex;
-    flex-direction:row;
+    flex-direction: row;
     /* align-items:baseline; */
     justify-content: space-between;
     left: 0;
@@ -109,14 +110,14 @@ button {
     z-index: 1;
 }
 
-#nomPartie{
+#nomPartie {
     font-size: xx-large;
 }
 
 /*----------Page d'accueil + vues----------*/
 
 .accueil {
-    background-color: #9f9f9f; 
+    background-color: #9f9f9f;
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -126,44 +127,44 @@ button {
     width: 100vw;
     margin: 0;
     padding: 0;
-    font-family: 'Courier New', monospace; 
-    color: #000000; 
+    font-family: 'Courier New', monospace;
+    color: #000000;
 }
 
-.partie{
+.partie {
     background-color: #adb5bd;
-    width:100vw;
-    height:100vh;
-    display:none
+    width: 100vw;
+    height: 100vh;
+    display: none
 }
 
-.rejoindrePartie{
+.rejoindrePartie {
     background-color: #adb5bd;
-    width:100vw;
-    height:100vh;
-    display:none
+    width: 100vw;
+    height: 100vh;
+    display: none
 }
 
 
 
 #titreP2 {
     font-size: 6vh;
-    color: #000000; 
+    color: #000000;
     text-align: center;
     margin-bottom: 3vh;
     text-shadow: 1px 1px 2px #000;
 }
 
-#titreP2-2{
+#titreP2-2 {
     font-size: 3.5vh;
-    color: #000000; 
-    text-align:center;
+    color: #000000;
+    text-align: center;
     text-shadow: 1px 1px 2px #000;
 }
 
 
 #form2 {
-    background-color: #767474; 
+    background-color: #767474;
     border: solid #444 3px;
     padding: 20px;
     display: flex;
@@ -178,7 +179,7 @@ button {
 }
 
 #form2 select {
-    background-color: #b5b4b4; 
+    background-color: #b5b4b4;
     color: #000000;
     border: solid #555 2px;
     border-radius: 5px;
@@ -187,8 +188,8 @@ button {
     width: 100%;
 }
 
-#usernameInput{
-    background-color: #b5b4b4; 
+#usernameInput {
+    background-color: #b5b4b4;
     color: #000000;
     border: solid #555 2px;
     border-radius: 5px;
@@ -199,7 +200,7 @@ button {
 
 
 #form2 input[type="number"] {
-    background-color: #b5b4b4; 
+    background-color: #b5b4b4;
     color: #000000;
     border: solid #555 2px;
     border-radius: 5px;
@@ -224,7 +225,7 @@ button {
 }
 
 #form2 button:hover {
-    background-color: #5a5a5a; 
+    background-color: #5a5a5a;
     transform: scale(1.1);
 }
 
@@ -233,9 +234,9 @@ button {
 /* tableau */
 
 #divListeJoueurs {
-    overflow-y:auto; 
-    border: 2px solid #403f3f; 
-    background-color: #5a5a5a; 
+    overflow-y: auto;
+    border: 2px solid #403f3f;
+    background-color: #5a5a5a;
     padding: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -244,40 +245,43 @@ button {
 
 
 #listeJoueurs {
-    width: 100%; 
+    width: 100%;
 }
 
 #listeJoueurs th {
-    background-color: #c0bfbf; 
-    color: #000000; 
-    padding: 10px 15px; 
-    text-align: left; 
-    border-bottom: 2px solid #444; 
-    position:static; 
+    background-color: #c0bfbf;
+    color: #000000;
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 2px solid #444;
+    position: static;
     top: 0;
-    z-index: 1; 
+    z-index: 1;
 }
 
 
 #listeJoueurs td {
     padding: 10px 15px;
-    border-bottom: 1px solid #000000; 
+    border-bottom: 1px solid #000000;
     text-align: left;
 }
 
 
 
 #listeJoueurs tr:nth-child(even) {
-    background-color: #b7b5b5; /* Fond pour les lignes paires */
+    background-color: #b7b5b5;
+    /* Fond pour les lignes paires */
 }
 
 #listeJoueurs tr:nth-child(odd) {
-    background-color: #727070; /* Fond pour les lignes impaires */
+    background-color: #727070;
+    /* Fond pour les lignes impaires */
 }
 
 /* Effet au survol */
 #listeJoueurs tr:hover {
-    background-color: #979494; /* Fond plus clair lors du survol */
+    background-color: #979494;
+    /* Fond plus clair lors du survol */
 }
 
 /* Style spécifique pour le bouton "Rejoindre" */
@@ -285,7 +289,7 @@ button {
     text-align: center;
 }
 
-.btn-rejoindre{
+.btn-rejoindre {
     font-family: inherit;
     border: none;
     outline: 1px dotted rgb(37, 37, 37);
@@ -299,21 +303,22 @@ button {
 }
 
 .btn-rejoindre:hover {
-    background-color: #5a5a5a; 
+    background-color: #5a5a5a;
     transform: scale(1.1);
     cursor: pointer;
 }
+
 button:hover {
 
     cursor: pointer;
 }
 
-#creerPartie{
+#creerPartie {
     justify-self: center;
     align-self: center;
 }
 
-.radioInput{
+.radioInput {
     font-family: inherit;
     border: none;
     outline: 1px dotted rgb(37, 37, 37);
@@ -326,11 +331,78 @@ button:hover {
     padding: 5px 30px;
 }
 
-.fieldMoche{
+.fieldMoche {
     border: none;
 }
 
-#droiteAll{
+#droiteAll {
     align-items: center;
     justify-content: center;
 }
+
+/* Fleches */
+
+.direction1, .direction2{
+    position: fixed;
+    left: 90%;
+    top: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transform: translate(-50%, -50%);
+}
+
+.direction1 {
+    width: 15%;
+    height: 10%;
+    top:20%;
+    z-index: 20;
+    pointer-events: auto;
+}
+
+.direction2 {
+    width: 10%;
+    height: 30%;
+    flex-direction: column;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.fleche {
+    --color-arrow: yellow;
+    --size-arrow: 40px;
+    --stroke-arrow: 10px;
+    --style-arrow: groove;
+
+    position: relative;
+    width: var(--size-arrow);
+    height: var(--size-arrow);
+    margin: 40px;
+    background: transparent;
+    border: 0;
+    border-left: var(--stroke-arrow) var(--style-arrow) var(--color-arrow);
+    border-bottom: var(--stroke-arrow) var(--style-arrow) var(--color-arrow);
+    cursor: pointer;
+  }
+  
+  .fleche::before {
+    position: absolute;
+    left: 0;
+    top: calc(var(--size-arrow) - var(--stroke-arrow) * 1.5);
+    clip-path: polygon(0 50%, calc(var(--stroke-arrow) / 2) 0, 100% 0, 100% 100%, calc(var(--stroke-arrow) / 2) 100%);
+    width: calc(var(--size-arrow) * 1.2);
+    height: 0;
+    border-top: var(--stroke-arrow) var(--style-arrow) var(--color-arrow);
+    transform-origin: 0 50%;
+    transform: rotate(-45deg);
+    content: '';
+  }
+  
+  .fleche:hover  { opacity: 0.75; }
+  .fleche:active { opacity: 0.5; }
+  
+  .fleche.left  { transform: rotate(  45deg); }
+  .fleche.right { transform: rotate(-135deg); }
+  .fleche.up    { transform: rotate( 135deg); }
+  .fleche.down  { transform: rotate( -45deg); }

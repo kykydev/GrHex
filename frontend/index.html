@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <link href="/script/style.css" rel="stylesheet"/>
+    <link href="/script/style.css" rel="stylesheet" />
     <script src="/script/client.js" type="text/javascript"></script>
     <script src="/script/affichage.js" type="text/javascript"></script>
 
@@ -25,17 +26,17 @@
                 <option value="3">3</option>
             </select>
             <label for="nbTours">Nombre de tours</label>
-            <input type="number" name="nbTours" min="5" step="1" id="nbTours"  value="5">
+            <input type="number" name="nbTours" min="5" step="1" id="nbTours" value="5">
             <button id="creerPartie" onsubmit="return false">Creer</button>
         </div>
-    
+
         <h2 id="titreP2-2">Liste des parties existantes</h2>
-    
+
         <div id="divListeJoueurs">
             <table id="listeJoueurs">
                 <tr>
                     <th>
-                        nom partie 
+                        nom partie
                     </th>
                     <th>
                         nombre de tours
@@ -47,65 +48,62 @@
                         Rejoindre
                     </th>
                 </tr>
-    
+
             </table>
         </div>
-    
+
 
 
 
     </div>
 
-    <div class="rejoindrePartie" id="" >
+    <div class="rejoindrePartie" id="">
+        <div class="direction1">
+            <button id="btngauche" class="fleche left"></button>
+            <button id="btndroite" class="fleche right"></button>
+        </div>
+        <div class="direction2">
+            <button id="btnhaut" class="fleche up"></button>
+            <button id="btnbas" class="fleche down"></button>
+        </div>
+        
         <div class="droite" id="droiteAll">
 
 
             <label for="nbTours">Pseudo</label>
             <input type="text" id="usernameInput" maxlength="15" required>
-            
-            <fieldset class="fieldMoche" >
+
+            <fieldset class="fieldMoche">
 
                 <div class="radioInput">
-                    <input type="radio" name="cite" id="beotie"   value="beotie"/>
-                    <label for="beotie" > Béotie </label>
+                    <input type="radio" name="cite" id="beotie" value="beotie" />
+                    <label for="beotie"> Béotie </label>
                 </div>
                 <div class="radioInput">
-                    <input type="radio" name="cite" id="attique" value="attique"/>
-                    <label for="attique" > Attique </label>
+                    <input type="radio" name="cite" id="attique" value="attique" />
+                    <label for="attique"> Attique </label>
                 </div>
                 <div class="radioInput">
-                    <input type="radio" id="argolide" name="cite" value="argolide"/>
-                    <label for="argolide" > Argolide </label>
+                    <input type="radio" id="argolide" name="cite" value="argolide" />
+                    <label for="argolide"> Argolide </label>
                 </div>
             </fieldset>
-            <button id="rejoindrePartie">
+            <button id="rejoindrePartie" class="buttonretro">
                 Rejoindre
             </button>
 
         </div>
         <div class="haut">
             <div class="bouton2">
-                <button id="1">
+                <button id="1" class="buttonretro">
                     Quitter
                 </button>
-                <button>
+                <button class="buttonretro">
                     Menu
-                </button>
-                <button id="btndroite">
-                    Droite
-                </button>
-                <button id="btnbas">
-                    Bas
-                </button>
-                <button id="btngauche">
-                    Gauche
-                </button>
-                <button id="btnhaut">
-                    Haut
                 </button>
             </div>
             <div id="nomPartie"></div>
-            <div> </div> 
+            <div> </div>
         </div>
 
         <div class="damier" id="damierPrev">
@@ -114,7 +112,15 @@
     </div>
 
 
-<div class="partie">
+    <div class="partie">
+        <div class="direction1">
+            <button id="btngauche" class="fleche left"></button>
+            <button id="btndroite" class="fleche right"></button>
+        </div>
+        <div class="direction2">
+            <button id="btnhaut" class="fleche up"></button>
+            <button id="btnbas" class="fleche down"></button>
+        </div>
         <div class="droite">
             <div class="mini-map">
                 <svg id="mini"></svg>
@@ -122,7 +128,7 @@
             <div id="statsUnite">
             </div>
             <div class="bouton1">
-                <button id="finTour">
+                <button id="finTour" class="buttonretro">
                     Fin de tour
                 </button>
             </div>
@@ -130,23 +136,11 @@
 
         <div class="haut">
             <div class="bouton2">
-                <button id="1" >
+                <button id="1" class="buttonretro">
                     Quitter
                 </button>
-                <button>
+                <button class="buttonretro">
                     Menu
-                </button>
-                <button id="btndroite">
-                    Droite
-                </button>
-                <button id="btnbas">
-                    Bas
-                </button>
-                <button id="btngauche">
-                    Gauche
-                </button>
-                <button id="btnhaut">
-                    Haut
                 </button>
             </div>
         </div>
@@ -154,7 +148,7 @@
         <div class="damier" id="damierjeu">
             <svg id="jeu"></svg>
         </div>
-</div>
+    </div>
 
 
 </body>
