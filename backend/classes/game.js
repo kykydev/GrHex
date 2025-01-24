@@ -8,7 +8,7 @@ const {createMap} = require('../modules/mapGeneration')
 const {player} = require('./player');
 const { hexagon } = require('./hexagon');
 const { turnAction,moveAction,newUnitAction,buildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv } = require('./unit')
 
 class game {
     constructor(nbJoueurs,nbTours){
@@ -71,7 +71,8 @@ class game {
             185:new stratege(185,joueur),
             154:new archer(154,joueur),
             332:new archer(332,joueur),
-            333:new paysanne(333,joueur)
+            333:new paysanne(333,joueur),
+            214: new hdv(214,joueur)
         }
 
         for (var position of Object.keys(boardBoetie)){
@@ -88,7 +89,7 @@ class game {
             327:new archer(327,joueur),
             237:new archer(237,joueur),
             207:new paysanne(207,joueur),
-
+            297: new hdv(297,joueur),
             155:new archer(155,joueur)
         }
 
@@ -104,7 +105,8 @@ class game {
             1011:new stratege(1011,joueur),
             1101:new archer(1101,joueur),
             1073:new archer(1073,joueur),
-            1071:new paysanne(1071,joueur)
+            1071:new paysanne(1071,joueur),
+            1072:new hdv(1072,joueur)
         }
 
         for (var position of Object.keys(boardAttique)){
@@ -334,7 +336,7 @@ class game {
             this.board[uni].movementLeft = this.board[uni].movement
             if (this.board[uni].destination==this.board[uni].position){this.board[uni].destination=undefined}
             if (this.board[uni].destination != undefined){
-                if (this.board[uni].path!=undefined && this.board[uni].path.length==0){this.board[uni].path=undefined}
+                if (this.board[uni].type!="building" && this.board[uni].path!=undefined && this.board[uni].path.length==0){this.board[uni].path=undefined}
 
                 this.actions.push(new moveAction(this.board[uni].position,this.players[this.board[uni].owner]))
             }
