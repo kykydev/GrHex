@@ -270,9 +270,13 @@ document.addEventListener("DOMContentLoaded", function () {
         setupBoutonScroll("damierjeu");
         ajouterUnites(data.board, "jeu");
 
+        console.log(data.board);
+
         // mouvement
         let unites = document.getElementsByClassName("unite");
         let hexagones = document.getElementsByClassName("hexagones");
+
+        let vueInfoHdv = d3.select("#vueInfoHdv");
 
         let uniteSelectionnee = "";
         let hexagoneSelectionnee = "";
@@ -283,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
             element.addEventListener("mouseover", (event) => {
                 d3.select("#uniteTemp").remove();
 
-                if (uniteSelectionnee) {
+                if (uniteSelectionnee && data.board[uniteSelectionnee].movement>0) {
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("h");
 
                     let bbox = element.getBBox();
@@ -305,8 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
                             uniteSelectionnee = "";
                             hexagoneSelectionnee = "";
-                            
-
+                            d3.select("#uniteTemp").remove();
                         }
                     });
 
@@ -334,21 +337,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                 }
 
+                //pathfinding
+
              
             });
             element.addEventListener("click",(event)=>{
-                console.log("salut");
 
-                if(uniteSelectionnee){
-                    hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
-                    socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
-                    uniteSelectionnee="";
-                    hexagoneSelectionnee="";
+                if(data.board[event.target.id.supprimerPrefixId("uni")].name=="Hôtel de ville"){
+                    vueInfoHdv.style("display",(vueInfoHdv.style("display")=="none" ? "block" : "none"));
+                    // vueInfoHdv variable D3
 
-                    console.log("combat");
                 }else if(uniteSelectionnee==event.target.id.supprimerPrefixId("uni")){
                     uniteSelectionnee="";
-                }else{
+                }else if(uniteSelectionnee){
+                    uniteSelectionnee=event.target.id.supprimerPrefixId("uni");
+                    //socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+                }else if(data.board[event.target.id.supprimerPrefixId("uni")].movement>0){
                     uniteSelectionnee=event.target.id.supprimerPrefixId("uni");
                     
                 }

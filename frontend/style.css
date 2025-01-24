@@ -406,3 +406,15 @@ button:hover {
   .fleche.right { transform: rotate(-135deg); }
   .fleche.up    { transform: rotate( 135deg); }
   .fleche.down  { transform: rotate( -45deg); }
+
+
+#vueInfoHdv{
+    display: none;
+    height: 350px;
+    width: 350px;
+    background-color: aquamarine;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 4;
+}

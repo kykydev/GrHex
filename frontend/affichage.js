@@ -272,6 +272,8 @@ function statsUnite(unite){
     stats.append("div").attr("id","uniteAttack").text("uniteAttack : "+unite.attack);
     stats.append("div").attr("id","uniteHp").text("uniteHp : "+unite.hp);
     stats.append("div").attr("id","uniteDefence").text("uniteDefence : "+unite.defense);
+    stats.append("div").attr("id","path").text("pathfinding : "+unite.path);
+
 
 }
 
