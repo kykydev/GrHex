@@ -3,6 +3,8 @@ String.prototype.supprimerPrefixId = function (prefix) {
     return this.startsWith(prefix) ? this.slice(prefix.length) : this.toString();
 }
 
+
+let dicoPathUnite = {};
 //-------------------Fonction qui déplace vue damier selon boutons/touches-----------------
 
 function setupBoutonScroll(id) {
@@ -185,9 +187,6 @@ document.addEventListener("DOMContentLoaded", function () {
         fill(cite.attique,"url(#"+map.terrain[cite.attique]+"-pattern","prev");
     }); 
 
-
-
-    // mouvement
    
 
     document.getElementById("finTour").addEventListener("click",()=>{
@@ -260,8 +259,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     })
 
+
+
+    // muovement
     socket.on("mouvement",data=>{
-        console.log(data)
+        dicoPathUnite[data[0]]=data
     })
 
         //-----------------------------------------------------------------------
@@ -343,9 +345,25 @@ document.addEventListener("DOMContentLoaded", function () {
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                 }
 
-                //pathfinding
 
+                let path=dicoPathUnite[event.target.id.supprimerPrefixId("uni")];
+
+                if(path){
+                    for(let i=1;i<path.length;++i){
+                        d3.select("#h"+path[i]).style("filter","hue-rotate(240deg)");
+                    }
+                }
              
+            });
+
+            element.addEventListener("mouseleave",(event)=>{
+                let path=dicoPathUnite[event.target.id.supprimerPrefixId("uni")];
+
+                if(path){
+                    for(let i=1;i<path.length;++i){
+                        d3.select("#h"+path[i]).style("filter",null);
+                    }
+                }
             });
             element.addEventListener("click",(event)=>{
 
