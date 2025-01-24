@@ -131,7 +131,7 @@ function pathFind(pos1, pos2, height, width, rules) {
                 continue; 
             }
 
-            const tentativeG = g + 1 + rules[neighbor];
+            const tentativeG = g /*+1 peut-être nécessaire*/+ rules[neighbor];
             const h = distance(neighbor, pos2, height);
             const f = tentativeG + h;
 

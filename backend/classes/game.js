@@ -375,20 +375,25 @@ class game {
 
     }
 
+    pathfindToDestination(départ,arrivée,owner){
+        var rules = []
+        for (var z in this.map.terrain){
+            let zz = this.map.terrain[z]
+            if (zz=="eau" || (this.board[z]!=undefined && this.board[z].owner==owner) || (zz=="montagne" && this.board[départ].movement<=1)){rules.push("X")}
+            else if (zz=="montagne"){rules.push(1)}
+                else{rules.push(0)}
+            }
+            
+            let route = pathFind(départ,arrivée,this.map.height,this.map.width,rules)
+            return route
+    }
+
 
     moveTurn(uni){//Fait jouer le tour de l'unité (la déplace case par case vers sa destination. Si le pathfind n'a pas été fait, le fait aussi)
         if (uni==undefined){return}
         
         if (uni.destination!=undefined && uni.destination!=uni.position && uni.path==undefined){//Calcul de la route voulue
-            var rules = []
-            for (var z in this.map.terrain){
-                let zz = this.map.terrain[z]
-                if (zz=="eau" || (this.board[z]!=undefined && this.board[z].owner==uni.owner)){rules.push("X")}
-                else if (zz=="montagne"){rules.push(1)}
-                    else{rules.push(0)}
-                }
-                
-                let route = pathFind(uni.position,uni.destination,this.map.height,this.map.width,rules)
+                let route = this.pathfindToDestination(uni.position,uni.destination,uni.owner)
                 uni.path = route
                 if (uni.path==undefined || uni.path==false){return}
                 uni.path.shift()
