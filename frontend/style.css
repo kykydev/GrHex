@@ -370,7 +370,7 @@ button:hover {
 }
 
 .fleche {
-    --color-arrow: yellow;
+    --color-arrow: aliceblue;
     --size-arrow: 40px;
     --stroke-arrow: 10px;
     --style-arrow: groove;

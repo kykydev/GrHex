@@ -48,19 +48,19 @@ function setupBoutonScroll(id) {
     function scrollEnfonce() {
         if (btnHautEnfonce) {
             d3.select("#" + id).property("scrollTop", d3.select("#" + id).property("scrollTop") - scrollAmount);
-            setTimeout(scrollEnfonce, 15);
+            setTimeout(scrollEnfonce, 100);
         }
         if (btnBasEnfonce) {
             d3.select("#" + id).property("scrollTop", d3.select("#" + id).property("scrollTop") + scrollAmount);
-            setTimeout(scrollEnfonce, 15);
+            setTimeout(scrollEnfonce, 100);
         }
         if (btnGaucheEnfonce) {
             d3.select("#" + id).property("scrollLeft", d3.select("#" + id).property("scrollLeft") - scrollAmount);
-            setTimeout(scrollEnfonce, 15);
+            setTimeout(scrollEnfonce, 100);
         }
         if (btnDroitEnfonce) {
             d3.select("#" + id).property("scrollLeft", d3.select("#" + id).property("scrollLeft") + scrollAmount);
-            setTimeout(scrollEnfonce, 15);
+            setTimeout(scrollEnfonce, 100);
         }
     }
 
@@ -132,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
         afficherListeParties(data);
 
     });
+
 
     function refreshGame() {
         console.log("je rafraichi")
@@ -258,6 +259,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data){socket.emit("demandeDamier", idJoueur)
         }
     })
+
+    socket.on("mouvement",data=>{
+        console.log(data)
+    })
+
         //-----------------------------------------------------------------------
 
     socket.on("demandeDamier", data => {
