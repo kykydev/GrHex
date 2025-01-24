@@ -259,6 +259,26 @@ function afficherUnites(unite,dam) {
     }
 }
 
+function deplacerUnites(caseDepart, caseArrivee){
+
+    let image = d3.select("#uni" + caseDepart);
+
+    let BBoxDepart = document.getElementById("h" + caseDepart).getBBox();
+    let BBoxArrivee = document.getElementById("h" + caseArrivee).getBBox();
+
+    let deltaX = BBoxArrivee.x - BBoxDepart.x;
+    let deltaY = BBoxArrivee.y - BBoxDepart.y;
+
+    image.transition()
+        .duration(1000)
+        .attr("x", BBoxDepart.x + deltaX - 10)
+        .attr("y", BBoxDepart.y + deltaY - 15) 
+        .on("end", () => {
+            image.attr("id", "uni" + caseArrivee);
+            image.classed("unite", true);
+        });
+}
+
 /**
  * affiche les stats d'une unité lors d'un mouseover sur la div à droite
  * @param {Object} unite - Object ayant les attributs name, attack, hp, defense
