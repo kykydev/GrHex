@@ -379,7 +379,7 @@ class game {
         var rules = []
         for (var z in this.map.terrain){
             let zz = this.map.terrain[z]
-            if (zz=="eau" || (this.board[z]!=undefined && this.board[z].owner==owner)){rules.push("X")}
+            if (zz=="eau" || (this.board[z]!=undefined && this.board[z].owner==owner) || (zz=="montagne" && this.board[départ].movement<=1)){rules.push("X")}
             else if (zz=="montagne"){rules.push(1)}
                 else{rules.push(0)}
             }
