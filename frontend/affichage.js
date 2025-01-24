@@ -140,11 +140,7 @@ function fillMini(id,couleur){
  */
 function actualiserDamier(longueur, largeur, jeu,idHexa) {
     for (i = 0; i < longueur * largeur; i++) {
-        if (jeu[i]=="?"){fill(i, "gray",idHexa)
-        }
-    else{
         fill(i, "url(#"+jeu[i]+"-pattern)",idHexa)
-    }
     }
 }
 
@@ -185,6 +181,7 @@ function appelsAjoutTextures(selected){
     var images = [
         
         //Plaines
+        {id : "?-pattern", url : "/img/textures/plaines/plaine_brouillard.jpg"},
         {id : "plaine_1-pattern", url : "/img/textures/plaines/plaine_1.jpg"},
         {id : "plaine_2-pattern", url : "/img/textures/plaines/plaine_2.jpg"},
         {id : "plaine_3-pattern", url : "/img/textures/plaines/plaine_3.jpg"},

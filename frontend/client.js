@@ -350,7 +350,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if(path){
                     for(let i=1;i<path.length;++i){
-                        d3.select("#h"+path[i]).style("filter","hue-rotate(240deg)");
+                        d3.select("#h"+path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
                     }
                 }
              
