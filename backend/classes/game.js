@@ -22,7 +22,7 @@ class game {
         this.board = {}
         this.positionsDepart = {"beotie":214,"attique":1072,"argolide":297}
         this.name = motsGrece[Math.floor(Math.random()*motsGrece.length)]+"-"+adjectifs[Math.floor(Math.random()*adjectifs.length)]
-
+        this.actionsThisTurn = []
     }
 
     currentPlayers(){return Object.keys(this.players).length}
@@ -258,6 +258,7 @@ class game {
 
     kill(unit){
         if (unit==undefined){return false}
+        this.actionsThisTurn.push({"type":"mort","position":unit.position})
         delete this.board[unit.position]
         delete this.players[unit.owner].units[unit.position]
         return true
@@ -324,7 +325,26 @@ class game {
             }
             return true
     }
+
+    récolte(uni){
+
+    }
+
+    testRécolteRessources(uni){//Tente de faire récolter des ressources à l'unité
+        switch (uni.nom){
+            case "Mineur":
+                if (this.map.infos[uni.position].type=="carriere"){}
+
+
+
+            break
+        }
+    }
+
+
     tour(){//Fait se jouer un tour avec une liste d'actions
+
+        this.actionsThisTurn = []
         //------------Itère au travers des unités pour générer les actions du tour--------------
         for (let uni of Object.keys(this.board)){
             this.board[uni].movementLeft = this.board[uni].movement
@@ -391,14 +411,19 @@ class game {
                 uni.path = route
                 if (uni.path==undefined || uni.path==false){return}
                 uni.path.shift()
-            
         }
+
         let moved = true
         while (uni!=undefined && uni.movementLeft>0 && moved!=false){
             if (uni.path==undefined || uni.path==false){return}
+            let posd = uni.position
 
             moved = this.move(uni,uni.path[0])
-            if (moved!=false){uni.path.shift()}
+            if (moved!=false){//Cas où on a réussi à bouger
+                uni.path.shift()
+                let posa = uni.position
+                this.actionsThisTurn.push({"type":"mouvement","départ":posd,"arrivée":posa})
+            }
         }
 
         if (uni.path.length==0){uni.path=undefined}

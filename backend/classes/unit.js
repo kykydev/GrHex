@@ -54,18 +54,22 @@ class messager extends unit{
 class bucheron extends unit{
     constructor(position,player){
         super(25,10,5,0,1,"Bûcheron",position,player,0,1)
+        this.wood=0
     }
 }
 
 class mineur extends unit{
     constructor(position,player){
         super(20,10,5,0,1,"Mineur",position,player,0,1)
+        this.stone=0
     }
 }
 
 class paysanne extends unit{
     constructor(position,player){
         super(15,0,0,0,1,"Paysanne",position,player,0,1)
+        this.wood=0
+        this.stone=0
     }
 }
 

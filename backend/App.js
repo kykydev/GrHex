@@ -170,7 +170,7 @@ io.on('connection', (socket) => {
 
 
       
-      io.to(partie.id).emit("finTour",true)
+      io.to(partie.id).emit("finTour",partie.actionsThisTurn)
     }
     else{//Le tour n'est pas fini, renvoi de l'info au client pour qu'il affiche correctement
       socket.emit("finTour",false)

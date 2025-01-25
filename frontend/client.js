@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("finTour",data=>{
         // true si tout le monde à fini false sino
-        console.log("tour passe")
+        console.log(data)
         socket.emit("demandeDamier", idJoueur)
 
 
