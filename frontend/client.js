@@ -345,10 +345,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                let path=dicoPathUnite[event.target.id.supprimerPrefixId("uni")];
+                let path=dicoPathUnite[event.target.id.supprimerPrefixId("uni")] ;
+                path = path ? path : data.board[event.target.id.supprimerPrefixId("uni")].path;
+
 
                 if(path){
-                    for(let i=1;i<path.length;++i){
+                    
+                    d3.select("#h"+event.target.id.supprimerPrefixId("uni")).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
+
+                    for(let i=0;i<path.length;++i){
                         d3.select("#h"+path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
                     }
                 }
@@ -357,9 +362,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             element.addEventListener("mouseleave",(event)=>{
                 let path=dicoPathUnite[event.target.id.supprimerPrefixId("uni")];
+                path = path ? path : data.board[event.target.id.supprimerPrefixId("uni")].path;
 
                 if(path){
-                    for(let i=1;i<path.length;++i){
+
+                    d3.select("#h"+event.target.id.supprimerPrefixId("uni")).style("filter",null);
+
+                    for(let i=0;i<path.length;++i){
                         d3.select("#h"+path[i]).style("filter",null);
                     }
                 }
