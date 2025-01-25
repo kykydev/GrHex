@@ -272,7 +272,6 @@ document.addEventListener("DOMContentLoaded", function () {
         terrain = data.terrain
         board = terrain.board
         créerDamier(data.height, data.width, 32, "jeu", "h") // damier de jeu
-
         actualiserDamier(data.width, data.height, data.terrain, "h")
         appelsAjoutTextures("jeu");
         setupBoutonScroll("damierjeu");

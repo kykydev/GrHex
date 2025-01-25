@@ -256,7 +256,7 @@ function afficherUnites(unite,dam) {
     }
 }
 
-function deplacerUnites(caseDepart, caseArrivee){
+function deplacerUnitesAnim(caseDepart, caseArrivee){
 
     let image = d3.select("#uni" + caseDepart);
 
@@ -275,6 +275,19 @@ function deplacerUnites(caseDepart, caseArrivee){
             image.classed("unite", true);
         });
 }
+
+function tuerUniteAnim(caseUnite) {
+    let image = d3.select("#uni" + caseUnite);
+
+    image.transition()
+        .duration(1000)
+        .style("filter", "brightness(0) saturate(1000%) contrast(100%) sepia(1) hue-rotate(0deg)")
+        .style("opacity", 0)
+        .on("end", () => {
+            image.remove();
+        });
+}
+
 
 /**
  * affiche les stats d'une unité lors d'un mouseover sur la div à droite
