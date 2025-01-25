@@ -256,10 +256,9 @@ function afficherUnites(unite,dam) {
     }
 }
 
-function deplacerUnitesAnim(caseDepart, caseArrivee){
+function deplacerUnitesAnim(caseDepart, caseArrivee,fun){
 
     let image = d3.select("#uni" + caseDepart);
-
     let BBoxDepart = document.getElementById("h" + caseDepart).getBBox();
     let BBoxArrivee = document.getElementById("h" + caseArrivee).getBBox();
 
@@ -273,7 +272,13 @@ function deplacerUnitesAnim(caseDepart, caseArrivee){
         .on("end", () => {
             image.attr("id", "uni" + caseArrivee);
             image.classed("unite", true);
+
+            fun();
+
+            
         });
+
+
 }
 
 function tuerUniteAnim(caseUnite) {

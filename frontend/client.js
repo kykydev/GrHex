@@ -195,10 +195,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("finTour",data=>{
         // true si tout le monde à fini false sino
-        console.log(data)
-        socket.emit("demandeDamier", idJoueur)
 
+        let index = 0;
 
+        function jouerAnimationSuivante() {
+            if (index < data.length) {
+                const mouvement = data[index];
+                deplacerUnitesAnim(mouvement.départ, mouvement.arrivée, () => {
+                    index++; // Passe au mouvement suivant
+                    jouerAnimationSuivante(); // Lance la prochaine animation
+                });
+            } else {
+                // Une fois que toutes les animations sont terminées
+                socket.emit("demandeDamier", idJoueur);
+            }
+        }
+
+        // Lancer la première animation
+        jouerAnimationSuivante();
+        
     });
 
 
@@ -254,10 +269,10 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
     //----------------Pour test, faudra faire ça mieux plus tard-------------------
-    socket.on("finTour",data=>{
+    /*socket.on("finTour",data=>{
         if (data){socket.emit("demandeDamier", idJoueur)
         }
-    })
+    })*/
 
 
 
@@ -274,10 +289,8 @@ document.addEventListener("DOMContentLoaded", function () {
         créerDamier(data.height, data.width, 32, "jeu", "h") // damier de jeu
         actualiserDamier(data.width, data.height, data.terrain, "h")
         appelsAjoutTextures("jeu");
-        setupBoutonScroll("damierjeu");
+        setupBoutonScroll("damierjeu"); 
         ajouterUnites(data.board, "jeu");
-
-        console.log(data.board);
 
         // mouvement
         let unites = document.getElementsByClassName("unite");
@@ -312,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     document.getElementById("uniteTemp").addEventListener("click", () => {
                         if (uniteSelectionnee ) {
-                            console.log("mouvement",uniteSelectionnee,hexagoneSelectionnee);
+                            // console.log("mouvement",uniteSelectionnee,hexagoneSelectionnee);
                             socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
                             uniteSelectionnee = "";
                             hexagoneSelectionnee = "";
@@ -343,7 +356,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (uniteSelectionnee != event.target.id.supprimerPrefixId("uni") && !event.target.id.startsWith("uniteTemp")) {
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                 }
-
 
                 let path=dicoPathUnite[event.target.id.supprimerPrefixId("uni")] ;
                 path = path ? path : data.board[event.target.id.supprimerPrefixId("uni")].path;
