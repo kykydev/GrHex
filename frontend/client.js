@@ -272,7 +272,6 @@ document.addEventListener("DOMContentLoaded", function () {
         terrain = data.terrain
         board = terrain.board
         créerDamier(data.height, data.width, 32, "jeu", "h") // damier de jeu
-
         actualiserDamier(data.width, data.height, data.terrain, "h")
         appelsAjoutTextures("jeu");
         setupBoutonScroll("damierjeu");
@@ -350,7 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if(path){
                     for(let i=1;i<path.length;++i){
-                        d3.select("#h"+path[i]).style("filter","hue-rotate(240deg)");
+                        d3.select("#h"+path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
                     }
                 }
              

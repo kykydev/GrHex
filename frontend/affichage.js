@@ -140,11 +140,7 @@ function fillMini(id,couleur){
  */
 function actualiserDamier(longueur, largeur, jeu,idHexa) {
     for (i = 0; i < longueur * largeur; i++) {
-        if (jeu[i]=="?"){fill(i, "gray",idHexa)
-        }
-    else{
         fill(i, "url(#"+jeu[i]+"-pattern)",idHexa)
-    }
     }
 }
 
@@ -185,6 +181,7 @@ function appelsAjoutTextures(selected){
     var images = [
         
         //Plaines
+        {id : "?-pattern", url : "/img/textures/plaines/plaine_brouillard.jpg"},
         {id : "plaine_1-pattern", url : "/img/textures/plaines/plaine_1.jpg"},
         {id : "plaine_2-pattern", url : "/img/textures/plaines/plaine_2.jpg"},
         {id : "plaine_3-pattern", url : "/img/textures/plaines/plaine_3.jpg"},
@@ -258,6 +255,39 @@ function afficherUnites(unite,dam) {
         console.log("L'élément avec l'ID h" + unite.position + " n'existe pas.");
     }
 }
+
+function deplacerUnitesAnim(caseDepart, caseArrivee){
+
+    let image = d3.select("#uni" + caseDepart);
+
+    let BBoxDepart = document.getElementById("h" + caseDepart).getBBox();
+    let BBoxArrivee = document.getElementById("h" + caseArrivee).getBBox();
+
+    let deltaX = BBoxArrivee.x - BBoxDepart.x;
+    let deltaY = BBoxArrivee.y - BBoxDepart.y;
+
+    image.transition()
+        .duration(1000)
+        .attr("x", BBoxDepart.x + deltaX - 10)
+        .attr("y", BBoxDepart.y + deltaY - 15) 
+        .on("end", () => {
+            image.attr("id", "uni" + caseArrivee);
+            image.classed("unite", true);
+        });
+}
+
+function tuerUniteAnim(caseUnite) {
+    let image = d3.select("#uni" + caseUnite);
+
+    image.transition()
+        .duration(1000)
+        .style("filter", "brightness(0) saturate(1000%) contrast(100%) sepia(1) hue-rotate(0deg)")
+        .style("opacity", 0)
+        .on("end", () => {
+            image.remove();
+        });
+}
+
 
 /**
  * affiche les stats d'une unité lors d'un mouseover sur la div à droite
