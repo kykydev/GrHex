@@ -1,6 +1,6 @@
 const motsGrece = ["Acropole", "Athéna", "Aristote", "Hoplite", "Méduse", "Sparte", "Zeus", "Olympie", "Parthénon", "Delphes", "Poséidon", "Socrate", "Platon", "Léonidas", "Héraclès", "Troie", "Odyssée", "Agora", "Dionysos", "Hadès", "Archimède", "Pythagore", "Mycènes", "Déméter", "Thermopyles", "Thucydide", "Rhétorique", "Cheval de Troie", "Phalange", "Colosse", "Marathon", "Péloponnèse", "Épicure", "Périclès"];
 const adjectifs = ["Bancal", "Rigolo", "Fou", "Chancelant", "Bizarre", "Dingue", "Louche", "Zigzagant", "Moelleux", "Farfelu", "Grinçant", "Pétillant", "Foufou", "Clownesque", "Dodu", "Sautillant","Majestueux", "Légendaire", "Glorieux", "Héroïque", "Divin", "Redoutable", "Éternel", "Victorieux", "Puissant", "Imposant", "Intrépide", "Grandiose", "Immortel", "Inébranlable", "Formidable", "Valeureux", "Épique", "Mythique", "Titanesque", "Fulgurant","Lumineux", "Énigmatique", "Merveilleux", "Mystérieux", "Chaleureux", "Étincelant", "Rêveur", "Apaisant", "Charmant", "Bucolique", "Rayonnant", "Aérien", "Coloré", "Féerique", "Paisible", "Onirique", "Chatoyant", "Doux", "Fantaisiste", "Éblouissant"];
-const couleurs = ["rouge","bleu","vert","jaune"]
+const couleurs = ["rouge","bleu","vert","jaune","jaune"]
 
 const { v4: uuidv4 } = require('uuid');
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('../modules/backendHex');
@@ -8,7 +8,7 @@ const {createMap} = require('../modules/mapGeneration')
 const {player} = require('./player');
 const { hexagon } = require('./hexagon');
 const { turnAction,moveAction,newUnitAction,buildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur} = require('./unit')
 
 class game {
     constructor(nbJoueurs,nbTours){
@@ -69,9 +69,8 @@ class game {
         
         var boardBoetie = {
             185:new stratege(185,joueur),
-            154:new archer(154,joueur),
-            332:new archer(332,joueur),
-            333:new paysanne(333,joueur),
+            243:new bucheron(243,joueur),
+            183:new paysanne(183,joueur),
             214: new hdv(214,joueur)
         }
 
@@ -85,12 +84,9 @@ class game {
     initArgolide(joueur){
         var boardArgolide  = {
             328:new stratege(328,joueur),
-            327:new archer(327,joueur),
-            327:new archer(327,joueur),
-            237:new archer(237,joueur),
+            237:new bucheron(237,joueur),
             207:new paysanne(207,joueur),
             297: new hdv(297,joueur),
-            155:new archer(155,joueur)
         }
 
         for (var position of Object.keys(boardArgolide)){
@@ -98,13 +94,11 @@ class game {
             this.map.infos[position] = new hexagon("plaine","plaine_1",position)
             this.map.terrain[position]=this.map.infos[position].pattern
             }    
-            joueur.units[155].hp=20
     }
     initAttique(joueur){
         var boardAttique  = {
             1011:new stratege(1011,joueur),
-            1101:new archer(1101,joueur),
-            1073:new archer(1073,joueur),
+            1043:new bucheron(1043,joueur),
             1071:new paysanne(1071,joueur),
             1072:new hdv(1072,joueur)
         }
@@ -336,7 +330,7 @@ class game {
             this.board[uni].movementLeft = this.board[uni].movement
             if (this.board[uni].destination==this.board[uni].position){this.board[uni].destination=undefined}
             if (this.board[uni].destination != undefined){
-                if (this.board[uni].type!="building" && this.board[uni].path!=undefined && this.board[uni].path.length==0){this.board[uni].path=undefined}
+            if (this.board[uni].type!="building" && this.board[uni].path!=undefined && this.board[uni].path.length==0){this.board[uni].path=undefined}
 
                 this.actions.push(new moveAction(this.board[uni].position,this.players[this.board[uni].owner]))
             }
@@ -374,7 +368,7 @@ class game {
         }
 
     }
-
+ 
     pathfindToDestination(départ,arrivée,owner){
         var rules = []
         for (var z in this.map.terrain){

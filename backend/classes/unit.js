@@ -44,15 +44,28 @@ class archer extends unit{
         this.range=2
     }
 }
+
 class messager extends unit{
     constructor(position,player){
-        super(30,0,15,0,3,"Messager",position,player,1,1)
+        super(30,0,15,0,3,"Messager",position,player,0,1)
+    }
+}
+
+class bucheron extends unit{
+    constructor(position,player){
+        super(25,10,5,0,1,"Bûcheron",position,player,0,1)
+    }
+}
+
+class mineur extends unit{
+    constructor(position,player){
+        super(20,10,5,0,1,"Mineur",position,player,0,1)
     }
 }
 
 class paysanne extends unit{
     constructor(position,player){
-        super(40,0,0,0,1,"Paysanne",position,player,0,0)
+        super(15,0,0,0,1,"Paysanne",position,player,0,1)
     }
 }
 
@@ -73,4 +86,4 @@ class hdv extends building{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv };
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur };
