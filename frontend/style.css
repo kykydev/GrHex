@@ -424,7 +424,6 @@ button:hover {
 }
 
 #vueBatiments{
-    background-color: blue;
     display: flex;
     overflow-y: auto;
     width: 80%;
