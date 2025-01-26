@@ -182,18 +182,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     argolide.addEventListener("click", () => {
         maCite = "argolide"
-        fill(cite.argolide,"red","prev");
-        fill(cite.beotie,"url(#"+map.terrain[cite.beotie]+"-pattern","prev");
-        fill(cite.attique,"url(#"+map.terrain[cite.attique]+"-pattern","prev");
-    }); 
+        fill(cite.argolide, "red", "prev");
+        fill(cite.beotie, "url(#" + map.terrain[cite.beotie] + "-pattern", "prev");
+        fill(cite.attique, "url(#" + map.terrain[cite.attique] + "-pattern", "prev");
+    });
 
-   
 
-    document.getElementById("finTour").addEventListener("click",()=>{
+
+    document.getElementById("finTour").addEventListener("click", () => {
         socket.emit("finTour");
+        socket.emit("ressources");
     })
 
-    socket.on("finTour",data=>{
+    socket.on("finTour", data => {
         // true si tout le monde à fini false sino
 
         let index = 0;
@@ -202,40 +203,49 @@ document.addEventListener("DOMContentLoaded", function () {
             if (index < data.length) {
                 const mouvement = data[index];
 
-                switch (data[index].type){
+                switch (data[index].type) {
 
                     case "mouvement":
-                    
 
-                    deplacerUnitesAnim(mouvement.départ, mouvement.arrivée, () => {
-                        index++; // Passe au mouvement suivant
-                        jouerAnimationSuivante(); // Lance la prochaine animation
-                    });
-                break;
-                case "mort":
-                    tuerUniteAnim(mouvement.position)
-                    index++; // Passe au mouvement suivant
-                    jouerAnimationSuivante(); // Lance la prochaine animation
-                break
 
-                default:
-                    index++; // Passe au mouvement suivant
-                    jouerAnimationSuivante(); // Lance la prochaine animation
-            }
+                        deplacerUnitesAnim(mouvement.départ, mouvement.arrivée, () => {
+                            index++;
+                            jouerAnimationSuivante();
+                        });
+                        break;
+                    case "mort":
+                        tuerUniteAnim(mouvement.position)
+                        index++;
+                        jouerAnimationSuivante();
+                        break
+
+                    default:
+                        index++;
+                        jouerAnimationSuivante();
+                }
 
             } else {
-                // Une fois que toutes les animations sont terminées
                 socket.emit("demandeDamier", idJoueur);
             }
         }
 
-        // Lancer la première animation
         jouerAnimationSuivante();
-        
+
     });
 
+    socket.on("ressources", data => {
 
-   socket.on("lobbyPartie",(data)=>{
+        const ressources =
+        `<p>Or: ${data.or}</p>
+        <p>Cuivre: ${data.cuivre}</p>
+        <p>Bois: ${data.bois}</p>
+        <p>Pierre: ${data.pierre}</p>`;
+
+    document.querySelector('.ressources').innerHTML = ressources;
+
+    })
+
+    socket.on("lobbyPartie", (data) => {
         //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
 
 
@@ -283,7 +293,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector('.rejoindrePartie').style.display = 'none';
         document.querySelector('.partie').style.display = 'block';
 
-        socket.emit("demandeDamier", idJoueur)
+        socket.emit("demandeDamier", idJoueur);
+        socket.emit('ressources');
     })
 
     //----------------Pour test, faudra faire ça mieux plus tard-------------------
@@ -295,11 +306,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // muovement
-    socket.on("mouvement",data=>{
-        dicoPathUnite[data[0]]=data
+    socket.on("mouvement", data => {
+        dicoPathUnite[data[0]] = data
     })
 
-        //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
 
     socket.on("demandeDamier", data => {
         terrain = data.terrain
@@ -307,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
         créerDamier(data.height, data.width, 32, "jeu", "h") // damier de jeu
         actualiserDamier(data.width, data.height, data.terrain, "h")
         appelsAjoutTextures("jeu");
-        setupBoutonScroll("damierjeu"); 
+        setupBoutonScroll("damierjeu");
         ajouterUnites(data.board, "jeu");
 
         // mouvement
@@ -325,7 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
             element.addEventListener("mouseover", (event) => {
                 d3.select("#uniteTemp").remove();
 
-                if (uniteSelectionnee && data.board[uniteSelectionnee].movement>0) {
+                if (uniteSelectionnee && data.board[uniteSelectionnee].movement > 0) {
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("h");
 
                     let bbox = element.getBBox();
@@ -342,7 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                     document.getElementById("uniteTemp").addEventListener("click", () => {
-                        if (uniteSelectionnee ) {
+                        if (uniteSelectionnee) {
                             // console.log("mouvement",uniteSelectionnee,hexagoneSelectionnee);
                             socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
                             uniteSelectionnee = "";
@@ -355,68 +366,68 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            element.addEventListener("click",(event)=>{
+            element.addEventListener("click", (event) => {
                 hexagoneSelectionnee = event.target.id.supprimerPrefixId("h");
-            
-                if(uniteSelectionnee && hexagoneSelectionnee){
-                    socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
-                    uniteSelectionnee="";
-                    hexagoneSelectionnee="";
+
+                if (uniteSelectionnee && hexagoneSelectionnee) {
+                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+                    uniteSelectionnee = "";
+                    hexagoneSelectionnee = "";
                 }
             });
         });
 
 
-        Array.from(unites).forEach(element=>{
-            element.addEventListener("mouseover",(event)=>{
+        Array.from(unites).forEach(element => {
+            element.addEventListener("mouseover", (event) => {
                 d3.select("#uniteTemp").remove();
 
                 if (uniteSelectionnee != event.target.id.supprimerPrefixId("uni") && !event.target.id.startsWith("uniteTemp")) {
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                 }
 
-                let path=dicoPathUnite[event.target.id.supprimerPrefixId("uni")] ;
+                let path = dicoPathUnite[event.target.id.supprimerPrefixId("uni")];
                 path = path ? path : data.board[event.target.id.supprimerPrefixId("uni")].path;
 
 
-                if(path){
-                    
-                    d3.select("#h"+event.target.id.supprimerPrefixId("uni")).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
+                if (path) {
 
-                    for(let i=0;i<path.length;++i){
-                        d3.select("#h"+path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
+                    d3.select("#h" + event.target.id.supprimerPrefixId("uni")).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
+
+                    for (let i = 0; i < path.length; ++i) {
+                        d3.select("#h" + path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
                     }
                 }
-             
+
             });
 
-            element.addEventListener("mouseleave",(event)=>{
-                let path=dicoPathUnite[event.target.id.supprimerPrefixId("uni")];
+            element.addEventListener("mouseleave", (event) => {
+                let path = dicoPathUnite[event.target.id.supprimerPrefixId("uni")];
                 path = path ? path : data.board[event.target.id.supprimerPrefixId("uni")].path;
 
-                if(path){
+                if (path) {
 
-                    d3.select("#h"+event.target.id.supprimerPrefixId("uni")).style("filter",null);
+                    d3.select("#h" + event.target.id.supprimerPrefixId("uni")).style("filter", null);
 
-                    for(let i=0;i<path.length;++i){
-                        d3.select("#h"+path[i]).style("filter",null);
+                    for (let i = 0; i < path.length; ++i) {
+                        d3.select("#h" + path[i]).style("filter", null);
                     }
                 }
             });
-            element.addEventListener("click",(event)=>{
+            element.addEventListener("click", (event) => {
 
-                if(data.board[event.target.id.supprimerPrefixId("uni")].name=="Hôtel de ville"){
-                    vueInfoHdv.style("display",(vueInfoHdv.style("display")=="none" ? "block" : "none"));
+                if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville") {
+                    vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
                     // vueInfoHdv variable D3
 
-                }else if(uniteSelectionnee==event.target.id.supprimerPrefixId("uni")){
-                    uniteSelectionnee="";
-                }else if(uniteSelectionnee){
-                    uniteSelectionnee=event.target.id.supprimerPrefixId("uni");
+                } else if (uniteSelectionnee == event.target.id.supprimerPrefixId("uni")) {
+                    uniteSelectionnee = "";
+                } else if (uniteSelectionnee) {
+                    uniteSelectionnee = event.target.id.supprimerPrefixId("uni");
                     //socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
-                }else if(data.board[event.target.id.supprimerPrefixId("uni")].movement>0){
-                    uniteSelectionnee=event.target.id.supprimerPrefixId("uni");
-                    
+                } else if (data.board[event.target.id.supprimerPrefixId("uni")].movement > 0) {
+                    uniteSelectionnee = event.target.id.supprimerPrefixId("uni");
+
                 }
 
             });
