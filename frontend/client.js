@@ -201,10 +201,28 @@ document.addEventListener("DOMContentLoaded", function () {
         function jouerAnimationSuivante() {
             if (index < data.length) {
                 const mouvement = data[index];
-                deplacerUnitesAnim(mouvement.départ, mouvement.arrivée, () => {
+
+                switch (data[index].type){
+
+                    case "mouvement":
+                    
+
+                    deplacerUnitesAnim(mouvement.départ, mouvement.arrivée, () => {
+                        index++; // Passe au mouvement suivant
+                        jouerAnimationSuivante(); // Lance la prochaine animation
+                    });
+                break;
+                case "mort":
+                    tuerUniteAnim(mouvement.position)
                     index++; // Passe au mouvement suivant
                     jouerAnimationSuivante(); // Lance la prochaine animation
-                });
+                break
+
+                default:
+                    index++; // Passe au mouvement suivant
+                    jouerAnimationSuivante(); // Lance la prochaine animation
+            }
+
             } else {
                 // Une fois que toutes les animations sont terminées
                 socket.emit("demandeDamier", idJoueur);

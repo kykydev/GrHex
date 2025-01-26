@@ -151,9 +151,11 @@ io.on('connection', (socket) => {
     let départ = parseInt(data.départ)
     let arrivée = parseInt(data.arrivée)
     if (partie.board[départ].type=="building"){return}
+    if (partie.board[départ].owner!=idJoueur){return }
     let route = partie.pathfindToDestination(départ,arrivée,idJoueur)
     if (route==false){return false}
     partie.board[départ].destination = arrivée
+    partie.board[départ].path = undefined
     socket.emit("mouvement",route)
 
   })
