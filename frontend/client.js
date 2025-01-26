@@ -416,10 +416,15 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             element.addEventListener("click", (event) => {
 
-                if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville") {
+                if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" && !uniteSelectionnee) {
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
                     // vueInfoHdv variable D3
 
+                }else if(data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" && uniteSelectionnee){
+                    // l'enrôlement
+                    hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
+                    socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+                    
                 }else if(uniteSelectionnee && uniteSelectionnee==event.target.id.supprimerPrefixId("uni")){
                     uniteSelectionnee="";
                 }else if(uniteSelectionnee && data.board[event.target.id.supprimerPrefixId("uni")].owner !== data.board[uniteSelectionnee].owner){
