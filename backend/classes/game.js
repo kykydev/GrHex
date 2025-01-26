@@ -495,7 +495,7 @@ class game {
         //Vérifie les morts et éventuellement la fin de partie
 
         this.checkForDead()
-        this.checkForVictory()
+        return this.checkForVictory()
 
     }
 
@@ -565,35 +565,76 @@ class game {
 
 
 getTurnWinner(){//Récupère le (ou les) joueur qui a le plus d'or, utilisé en cas de fin de partie par tours
-    var winner;
+    var winner = undefined;
     for (let z of Object.keys(this.players)){
-        if (this.players[z].eliminated==false && (winner==undefined || this.players[z].gold>winner.gold )){
+        if (this.players[z].eliminated==false && (winner==undefined || this.players[z].gold>=winner.gold )){
             winner=this.players[z]
         }
     }
 
     var winningGold = winner.gold
     for (let z of Object.keys(this.players)){
-        if (this.players[z].id!=winner.id && this.players[z].gold==winner.gold){
-            winner = []
+        if (winner==undefined || (this.players[z].id!=winner.id && this.players[z].gold==winner.gold)){
+            winner = undefined
         }
     }
-
-    if (winner==[]){
+    if (winner==undefined){
+        winner = []
         for (let z of Object.keys(this.players)){
             if (this.players[z].gold==winningGold){
-                winner.push(this.players[z])
+                winner.push(this.players[z].name)
             }
         }   
     }
 
-    console.log("gagnant(s): "+winner)
     return winner
 }
 
-checkForVictory(){//Vérifie si la partie est finie et renvoie le pseudo du vainqueur si oui
+checkForDeathVictory(){//Vérifie s'il n'y a qu'un seul joueur en vie et, si c'est le cas, renvoie son nom comme gagnant
+var nbJoueursVivants = 0
+for (let z of Object.keys(this.players)){//Vérifie le nombre de joueurs en vie
+    if (this.players[z].eliminated==false){
+        nbJoueursVivants++
+    }
+}   
+
+if (nbJoueursVivants==1){
+
+    for (let z of Object.keys(this.players)){//Renvoie le gagnant si oui
+        if (this.players[z].eliminated==false){
+            return this.players[z].name
+        }
+    }   
 
 }
+
+return false
+
+}
+
+
+checkForVictory(){//Vérifie si la partie est finie et renvoie le pseudo du vainqueur si oui
+
+
+
+    var winner = false
+
+    if (this.tourCourant==this.nbTours){
+        console.log("findepartie par tours")
+        winner = this.getTurnWinner()
+}
+
+if (winner==false){
+
+    winner = this.checkForDeathVictory()
+}
+
+
+return winner
+}
+
+
+
 
 }
 

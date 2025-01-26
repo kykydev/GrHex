@@ -145,8 +145,12 @@ io.on('connection', (socket) => {
 
 
   socket.on("mouvement",data=>{
-    var partie = parties[socket.idPartie]
+
+    var idPartie = socket.idPartie
     var idJoueur = socket.idJoueur
+    if (idPartie==undefined || idJoueur == undefined){return}
+    var partie = parties[idPartie]
+    if (partie==undefined){return}
     let départ = parseInt(data.départ)
     let arrivée = parseInt(data.arrivée)
     if (partie.board[départ].type=="building"){return}
@@ -167,11 +171,16 @@ io.on('connection', (socket) => {
     if (partie.players[idJoueur].played==true){return}//Le joueur a déjà passé son tour
     partie.players[idJoueur].played=true
     if (partie.canTour()){
-      partie.tour()
+      var winner = partie.tour()
 
-
-      
-      io.to(partie.id).emit("finTour",partie.actionsThisTurn)
+      if (winner!=false){
+        console.log("YA UN GAGNANT | "+winner)
+        io.to(partie.id).emit("PARTIEFINIE",winner)
+        delete parties[socket.idPartie]
+      }
+      else{ 
+        io.to(partie.id).emit("finTour",partie.actionsThisTurn)
+      }
     }
     else{//Le tour n'est pas fini, renvoi de l'info au client pour qu'il affiche correctement
       socket.emit("finTour",false)
@@ -187,6 +196,7 @@ io.on('connection', (socket) => {
     var idJoueur = socket.idJoueur
     if (idPartie==undefined || idJoueur == undefined){return}
     var partie = parties[idPartie]
+    if (partie==undefined){return}
     var joueur = partie.players[idJoueur]
     socket.emit("ressources",{"or":joueur.gold,"bois":joueur.wood,"pierre":joueur.stone,"cuivre":joueur.copper})
 
