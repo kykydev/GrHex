@@ -393,6 +393,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 }else if(uniteSelectionnee==event.target.id.supprimerPrefixId("uni")){
                     uniteSelectionnee="";
+                }else if(data.board[event.target.id.supprimerPrefixId("uni")].owner !== data.board[uniteSelectionnee].owner){
+                    hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
+                    socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+
                 }else if(uniteSelectionnee){
                     uniteSelectionnee=event.target.id.supprimerPrefixId("uni");
                     //socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
