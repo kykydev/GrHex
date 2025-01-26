@@ -9,6 +9,9 @@ const { player } = require('./player');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction } = require('./turnAction')
 const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ } = require('./unit')
+const {buildings} = require('../modules/buildingInfos')
+
+
 
 class game {
     constructor(nbJoueurs, nbTours) {
@@ -58,6 +61,7 @@ class game {
         if (this.board[position] == undefined) {
             this.board[position] = unit
             player.addUnit(unit, position)
+            return true
         }
         else {
             return false
@@ -92,7 +96,6 @@ class game {
             267: new paysanne(267, joueur),
             297: new hdv(297, joueur),
             357: new mineur(357,joueur),
-            244: new hoplite(244,joueur)
         }
 
         for (var position of Object.keys(boardArgolide)) {
@@ -289,7 +292,7 @@ class game {
             }
             else {//Cas où l'unité 1 n'a pas tué
                 unit2.hp = unit2.hp - damage
-                let damage = unit2.attack - unit1.defense
+                damage = unit2.attack - unit1.defense
                 if (damage < 0) { damage = 0 }
                 if (damage >= unit1.hp) {//Cas où l'unité 1 a tué
                     this.kill(unit1)
@@ -624,12 +627,47 @@ return winner
 
 
 
+build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position voulue pour le joueur concerné
+    if (nomBat==undefined || pos==undefined || joueur==undefined){return false}
+    //Checks pour voir si c'est bon
+    if (this.map.terrain[pos]=="montagne" || this.map.terrain[pos]=="eau"){return false}
+    if (this.board[pos]!=undefined){return false}
+    let batInfos = undefined
+    for (var z of buildings){
+        if (z.nom==nomBat){batInfos=z}
+    }
+    
+    var posStratège
+    for (var z of Object.keys(joueur.units)){
+        if (joueur.units[z].name=="Stratege"){
+            posStratège=z
+        }
+    }
+    if (posStratège==undefined || distance(posStratège,pos,this.map.height)>2){return false}
+    if (batInfos==undefined){return false}
+    
+    if (joueur.gold<batInfos.coûtOr || joueur.wood<batInfos.coûtBois || joueur.stone<batInfos.coûtPierre || joueur.copper<batInfos.coûtCuivre ){return false}
+    //Eval permet de transformer la string en la classe
+    console.log(batInfos.nom)
+    let uni = new (eval(batInfos.nom.toLowerCase()))(pos,joueur)
+    if (this.addUnit(uni,pos,joueur)==true){
+        joueur.gold-=batInfos.coûtOr;
+        joueur.wood-=batInfos.coûtBois;
+        joueur.stone-=batInfos.coûtPierre;
+        joueur.copper-=batInfos.coûtCuivre;
+
+
+        return true
+    }
+    else{
+        return false
+    }
+
 }
 
 
 
 
-
-
+}
 
 module.exports = { game };

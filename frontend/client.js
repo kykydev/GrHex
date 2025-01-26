@@ -192,7 +192,8 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("finTour").addEventListener("click", () => {
         socket.emit("finTour");
         socket.emit("ressources");
-    })
+    });
+
 
     socket.on("finTour", data => {
         // true si tout le monde à fini false sino
@@ -293,8 +294,12 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector('.rejoindrePartie').style.display = 'none';
         document.querySelector('.partie').style.display = 'block';
 
+        socket.emit("demandeBâtiments");
         socket.emit("demandeDamier", idJoueur);
         socket.emit('ressources');
+
+
+        
     })
 
     //----------------Pour test, faudra faire ça mieux plus tard-------------------
@@ -308,7 +313,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // muovement
     socket.on("mouvement", data => {
         dicoPathUnite[data[0]] = data
-    })
+    });
+
 
     //-----------------------------------------------------------------------
 
@@ -321,15 +327,19 @@ document.addEventListener("DOMContentLoaded", function () {
         setupBoutonScroll("damierjeu");
         ajouterUnites(data.board, "jeu");
 
+
         // mouvement
         let unites = document.getElementsByClassName("unite");
         let hexagones = document.getElementsByClassName("hexagones");
+        let batiments = document.getElementsByClassName("batiments");
+
 
         let vueInfoHdv = d3.select("#vueInfoHdv");
 
         let uniteSelectionnee = "";
         let hexagoneSelectionnee = "";
 
+        let batimentSelectionne = "";
 
 
         Array.from(hexagones).forEach(element => {
@@ -373,10 +383,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
                     uniteSelectionnee = "";
                     hexagoneSelectionnee = "";
+
+                }else if (batimentSelectionne){
+                    console.log(batimentSelectionne,hexagoneSelectionnee);
+                    socket.emit("construireBâtiment",{nomBat:batimentSelectionne,position:hexagoneSelectionnee});
+                    batimentSelectionne="";
+                    hexagoneSelectionnee="";
                 }
             });
         });
 
+
+        Array.from(batiments).forEach(element => {
+            element.addEventListener("click", (event) => {
+                batimentSelectionne = event.target.id;
+                console.log(batimentSelectionne);
+            });
+        });
 
         Array.from(unites).forEach(element => {
             element.addEventListener("mouseover", (event) => {
@@ -387,7 +410,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 let path = dicoPathUnite[event.target.id.supprimerPrefixId("uni")];
-                path = path ? path : data.board[event.target.id.supprimerPrefixId("uni")].path;
+                let pathBoard = data.board[event.target.id.supprimerPrefixId("uni")];
+
+                pathBoard = pathBoard.path ? pathBoard.path : "";
+                path = path ? path :  pathBoard;
 
 
                 if (path) {
@@ -443,6 +469,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    socket.on("demandeBâtiments", data => {
+
+        d3.select("#vueBatiments").selectAll("img").remove();
+
+        //console.log(data);
+
+        data.forEach(bat => {
+            d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/"+bat.url+".png").attr("width", "100").attr("height", "100").attr("id",bat.nom).attr("class", "batiments");
+        });
+    });
+
+
 
 });
+
+
 

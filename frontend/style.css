@@ -422,3 +422,13 @@ button:hover {
     top: 0;
     z-index: 4;
 }
+
+#vueBatiments{
+    overflow-y: auto;
+    height: 350px;
+}
+
+.batiments{
+    display:flex
+    
+}

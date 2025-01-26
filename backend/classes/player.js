@@ -10,10 +10,10 @@ class player {
         this.played = false
         this.eliminated=false
         //Init des ressources
-        this.gold = 150
-        this.wood = 0
-        this.stone = 0
-        this.copper = 0
+        this.gold = 250
+        this.wood = 100
+        this.stone = 100
+        this.copper = 100
 
         
 

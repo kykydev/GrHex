@@ -7,6 +7,7 @@ const io = new require("socket.io")(server);
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
 const {createMap} = require('./modules/mapGeneration')
 const {game} = require('./classes/game')
+const {buildings} = require('./modules/buildingInfos')
 const { turnAction,moveAction,newUnitAction,buildAction} = require('./classes/turnAction')
 app.use(express.static(__dirname));
 
@@ -15,7 +16,6 @@ const IP = "http://localhost"
 server.listen(PORT, () => {
   console.log(`Server is running on ${IP}:${PORT}`);
 });
-
 
 
 app.get("/",(request,response)=>{
@@ -153,7 +153,7 @@ io.on('connection', (socket) => {
     if (partie==undefined){return}
     let départ = parseInt(data.départ)
     let arrivée = parseInt(data.arrivée)
-    if (partie.board[départ].type=="building"){return}
+    if (partie.board[départ]==undefined || partie.board[départ].type=="building"){return}
     if (partie.board[départ].owner!=idJoueur){return }
     let route = partie.pathfindToDestination(départ,arrivée,idJoueur)
     if (route==false){return false}
@@ -203,6 +203,26 @@ io.on('connection', (socket) => {
 
   })
 
+  socket.on("demandeBâtiments",data=>{
+    if (socket.idPartie==undefined){return}
+    let partie = parties[socket.idPartie]
+    if (partie==undefined){return}
+    
+    socket.emit("demandeBâtiments",buildings)
+  })
 
+
+  socket.on("construireBâtiment",data=>{
+    if (socket.idPartie==undefined){return}
+    let partie = parties[socket.idPartie]
+    if (partie==undefined){return}
+    joueur = partie.players[socket.idJoueur]
+    if (joueur==undefined){return}
+
+    if (partie.build(data.nomBat,data.position,joueur)==true){
+      console.log("cbon")
+      socket.emit("construireBâtiment",{"nom":data.nomBat,"position":data.position})
+    }
+  })
 
 });
