@@ -446,7 +446,7 @@ class game {
         }
         }
 
-         //------Tri des actions par initiative ---------------------------
+        //------Tri des actions par initiative ---------------------------
 
         this.actions.sort((a, b) => a.priorité - b.priorité)
 
@@ -665,6 +665,20 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
 
 }
 
+
+evolve(uniPos){//Tente de faire évoluer l'unité en position pos
+    var uni = this.board[uniPos]
+    if (uni==undefined){return false}
+    var joueur = this.players[uni.owner]
+
+    if (uni.canEvolve()==false){return false}
+
+    var newUni = uni.evolution(joueur)
+    this.board[uni.position]=newUni
+    joueur.units[uni.position]=newUni
+    return true
+    
+}
 
 
 

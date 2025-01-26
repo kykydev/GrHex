@@ -23,6 +23,10 @@ class unit {
         if (dest=="X" || dest=="eau"){return false}
         return true
     }
+
+    canEvolve(){
+        return false
+    }
     
 }
 
@@ -57,6 +61,13 @@ class bucheron extends unit{
         this.wood=0
         this.maxWood=10
     }
+    canEvolve(){
+        return true
+    }
+
+    evolution(player){
+        return (new hoplite(this.position,player))
+    }
 }
 
 class mineur extends unit{
@@ -64,6 +75,13 @@ class mineur extends unit{
         super(20,10,5,2,1,"Mineur",position,player,0,1)
         this.stone=0
         this.maxStone=8
+    }
+    canEvolve(){
+        return true
+    }
+
+    evolution(player){
+        return (new hoplite(this.position,player))
     }
 }
 
@@ -98,7 +116,7 @@ class maison extends building{
 
 class tour extends building{
     constructor(position,player){
-        super(50,0,0,0,"Tour",position,player,0,2)
+        super(50,0,0,0,"Tour",position,player,2,0)
     }
 }
 

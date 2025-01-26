@@ -203,21 +203,32 @@ document.addEventListener("DOMContentLoaded", function () {
         function jouerAnimationSuivante() {
             if (index < data.length) {
                 const mouvement = data[index];
-
+                console.log("data.length: "+data.length+" index: "+index)
                 switch (data[index].type) {
 
                     case "mouvement":
-
-
-                        deplacerUnitesAnim(mouvement.départ, mouvement.arrivée, () => {
+                        if (document.getElementById("uni" + mouvement.départ)==undefined){
                             index++;
                             jouerAnimationSuivante();
-                        });
+                        }
+                        else{
+                            console.log("anim")
+                            deplacerUnitesAnim(mouvement.départ, mouvement.arrivée, () => {
+                                index++;
+                                jouerAnimationSuivante();
+                            });
+                        }
                         break;
                     case "mort":
+                        if (document.getElementById("uni" + mouvement.départ)==undefined){
+                            index++;
+                            jouerAnimationSuivante();
+                        }
+                        else{
                         tuerUniteAnim(mouvement.position)
                         index++;
                         jouerAnimationSuivante();
+                        }
                         break
 
                     default:

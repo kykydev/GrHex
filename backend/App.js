@@ -145,7 +145,6 @@ io.on('connection', (socket) => {
 
 
   socket.on("mouvement",data=>{
-
     var idPartie = socket.idPartie
     var idJoueur = socket.idJoueur
     if (idPartie==undefined || idJoueur == undefined){return}
@@ -153,7 +152,19 @@ io.on('connection', (socket) => {
     if (partie==undefined){return}
     let départ = parseInt(data.départ)
     let arrivée = parseInt(data.arrivée)
+    
+
     if (partie.board[départ]==undefined || partie.board[départ].type=="building"){return}
+
+    
+    if (casesAdjacentes(départ,partie.map.width,partie.map.height).includes(arrivée)){
+      if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Hôtel de ville" && partie.board[arrivée].owner==idJoueur){
+        if (partie.evolve(départ)){
+          return
+        }
+       }
+    }
+
     if (partie.board[départ].owner!=idJoueur){return }
     let route = partie.pathfindToDestination(départ,arrivée,idJoueur)
     if (route==false){return false}

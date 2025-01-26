@@ -259,6 +259,7 @@ function afficherUnites(unite,dam) {
 function deplacerUnitesAnim(caseDepart, caseArrivee,fun){
 
     let image = d3.select("#uni" + caseDepart);
+    console.log(image)
     let BBoxDepart = document.getElementById("h" + caseDepart).getBBox();
     let BBoxArrivee = document.getElementById("h" + caseArrivee).getBBox();
 
