@@ -424,11 +424,41 @@ button:hover {
 }
 
 #vueBatiments{
+    background-color: blue;
+    display: flex;
     overflow-y: auto;
-    height: 350px;
+    width: 80%;
+    margin-top: 5%;
 }
 
 .batiments{
-    display:flex
-    
+    background-color: #000;
+    border: 4px double #212529;
+}
+
+#statsUnite{
+    display: flex;
+    overflow: auto;
+    width: 80%;
+}
+
+#statsUnite img{
+    background-color: #000;
+    height: 150px;
+    width: 100px;
+    border: 4px double #212529;
+}
+
+#unitStats{
+    margin-left: 5%;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+    width: 100%;
+}
+
+#unitStats p{
+    width: 100%;
+    margin: 0;
 }

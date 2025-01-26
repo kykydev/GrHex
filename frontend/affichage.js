@@ -299,14 +299,17 @@ function tuerUniteAnim(caseUnite) {
  * @param {Object} unite - Object ayant les attributs name, attack, hp, defense
  */
 function statsUnite(unite){
-    let stats = d3.select("#statsUnite");
+    let statsimg = d3.select("#statsUnite");
+    statsimg.selectAll("*").remove();
+    statsimg.append("img").attr("src", "img/personnages/" + unite.couleur + "/"+ unite.name.toLowerCase() + ".png").attr("width", 180).attr("height",150);
+    let stats = d3.select("#statsUnite").append("div").attr("id", "unitStats");;
     stats.selectAll("*").remove();
-    stats.append("div").attr("id","uniteName").text("Nom : "+unite.name);
-    stats.append("div").attr("id","position").text("Position : "+unite.position);
-    stats.append("div").attr("id","mov").text("Mouvement : "+unite.movement);
-    stats.append("div").attr("id","uniteHp").text("Points de vie : "+unite.hp);
-    stats.append("div").attr("id","uniteAttack").text("Attaque : "+unite.attack);
-    stats.append("div").attr("id","uniteDefence").text("Défense : "+unite.defense);
+    stats.append("p").attr("id","uniteName").text("Nom : "+unite.name);
+    stats.append("p").attr("id","position").text("Position : "+unite.position);
+    stats.append("p").attr("id","mov").text("Mouvement : "+unite.movement);
+    stats.append("p").attr("id","uniteHp").text("Points de vie : "+unite.hp);
+    stats.append("p").attr("id","uniteAttack").text("Attaque : "+unite.attack);
+    stats.append("p").attr("id","uniteDefence").text("Défense : "+unite.defense);
     if (unite.wood!=undefined){stats.append("div").attr("id","uniteWood").text("Bois : "+unite.wood);}
     if (unite.stone!=undefined){stats.append("div").attr("id","uniteStone").text("Pierres : "+unite.stone);}
     

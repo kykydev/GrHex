@@ -476,7 +476,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //console.log(data);
 
         data.forEach(bat => {
-            d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/"+bat.url+".png").attr("width", "100").attr("height", "100").attr("id",bat.nom).attr("class", "batiments");
+            d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/"+(bat.url).toLowerCase()+".png").attr("width", "100").attr("height", "100").attr("id",bat.nom).attr("class", "batiments");
         });
     });
 
