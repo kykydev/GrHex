@@ -462,3 +462,14 @@ button:hover {
     width: 100%;
     margin: 0;
 }
+
+#vueFin{
+    display: none;
+    height: 350px;
+    width: 350px;
+    background-color: aquamarine;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 4;
+}
