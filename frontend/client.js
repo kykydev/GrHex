@@ -420,9 +420,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
                     // vueInfoHdv variable D3
 
-                }else if(uniteSelectionnee==event.target.id.supprimerPrefixId("uni")){
+                }else if(uniteSelectionnee && uniteSelectionnee==event.target.id.supprimerPrefixId("uni")){
                     uniteSelectionnee="";
-                }else if(data.board[event.target.id.supprimerPrefixId("uni")].owner !== data.board[uniteSelectionnee].owner){
+                }else if(uniteSelectionnee && data.board[event.target.id.supprimerPrefixId("uni")].owner !== data.board[uniteSelectionnee].owner){
                     hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
                     socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
 
