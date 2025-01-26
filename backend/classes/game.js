@@ -565,7 +565,30 @@ class game {
 
 
 getTurnWinner(){//Récupère le (ou les) joueur qui a le plus d'or, utilisé en cas de fin de partie par tours
+    var winner;
+    for (let z of Object.keys(this.players)){
+        if (this.players[z].eliminated==false && (winner==undefined || this.players[z].gold>winner.gold )){
+            winner=this.players[z]
+        }
+    }
 
+    var winningGold = winner.gold
+    for (let z of Object.keys(this.players)){
+        if (this.players[z].id!=winner.id && this.players[z].gold==winner.gold){
+            winner = []
+        }
+    }
+
+    if (winner==[]){
+        for (let z of Object.keys(this.players)){
+            if (this.players[z].gold==winningGold){
+                winner.push(this.players[z])
+            }
+        }   
+    }
+
+    console.log("gagnant(s): "+winner)
+    return winner
 }
 
 checkForVictory(){//Vérifie si la partie est finie et renvoie le pseudo du vainqueur si oui

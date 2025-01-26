@@ -92,7 +92,6 @@ io.on('connection', (socket) => {
           socket.emit("erreurRejoindreLobby",false)
         }
         else{
-        //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
           socket.join(partie.id)
           socket.idJoueur = joueur
           socket.idPartie = partie.id
@@ -182,6 +181,18 @@ io.on('connection', (socket) => {
 
 
   })
+
+  socket.on("ressources",data=>{//Le joueur demande les infos sur ses ressources
+    var idPartie = socket.idPartie
+    var idJoueur = socket.idJoueur
+    if (idPartie==undefined || idJoueur == undefined){return}
+    var partie = parties[idPartie]
+    var joueur = partie.players[idJoueur]
+    socket.emit("ressources",{"or":joueur.gold,"bois":joueur.wood,"pierre":joueur.stone,"cuivre":joueur.copper})
+
+
+  })
+
 
 
 });
