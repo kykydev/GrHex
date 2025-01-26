@@ -35,7 +35,7 @@ class hoplite extends unit{
 
 class stratege extends unit{
     constructor(position,player){
-        super(800,40,15,15,2,"Stratege",position,player,4,1)
+        super(150,40,15,15,2,"Stratege",position,player,4,1)
     }
 }
 class archer extends unit{

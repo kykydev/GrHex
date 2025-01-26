@@ -91,7 +91,8 @@ class game {
             237: new bucheron(237, joueur),
             267: new paysanne(267, joueur),
             297: new hdv(297, joueur),
-            357: new mineur(357,joueur)
+            357: new mineur(357,joueur),
+            244: new hoplite(244,joueur)
         }
 
         for (var position of Object.keys(boardArgolide)) {
