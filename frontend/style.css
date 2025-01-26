@@ -98,16 +98,20 @@ body {
 .haut {
     position: fixed;
     display: flex;
-    flex-direction: row;
-    /* align-items:baseline; */
-    justify-content: space-between;
+    justify-content: space-between; 
+    align-items: center;
     left: 0;
     top: 0;
-    width: 80%;
+    width: 79%;
     height: 4vh;
     background-color: #6c757d;
     border: 4px solid #212529;
     z-index: 1;
+}
+
+.ressources{
+    display: flex;
+    gap: 15px;
 }
 
 #nomPartie {
