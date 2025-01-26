@@ -78,7 +78,7 @@ class paysanne extends unit{
 }
 
 class building extends unit{
-    constructor(hp,attack,defense,initiative,movement,name,position,player,vision, range){
+    constructor(hp,attack,defense,initiative,name,position,player,vision, range){
         super(hp,attack,defense,initiative,0,name,position,player,vision,range)
         this.type="building"
     }
@@ -86,12 +86,34 @@ class building extends unit{
 
 class hdv extends building{
     constructor(position,player){
-        super(350,0,0,0,2,"Hôtel de ville",position,player,4,0)
+        super(350,0,0,0,"Hôtel de ville",position,player,4,0)
+    }
+}
+
+class maison extends building{
+    constructor(position,player){
+        super(30,0,0,0,"Maison1",position,player,0,0)
+    }
+}
+
+class tour extends building{
+    constructor(position,player){
+        super(50,0,0,0,"Tour",position,player,0,2)
+    }
+}
+
+class forge extends building{
+    constructor(position,player){
+        super(30,0,0,0,"Forge",position,player,0,0)
+    }
+}
+class champ extends building{
+    constructor(position,player){
+        super(20,0,0,0,"Champ",position,player,0,0)
     }
 }
 
 
 
 
-
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur };
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ };

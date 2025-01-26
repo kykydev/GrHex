@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
         actualiserDamier(data.width,data.height,data.terrain)
         actualiserMini(data.width,data.height,data.terrain)
         
-        map = data.terrain
-        for (z in map){map[z]="eau"}
+        map = []
+        for (z of data.infos){map.push(z.type)}
     })
 });

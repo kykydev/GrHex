@@ -174,7 +174,7 @@ io.on('connection', (socket) => {
       var winner = partie.tour()
 
       if (winner!=false){
-        console.log("YA UN GAGNANT | "+winner)
+        console.log("PARTIE "+partie.id+" TERMINEE, VAINQUEUR(S): | "+winner)
         io.to(partie.id).emit("PARTIEFINIE",winner)
         delete parties[socket.idPartie]
       }

@@ -8,7 +8,7 @@ const { createMap } = require('../modules/mapGeneration')
 const { player } = require('./player');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction } = require('./turnAction')
-const { hoplite, stratege, archer, messager, paysanne, building, hdv, bucheron, mineur } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ } = require('./unit')
 
 class game {
     constructor(nbJoueurs, nbTours) {
@@ -69,9 +69,11 @@ class game {
 
         var boardBoetie = {
             185: new stratege(185, joueur),
+
             243: new bucheron(243, joueur),
             183: new paysanne(183, joueur),
-            214: new hdv(214, joueur)
+            214: new hdv(214, joueur),
+            215: new mineur(215, joueur)
         }
 
         for (var position of Object.keys(boardBoetie)) {
@@ -82,13 +84,14 @@ class game {
         joueur.hdv = 214
 
     }
-/*
+
     initArgolide(joueur) {
         var boardArgolide = {
             328: new stratege(328, joueur),
             237: new bucheron(237, joueur),
-            207: new paysanne(207, joueur),
+            267: new paysanne(267, joueur),
             297: new hdv(297, joueur),
+            357: new mineur(357,joueur)
         }
 
         for (var position of Object.keys(boardArgolide)) {
@@ -97,30 +100,15 @@ class game {
             this.map.terrain[position] = this.map.infos[position].pattern
         }
         joueur.hdv = 297
-    }*/
-        initArgolide(joueur) {
-            var boardArgolide = {
-                186: new stratege(186, joueur),
-                237: new bucheron(237, joueur),
-                207: new paysanne(207, joueur),
-                297: new hdv(297, joueur),
-            }
-    
-            for (var position of Object.keys(boardArgolide)) {
-                this.addUnit(boardArgolide[position], position, joueur)
-                this.map.infos[position] = new hexagon("plaine", "plaine_1", position)
-                this.map.terrain[position] = this.map.infos[position].pattern
-            }
-            joueur.hdv = 297
-            joueur.units[186].hp=10
-        }
+    }
 
     initAttique(joueur) {
         var boardAttique = {
             1011: new stratege(1011, joueur),
             1043: new bucheron(1043, joueur),
             1071: new paysanne(1071, joueur),
-            1072: new hdv(1072, joueur)
+            1072: new hdv(1072, joueur),
+            1041: new mineur(1041,joueur)
         }
 
         for (var position of Object.keys(boardAttique)) {
@@ -620,7 +608,6 @@ checkForVictory(){//Vérifie si la partie est finie et renvoie le pseudo du vain
     var winner = false
 
     if (this.tourCourant==this.nbTours){
-        console.log("findepartie par tours")
         winner = this.getTurnWinner()
 }
 
