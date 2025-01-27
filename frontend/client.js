@@ -350,7 +350,8 @@ document.addEventListener("DOMContentLoaded", function () {
         appelsAjoutTextures("jeu");
         setupBoutonScroll("damierjeu");
         ajouterUnites(data.board, "jeu");
-
+        map.infos=data.infos
+        map.terrain=data.terrain
 
         // mouvement
         let unites = document.getElementsByClassName("unite");
@@ -448,7 +449,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     for (let i = 0; i < path.length; ++i) {
                         d3.select("#h" + path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
-                    }
+                        }
+                    
                 }
 
             });
@@ -463,6 +465,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     for (let i = 0; i < path.length; ++i) {
                         d3.select("#h" + path[i]).style("filter", null);
+                        if (map.terrain[path[i]][0]=='?'){
+                            d3.select("#h"+path[i]).style("filter", "brightness(0.3")
+                        }
                     }
                 }
             });

@@ -140,7 +140,14 @@ function fillMini(id,couleur){
  */
 function actualiserDamier(longueur, largeur, jeu,idHexa) {
     for (i = 0; i < longueur * largeur; i++) {
-        fill(i, "url(#"+jeu[i]+"-pattern)",idHexa)
+        if(jeu[i][0]=='?'){
+            var stringyahou = jeu[i].substring(1)
+            fill(i, "url(#"+stringyahou+"-pattern)",idHexa)
+            d3.select("#h"+i).style("filter", "brightness(0.3")
+        }   
+        else{
+            fill(i, "url(#"+jeu[i]+"-pattern)",idHexa)
+        }
     }
 }
 
