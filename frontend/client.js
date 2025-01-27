@@ -357,6 +357,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let hexagones = document.getElementsByClassName("hexagones");
         let batiments = document.getElementsByClassName("batiments");
 
+        d3.selectAll(".batTemp").remove();
+
 
         let vueInfoHdv = d3.select("#vueInfoHdv");
 
@@ -493,6 +495,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+
+    // batiments
     socket.on("demandeBâtiments", data => {
 
         d3.select("#vueBatiments").selectAll("img").remove();
@@ -504,6 +508,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    socket.on("construireBâtiment",data=>{
+        console.log("batTemp");
+        //nom position
+        let bbox = document.getElementById("h"+data.position).getBBox();
+
+        d3.select("#jeu")
+        .append("image")
+        .attr("class", "batTemp")
+        .attr("xlink:href","/img/personnages/rouge/"+data.nom.toLowerCase()+".png")
+        .attr("x", `${bbox.x - 10}`)
+        .attr("y", `${bbox.y - 15}`)
+        .attr("width", "70")
+        .attr("height", "80")
+        .style("opacity", 0.4)
+    });
 
 
 });
