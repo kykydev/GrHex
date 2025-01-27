@@ -104,7 +104,7 @@ class building extends unit{
 
 class hdv extends building{
     constructor(position,player){
-        super(350,0,0,0,"Hôtel de ville",position,player,4,0)
+        super(350,0,15,0,"Hôtel de ville",position,player,4,0)
     }
 }
 
@@ -116,22 +116,28 @@ class maison extends building{
 
 class tour extends building{
     constructor(position,player){
-        super(50,0,0,0,"Tour",position,player,2,0)
+        super(50,0,10,0,"Tour",position,player,2,0)
     }
 }
 
 class forge extends building{
     constructor(position,player){
-        super(30,0,0,0,"Forge",position,player,0,0)
+        super(30,0,5,0,"Forge",position,player,0,0)
     }
 }
 class champ extends building{
     constructor(position,player){
-        super(20,0,0,0,"Champ",position,player,0,0)
+        super(20,0,5,0,"Champ",position,player,0,0)
+    }
+}
+
+class loup extends unit{
+    constructor(position,player){
+    super(30,25,0,1,1,"Loup",position,player,0,1)
     }
 }
 
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ };
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup };

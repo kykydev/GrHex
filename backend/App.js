@@ -155,9 +155,7 @@ io.on('connection', (socket) => {
     
 
     if (partie.board[départ]==undefined || partie.board[départ].type=="building"){return}
-    console.log(data)
     if (casesAdjacentes(départ,partie.map.width,partie.map.height).includes(arrivée)){
-      console.log("tentative")
       if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Forge" && partie.board[arrivée].owner==idJoueur){
         if (partie.evolve(départ)){
           return
@@ -231,7 +229,6 @@ io.on('connection', (socket) => {
     if (joueur==undefined){return}
 
     if (partie.build(data.nomBat,data.position,joueur)==true){
-      console.log("cbon")
       socket.emit("construireBâtiment",{"nom":data.nomBat,"position":data.position})
     }
   })

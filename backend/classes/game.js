@@ -1,6 +1,6 @@
 const motsGrece = ["Acropole", "Athéna", "Aristote", "Hoplite", "Méduse", "Sparte", "Zeus", "Olympie", "Parthénon", "Delphes", "Poséidon", "Socrate", "Platon", "Léonidas", "Héraclès", "Troie", "Odyssée", "Agora", "Dionysos", "Hadès", "Archimède", "Pythagore", "Mycènes", "Déméter", "Thermopyles", "Thucydide", "Rhétorique", "Cheval de Troie", "Phalange", "Colosse", "Marathon", "Péloponnèse", "Épicure", "Périclès"];
 const adjectifs = ["Bancal", "Rigolo", "Fou", "Chancelant", "Bizarre", "Dingue", "Louche", "Zigzagant", "Moelleux", "Farfelu", "Grinçant", "Pétillant", "Foufou", "Clownesque", "Dodu", "Sautillant", "Majestueux", "Légendaire", "Glorieux", "Héroïque", "Divin", "Redoutable", "Éternel", "Victorieux", "Puissant", "Imposant", "Intrépide", "Grandiose", "Immortel", "Inébranlable", "Formidable", "Valeureux", "Épique", "Mythique", "Titanesque", "Fulgurant", "Lumineux", "Énigmatique", "Merveilleux", "Mystérieux", "Chaleureux", "Étincelant", "Rêveur", "Apaisant", "Charmant", "Bucolique", "Rayonnant", "Aérien", "Coloré", "Féerique", "Paisible", "Onirique", "Chatoyant", "Doux", "Fantaisiste", "Éblouissant"];
-const couleurs = ["rouge", "bleu", "vert", "jaune", "jaune"]
+const couleurs = ["rouge", "bleu", "vert", "jaune"]
 
 const { v4: uuidv4 } = require('uuid');
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('../modules/backendHex');
@@ -8,7 +8,7 @@ const { createMap } = require('../modules/mapGeneration')
 const { player } = require('./player');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction } = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
 
@@ -26,6 +26,11 @@ class game {
         this.positionsDepart = { "beotie": 214, "attique": 1072, "argolide": 297 }
         this.name = motsGrece[Math.floor(Math.random() * motsGrece.length)] + "-" + adjectifs[Math.floor(Math.random() * adjectifs.length)]
         this.actionsThisTurn = []
+
+      
+
+
+
     }
 
     currentPlayers() { return Object.keys(this.players).length }
@@ -142,6 +147,10 @@ class game {
 
             }
         }
+
+
+
+
     }
 
 
@@ -183,8 +192,8 @@ class game {
         var retour = { "height": this.map.height, "width": this.map.width, "infos": [], "terrain": [], "board": {} }
 
         for (var z = 0; z < this.map.height * this.map.width; z++) {
-            retour.infos.push(new hexagon("?", "?", z))
-            retour.terrain.push("?")
+            retour.infos.push(new hexagon("?"+this.map.infos[z].type, "?"+this.map.infos[z].pattern,z))
+            retour.terrain.push("?"+this.map.terrain[z])
         }
 
 
@@ -574,7 +583,7 @@ getTurnWinner(){//Récupère le (ou les) joueur qui a le plus d'or, utilisé en 
         winner = []
         for (let z of Object.keys(this.players)){
             if (this.players[z].gold==winningGold){
-                winner.push(this.players[z].name)
+                winner.push(this.players[z])
             }
         }   
     }
@@ -648,7 +657,6 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
     
     if (joueur.gold<batInfos.coûtOr || joueur.wood<batInfos.coûtBois || joueur.stone<batInfos.coûtPierre || joueur.copper<batInfos.coûtCuivre ){return false}
     //Eval permet de transformer la string en la classe
-    console.log(batInfos.nom)
     let uni = new (eval(batInfos.nom.toLowerCase()))(pos,joueur)
     if (this.addUnit(uni,pos,joueur)==true){
         joueur.gold-=batInfos.coûtOr;
@@ -667,7 +675,6 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
 
 
 evolve(uniPos){//Tente de faire évoluer l'unité en position pos
-    console.log("évolution ")
     var uni = this.board[uniPos]
     if (uni==undefined){return false}
     var joueur = this.players[uni.owner]
