@@ -667,6 +667,7 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
 
 
 evolve(uniPos){//Tente de faire évoluer l'unité en position pos
+    console.log("évolution ")
     var uni = this.board[uniPos]
     if (uni==undefined){return false}
     var joueur = this.players[uni.owner]

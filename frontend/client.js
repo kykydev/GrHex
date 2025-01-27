@@ -470,7 +470,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
                     // vueInfoHdv variable D3
 
-                }else if(data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" && uniteSelectionnee){
+                }else if(data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" && uniteSelectionnee){
                     // l'enrôlement
                     hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
                     socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});

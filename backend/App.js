@@ -155,10 +155,10 @@ io.on('connection', (socket) => {
     
 
     if (partie.board[départ]==undefined || partie.board[départ].type=="building"){return}
-
-    
+    console.log(data)
     if (casesAdjacentes(départ,partie.map.width,partie.map.height).includes(arrivée)){
-      if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Hôtel de ville" && partie.board[arrivée].owner==idJoueur){
+      console.log("tentative")
+      if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Forge" && partie.board[arrivée].owner==idJoueur){
         if (partie.evolve(départ)){
           return
         }
