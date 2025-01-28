@@ -33,31 +33,31 @@ class unit {
 
 class hoplite extends unit{
     constructor(position,player){
-        super(100,15,5,5,2,"Hoplite",position,player,0,1)
+        super(100,15,5,5,2,"Hoplite",position,player,1,1)
     }
 }
 
 class stratege extends unit{
     constructor(position,player){
-        super(150,40,15,15,2,"Stratege",position,player,4,1)
+        super(150,40,15,15,2,"Stratege",position,player,3,1)
     }
 }
 class archer extends unit{
     constructor(position,player){
-        super(70,10,0,1,1,"Archer",position,player,0,2)
+        super(70,10,0,1,1,"Archer",position,player,2,2)
         this.range=2
     }
 }
 
 class messager extends unit{
     constructor(position,player){
-        super(30,0,15,7,3,"Messager",position,player,0,1)
+        super(30,0,15,7,3,"Messager",position,player,2,1)
     }
 }
 
 class bucheron extends unit{
     constructor(position,player){
-        super(25,10,5,2,1,"Bûcheron",position,player,0,1)
+        super(25,10,5,2,1,"Bûcheron",position,player,1,1)
         this.wood=0
         this.maxWood=10
     }
@@ -72,7 +72,7 @@ class bucheron extends unit{
 
 class mineur extends unit{
     constructor(position,player){
-        super(20,10,5,2,1,"Mineur",position,player,0,1)
+        super(20,10,5,2,1,"Mineur",position,player,1,1)
         this.stone=0
         this.maxStone=8
     }
@@ -87,7 +87,7 @@ class mineur extends unit{
 
 class paysanne extends unit{
     constructor(position,player){
-        super(15,0,0,1,1,"Paysanne",position,player,0,1)
+        super(15,0,0,1,1,"Paysanne",position,player,1,1)
         this.wood=0
         this.stone=0
         this.maxStone=5
@@ -104,7 +104,7 @@ class building extends unit{
 
 class hdv extends building{
     constructor(position,player){
-        super(350,0,15,0,"Hôtel de ville",position,player,4,0)
+        super(350,0,15,0,"Hôtel de ville",position,player,0,0)
     }
 }
 
@@ -116,7 +116,7 @@ class maison extends building{
 
 class tour extends building{
     constructor(position,player){
-        super(50,0,10,0,"Tour",position,player,2,0)
+        super(50,0,10,0,"Tour",position,player,4,0)
     }
 }
 

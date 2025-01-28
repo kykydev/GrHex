@@ -82,7 +82,8 @@ class game {
             243: new bucheron(243, joueur),
             183: new paysanne(183, joueur),
             214: new hdv(214, joueur),
-            215: new mineur(215, joueur)
+            215: new mineur(215, joueur),
+            95: new tour(95,joueur)
         }
 
         for (var position of Object.keys(boardBoetie)) {
@@ -189,6 +190,7 @@ class game {
     calculVue(player) {//Crée la vue qui s'affichera pour le joueur, player étant un id
         var joueur = this.players[player]
 
+        //Initialisation du tableau vide pour le retour
         var retour = { "height": this.map.height, "width": this.map.width, "infos": [], "terrain": [], "board": {} }
 
         for (var z = 0; z < this.map.height * this.map.width; z++) {
@@ -197,18 +199,80 @@ class game {
         }
 
 
-        for (var uni of Object.keys(joueur.units)) {
-            var casesVues = this.calculVision(joueur.units[uni])
-            for (var z of casesVues) {
-                var posi = z.info.pos
+        let visions = {}//Donne les cases vues par l'unité en position i pour i une case
+        let comps = {}//Donne la comp (=groupe de tours couvrant) de l'unité dans la case
+        let tours = []//Liste des tours vues
+        var posStratège;
 
-                retour.infos[posi] = z.info
-                retour.terrain[posi] = z.terrain
-                if (z.board != undefined) { retour.board[posi] = z.board }
+        for (var uni of Object.keys(joueur.units)) {//Itération au travers des unités pour trouver les tours et le stratège
+            var unité = joueur.units[uni]
+            visions[uni]=this.calculVision(unité)
+            if (unité.name=="Tour"){
+                tours.push(uni)
+                }
+            if (unité.name=="Stratege"){posStratège=uni}
+                comps[uni]=uni
+            }
+            //ensuite: On va itérer dans toutes les tours et, pour chacune des cases vues de la tour, mettre les unités en question dans la même comp qu'elle. 
+            // Si la case en question contient une tour, on change toutes les unités qui sont dans la même comp que ladîte tour (tour2) dans celle de la tour qu'on itère (tour1)
+            // Finalement, on renvoie toutes les cases vues par toutes les unités dans la même comp que le stratège
+
+            for (var z of tours){//Déterminer les chaînes de tours
+                for (var posTest of visions[z]){
+                    if (joueur.units[posTest.info.pos]!=undefined && comps[z]!=comps[posTest.info.pos] && posTest.board.name=="Tour"){
+                        comps[posTest.info.pos]=comps[z]
+                        for (var zz of Object.keys(comps)){
+                            if (comps[zz]==comps[posTest.info.pos]){
+                                comps[zz]=comps[z]
+                        }
+                    }
+                }
             }
         }
 
+        
+        
+            for (var z of visions[posStratège]){//Récupération des unités vues par le stratège ou la chaîne
+                if (comps[z.info.pos]!=undefined){
+                    for (var zz of Object.keys(comps)){
+                        if (comps[zz]==comps[z.info.pos]){
+                            comps[zz]=comps[posStratège]
+                        }
+                    }
+                    comps[z.info.pos]=comps[posStratège]
+                }
+            }
+
+            for (var z of tours){//
+                if (comps[z]==comps[posStratège]){
+                for (var posTest of visions[z]){
+                    if (joueur.units[posTest.info.pos]!=undefined){
+                        comps[posTest.info.pos]=comps[z]
+                        }
+                    }
+                }
+            }
+
+
+            for (var z of Object.keys(visions)){//Ajout de toutes les cases vues par la chaîne
+                retour.infos[z] = this.map.infos[z]
+                retour.terrain[z] = this.map.terrain[z]
+               retour.board[z] = this.board[z] 
+                if (comps[z]==comps[posStratège]){
+                    for (var posi of visions[z]){
+                        retour.infos[posi.info.pos] = posi.info
+                        retour.terrain[posi.info.pos] = posi.terrain
+                        if (posi.board != undefined) { retour.board[posi.info.pos] = posi.board }
+                    }
+                }
+            }
+            
+        
+
+
+
         return retour
+        
 
     }
 
@@ -675,7 +739,7 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
 
 
 evolve(uniPos){//Tente de faire évoluer l'unité en position pos
-    var uni = this.board[uniPos]
+        var uni = this.board[uniPos]
     if (uni==undefined){return false}
     var joueur = this.players[uni.owner]
 
