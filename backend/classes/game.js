@@ -7,7 +7,7 @@ const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFi
 const { createMap } = require('../modules/mapGeneration')
 const { player } = require('./player');
 const { hexagon } = require('./hexagon');
-const { turnAction, moveAction, newUnitAction, buildAction } = require('./turnAction')
+const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction } = require('./turnAction')
 const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
@@ -66,6 +66,7 @@ class game {
         if (this.board[position] == undefined) {
             this.board[position] = unit
             player.addUnit(unit, position)
+            if (this.board[position].name=="Maison"){this.board[position].generateVillager(position,player,this)}
             return true
         }
         else {
@@ -78,7 +79,6 @@ class game {
 
         var boardBoetie = {
             185: new stratege(185, joueur),
-
             243: new bucheron(243, joueur),
             183: new paysanne(183, joueur),
             214: new hdv(214, joueur),
@@ -92,6 +92,7 @@ class game {
             this.map.terrain[position] = this.map.infos[position].pattern
         }
         joueur.hdv = 214
+        this.board[187]=new loup(187)
 
     }
 
@@ -241,7 +242,7 @@ class game {
                     }
                     comps[z.info.pos]=comps[posStratège]
                 }
-            }
+            }   
 
             for (var z of tours){//
                 if (comps[z]==comps[posStratège]){
@@ -310,11 +311,11 @@ class game {
 
         let unitOwner = this.players[unit.owner]
         if (this.board[destination] == undefined) {//Cas où la case est libre
-            delete unitOwner.units[unit.position]
+            if (unitOwner!=undefined){delete unitOwner.units[unit.position]}
             delete this.board[unit.position]
             this.board[destination] = unit
             unit.position = destination
-            unitOwner.units[unit.position] = unit
+            if (unitOwner!=undefined){unitOwner.units[unit.position] = unit}
             unit.movementLeft -= this.moveCost(unit, destination)
             return true
         }
@@ -325,11 +326,11 @@ class game {
 
             let res = this.combat(unit, target)
             if (res == 2) {
-                delete unitOwner.units[unit.position]
+                if (unitOwner!=undefined) {delete unitOwner.units[unit.position]}
                 delete this.board[unit.position]
                 this.board[destination] = unit
                 unit.position = destination
-                unitOwner.units[unit.position] = unit
+                if (unitOwner!=undefined){unitOwner.units[unit.position] = unit}
                 unit.movementLeft -= this.moveCost(unit, destination)
                 return true
             }
@@ -348,7 +349,7 @@ class game {
         if (unit == undefined) { return false }
         this.actionsThisTurn.push({ "type": "mort", "position": unit.position })
         delete this.board[unit.position]
-        delete this.players[unit.owner].units[unit.position]
+        if (this.players[unit.owner]!=undefined && this.players[unit.owner].units[unit.position]!=undefined){delete this.players[unit.owner].units[unit.position]}
         return true
     }
 
@@ -508,9 +509,18 @@ class game {
         for (let uni of Object.keys(this.board)) {
             this.board[uni].movementLeft = this.board[uni].movement
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
+            if (this.board[uni].destination == undefined) { this.board[uni].destination = this.board[uni].findGoal(this)}
             if (this.board[uni].destination != undefined) {
-                if (this.board[uni].type != "building" && this.board[uni].path != undefined && this.board[uni].path.length == 0) { this.board[uni].path = undefined }//Reset les path vides
+                if (this.board[uni].type != "building") { this.board[uni].path = this.pathfindToDestination(
+                    this.board[uni].position, this.board[uni].destination, this.board[uni].owner);
+                        if (this.board[uni].path==false){this.board[uni].path=undefined}
+                        else{this.board[uni].path.shift()}}//Reset les path 
+                if (this.board[uni].owner!="Système"){
                 this.actions.push(new moveAction(this.board[uni].position, this.players[this.board[uni].owner]))
+                }
+                else{
+                    this.actions.push(new neutralMoveAction(this.board[uni].position))                 
+                }
             }
             
         //Récolte des ressources en début de tour
@@ -520,7 +530,6 @@ class game {
         }
 
         //------Tri des actions par initiative ---------------------------
-
         this.actions.sort((a, b) => a.priorité - b.priorité)
 
         //Activation des actions
@@ -529,7 +538,7 @@ class game {
                 case "movement":
                     let uni = this.board[act.pos]
                     this.moveTurn(uni)
-                    this.testDéposeRessources(uni)
+                    if (uni.owner!="Système"){this.testDéposeRessources(uni)}
                     break;
 
                 default:
@@ -727,8 +736,6 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
         joueur.wood-=batInfos.coûtBois;
         joueur.stone-=batInfos.coûtPierre;
         joueur.copper-=batInfos.coûtCuivre;
-
-
         return true
     }
     else{

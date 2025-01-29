@@ -15,6 +15,13 @@ constructor(pos,joueur){
 }
 }
 
+class neutralMoveAction extends turnAction{
+    constructor(pos){
+        super("movement",(120))
+        this.pos = pos
+    }
+    }
+
 
 class newUnitAction extends turnAction{
     constructor(caserne,joueur){
@@ -35,4 +42,4 @@ class buildAction extends turnAction{
 
 
 
-module.exports = { turnAction,moveAction,newUnitAction,buildAction};
+module.exports = { turnAction,moveAction,newUnitAction,buildAction,neutralMoveAction};

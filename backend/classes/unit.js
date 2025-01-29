@@ -1,3 +1,4 @@
+const { casesAdjacentes } = require("../modules/backendHex")
 
 class unit {
     constructor(hp,attack,defense,initiative,movement,name,position,player,vision, range){
@@ -27,13 +28,16 @@ class unit {
     canEvolve(){
         return false
     }
+    findGoal(partie){
+        return undefined
+    }
     
 }
 
 
 class hoplite extends unit{
     constructor(position,player){
-        super(100,15,5,5,2,"Hoplite",position,player,1,1)
+        super(50,15,5,5,2,"Hoplite",position,player,1,1)
     }
 }
 
@@ -44,7 +48,7 @@ class stratege extends unit{
 }
 class archer extends unit{
     constructor(position,player){
-        super(70,10,0,1,1,"Archer",position,player,2,2)
+        super(30,10,0,1,1,"Archer",position,player,2,2)
         this.range=2
     }
 }
@@ -110,7 +114,20 @@ class hdv extends building{
 
 class maison extends building{
     constructor(position,player){
-        super(30,0,0,0,"Maison1",position,player,0,0)
+        super(30,0,0,0,"Maison",position,player,0,0)
+    }
+
+    generateVillager(position,player,game){
+        let villageois = ["mineur","bucheron","paysanne"]
+        let villageoisChois = villageois[Math.floor(Math.random()*villageois.length)]
+        var cases = casesAdjacentes(position,game.map.width,game.map.height)
+        for (var z of cases){
+            if (game.board[z]==undefined){
+            let uni = new (eval(villageoisChois))(z,player)
+            return true
+            }
+        }
+        return false
     }
 }
 
@@ -131,11 +148,53 @@ class champ extends building{
     }
 }
 
-class loup extends unit{
-    constructor(position,player){
-    super(30,25,0,1,1,"Loup",position,player,0,1)
+class creatureNeutre{
+    constructor(hp,attack,defense,initiative,movement,name,position,vision, range){
+        this.hp=hp
+        this.maxhp = this.hp
+       this.couleur="blanc"
+       this.attack=attack
+       this.defense=defense
+       this.range=range
+       this.initiative=initiative
+       this.movement=movement
+       this.movementLeft = this.movement    
+       this.name=name
+        this.position=position
+        this.owner="Système"
+        this.vision=vision
+        this.destination = undefined
+        this.path = undefined
+        this.type="unit"    }
+
+        canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
+            if (dest=="X" || dest=="eau"){return false}
+            return true
+        }
+    
+        canEvolve(){
+            return false
+        }
+}
+
+class loup extends creatureNeutre{
+    constructor(position){
+        super(30,20,4,4,1,"Loup",position,2,1)
+    }
+
+
+    findGoal(partie){
+        var tablo = []
+        for (var z of casesAdjacentes(this.position,partie.map.width,partie.map.height)){
+            for (var zz of casesAdjacentes(z,partie.map.width,partie.map.height)){
+                if (partie.board[zz]!=undefined && partie.board[zz].owner!=this.owner && partie.board[zz].defense<this.attack){return zz}
+                tablo.push(zz)
+            }
+        }
+        return tablo[Math.floor(Math.random()*tablo.length)]
     }
 }
+
 
 
 

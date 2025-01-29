@@ -250,7 +250,7 @@ function afficherUnites(unite,dam) {
         let couleur = unite.couleur;
         switch(couleur){
             case "rouge":
-                couleur = "red";
+                couleur = "darkred";
                 break;
             case "vert":
                 couleur = "green";
@@ -261,6 +261,9 @@ function afficherUnites(unite,dam) {
             case "jaune":
                 couleur = "yellow";
                 break;
+            case "blanc":
+                couleur="aliceblue"
+                break
         }
         
         d3.select("#"+dam)
