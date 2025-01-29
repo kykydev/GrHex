@@ -251,15 +251,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         if(data){
             d3.select("#finTourData").selectAll("*").remove();
+            d3.select(".bouton1").selectAll("p").remove();
 
             d3.select("#vueBatiments").style("display","flex");
             d3.select("#statsUnite").style("display","flex");
             d3.select("#finTour").style("display","block");
             jouerAnimationSuivante();
         }else{
-            d3.select("#finTourData").append("p").text("en attente de tous les joueurs");
-            d3.select("#vueBatiments").style("display","none");
-            d3.select("#statsUnite").style("display","none");
+            d3.select(".bouton1").selectAll("p").remove();
+            d3.select(".bouton1").append("p").text("En attente des autres joueurs");
+            //d3.select("#vueBatiments").style("display","none");
+            //d3.select("#statsUnite").style("display","block");
             d3.select("#finTour").style("display","none");
         }
 
@@ -546,6 +548,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(data);
         //nom position
         let bbox = document.getElementById("h"+data.position).getBBox();
+        let pos = document.getElementById("h"+data.position);
 
         d3.select("#jeu")
         .append("image")
@@ -556,6 +559,16 @@ document.addEventListener("DOMContentLoaded", function () {
         .attr("width", "70")
         .attr("height", "80")
         .style("opacity", 0.4)
+        .on("mouseover", () => {
+            d3.select(pos)
+                .attr("stroke", "orange")
+                .style("stroke-width", 2);
+        })
+        .on("mouseout", () => {
+            d3.select(pos)
+                .attr("stroke", "transparent")
+                .style("stroke-width", 0)
+            });
     });
 
 

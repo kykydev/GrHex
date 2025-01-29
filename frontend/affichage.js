@@ -246,8 +246,23 @@ function afficherUnites(unite,dam) {
     let hexagone = document.getElementById("h" + unite.position);
     if (hexagone) {
         let bbox = hexagone.getBBox();
-
-
+        
+        let couleur = unite.couleur;
+        switch(couleur){
+            case "rouge":
+                couleur = "red";
+                break;
+            case "vert":
+                couleur = "green";
+                break;
+            case "bleu":
+                couleur = "blue";
+                break;
+            case "jaune":
+                couleur = "yellow";
+                break;
+        }
+        
         d3.select("#"+dam)
             .append("image")
             .attr("class","unite")
@@ -257,7 +272,17 @@ function afficherUnites(unite,dam) {
             .attr("width","70")
             .attr("height","80")
             .attr("id","uni"+unite.position)
-            .on("mouseover",()=>statsUnite(unite));
+            .on("mouseover", () => {
+                statsUnite(unite);
+                d3.select(hexagone)
+                    .attr("stroke", `${couleur}`)
+                    .style("stroke-width", 2);
+            })
+            .on("mouseout", () => {
+                d3.select(hexagone)
+                    .attr("stroke", "transparent")
+                    .style("stroke-width", 0)
+                });
     } else {
         console.log("L'élément avec l'ID h" + unite.position + " n'existe pas.");
     }
