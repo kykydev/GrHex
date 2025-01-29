@@ -1,12 +1,17 @@
-
+// ajoute la méthode qui supprime un prefix au String
 String.prototype.supprimerPrefixId = function (prefix) {
     return this.startsWith(prefix) ? this.slice(prefix.length) : this.toString();
 }
 
-
+// dico des chemins de chaque unité du jeu
 let dicoPathUnite = {};
 //-------------------Fonction qui déplace vue damier selon boutons/touches-----------------
 
+
+/**
+ * créer les événement pour se déplacer sur la carte 
+ * @param {string} id 
+ */
 function setupBoutonScroll(id) {
     let scrollAmount = 15;
     const plateaujeu = document.getElementById(id);
@@ -130,12 +135,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const pseudoInput = document.getElementById("usernameInput")
 
     socket.emit("getListeParties", "")
+    
     socket.on("getListeParties", data => {
         afficherListeParties(data);
 
     });
 
-
+    /**
+     * refraichie la liste des parties disponibles
+     */
     function refreshGame() {
         console.log("je rafraichi")
         if (idPartie == undefined) {
@@ -166,6 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
+    // séléction des citées dans le lobby d'une partie
     beotie.addEventListener("click", () => {
         maCite = "beotie";
         fill(cite.beotie, "red", "prev");
@@ -196,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     socket.on("finTour", data => {
-        // true si tout le monde à fini false sino
+        // true si tout le monde à fini false sinon
 
         let index = 0;
 
@@ -240,8 +249,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 socket.emit("demandeDamier", idJoueur);
             }
         }
+        if(data){
+            d3.select("#finTourData").selectAll("*").remove();
 
-        jouerAnimationSuivante();
+            d3.select("#vueBatiments").style("display","flex");
+            d3.select("#statsUnite").style("display","flex");
+            d3.select("#finTour").style("display","block");
+            jouerAnimationSuivante();
+        }else{
+            d3.select("#finTourData").append("p").text("en attente de tous les joueurs");
+            d3.select("#vueBatiments").style("display","none");
+            d3.select("#statsUnite").style("display","none");
+            d3.select("#finTour").style("display","none");
+        }
+
+        
 
     });
 
@@ -255,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelector('.ressources').innerHTML = ressources;
 
-    })
+    });
 
     socket.on("lobbyPartie", (data) => {
         //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
@@ -321,11 +343,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    // muovement
+    // ajoute un chemin dans le dico des déplacements
     socket.on("mouvement", data => {
         dicoPathUnite[data[0]] = data
     });
 
+    // termine une partie 
     socket.on("PARTIEFINIE", data => {
         console.log(data);
         let vueFin = d3.select("#vueFin");
@@ -341,19 +364,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     //-----------------------------------------------------------------------
-
+    // demande le damier
     socket.on("demandeDamier", data => {
+        // data {board,height,infos,terrain,width}
+
         terrain = data.terrain
         board = terrain.board
-        créerDamier(data.height, data.width, 32, "jeu", "h") // damier de jeu
-        actualiserDamier(data.width, data.height, data.terrain, "h")
+        créerDamier(data.height, data.width, 32, "jeu", "h") 
+        actualiserDamier(data.width, data.height, data.terrain, "h") 
         appelsAjoutTextures("jeu");
         setupBoutonScroll("damierjeu");
         ajouterUnites(data.board, "jeu");
         map.infos=data.infos
         map.terrain=data.terrain
 
-        // mouvement
+        // déplacement des unités
         let unites = document.getElementsByClassName("unite");
         let hexagones = document.getElementsByClassName("hexagones");
         let batiments = document.getElementsByClassName("batiments");
@@ -378,6 +403,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     let bbox = element.getBBox();
 
+                    // ajoute la prévisualisation, si une unité est séléctionnée
                     d3.select("#jeu")
                         .append("image")
                         .attr("id", "uniteTemp")
@@ -391,7 +417,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     document.getElementById("uniteTemp").addEventListener("click", () => {
                         if (uniteSelectionnee) {
-                            // console.log("mouvement",uniteSelectionnee,hexagoneSelectionnee);
+                            // bouge l'unité
                             socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
                             uniteSelectionnee = "";
                             hexagoneSelectionnee = "";
@@ -422,9 +448,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         Array.from(batiments).forEach(element => {
+            // permet de placer un batiment
             element.addEventListener("click", (event) => {
                 batimentSelectionne = event.target.id;
-                console.log(batimentSelectionne);
             });
         });
 
@@ -442,8 +468,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 pathBoard = pathBoard.path ? pathBoard.path : "";
                 path = path ? path :  pathBoard;
 
-
-                if (path) {
+                // ajouter un chemin en surbrillance
+                if (path && data.board[event.target.id.supprimerPrefixId("uni")].type != "building") {
 
                     d3.select("#h" + event.target.id.supprimerPrefixId("uni")).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
 
@@ -459,7 +485,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 let path = dicoPathUnite[event.target.id.supprimerPrefixId("uni")];
                 path = path ? path : data.board[event.target.id.supprimerPrefixId("uni")].path;
 
-                if (path) {
+                // supprimer le path en surbrillance
+
+                if (path ) {
 
                     d3.select("#h" + event.target.id.supprimerPrefixId("uni")).style("filter", null);
 
@@ -514,7 +542,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     socket.on("construireBâtiment",data=>{
-        console.log("batTemp");
+
+        console.log(data);
         //nom position
         let bbox = document.getElementById("h"+data.position).getBBox();
 
