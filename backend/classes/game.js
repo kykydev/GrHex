@@ -66,7 +66,8 @@ class game {
         if (this.board[position] == undefined) {
             this.board[position] = unit
             player.addUnit(unit, position)
-            if (this.board[position].name=="Maison"){this.board[position].generateVillager(position,player,this)}
+            if (this.board[position].name=="Maison"){this.board[position].generateVillager(position,player,this);          
+            }
             return true
         }
         else {

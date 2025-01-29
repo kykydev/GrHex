@@ -124,6 +124,7 @@ class maison extends building{
         for (var z of cases){
             if (game.board[z]==undefined){
             let uni = new (eval(villageoisChois))(z,player)
+            game.addUnit(uni,z,player)
             return true
             }
         }

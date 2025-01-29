@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         break;
                     case "mort":
-                        if (document.getElementById("uni" + mouvement.départ)==undefined){
+                        if (document.getElementById("uni" + mouvement.position)==undefined){
                             index++;
                             jouerAnimationSuivante();
                         }
