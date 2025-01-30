@@ -138,6 +138,7 @@ io.on('connection', (socket) => {
 
   socket.on("demandeDamier",data=>{//Socket demandant le damier qui doit s'afficher pendant la partie côté client
     var partie = parties[socket.idPartie]
+    if (partie==undefined){return}
     if (partie.players[socket.idJoueur].eliminated){return}
     var retour = partie.calculVue(socket.idJoueur)
     socket.emit("demandeDamier",retour)

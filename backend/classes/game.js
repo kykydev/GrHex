@@ -77,6 +77,7 @@ class game {
 
 
     initBeotie(joueur) {
+        joueur.hdv = 214
 
         var boardBoetie = {
             185: new stratege(185, joueur),
@@ -92,11 +93,11 @@ class game {
             this.map.infos[position] = new hexagon("plaine", "plaine_1", position)
             this.map.terrain[position] = this.map.infos[position].pattern
         }
-        joueur.hdv = 214
 
     }
 
     initArgolide(joueur) {
+        joueur.hdv = 297
         var boardArgolide = {
             328: new stratege(328, joueur),
             237: new bucheron(237, joueur),
@@ -110,10 +111,10 @@ class game {
             this.map.infos[position] = new hexagon("plaine", "plaine_1", position)
             this.map.terrain[position] = this.map.infos[position].pattern
         }
-        joueur.hdv = 297
     }
 
     initAttique(joueur) {
+        joueur.hdv = 1072
         var boardAttique = {
             1011: new stratege(1011, joueur),
             1043: new bucheron(1043, joueur),
@@ -127,7 +128,6 @@ class game {
             this.map.infos[position] = new hexagon("plaine", "plaine_1", position)
             this.map.terrain[position] = this.map.infos[position].pattern
         }
-        joueur.hdv = 1072
 
     }
 
@@ -183,6 +183,8 @@ class game {
         }
         for (var z of positionsVues) {
             retour.push({ "info": this.map.infos[z], "terrain": this.map.infos[z].pattern, "board": this.board[z] })
+            if ((unit.name=="Paysanne" || unit.name=="Bûcheron") && this.map.infos[z].type=="foret" && unit.knownForests.includes(z)==false){unit.knownForests.push(z)}
+            if ((unit.name=="Paysanne" || unit.name=="Mineur") && this.map.infos[z].type=="carriere" && unit.knownCarrieres.includes(z)==false){unit.knownCarrieres.push(z)}
         }
         return retour
 
@@ -419,7 +421,6 @@ class game {
                     this.map.infos[position] = new hexagon("plaine", "plaine_1", position)
                     this.map.terrain[position]="plaine_1"
                 }
-                else{uni.lastCarriere = position}
 
                 break
 
@@ -431,7 +432,6 @@ class game {
                     this.map.infos[position] = new hexagon("plaine", "plaine_1", position)
                     this.map.terrain[position]="plaine_1"
                 }
-                else{uni.lastForet = position}
                 break
         }
     }
@@ -442,14 +442,14 @@ class game {
         switch (uni.name) {
             case "Mineur":
                 if (this.map.infos[uni.position].type == "carriere" && this.map.infos[uni.position].nbStone > 0) {
-                    if (uni.stone>=uni.maxStone){return}
+                    if (uni.canRécolte(this)==false){return}
                     this.récolte(uni, uni.position)
                 }
                 break
 
             case "Bûcheron":
                 if (this.map.infos[uni.position].type == "foret" && this.map.infos[uni.position].nbTrees > 0) {
-                    if (uni.wood>=uni.maxWood){return}
+                    if (uni.canRécolte(this)==false){return}
                     this.récolte(uni, uni.position)
                 }
                 break
@@ -457,11 +457,11 @@ class game {
             case "Paysanne":
 
             if (this.map.infos[uni.position].type == "foret" && this.map.infos[uni.position].nbTrees > 0) {
-                if (uni.wood>=uni.maxWood){return}
+                if (uni.canRécolte(this)==false){return}
                 this.récolte(uni, uni.position)}
             
             if (this.map.infos[uni.position].type == "carriere" && this.map.infos[uni.position].nbStone > 0) {
-                if (uni.stone>=uni.maxStone){return}
+                if (uni.canRécolte(this)==false){return}
                 this.récolte(uni, uni.position)}
 
             break
@@ -511,7 +511,7 @@ class game {
             this.board[uni].movementLeft = this.board[uni].movement
             if (this.board[uni].name=="Champ"){this.players[this.board[uni].owner].gold++}
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
-            if (this.board[uni].destination == undefined) { this.board[uni].destination = this.board[uni].findGoal(this)}
+            this.board[uni].destination = this.board[uni].findGoal(this)            
             if (this.board[uni].destination != undefined) {
                 if (this.board[uni].type != "building") { this.board[uni].path = this.pathfindToDestination(
                     this.board[uni].position, this.board[uni].destination, this.board[uni].owner);
@@ -765,8 +765,8 @@ evolve(uniPos){//Tente de faire évoluer l'unité en position pos
 SpawnLoup(){//Fait apparaître un nombre aléatoire de loups sur des cases aléatoires de la carte
 let nbLoups=0
 var rand = Math.random()
-if (rand<0.15){nbLoups=1}
-if (rand>0.95){nbLoups=2}
+if (rand<0.7){nbLoups=1}
+if (rand>0.02){nbLoups=2}
 
     while (nbLoups>0){
 
@@ -797,7 +797,6 @@ if (rand>0.95){nbLoups=2}
             if (peutAjouter){
                 this.board[position]=new loup(position)
                 ajouted=true
-                console.log("nouveau loup en "+position)
             }
         }
         nbLoups--

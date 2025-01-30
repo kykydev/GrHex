@@ -1,4 +1,4 @@
-const { casesAdjacentes } = require("../modules/backendHex")
+const { casesAdjacentes, distance } = require("../modules/backendHex")
 
 class unit {
     constructor(hp,attack,defense,initiative,movement,name,position,player,vision, range){
@@ -29,9 +29,10 @@ class unit {
         return false
     }
     findGoal(partie){
-        return undefined
+        return this.destination
     }
     
+    canRécolte(partie){return false}
 }
 
 
@@ -65,13 +66,55 @@ class bucheron extends unit{
         super(25,10,5,2,1,"Bûcheron",position,player,1,1)
         this.wood=0
         this.maxWood=10
+        this.knownForests = []
+        this.base = player.hdv//endroit où déposer les ressources
     }
     canEvolve(){
         return true
     }
 
+    
+    canGo(dest){
+        if (dest=="X" || dest=="eau" || dest=="montagne"){return false}
+        return true
+    }
+
     evolution(player){
         return (new hoplite(this.position,player))
+    }
+    canRécolte(partie){
+        return (this.wood<this.maxWood)
+    }
+
+    findGoal(partie){//Retourne la meilleure destination possible pour l'unité
+        if (this.canRécolte(partie)==false){
+            let meilleurebase = undefined
+            for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
+                if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+            }
+            if (meilleurebase!=undefined){return meilleurebase}
+        }
+
+        if (this.destination!=undefined ){return this.destination}
+        if (partie.map.infos[this.position].type=="foret"){return this.position}//Si la case actuelle est une forêt c'est bon
+
+        let c =  casesAdjacentes(this.position,partie.map.width,partie.map.height)
+        for (var z of c){
+            //On commence par chercher une forêt adjacente, cas le plus simple
+            if (partie.map.infos[z].type=="foret" && partie.board[z]==undefined){return z}
+        }
+
+        while (this.knownForests.length>0){
+            var z = this.knownForests.shift()
+            if (partie.map.infos[z].type=="foret" && partie.board[z]==undefined){return z}
+        }
+
+        while (c.length>0){
+            var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
+            if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
+
+        }
+        return undefined
     }
 }
 
@@ -80,14 +123,61 @@ class mineur extends unit{
         super(20,10,5,2,1,"Mineur",position,player,1,1)
         this.stone=0
         this.maxStone=8
+        this.knownCarrieres = []
+        this.base=player.hdv
+    }
+
+    canGo(dest){
+        if (dest=="X" || dest=="eau" || dest=="montagne"){return false}
+        return true
     }
     canEvolve(){
         return true
     }
 
+    canRécolte(partie){
+        return (this.sotne<this.maxStone)
+    }
+
     evolution(player){
         return (new hoplite(this.position,player))
     }
+
+    canRécolte(partie){return (this.stone<this.maxStone)}
+
+    
+    findGoal(partie){//Retourne la meilleure destination possible pour l'unité
+        if (this.canRécolte(partie)==false){
+            let meilleurebase = undefined
+            for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
+                if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+            }
+            if (meilleurebase!=undefined){return meilleurebase}
+        }
+
+        if (this.destination!=undefined ){return this.destination}
+        if (partie.map.infos[this.position].type=="carriere"){return this.position}//Si la case actuelle est une forêt c'est bon
+
+        let c =  casesAdjacentes(this.position,partie.map.width,partie.map.height)
+        for (var z of c){
+            //On commence par chercher une forêt adjacente, cas le plus simple
+            if (partie.map.infos[z].type=="carriere" && partie.board[z]==undefined){return z}
+        }
+
+        while (this.knownCarrieres.length>0){
+            var z = this.knownCarrieres.shift()
+            if (partie.map.infos[z].type=="carriere" && partie.board[z]==undefined){return z}
+        }
+
+        while (c.length>0){
+            var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
+            if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
+
+        }
+        return undefined
+    }
+   
+
 }
 
 class paysanne extends unit{
@@ -95,8 +185,91 @@ class paysanne extends unit{
         super(15,0,0,1,1,"Paysanne",position,player,1,1)
         this.wood=0
         this.stone=0
-        this.maxStone=5
-        this.maxWood=7
+        this.maxRessources
+        this.knownForests = []
+        this.knownCarrieres = []
+        this.base=player.hdv
+    }
+    canRécolte(partie){
+        return ((this.stone+this.wood)<this.maxRessources)
+    }
+
+   
+    canGo(dest){
+        if (dest=="X" || dest=="eau" || dest=="montagne"){return false}
+        return true
+    }
+
+    findGoalWood(partie){//Retourne la meilleure destination possible pour l'unité
+        if (this.canRécolte(partie)==false){
+            let meilleurebase = undefined
+            for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
+                if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+            }
+            if (meilleurebase!=undefined){return meilleurebase}
+        }
+
+        if (this.destination!=undefined ){return this.destination}
+        if (partie.map.infos[this.position].type=="foret"){return this.position}//Si la case actuelle est une forêt c'est bon
+
+        let c =  casesAdjacentes(this.position,partie.map.width,partie.map.height)
+        for (var z of c){
+            //On commence par chercher une forêt adjacente, cas le plus simple
+            if (partie.map.infos[z].type=="foret" && partie.board[z]==undefined){return z}
+        }
+
+        while (this.knownForests.length>0){
+            var z = this.knownForests.shift()
+            if (partie.map.infos[z].type=="foret" && partie.board[z]==undefined){return z}
+        }
+
+        while (c.length>0){
+            var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
+            if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
+
+        }
+        return undefined
+    }
+
+    
+    findGoalStone(partie){//Retourne la meilleure destination possible pour l'unité
+        if (this.canRécolte(partie)==false){
+            let meilleurebase = undefined
+            for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
+                if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+            }
+            if (meilleurebase!=undefined){return meilleurebase}
+        }
+
+        if (this.destination!=undefined ){return this.destination}
+        if (partie.map.infos[this.position].type=="carriere"){return this.position}//Si la case actuelle est une forêt c'est bon
+
+        let c =  casesAdjacentes(this.position,partie.map.width,partie.map.height)
+        for (var z of c){
+            //On commence par chercher une forêt adjacente, cas le plus simple
+            if (partie.map.infos[z].type=="carriere" && partie.board[z]==undefined){return z}
+        }
+
+        while (this.knownCarrieres.length>0){
+            var z = this.knownCarrieres.shift()
+            if (partie.map.infos[z].type=="carriere" && partie.board[z]==undefined){return z}
+        }
+
+        while (c.length>0){
+            var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
+            if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
+
+        }
+        return undefined
+    }
+
+    findGoal(partie){
+        if (this.wood<this.stone){
+            return this.findGoalWood(partie)
+        }
+        else{
+            return this.findGoalStone(partie)
+        }
     }
 }
 
