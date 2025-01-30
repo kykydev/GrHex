@@ -93,7 +93,6 @@ class game {
             this.map.terrain[position] = this.map.infos[position].pattern
         }
         joueur.hdv = 214
-        this.board[187]=new loup(187)
 
     }
 
@@ -506,9 +505,11 @@ class game {
 
         this.actionsThisTurn = []
         this.actions = []
+        this.SpawnLoup()
         //------------Itère au travers des unités pour générer les actions du tour--------------
         for (let uni of Object.keys(this.board)) {
             this.board[uni].movementLeft = this.board[uni].movement
+            if (this.board[uni].name=="Champ"){this.players[this.board[uni].owner].gold++}
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
             if (this.board[uni].destination == undefined) { this.board[uni].destination = this.board[uni].findGoal(this)}
             if (this.board[uni].destination != undefined) {
@@ -539,7 +540,7 @@ class game {
                 case "movement":
                     let uni = this.board[act.pos]
                     this.moveTurn(uni)
-                    if (uni.owner!="Système"){this.testDéposeRessources(uni)}
+                    if (uni!=undefined && uni.owner!="Système"){this.testDéposeRessources(uni)}
                     break;
 
                 default:
@@ -758,6 +759,50 @@ evolve(uniPos){//Tente de faire évoluer l'unité en position pos
     joueur.units[uni.position]=newUni
     return true
     
+}
+
+
+SpawnLoup(){//Fait apparaître un nombre aléatoire de loups sur des cases aléatoires de la carte
+let nbLoups=0
+var rand = Math.random()
+if (rand<0.15){nbLoups=1}
+if (rand>0.95){nbLoups=2}
+
+    while (nbLoups>0){
+
+        let ajouted = false
+        while (ajouted==false){
+            var position = Math.floor(Math.random()*this.map.terrain.length)
+            var peutAjouter = true
+            if (this.board[position]!=undefined){peutAjouter=false}
+
+            let oldtab = casesAdjacentes(position,this.map.width,this.map.height)
+            let newtab = []    
+            for (let j=0;j<3;j++){
+                for (var z of oldtab){
+                    if (this.board[z]!=undefined && this.board[z].owner!="Système"){
+                        peutAjouter=false
+                        break
+                    }
+                    for (var zz of casesAdjacentes(z,this.map.width,this.map.height)){
+                        newtab.push(zz)
+                    }
+                }
+                oldtab=newtab
+                newtab=[]
+            }
+
+
+            
+            if (peutAjouter){
+                this.board[position]=new loup(position)
+                ajouted=true
+                console.log("nouveau loup en "+position)
+            }
+        }
+        nbLoups--
+    }
+
 }
 
 
