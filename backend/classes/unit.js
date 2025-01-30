@@ -18,6 +18,7 @@ class unit {
         this.destination = undefined
         this.path = undefined
         this.type="unit"
+        this.tracked=false
     }
 
     canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
@@ -33,31 +34,47 @@ class unit {
     }
     
     canRécolte(partie){return false}
+
+
+    steal(uni){
+        if (uni.gold!=undefined){if (this.gold==undefined){this.gold=uni.gold;} else {this.gold+=uni.gold};uni.gold=0}
+        if (uni.wood!=undefined){if (this.wood==undefined){this.wood=uni.wood;} else {this.wood+=wood.gold};wood.gold=0}
+        if (uni.stone!=undefined){if (this.stone==undefined){this.stone=uni.stone;} else {this.stone+=uni.stone};uni.stone=0}
+        if (uni.copper!=undefined){if (this.copper==undefined){this.copper=uni.copper;} else {this.copper+=uni.copper};uni.copper=0}
+    }
 }
 
 
 class hoplite extends unit{
     constructor(position,player){
         super(50,15,5,5,2,"Hoplite",position,player,1,1)
+        this.tracked=true
+
     }
 }
 
 class stratege extends unit{
     constructor(position,player){
         super(100,10,5,0,2,"Stratege",position,player,3,1)
+        this.tracked=true
+
     }
 }
 
 class archer extends unit{
     constructor(position,player){
         super(30,10,0,1,1,"Archer",position,player,2,2)
-        this.range=2
+        this.tracked=true
+
+
     }
 }
 
 class messager extends unit{
     constructor(position,player){
         super(30,0,15,7,3,"Messager",position,player,2,1)
+        this.tracked=true
+
     }
 }
 
@@ -283,6 +300,7 @@ class building extends unit{
 class hdv extends building{
     constructor(position,player){
         super(350,0,15,0,"Hôtel de ville",position,player,0,0)
+        this.tracked=true
     }
 }
 
@@ -296,7 +314,7 @@ class maison extends building{
         let villageoisChois = villageois[Math.floor(Math.random()*villageois.length)]
         var cases = casesAdjacentes(position,game.map.width,game.map.height)
         for (var z of cases){
-            if (game.board[z]==undefined){
+            if (game.board[z]==undefined && game.map.infos[z].type!="eau"  && game.map.infos[z].type!="montagne"){
             let uni = new (eval(villageoisChois))(z,player)
             game.addUnit(uni,z,player)
             return true
@@ -350,6 +368,22 @@ class creatureNeutre{
         canEvolve(){
             return false
         }
+
+        steal(uni){
+            if (uni.gold!=undefined){if (this.gold==undefined){this.gold=uni.gold;} else {this.gold+=uni.gold};uni.gold=0}
+            if (uni.wood!=undefined){if (this.wood==undefined){this.wood=uni.wood;} else {this.wood+=wood.gold};wood.gold=0}
+            if (uni.stone!=undefined){if (this.stone==undefined){this.stone=uni.stone;} else {this.stone+=uni.stone};uni.stone=0}
+            if (uni.copper!=undefined){if (this.copper==undefined){this.copper=uni.copper;} else {this.copper+=uni.copper};uni.copper=0}
+        }
+
+        canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
+            if (dest=="X" || dest=="eau" ||dest=="montagne"){return false}
+            return true
+        }
+    
+        canEvolve(){
+            return false
+        }
 }
 
 class loup extends creatureNeutre{
@@ -372,6 +406,31 @@ class loup extends creatureNeutre{
 
 
 
+class pierris extends creatureNeutre{
+    constructor(position){
+        super(150,20,15,0,1,"Pierris Pompidoris",position,2,1)
+        this.gold=100
+        this.stone=100
+        this.wood=100
+        this.copper=100
+    }
+
+    findGoal(partie){
+        var tablo = []
+        for (var z of casesAdjacentes(this.position,partie.map.width,partie.map.height)){
+            for (var zz of casesAdjacentes(z,partie.map.width,partie.map.height)){
+                if (partie.board[zz]!=undefined && partie.board[zz].name!="Stratege"){return zz}
+                tablo.push(zz)
+            }
+        }
+        return tablo[Math.floor(Math.random()*tablo.length)]
+    }
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup };
+
+
+}
+
+
+
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris };

@@ -8,7 +8,7 @@ const { createMap } = require('../modules/mapGeneration')
 const { player } = require('./player');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction } = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
 
@@ -85,7 +85,9 @@ class game {
             183: new paysanne(183, joueur),
             214: new hdv(214, joueur),
             215: new mineur(215, joueur),
-            95: new tour(95,joueur)
+            154: new tour(154,joueur),
+            125:new maison(125,joueur),
+            121:new maison(121,joueur),
         }
 
         for (var position of Object.keys(boardBoetie)) {
@@ -100,10 +102,13 @@ class game {
         joueur.hdv = 297
         var boardArgolide = {
             328: new stratege(328, joueur),
-            237: new bucheron(237, joueur),
+            288: new bucheron(288, joueur),
             267: new paysanne(267, joueur),
+            268: new mineur(268,joueur),
             297: new hdv(297, joueur),
-            357: new mineur(357,joueur),
+            357: new tour(357,joueur),
+            269:new maison(269,joueur),
+            299:new maison(299,joueur),
         }
 
         for (var position of Object.keys(boardArgolide)) {
@@ -120,7 +125,10 @@ class game {
             1043: new bucheron(1043, joueur),
             1071: new paysanne(1071, joueur),
             1072: new hdv(1072, joueur),
-            1041: new mineur(1041,joueur)
+            1041: new mineur(1041,joueur),
+            1008: new maison(1008,joueur),
+            950: new maison(950,joueur),
+            981: new tour(981,joueur)
         }
 
         for (var position of Object.keys(boardAttique)) {
@@ -158,6 +166,7 @@ class game {
 
     init() {//Fonction qui initialise la partie
         this.initCites()
+        this.board[579] = new pierris(579)
 
     }
 
@@ -216,10 +225,7 @@ class game {
             if (unité.name=="Stratege"){posStratège=uni}
                 comps[uni]=uni
             }
-            //ensuite: On va itérer dans toutes les tours et, pour chacune des cases vues de la tour, mettre les unités en question dans la même comp qu'elle. 
-            // Si la case en question contient une tour, on change toutes les unités qui sont dans la même comp que ladîte tour (tour2) dans celle de la tour qu'on itère (tour1)
-            // Finalement, on renvoie toutes les cases vues par toutes les unités dans la même comp que le stratège
-
+      
             for (var z of tours){//Déterminer les chaînes de tours
                 for (var posTest of visions[z]){
                     if (joueur.units[posTest.info.pos]!=undefined && comps[z]!=comps[posTest.info.pos] && posTest.board.name=="Tour"){
@@ -258,9 +264,10 @@ class game {
 
 
             for (var z of Object.keys(visions)){//Ajout de toutes les cases vues par la chaîne
+                if (this.board[z].tracked){
                 retour.infos[z] = this.map.infos[z]
                 retour.terrain[z] = this.map.terrain[z]
-               retour.board[z] = this.board[z] 
+               retour.board[z] = this.board[z]} 
                 if (comps[z]==comps[posStratège]){
                     for (var posi of visions[z]){
                         retour.infos[posi.info.pos] = posi.info
@@ -359,10 +366,11 @@ class game {
 
     combat(unit1, unit2) {//Fait se battre l'unité 1 avec l'unité 2. Renvoie false s'il n'y a pas de mort, 1 ou 2 pour dire qui est mort si un seul et 3 si les deux unités sont mortes
         let damage = 0
-        if (unit1.initiative > unit2.initiative) {//L'unité 1 attaque avant
+        if (unit1.initiative >= unit2.initiative) {//L'unité 1 attaque avant
             damage = unit1.attack - unit2.defense
             if (damage < 0) { damage = 0 }
             if (damage >= unit2.hp) {//Cas où l'unité 1 a tué
+                unit1.steal(unit2)
                 this.kill(unit2)
                 return 2
             }
@@ -371,6 +379,7 @@ class game {
                 damage = unit2.attack - unit1.defense
                 if (damage < 0) { damage = 0 }
                 if (damage >= unit1.hp) {//Cas où l'unité 1 a tué
+                    unit2.steal(unit1)
                     this.kill(unit1)
                     return 1
                 }
@@ -387,6 +396,7 @@ class game {
             damage = unit2.attack - unit1.defense
             if (damage < 0) { damage = 0 }
             if (damage >= unit1.hp) {//Cas où l'unité 2 a tué
+                unit2.steal(unit1)
                 this.kill(unit1)
                 return 1
             }
@@ -395,6 +405,7 @@ class game {
                 damage = (unit1.attack - unit2.defense)
                 if (damage < 0) { damage = 0 }
                 if (damage >= unit2.hp) {//Cas où l'unité 1 a tué
+                    unit1.steal(unit2)
                     this.kill(unit2)
                     return 2
                 }
@@ -765,8 +776,8 @@ evolve(uniPos){//Tente de faire évoluer l'unité en position pos
 SpawnLoup(){//Fait apparaître un nombre aléatoire de loups sur des cases aléatoires de la carte
 let nbLoups=0
 var rand = Math.random()
-if (rand<0.7){nbLoups=1}
-if (rand>0.02){nbLoups=2}
+if (rand<0.6){nbLoups=1}
+if (rand>0.01){nbLoups=2}
 
     while (nbLoups>0){
 
