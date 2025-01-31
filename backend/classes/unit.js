@@ -371,7 +371,7 @@ class creatureNeutre{
 
         steal(uni){
             if (uni.gold!=undefined){if (this.gold==undefined){this.gold=uni.gold;} else {this.gold+=uni.gold};uni.gold=0}
-            if (uni.wood!=undefined){if (this.wood==undefined){this.wood=uni.wood;} else {this.wood+=wood.gold};wood.gold=0}
+            if (uni.wood!=undefined){if (this.wood==undefined){this.wood=uni.wood;} else {this.wood+=uni.wood};uni.wood=0}
             if (uni.stone!=undefined){if (this.stone==undefined){this.stone=uni.stone;} else {this.stone+=uni.stone};uni.stone=0}
             if (uni.copper!=undefined){if (this.copper==undefined){this.copper=uni.copper;} else {this.copper+=uni.copper};uni.copper=0}
         }
