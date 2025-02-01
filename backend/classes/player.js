@@ -15,6 +15,7 @@ class player {
         this.stone = 100
         this.copper = 100
 
+        this.visionsDiff = []
         
 
     }

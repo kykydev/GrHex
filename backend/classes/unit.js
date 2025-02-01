@@ -47,7 +47,7 @@ class unit {
 
 class hoplite extends unit{
     constructor(position,player){
-        super(50,15,5,5,2,"Hoplite",position,player,1,1)
+        super(50,15,5,5,2,"Hoplite",position,player,2,1)
         this.tracked=true
 
     }
@@ -299,7 +299,7 @@ class building extends unit{
 
 class hdv extends building{
     constructor(position,player){
-        super(350,0,15,0,"Hôtel de ville",position,player,0,0)
+        super(350,0,15,0,"Hôtel de ville",position,player,2,0)
         this.tracked=true
     }
 }

@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('../modules/backendHex');
 const { createMap } = require('../modules/mapGeneration')
 const { player } = require('./player');
+const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction } = require('./turnAction')
 const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris } = require('./unit')
@@ -109,6 +110,8 @@ class game {
             357: new tour(357,joueur),
             269:new maison(269,joueur),
             299:new maison(299,joueur),
+            371:new hoplite(371,joueur),
+
         }
 
         for (var position of Object.keys(boardArgolide)) {
@@ -199,6 +202,44 @@ class game {
 
     }
 
+
+ 
+
+
+    créeVisionDifférée(player,visions,uni,posStratège){//Ajoute la vision de l'unité aux visions différées du joueur
+        var vis = JSON.parse(JSON.stringify(visions[uni]));
+        var unité = this.board[uni]
+        var visAge = 1
+        var distStratège = distance(posStratège,uni,this.map.height)
+        if (distStratège<=this.board[posStratège].vision){return}
+        if (distStratège>this.board[posStratège].vision+10){visAge=2}
+        if (distStratège>this.board[posStratège].vision+20){visAge=3}        
+        player.visionsDiff.push(new visionDiff(vis,visAge))
+    }
+
+    ajoutVisionsDifférées(player,ret){//Ajoute les visions différées du joueur à sa vue actuelle
+        var retour = ret
+        for (var z in player.visionsDiff){
+            var vision = player.visionsDiff[z]
+            player.visionsDiff[z].tours--
+            if (vision.tours==0){
+                    for (var vis of vision.vision){
+                        retour.infos[vis.info.pos] = new hexagon("!"+vision.age+vis.info.type, "!1"+vision.age+vis.info.pattern.pattern,vis.info.pos)
+                        retour.terrain[vis.info.pos] = "!"+vision.age+vis.terrain
+                        if (vis.board!=undefined && vis.board.owner!=player.id){retour.board[vis.info.pos]=vis.board}
+                    }
+            }
+        }
+        for (var z in player.visionsDiff){
+                    if (vision.tours==0){
+                    player.visionsDiff.splice(z,1)
+                    z--
+                    }
+        }
+        return retour
+    }
+
+
     calculVue(player) {//Crée la vue qui s'affichera pour le joueur, player étant un id
         var joueur = this.players[player]
 
@@ -217,6 +258,7 @@ class game {
         var posStratège;
 
         for (var uni of Object.keys(joueur.units)) {//Itération au travers des unités pour trouver les tours et le stratège
+
             var unité = joueur.units[uni]
             visions[uni]=this.calculVision(unité)
             if (unité.name=="Tour"){
@@ -225,7 +267,15 @@ class game {
             if (unité.name=="Stratege"){posStratège=uni}
                 comps[uni]=uni
             }
-      
+
+           
+            retour = this.ajoutVisionsDifférées(joueur,retour)
+
+            for (var uni of Object.keys(joueur.units)) {//Itération au travers des unités pour trouver les tours et le stratège
+            if (this.board[uni].tracked){this.créeVisionDifférée(joueur,visions ,uni,posStratège)}
+            }
+
+
             for (var z of tours){//Déterminer les chaînes de tours
                 for (var posTest of visions[z]){
                     if (joueur.units[posTest.info.pos]!=undefined && comps[z]!=comps[posTest.info.pos] && posTest.board.name=="Tour"){
@@ -278,7 +328,6 @@ class game {
             }
             
         
-
 
 
         return retour

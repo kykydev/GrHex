@@ -140,12 +140,31 @@ function fillMini(id,couleur){
  */
 function actualiserDamier(longueur, largeur, jeu,idHexa) {
     for (i = 0; i < longueur * largeur; i++) {
-        if(jeu[i][0]=='?'){
+        switch (jeu[i][0]){
+       case "?":
             var stringyahou = jeu[i].substring(1)
             fill(i, "url(#"+stringyahou+"-pattern)",idHexa)
             d3.select("#h"+i).style("filter", "brightness(0.3")
-        }   
-        else{
+            break
+        case "!":
+            
+            var stringyahou = jeu[i].substring(2)
+            fill(i, "url(#"+stringyahou+"-pattern)",idHexa)
+            switch (jeu[i][1]){
+                case "1":
+                    console.log("pipi")
+                    d3.select("#h" + i).style("filter", "hue-rotate(60deg) brightness(1.2)");
+                    break
+                    case "2":
+                        d3.select("#h" + i).style("filter", "hue-rotate(60deg) brightness(1.6)");
+                        break
+                    default:
+                    d3.select("#h" + i).style("filter", "hue-rotate(55deg) brightness(1.3)");
+            }
+
+            d3.select("#h" + i).style("filter", "sepia(1) ");
+            break
+        default:
             fill(i, "url(#"+jeu[i]+"-pattern)",idHexa)
         }
     }
