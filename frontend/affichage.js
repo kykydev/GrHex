@@ -349,9 +349,8 @@ function afficherUnites(unite,dam) {
 }
 
 function deplacerUnitesAnim(caseDepart, caseArrivee,fun){
-
     let image = d3.select("#uni" + caseDepart);
-    console.log(image)
+
     let BBoxDepart = document.getElementById("h" + caseDepart).getBBox();
     let BBoxArrivee = document.getElementById("h" + caseArrivee).getBBox();
 
@@ -386,6 +385,41 @@ function tuerUniteAnim(caseUnite) {
             image.remove();
         });
 }
+
+function recolteAnim(ressource, numcase) {
+    let hexagone = document.getElementById("h" + numcase);
+    
+    if (hexagone) {
+        let bbox = hexagone.getBBox();
+
+        let imgress = d3.select("#ress" + numcase);
+
+        if (imgress.empty()) {
+            d3.select("#jeu")
+                .append("image")
+                .attr("class", "ress")
+                .attr("xlink:href", `/img/autre/${ressource}.png`)
+                .attr("x", `${bbox.x - 10}`)
+                .attr("y", `${bbox.y - 15}`)
+                .attr("width", "70")
+                .attr("height", "80")
+                .attr("id", "ress" + numcase);
+        }
+
+        let image = d3.select("#ress" + numcase);
+        
+        image.transition().duration(0);
+
+        image.transition()
+            .duration(1000)
+            .attr("y", bbox.y - 125)
+            .style("opacity", 0)
+            .on("end", () => {
+                image.remove();
+            });
+    }
+}
+
 
 
 /**

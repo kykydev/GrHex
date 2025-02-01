@@ -390,6 +390,11 @@ document.addEventListener("DOMContentLoaded", function () {
         appelsAjoutTextures("jeu");
         setupBoutonScroll("damierjeu");
         ajouterUnites(data.board, "jeu");
+
+        // document.getElementById("recolteButton").addEventListener("click", function() {
+        //     recolteAnim("or", 94);
+        // });
+
         map.infos=data.infos
         map.terrain=data.terrain
 
