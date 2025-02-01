@@ -548,6 +548,7 @@ document.addEventListener("DOMContentLoaded", function () {
     socket.on("demandeBâtiments", data => {
 
         d3.select("#vueBatiments").selectAll("img").remove();
+        d3.select("#vueBatiments").append("img").attr("src", "/img/autre/"+"croix.png").attr("width", "100").attr("height", "100").attr("id","croix").attr("class", "batiments");
 
         //console.log(data);
 
