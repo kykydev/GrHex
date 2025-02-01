@@ -38,7 +38,7 @@ class unit {
 
     steal(uni){
         if (uni.gold!=undefined){if (this.gold==undefined){this.gold=uni.gold;} else {this.gold+=uni.gold};uni.gold=0}
-        if (uni.wood!=undefined){if (this.wood==undefined){this.wood=uni.wood;} else {this.wood+=wood.gold};wood.gold=0}
+        if (uni.wood!=undefined){if (this.wood==undefined){this.wood=uni.wood;} else {this.wood+=uni.wood};uni.wood=0}
         if (uni.stone!=undefined){if (this.stone==undefined){this.stone=uni.stone;} else {this.stone+=uni.stone};uni.stone=0}
         if (uni.copper!=undefined){if (this.copper==undefined){this.copper=uni.copper;} else {this.copper+=uni.copper};uni.copper=0}
     }
@@ -301,6 +301,12 @@ class hdv extends building{
     constructor(position,player){
         super(350,0,15,0,"Hôtel de ville",position,player,2,0)
         this.tracked=true
+        this.wood = 0
+        this.stone = 0
+        this.copper = 0
+        this.maxWood = 100
+        this.maxStone = 100
+        this.maxCopper = 100
     }
 }
 
@@ -340,6 +346,20 @@ class champ extends building{
         super(20,0,5,0,"Champ",position,player,0,0)
     }
 }
+
+class entrepôt extends building{
+    constructor(position,player){
+        super(50,0,5,0,"Entrepôt",position,player,0,0)
+        
+        this.wood = 0
+        this.stone = 0
+    this.copper = 0
+    this.maxWood = 40
+    this.maxStone = 40
+    this.maxCopper = 30
+}
+}
+
 
 class creatureNeutre{
     constructor(hp,attack,defense,initiative,movement,name,position,vision, range){
@@ -433,4 +453,4 @@ class pierris extends creatureNeutre{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris };
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt };

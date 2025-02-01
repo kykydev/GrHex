@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction } = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
 
