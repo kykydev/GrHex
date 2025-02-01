@@ -417,7 +417,7 @@ button:hover {
     background-color: aquamarine;
     position: absolute;
     left: 0;
-    top: 0;
+    top: 81px;
     z-index: 4;
 }
 
