@@ -197,12 +197,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-
+    // fini le tour du joueur
     document.getElementById("finTour").addEventListener("click", () => {
         socket.emit("finTour");
         socket.emit("ressources");
     });
 
+
+    // quitter la partie
+    document.getElementById("quitter1").addEventListener("click", () => {
+        socket.emit("quitterPartie");
+        document.getElementById('rejoindrePartie').style.display = 'none';
+        document.getElementById('accueil').style.display = 'flex';
+    });
+
+    document.getElementById("quitter2").addEventListener("click", () => {
+        socket.emit("quitterPartie");
+        document.getElementById('partie').style.display = 'none';
+        document.getElementById('accueil').style.display = 'flex';
+    });
 
     socket.on("finTour", data => {
         // true si tout le monde à fini false sinon
