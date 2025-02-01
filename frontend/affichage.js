@@ -358,8 +358,8 @@ function deplacerUnitesAnim(caseDepart, caseArrivee,fun){
     let deltaX = BBoxArrivee.x - BBoxDepart.x;
     let deltaY = BBoxArrivee.y - BBoxDepart.y;
 
-    d3.select("#barrecontour" + caseDepart).style("display", "none");
-    d3.select("#barreinterieur" + caseDepart).style("display", "none");
+    d3.select("#barrecontour" + caseDepart).remove();
+    d3.select("#barreinterieur" + caseDepart).remove();
 
     image.transition()
         .duration(500)
