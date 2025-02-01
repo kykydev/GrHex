@@ -305,6 +305,44 @@ function afficherUnites(unite,dam) {
                     .attr("stroke", "transparent")
                     .style("stroke-width", 0)
                 });
+
+        if(unite.type != "building"){
+
+            maxhp = unite.maxhp;
+            hp = unite.hp;
+            pourcentage = hp / maxhp;
+            couleurbarre = "green";
+            tailleinterieur = 40 * pourcentage;
+
+            if(pourcentage < 0.8){
+                couleurbarre = "orange"
+            }
+
+            if(pourcentage < 0.4){
+                couleurbarre = "red"
+            }
+
+            //Contour
+            d3.select("#"+dam)
+                .append("rect")
+                .attr("x",`${bbox.x}`)
+                .attr("y",`${bbox.y}`)
+                .attr("width","5")
+                .attr("height","40")
+                .attr("id","barrecontour" + unite.position)
+                .attr("fill", "black");
+
+            //Intérieur
+            d3.select("#"+dam)
+                .append("rect")
+                .attr("x",`${bbox.x}`)
+                .attr("y",`${bbox.y + (40 - tailleinterieur)}`)
+                .attr("width","4")
+                .attr("height",`${tailleinterieur}`)
+                .attr("id","barreinterieur" + unite.position)
+                .attr("fill", couleurbarre);
+        }
+                
     } else {
         console.log("L'élément avec l'ID h" + unite.position + " n'existe pas.");
     }
@@ -320,6 +358,9 @@ function deplacerUnitesAnim(caseDepart, caseArrivee,fun){
     let deltaX = BBoxArrivee.x - BBoxDepart.x;
     let deltaY = BBoxArrivee.y - BBoxDepart.y;
 
+    d3.select("#barrecontour" + caseDepart).style("display", "none");
+    d3.select("#barreinterieur" + caseDepart).style("display", "none");
+
     image.transition()
         .duration(500)
         .attr("x", BBoxDepart.x + deltaX - 10)
@@ -328,12 +369,10 @@ function deplacerUnitesAnim(caseDepart, caseArrivee,fun){
             image.attr("id", "uni" + caseArrivee);
             image.classed("unite", true);
 
-            fun();
+    fun();
 
             
         });
-
-
 }
 
 function tuerUniteAnim(caseUnite) {
