@@ -392,7 +392,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ajouterUnites(data.board, "jeu");
 
         // document.getElementById("recolteButton").addEventListener("click", function() {
-        //     attaqueAnim(157, 186);
+        //     attaqueAnim(185, 215, "-9");
         // });
 
         map.infos=data.infos

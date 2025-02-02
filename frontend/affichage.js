@@ -420,7 +420,7 @@ function recolteAnim(ressource, numcase) {
     }
 }
 
-function attaqueAnim(caseDepart, caseArrivee) {
+function attaqueAnim(caseDepart, caseArrivee, chiffre) {
     let image = d3.select("#uni" + caseDepart);
 
     let BBoxDepart = document.getElementById("h" + caseDepart).getBBox();
@@ -429,15 +429,43 @@ function attaqueAnim(caseDepart, caseArrivee) {
     let deltaX = (BBoxArrivee.x - BBoxDepart.x) / 2;
     let deltaY = (BBoxArrivee.y - BBoxDepart.y) / 2;
 
+    decalage = 0;
+    if(chiffre.length == 2){
+        decalage += 10;
+    }
+
     image.transition()
         .duration(250)
         .attr("x", BBoxDepart.x + deltaX - 10)
         .attr("y", BBoxDepart.y + deltaY - 15)
         .on("end", () => {
-                    image.transition()
-                        .duration(250)
-                        .attr("x", BBoxDepart.x - 10)
-                        .attr("y", BBoxDepart.y - 15);
+
+            d3.select("#jeu")
+                .append("text")
+                .attr("class", "degat")
+                .attr("x", (BBoxDepart.x + (deltaX * 2)) + decalage)
+                .attr("y", (BBoxDepart.y + (deltaY * 2)))
+                .attr("font-size", "30px")
+                .attr("fill", "red")
+                .attr("id", "degat" + caseArrivee)
+                .text(chiffre)
+
+            image.transition()
+                .duration(250)
+                .attr("x", BBoxDepart.x - 10)
+                .attr("y", BBoxDepart.y - 15);
+
+            let degat = d3.select("#degat" + caseArrivee);
+
+            degat.transition().duration(0);
+
+            degat.transition()
+                .duration(1000)
+                .attr("y", (BBoxDepart.y + (deltaY * 2)) - 125)
+                .style("opacity", 0)
+                .on("end", () => {
+                    degat.remove();
+                });
         });
 }
 
