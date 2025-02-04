@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const pseudoInput = document.getElementById("usernameInput")
 
     socket.emit("getListeParties", "")
-    
+
     socket.on("getListeParties", data => {
         afficherListeParties(data);
 
@@ -218,6 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     socket.on("finTour", data => {
+        console.log(data);
         // true si tout le monde à fini false sinon
 
         let index = 0;
@@ -225,15 +226,15 @@ document.addEventListener("DOMContentLoaded", function () {
         function jouerAnimationSuivante() {
             if (index < data.length) {
                 const mouvement = data[index];
-                console.log("data.length: "+data.length+" index: "+index)
+                console.log("data.length: " + data.length + " index: " + index)
                 switch (data[index].type) {
 
                     case "mouvement":
-                        if (document.getElementById("uni" + mouvement.départ)==undefined){
+                        if (document.getElementById("uni" + mouvement.départ) == undefined) {
                             index++;
                             jouerAnimationSuivante();
                         }
-                        else{
+                        else {
                             console.log("anim")
                             deplacerUnitesAnim(mouvement.départ, mouvement.arrivée, () => {
                                 index++;
@@ -242,41 +243,43 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         break;
                     case "mort":
-                        if (document.getElementById("uni" + mouvement.position)==undefined){
+                        if (document.getElementById("uni" + mouvement.position) == undefined) {
                             index++;
                             jouerAnimationSuivante();
                         }
-                        else{
-                        tuerUniteAnim(mouvement.position)
-                        index++;
-                        jouerAnimationSuivante();
+                        else {
+                            tuerUniteAnim(mouvement.position,() => {
+                                index++;
+                                jouerAnimationSuivante();
+                            })
                         }
-                        break
+                        break;
 
 
-                        case "ressource":
-                            if (document.getElementById("uni" + mouvement.position)==undefined){
+                    case "ressource":
+                        if (document.getElementById("uni" + mouvement.position) == undefined) {
+                            index++;
+                            jouerAnimationSuivante();
+                        }
+                        else {
+                            recolteAnim(mouvement.ressource, mouvement.position)
+                            index++;
+                            jouerAnimationSuivante();
+                        }
+                        break;
+
+                    case "combat":
+                        if (document.getElementById("uni" + mouvement.départ) == undefined || document.getElementById("uni" + mouvement.arrivée) == undefined) {
+                            index++;
+                            jouerAnimationSuivante();
+                        }
+                        else {
+                            attaqueAnim(mouvement.départ, mouvement.arrivée, mouvement.dégâts, () => {
                                 index++;
                                 jouerAnimationSuivante();
-                            }
-                            else{
-                        recolteAnim(mouvement.ressource,mouvement.position)
-                        index++;
-                        jouerAnimationSuivante();
-                            }
-                    break
-
-                        case "combat":
-                            if (document.getElementById("uni" + mouvement.départ)==undefined || document.getElementById("uni" + mouvement.arrivée)==undefined){
-                                index++;
-                                jouerAnimationSuivante();
-                            }
-                            else{
-                        attaqueAnim(mouvement.départ,mouvement.arrivée,mouvement.dégâts)
-                        index++;
-                        jouerAnimationSuivante();
-                            }
-                    break
+                            })
+                        }
+                        break;
 
 
                     default:
@@ -288,35 +291,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 socket.emit("demandeDamier", idJoueur);
             }
         }
-        if(data){
+        if (data) {
             d3.select("#finTourData").selectAll("*").remove();
             d3.select(".bouton1").selectAll("p").remove();
 
-            d3.select("#vueBatiments").style("display","flex");
-            d3.select("#statsUnite").style("display","flex");
-            d3.select("#finTour").style("display","block");
+            d3.select("#vueBatiments").style("display", "flex");
+            d3.select("#statsUnite").style("display", "flex");
+            d3.select("#finTour").style("display", "block");
             jouerAnimationSuivante();
-        }else{
+        } else {
             d3.select(".bouton1").selectAll("p").remove();
             d3.select(".bouton1").append("p").text("En attente des autres joueurs");
             //d3.select("#vueBatiments").style("display","none");
             //d3.select("#statsUnite").style("display","block");
-            d3.select("#finTour").style("display","none");
+            d3.select("#finTour").style("display", "none");
         }
 
-        
+
 
     });
 
     socket.on("ressources", data => {
 
         const ressources =
-        `<p>Or: ${data.or}</p>
+            `<p>Or: ${data.or}</p>
         <p>Cuivre: ${data.cuivre}</p>
         <p>Bois: ${data.bois}</p>
         <p>Pierre: ${data.pierre}</p>`;
 
-    document.querySelector('.ressources').innerHTML = ressources;
+        document.querySelector('.ressources').innerHTML = ressources;
 
     });
 
@@ -401,9 +404,11 @@ document.addEventListener("DOMContentLoaded", function () {
         vueFin.html("");
         if (Array.isArray(data)) {
             vueFin.append("p").text("Les cités gagnantes sont :");
-            data.forEach(gagnant => {vueFin.append("p").text(gagnant.cite);});} 
+            data.forEach(gagnant => { vueFin.append("p").text(gagnant.cite); });
+        }
         else {
-            vueFin.append("p").text(`La cité gagnante est : ${data.cite}`);}
+            vueFin.append("p").text(`La cité gagnante est : ${data.cite}`);
+        }
     });
 
 
@@ -414,8 +419,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         terrain = data.terrain
         board = terrain.board
-        créerDamier(data.height, data.width, 32, "jeu", "h") 
-        actualiserDamier(data.width, data.height, data.terrain, "h") 
+        créerDamier(data.height, data.width, 32, "jeu", "h")
+        actualiserDamier(data.width, data.height, data.terrain, "h")
         appelsAjoutTextures("jeu");
         setupBoutonScroll("damierjeu");
         ajouterUnites(data.board, "jeu");
@@ -424,8 +429,8 @@ document.addEventListener("DOMContentLoaded", function () {
         //     attaqueAnim(185, 215, "-9");
         // });
 
-        map.infos=data.infos
-        map.terrain=data.terrain
+        map.infos = data.infos
+        map.terrain = data.terrain
 
         // déplacement des unités
         let unites = document.getElementsByClassName("unite");
@@ -486,11 +491,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     uniteSelectionnee = "";
                     hexagoneSelectionnee = "";
 
-                }else if (batimentSelectionne){
-                    console.log(batimentSelectionne,hexagoneSelectionnee);
-                    socket.emit("construireBâtiment",{nomBat:batimentSelectionne,position:hexagoneSelectionnee});
-                    batimentSelectionne="";
-                    hexagoneSelectionnee="";
+                } else if (batimentSelectionne) {
+                    console.log(batimentSelectionne, hexagoneSelectionnee);
+                    socket.emit("construireBâtiment", { nomBat: batimentSelectionne, position: hexagoneSelectionnee });
+                    batimentSelectionne = "";
+                    hexagoneSelectionnee = "";
                 }
             });
         });
@@ -515,7 +520,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 let pathBoard = data.board[event.target.id.supprimerPrefixId("uni")];
 
                 pathBoard = pathBoard.path ? pathBoard.path : "";
-                path = path ? path :  pathBoard;
+                path = path ? path : pathBoard;
 
                 // ajouter un chemin en surbrillance
                 if (path && data.board[event.target.id.supprimerPrefixId("uni")].type != "building") {
@@ -524,8 +529,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     for (let i = 0; i < path.length; ++i) {
                         d3.select("#h" + path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
-                        }
-                    
+                    }
+
                 }
 
             });
@@ -536,7 +541,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // supprimer le path en surbrillance
 
-                if (path ) {
+                if (path) {
 
                     d3.select("#h" + event.target.id.supprimerPrefixId("uni")).style("filter", null);
 
@@ -571,19 +576,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
                     // vueInfoHdv variable D3
 
-                }else if(data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" && uniteSelectionnee){
+                } else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" && uniteSelectionnee) {
                     // l'enrôlement
-                    hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
-                    socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
-                    
-                }else if(uniteSelectionnee && uniteSelectionnee==event.target.id.supprimerPrefixId("uni")){
-                    uniteSelectionnee="";
-                }else if(uniteSelectionnee && data.board[event.target.id.supprimerPrefixId("uni")].owner !== data.board[uniteSelectionnee].owner){
-                    hexagoneSelectionnee=event.target.id.supprimerPrefixId("uni");
-                    socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
+                    hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
+                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
 
-                }else if(uniteSelectionnee){
-                    uniteSelectionnee=event.target.id.supprimerPrefixId("uni");
+                } else if (uniteSelectionnee && uniteSelectionnee == event.target.id.supprimerPrefixId("uni")) {
+                    uniteSelectionnee = "";
+                } else if (uniteSelectionnee && data.board[event.target.id.supprimerPrefixId("uni")].owner !== data.board[uniteSelectionnee].owner) {
+                    hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
+                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+
+                } else if (uniteSelectionnee) {
+                    uniteSelectionnee = event.target.id.supprimerPrefixId("uni");
                     //socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
                 } else if (data.board[event.target.id.supprimerPrefixId("uni")].movement > 0) {
                     uniteSelectionnee = event.target.id.supprimerPrefixId("uni");
@@ -599,40 +604,40 @@ document.addEventListener("DOMContentLoaded", function () {
     socket.on("demandeBâtiments", data => {
 
         d3.select("#vueBatiments").selectAll("img").remove();
-        d3.select("#vueBatiments").append("img").attr("src", "/img/autre/"+"croix.png").attr("width", "100").attr("height", "100").attr("id","croix").attr("class", "batiments");
+        d3.select("#vueBatiments").append("img").attr("src", "/img/autre/" + "croix.png").attr("width", "100").attr("height", "100").attr("id", "croix").attr("class", "batiments");
 
         //console.log(data);
 
         data.forEach(bat => {
-            d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/"+(bat.url).toLowerCase()+".png").attr("width", "100").attr("height", "100").attr("id",bat.nom).attr("class", "batiments");
+            d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/" + (bat.url).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", bat.nom).attr("class", "batiments");
         });
     });
 
-    socket.on("construireBâtiment",data=>{
+    socket.on("construireBâtiment", data => {
 
         console.log(data);
         //nom position
-        let bbox = document.getElementById("h"+data.position).getBBox();
-        let pos = document.getElementById("h"+data.position);
+        let bbox = document.getElementById("h" + data.position).getBBox();
+        let pos = document.getElementById("h" + data.position);
 
         d3.select("#jeu")
-        .append("image")
-        .attr("class", "batTemp")
-        .attr("xlink:href","/img/personnages/rouge/"+data.nom.toLowerCase()+".png")
-        .attr("x", `${bbox.x - 10}`)
-        .attr("y", `${bbox.y - 15}`)
-        .attr("width", "70")
-        .attr("height", "80")
-        .style("opacity", 0.4)
-        .on("mouseover", () => {
-            d3.select(pos)
-                .attr("stroke", "orange")
-                .style("stroke-width", 2);
-        })
-        .on("mouseout", () => {
-            d3.select(pos)
-                .attr("stroke", "transparent")
-                .style("stroke-width", 0)
+            .append("image")
+            .attr("class", "batTemp")
+            .attr("xlink:href", "/img/personnages/rouge/" + data.nom.toLowerCase() + ".png")
+            .attr("x", `${bbox.x - 10}`)
+            .attr("y", `${bbox.y - 15}`)
+            .attr("width", "70")
+            .attr("height", "80")
+            .style("opacity", 0.4)
+            .on("mouseover", () => {
+                d3.select(pos)
+                    .attr("stroke", "orange")
+                    .style("stroke-width", 2);
+            })
+            .on("mouseout", () => {
+                d3.select(pos)
+                    .attr("stroke", "transparent")
+                    .style("stroke-width", 0)
             });
     });
 

@@ -374,7 +374,7 @@ function deplacerUnitesAnim(caseDepart, caseArrivee,fun){
         });
 }
 
-function tuerUniteAnim(caseUnite) {
+function tuerUniteAnim(caseUnite, fun) {
     let image = d3.select("#uni" + caseUnite);
 
     image.transition()
@@ -383,7 +383,9 @@ function tuerUniteAnim(caseUnite) {
         .style("opacity", 0)
         .on("end", () => {
             image.remove();
+            fun();
         });
+
 }
 
 function recolteAnim(ressource, numcase) {
@@ -420,7 +422,7 @@ function recolteAnim(ressource, numcase) {
     }
 }
 
-function attaqueAnim(caseDepart, caseArrivee, chiffre) {
+function attaqueAnim(caseDepart, caseArrivee, chiffre, fun) {
     let image = d3.select("#uni" + caseDepart);
 
     let BBoxDepart = document.getElementById("h" + caseDepart).getBBox();
@@ -465,8 +467,10 @@ function attaqueAnim(caseDepart, caseArrivee, chiffre) {
                 .style("opacity", 0)
                 .on("end", () => {
                     degat.remove();
+                    fun();
                 });
         });
+
 }
 
 /**
