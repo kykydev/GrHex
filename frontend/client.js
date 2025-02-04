@@ -206,9 +206,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // quitter la partie
     document.getElementById("quitter1").addEventListener("click", () => {
-        socket.emit("quitterPartie");
         document.getElementById('rejoindrePartie').style.display = 'none';
         document.getElementById('accueil').style.display = 'flex';
+        socket.emit("quitterPartie");
     });
 
     document.getElementById("quitter2").addEventListener("click", () => {
@@ -364,15 +364,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     socket.on("commencerPartie", data => {
-        document.querySelector('.rejoindrePartie').innerHTML = ""
+        //document.querySelector('.rejoindrePartie').innerHTML = ""
         document.querySelector('.rejoindrePartie').style.display = 'none';
         document.querySelector('.partie').style.display = 'block';
+        document.getElementById("jeuprev").innerHTML = "";
+
 
         socket.emit("demandeBâtiments");
         socket.emit("demandeDamier", idJoueur);
         socket.emit('ressources');
 
-
+        
+        dicoPathUnite = {};
         
     })
 
@@ -541,7 +544,24 @@ document.addEventListener("DOMContentLoaded", function () {
                         d3.select("#h" + path[i]).style("filter", null);
                         if (map.terrain[path[i]][0]=='?'){
                             d3.select("#h"+path[i]).style("filter", "brightness(0.3")
+
                         }
+                        else if(map.terrain[path[i]][0]=='!'){
+                            switch(map.terrain[path[i]][1]){
+                                case "1":
+                                    d3.select("#h"+path[i]).style("filter", "hue-rotate(60deg) brightness(1.2)");
+                                    break;
+                                
+                                case "2":
+                                    d3.select("#h"+path[i]).style("filter", "hue-rotate(60deg) brightness(1.6)");
+                                    break;
+                                
+                                default:
+                                    d3.select("#h"+path[i]).style("filter", "hue-rotate(55deg) brightness(1.3)");
+                            }
+                            d3.select("#h"+path[i]).style("filter", "sepia(1)");
+                        }
+                        
                     }
                 }
             });

@@ -29,6 +29,7 @@ function creerHexagone(rayon) {
  * @param {number} idHexa - identifiant des hexagones
 */
 function créerDamier(nbColumns, nbLines, rayon,idDamier,idHexa) {
+    console.log("idDamier : "+idDamier)
     document.getElementById(idDamier).style.visibility="visible";
     document.getElementById(idDamier).innerHTML = "";
     Hexagone = creerHexagone(rayon);
@@ -152,7 +153,6 @@ function actualiserDamier(longueur, largeur, jeu,idHexa) {
             fill(i, "url(#"+stringyahou+"-pattern)",idHexa)
             switch (jeu[i][1]){
                 case "1":
-                    console.log("pipi")
                     d3.select("#h" + i).style("filter", "hue-rotate(60deg) brightness(1.2)");
                     break
                     case "2":
