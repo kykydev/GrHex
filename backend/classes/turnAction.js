@@ -42,4 +42,5 @@ class buildAction extends turnAction{
 
 
 
-module.exports = { turnAction,moveAction,newUnitAction,buildAction,neutralMoveAction};
+
+module.exports = { turnAction,moveAction,newUnitAction,buildAction,neutralMoveAction,ressourceAction};

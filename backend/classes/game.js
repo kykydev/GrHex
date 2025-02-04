@@ -8,8 +8,8 @@ const { createMap } = require('../modules/mapGeneration')
 const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
-const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction } = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt } = require('./unit')
+const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,ressourceAction} = require('./turnAction')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
 
@@ -78,7 +78,7 @@ class game {
 
 
     initBeotie(joueur) {
-        joueur.hdv = 214
+        joueur.hdv = [214]
 
         var boardBoetie = {
             185: new stratege(185, joueur),
@@ -100,7 +100,7 @@ class game {
     }
 
     initArgolide(joueur) {
-        joueur.hdv = 297
+        joueur.hdv = [297]
         var boardArgolide = {
             328: new stratege(328, joueur),
             288: new bucheron(288, joueur),
@@ -122,7 +122,7 @@ class game {
     }
 
     initAttique(joueur) {
-        joueur.hdv = 1072
+        joueur.hdv = [1072]
         var boardAttique = {
             1011: new stratege(1011, joueur),
             1043: new bucheron(1043, joueur),
@@ -210,6 +210,8 @@ class game {
         var vis = JSON.parse(JSON.stringify(visions[uni]));
         var unité = this.board[uni]
         var visAge = 1
+        for (var z in vis){if (vis[z].pos==uni){vis.splice(z,1);break}}
+
         var distStratège = distance(posStratège,uni,this.map.height)
         if (distStratège<=this.board[posStratège].vision){return}
         if (distStratège>this.board[posStratège].vision+10){visAge=2}
@@ -226,7 +228,7 @@ class game {
                     for (var vis of vision.vision){
                         retour.infos[vis.info.pos] = new hexagon("!"+vision.age+vis.info.type, "!1"+vision.age+vis.info.pattern.pattern,vis.info.pos)
                         retour.terrain[vis.info.pos] = "!"+vision.age+vis.terrain
-                        if (vis.board!=undefined && vis.board.owner!=player.id){retour.board[vis.info.pos]=vis.board}
+                        if (vis.board!=undefined){retour.board[vis.info.pos]=vis.board}
                     }
             }
         }
@@ -408,6 +410,10 @@ class game {
         this.actionsThisTurn.push({ "type": "mort", "position": unit.position })
         delete this.board[unit.position]
         if (this.players[unit.owner]!=undefined && this.players[unit.owner].units[unit.position]!=undefined){delete this.players[unit.owner].units[unit.position]}
+        if (unit.name=="Hôtel de ville" || unit.name=="Entrepôt"){
+            for (var z in  this.players[unit.owner].hdv ){
+                this.players[unit.owner].hdv.splice(z,1);break}
+            }
         return true
     }
 
@@ -418,6 +424,7 @@ class game {
         if (unit1.initiative >= unit2.initiative) {//L'unité 1 attaque avant
             damage = unit1.attack - unit2.defense
             if (damage < 0) { damage = 0 }
+            this.actionsThisTurn.push({ "type": "combat", "départ": unit1.position, "arrivée":unit2.position,"dégâts":damage})
             if (damage >= unit2.hp) {//Cas où l'unité 1 a tué
                 unit1.steal(unit2)
                 this.kill(unit2)
@@ -427,6 +434,8 @@ class game {
                 unit2.hp = unit2.hp - damage
                 damage = unit2.attack - unit1.defense
                 if (damage < 0) { damage = 0 }
+                this.actionsThisTurn.push({ "type": "combat", "départ": unit2.position, "arrivée":unit1.position,"dégâts":damage})
+
                 if (damage >= unit1.hp) {//Cas où l'unité 1 a tué
                     unit2.steal(unit1)
                     this.kill(unit1)
@@ -444,6 +453,7 @@ class game {
 
             damage = unit2.attack - unit1.defense
             if (damage < 0) { damage = 0 }
+            this.actionsThisTurn.push({ "type": "combat", "départ": unit2.position, "arrivée":unit1.position,"dégâts":damage})
             if (damage >= unit1.hp) {//Cas où l'unité 2 a tué
                 unit2.steal(unit1)
                 this.kill(unit1)
@@ -453,6 +463,7 @@ class game {
                 unit1.hp = unit1.hp - damage
                 damage = (unit1.attack - unit2.defense)
                 if (damage < 0) { damage = 0 }
+                this.actionsThisTurn.push({ "type": "combat", "départ": unit1.position, "arrivée":unit2.position,"dégâts":damage})
                 if (damage >= unit2.hp) {//Cas où l'unité 1 a tué
                     unit1.steal(unit2)
                     this.kill(unit2)
@@ -477,15 +488,17 @@ class game {
             case "carriere":
                 uni.stone += 1
                 this.map.infos[position].nbStone--
+                this.actionsThisTurn.push({ "type": "ressource", "position": uni.position, "ressource": "pierre" })
                 if (this.map.infos[position].nbStone <= 0) {
                     this.map.infos[position] = new hexagon("plaine", "plaine_1", position)
                     this.map.terrain[position]="plaine_1"
                 }
-
+                
                 break
-
-
-            case "foret":
+                
+                
+                case "foret":
+                this.actionsThisTurn.push({ "type": "ressource", "position": uni.position, "ressource": "bois" })
                 uni.wood += 1
                 this.map.infos[position].nbTrees--
                 if (this.map.infos[position].nbTrees <= 0) {
@@ -532,23 +545,32 @@ class game {
         }
     }
 
+    //JE DOIS TESTER AVEC UN ENTREPOT   
+
     testDéposeRessources(uni){//Tente de déposer les ressources à sa base
         if (uni == undefined) { return }
-
-        if (casesAdjacentes(uni.position,this.map.width,this.map.height).includes(this.players[uni.owner].hdv)){
-            if (uni.stone!=undefined){
-                this.players[uni.owner].stone += uni.stone
+        if (casesAdjacentes(uni.position,this.map.width,this.map.height).includes(uni.base)){
+        if (uni.base==undefined){return}
+        var receiver = this.board[uni.base]
+            if (uni.stone=!undefined){
+                if (receiver.stone==undefined){receiver.stone=0}
+                receiver.stone += uni.stone
                 uni.stone = 0                
             }
 
             if (uni.wood!=undefined){
-                this.players[uni.owner].wood += uni.wood
-                uni.wood = 0                
+                if (receiver.wood==undefined){receiver.wood=0}
+                receiver.wood += uni.wood
+                uni.wood = 0                    
             }
 
-            if (uni.copper!=undefined){
-                this.players[uni.owner].copper += uni.copper
-                uni.copper = 0                
+            if (receiver.copper!=undefined){receiver.copper=0}
+            receiver.copper += uni.copper
+            uni.copper= 0     
+
+            if (uni.gold!=undefined){
+                this.players[uni.owner].gold += uni.gold
+                uni.gold = 0                
             }
         }
     }
@@ -569,7 +591,8 @@ class game {
         //------------Itère au travers des unités pour générer les actions du tour--------------
         for (let uni of Object.keys(this.board)) {
             this.board[uni].movementLeft = this.board[uni].movement
-            if (this.board[uni].name=="Champ"){this.players[this.board[uni].owner].gold++}
+            if (this.board[uni].name=="Champ"){this.players[this.board[uni].owner].gold++;this.actionsThisTurn.push({ "type": "ressource", "position": this.board[uni].position, "ressource": "or" })
+            }
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
             this.board[uni].destination = this.board[uni].findGoal(this)            
             if (this.board[uni].destination != undefined) {
@@ -588,6 +611,7 @@ class game {
         //Récolte des ressources en début de tour
         if (this.board[uni].name=="Bûcheron" || this.board[uni].name=="Paysanne" || this.board[uni].name=="Mineur"){
             this.testRécolteRessources(this.board[uni])
+            this.board[uni].updateBase(this)
         }
         }
 
@@ -772,6 +796,7 @@ return winner
 
 
 build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position voulue pour le joueur concerné
+    var pos = parseInt(pos)
     if (nomBat==undefined || pos==undefined || joueur==undefined){return false}
     //Checks pour voir si c'est bon
     if (this.map.terrain[pos]=="montagne" || this.map.terrain[pos]=="eau"){return false}
@@ -792,12 +817,14 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
     
     if (joueur.gold<batInfos.coûtOr || joueur.wood<batInfos.coûtBois || joueur.stone<batInfos.coûtPierre || joueur.copper<batInfos.coûtCuivre ){return false}
     //Eval permet de transformer la string en la classe
-    let uni = new (eval(batInfos.nom.toLowerCase()))(pos,joueur)
+    var nomBuild = batInfos.nom.toLowerCase();if (nomBuild=="hôtel de ville"){nomBuild="hdv"} 
+    let uni = new (eval(nomBuild))(pos,joueur)
     if (this.addUnit(uni,pos,joueur)==true){
         joueur.gold-=batInfos.coûtOr;
         joueur.wood-=batInfos.coûtBois;
         joueur.stone-=batInfos.coûtPierre;
         joueur.copper-=batInfos.coûtCuivre;
+        if (batInfos.nom=="Hôtel de ville" || batInfos.nom == "Entrepôt"){joueur.hdv.push(pos)}
         return true
     }
     else{
@@ -825,8 +852,8 @@ evolve(uniPos){//Tente de faire évoluer l'unité en position pos
 SpawnLoup(){//Fait apparaître un nombre aléatoire de loups sur des cases aléatoires de la carte
 let nbLoups=0
 var rand = Math.random()
-if (rand<0.6){nbLoups=1}
-if (rand>0.01){nbLoups=2}
+if (rand<0.15){nbLoups=1}
+if (rand>0.97){nbLoups=2}
 
     while (nbLoups>0){
 

@@ -253,6 +253,32 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         break
 
+
+                        case "ressource":
+                            if (document.getElementById("uni" + mouvement.position)==undefined){
+                                index++;
+                                jouerAnimationSuivante();
+                            }
+                            else{
+                        recolteAnim(mouvement.ressource,mouvement.position)
+                        index++;
+                        jouerAnimationSuivante();
+                            }
+                    break
+
+                        case "combat":
+                            if (document.getElementById("uni" + mouvement.départ)==undefined || document.getElementById("uni" + mouvement.arrivée)==undefined){
+                                index++;
+                                jouerAnimationSuivante();
+                            }
+                            else{
+                        attaqueAnim(mouvement.départ,mouvement.arrivée,mouvement.dégâts)
+                        index++;
+                        jouerAnimationSuivante();
+                            }
+                    break
+
+
                     default:
                         index++;
                         jouerAnimationSuivante();

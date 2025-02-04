@@ -72,8 +72,16 @@ class archer extends unit{
 
 class messager extends unit{
     constructor(position,player){
-        super(30,0,15,7,3,"Messager",position,player,2,1)
+        super(30,0,5,7,3,"Messager",position,player,2,1)
         this.tracked=true
+
+    }
+}
+
+class builder extends unit{
+    constructor(position,player){
+        super(30,10,5,10,3,"Builder",position,player,2,1)
+        this.tracked=false
 
     }
 }
@@ -84,8 +92,17 @@ class bucheron extends unit{
         this.wood=0
         this.maxWood=10
         this.knownForests = []
-        this.base = player.hdv//endroit où déposer les ressources
+        this.base = player.hdv[0]//endroit où déposer les ressources
     }
+    updateBase(game){
+        for (var z of (game.players[this.owner].hdv)){
+            if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
+        
+        this.base=z}}
+    }
+
+
+
     canEvolve(){
         return true
     }
@@ -111,8 +128,8 @@ class bucheron extends unit{
             }
             if (meilleurebase!=undefined){return meilleurebase}
         }
-
         if (this.destination!=undefined ){return this.destination}
+
         if (partie.map.infos[this.position].type=="foret"){return this.position}//Si la case actuelle est une forêt c'est bon
 
         let c =  casesAdjacentes(this.position,partie.map.width,partie.map.height)
@@ -141,7 +158,14 @@ class mineur extends unit{
         this.stone=0
         this.maxStone=8
         this.knownCarrieres = []
-        this.base=player.hdv
+        this.base=player.hdv[0]
+    }
+
+    updateBase(game){
+        for (var z of (game.players[this.owner].hdv)){
+            if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
+        
+        this.base=z}}
     }
 
     canGo(dest){
@@ -171,7 +195,7 @@ class mineur extends unit{
             }
             if (meilleurebase!=undefined){return meilleurebase}
         }
-
+        
         if (this.destination!=undefined ){return this.destination}
         if (partie.map.infos[this.position].type=="carriere"){return this.position}//Si la case actuelle est une forêt c'est bon
 
@@ -205,13 +229,19 @@ class paysanne extends unit{
         this.maxRessources
         this.knownForests = []
         this.knownCarrieres = []
-        this.base=player.hdv
+        this.base=player.hdv[0]
     }
     canRécolte(partie){
         return ((this.stone+this.wood)<this.maxRessources)
     }
 
-   
+    updateBase(game){
+        for (var z of (game.players[this.owner].hdv)){
+            if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
+        
+        this.base=z}}
+    }
+
     canGo(dest){
         if (dest=="X" || dest=="eau" || dest=="montagne"){return false}
         return true
@@ -281,6 +311,10 @@ class paysanne extends unit{
     }
 
     findGoal(partie){
+        
+        //IL FAUT REFAIRE LE RESTE
+        if (this.destination!=undefined){return this.destination}
+        
         if (this.wood<this.stone){
             return this.findGoalWood(partie)
         }
@@ -353,11 +387,21 @@ class entrepôt extends building{
         
         this.wood = 0
         this.stone = 0
-    this.copper = 0
-    this.maxWood = 40
-    this.maxStone = 40
-    this.maxCopper = 30
+        this.copper = 0
+        this.maxWood = 40
+        this.maxStone = 40
+        this.maxCopper = 30 
+    }
 }
+
+class chantier extends building{
+    constructor(position,player,buildingInfos){
+        super(40,0,3,0,"Chantier",position,player,0,0)
+        this.turnsToBuild = buildingInfos.turnsToBuild
+        this.building = buildingInfos.name
+    }
+
+
 }
 
 
@@ -408,15 +452,14 @@ class creatureNeutre{
 
 class loup extends creatureNeutre{
     constructor(position){
-        super(30,20,4,4,1,"Loup",position,2,1)
+        super(20,15,4,10,1,"Loup",position,2,1)
     }
-
 
     findGoal(partie){
         var tablo = []
         for (var z of casesAdjacentes(this.position,partie.map.width,partie.map.height)){
             for (var zz of casesAdjacentes(z,partie.map.width,partie.map.height)){
-                if (partie.board[zz]!=undefined && partie.board[zz].owner!=this.owner && partie.board[zz].defense<this.attack){return zz}
+                if (partie.board[zz]!=undefined && partie.board[zz].owner!=this.owner && partie.board[zz].defense<this.attack && partie.board[zz].type!="building"){return zz}
                 tablo.push(zz)
             }
         }
@@ -453,4 +496,4 @@ class pierris extends creatureNeutre{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt };
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder };
