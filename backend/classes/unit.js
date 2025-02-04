@@ -226,7 +226,7 @@ class paysanne extends unit{
         super(15,0,0,1,1,"Paysanne",position,player,1,1)
         this.wood=0
         this.stone=0
-        this.maxRessources
+        this.maxRessources = 7
         this.knownForests = []
         this.knownCarrieres = []
         this.base=player.hdv[0]
@@ -248,13 +248,6 @@ class paysanne extends unit{
     }
 
     findGoalWood(partie){//Retourne la meilleure destination possible pour l'unité
-        if (this.canRécolte(partie)==false){
-            let meilleurebase = undefined
-            for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
-                if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
-            }
-            if (meilleurebase!=undefined){return meilleurebase}
-        }
 
         if (this.destination!=undefined ){return this.destination}
         if (partie.map.infos[this.position].type=="foret"){return this.position}//Si la case actuelle est une forêt c'est bon
@@ -270,24 +263,11 @@ class paysanne extends unit{
             if (partie.map.infos[z].type=="foret" && partie.board[z]==undefined){return z}
         }
 
-        while (c.length>0){
-            var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
-            if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
-
-        }
         return undefined
     }
 
     
     findGoalStone(partie){//Retourne la meilleure destination possible pour l'unité
-        if (this.canRécolte(partie)==false){
-            let meilleurebase = undefined
-            for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
-                if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
-            }
-            if (meilleurebase!=undefined){return meilleurebase}
-        }
-
         if (this.destination!=undefined ){return this.destination}
         if (partie.map.infos[this.position].type=="carriere"){return this.position}//Si la case actuelle est une forêt c'est bon
 
@@ -302,25 +282,43 @@ class paysanne extends unit{
             if (partie.map.infos[z].type=="carriere" && partie.board[z]==undefined){return z}
         }
 
-        while (c.length>0){
-            var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
-            if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
-
-        }
         return undefined
     }
 
     findGoal(partie){
         
-        //IL FAUT REFAIRE LE RESTE
-        if (this.destination!=undefined){return this.destination}
+        if (this.canRécolte(partie)==false){
+            let meilleurebase = undefined
+            for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
+                if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+            }
+            if (meilleurebase!=undefined){return meilleurebase}
+        }
+        let c =  casesAdjacentes(this.position,partie.map.width,partie.map.height)
         
-        if (this.wood<this.stone){
-            return this.findGoalWood(partie)
+        var objectifWood = this.findGoalWood(partie)
+        var objectifStone = this.findGoalStone(partie)
+
+        if (objectifStone==undefined && objectifWood==undefined){
+            while (c.length>0){
+                var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
+                if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
+            }
         }
+        
+        if (objectifWood==undefined){return objectifStone}
         else{
-            return this.findGoalStone(partie)
-        }
+            if (objectifStone==undefined){return objectifWood}
+            else{
+                if (distance(this.position,objectifWood,partie.map.height)<distance(this.position,objectifStone,map.height)){
+                    return objectifWood
+                }
+                else{
+                    return objectifStone
+                }
+            }
+        } 
+
     }
 }
 
