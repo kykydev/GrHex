@@ -35,12 +35,12 @@ class buildAction extends turnAction{
             super("newBuilding",5,joueur)
             this.origin = zone
             this.building = building
+            }
         }
-        }
 
 
 
 
 
 
-module.exports = { turnAction,moveAction,newUnitAction,buildAction,neutralMoveAction,ressourceAction};
+module.exports = { turnAction,moveAction,newUnitAction,buildAction,neutralMoveAction};

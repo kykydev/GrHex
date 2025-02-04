@@ -8,7 +8,7 @@ const { createMap } = require('../modules/mapGeneration')
 const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
-const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,ressourceAction} = require('./turnAction')
+const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction} = require('./turnAction')
 const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
