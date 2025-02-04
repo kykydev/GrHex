@@ -424,7 +424,7 @@ class game {
         if (unit1.initiative >= unit2.initiative) {//L'unité 1 attaque avant
             damage = unit1.attack - unit2.defense
             if (damage < 0) { damage = 0 }
-            this.actionsThisTurn.push({ "type": "combat", "départ": unit1.position, "arrivée":unit2.position,"dégâts":damage})
+            this.actionsThisTurn.push({ "type": "combat", "départ": unit1.position, "arrivée":unit2.position,"dégâts":"-"+damage})
             if (damage >= unit2.hp) {//Cas où l'unité 1 a tué
                 unit1.steal(unit2)
                 this.kill(unit2)
@@ -434,7 +434,7 @@ class game {
                 unit2.hp = unit2.hp - damage
                 damage = unit2.attack - unit1.defense
                 if (damage < 0) { damage = 0 }
-                this.actionsThisTurn.push({ "type": "combat", "départ": unit2.position, "arrivée":unit1.position,"dégâts":damage})
+                this.actionsThisTurn.push({ "type": "combat", "départ": unit2.position, "arrivée":unit1.position,"dégâts":"-"+damage})
 
                 if (damage >= unit1.hp) {//Cas où l'unité 1 a tué
                     unit2.steal(unit1)
@@ -453,7 +453,7 @@ class game {
 
             damage = unit2.attack - unit1.defense
             if (damage < 0) { damage = 0 }
-            this.actionsThisTurn.push({ "type": "combat", "départ": unit2.position, "arrivée":unit1.position,"dégâts":damage})
+            this.actionsThisTurn.push({ "type": "combat", "départ": unit2.position, "arrivée":unit1.position,"dégâts":"-"+damage})
             if (damage >= unit1.hp) {//Cas où l'unité 2 a tué
                 unit2.steal(unit1)
                 this.kill(unit1)
@@ -463,7 +463,7 @@ class game {
                 unit1.hp = unit1.hp - damage
                 damage = (unit1.attack - unit2.defense)
                 if (damage < 0) { damage = 0 }
-                this.actionsThisTurn.push({ "type": "combat", "départ": unit1.position, "arrivée":unit2.position,"dégâts":damage})
+                this.actionsThisTurn.push({ "type": "combat", "départ": unit1.position, "arrivée":unit2.position,"dégâts":"-"+damage})
                 if (damage >= unit2.hp) {//Cas où l'unité 1 a tué
                     unit1.steal(unit2)
                     this.kill(unit2)
