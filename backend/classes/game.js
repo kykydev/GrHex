@@ -829,14 +829,14 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
     if (batInfos==undefined){return false}
     if (assignedBuilder==undefined){return false}
     
+    if (joueur.gold<batInfos.coûtOr){return}
 
 
-
-    var nomBuild = batInfos.nom.toLowerCase();if (nomBuild=="hôtel de ville"){nomBuild="hdv"} 
     let uni = new chantier(pos,joueur,batInfos)
     if (this.addUnit(uni,pos,joueur)==true){
         assignedBuilder.currentBuilding = uni.position
-        console.log(assignedBuilder)
+        assignedBuilder.phase = "getRessources"
+        joueur.gold-=batInfos.coûtOr
         return true
     }
     else{

@@ -80,13 +80,71 @@ class messager extends unit{
 
 class builder extends unit{
     constructor(position,player){
-        super(30,10,5,10,3,"Ouvrier",position,player,2,1)
+        super(30,0,2,10,3,"Ouvrier",position,player,2,1)
         this.tracked=false
-        this.currentBuilding = undefined//currentTask sera un objet de la classe "buildingTask"
+        this.currentBuilding = undefined//currentBuilding est la position du building actuellement attribué
+        this.phase = undefined //Phase qui dit si le builder va chercher les ressources ou s'il va construire.
         this.wood=0
         this.stone=0
         this.copper=0
+        this.base = player.hdv[0]//endroit où récupérer les ressources
+
     }
+
+    updateBase(game){
+        for (var z of (game.players[this.owner].hdv)){
+            if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
+                 this.base=z}}
+    }
+    canGo(dest){
+        if (dest=="X" || dest=="eau" || dest=="montagne"){return false}
+        return true
+    }
+
+
+    
+    findGoal(partie){//Retourne la meilleure destination possible pour l'unité
+
+        if (this.currentBuilding==undefined){return undefined}
+        var travail = partie.board[this.currentBuilding];
+        if (travail==undefined){return undefined}
+
+
+        //Test pour voir si l'unité peut actuellement faire son build
+        if (this.wood<travail.buildingInfos.coûtBois || this.stone<travail.buildingInfos.coûtPierre || this.copper<travail.buildingInfos.coûtCuivre){this.phase = "getRessources"}
+
+
+        if (this.canRécolte(partie)==false){
+            let meilleurebase = undefined
+            for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
+                if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+            }
+            if (meilleurebase!=undefined){return meilleurebase}
+        }
+        if (this.destination!=undefined ){return this.destination}
+
+        if (partie.map.infos[this.position].type=="foret"){return this.position}//Si la case actuelle est une forêt c'est bon
+
+        let c =  casesAdjacentes(this.position,partie.map.width,partie.map.height)
+        for (var z of c){
+            //On commence par chercher une forêt adjacente, cas le plus simple
+            if (partie.map.infos[z].type=="foret" && partie.board[z]==undefined){return z}
+        }
+
+        while (this.knownForests.length>0){
+            var z = this.knownForests.shift()
+            if (partie.map.infos[z].type=="foret" && partie.board[z]==undefined){return z}
+        }
+
+        while (c.length>0){
+            var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
+            if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
+
+        }
+        return undefined
+    }
+
+
 }
 
 class bucheron extends unit{
