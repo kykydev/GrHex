@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let maCite;
     let pseudo; 
 
+    let hdvSelectionne;
+
     const beotie = document.getElementById("beotie");
     const attique = document.getElementById("attique");
     const argolide = document.getElementById("argolide");
@@ -109,6 +111,13 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('partie').style.display = 'none';
         document.getElementById('accueil').style.display = 'flex';
     });
+
+    // recruter ouvrier
+    document.getElementById("bouttonHdv").addEventListener("click", () =>{
+        console.log("hdv : "+hdvSelectionne);
+        socket.emit("recruterOuvrier",hdvSelectionne);
+    });
+
 
     socket.on("finTour", data => {
         // console.log(data);
@@ -468,6 +477,8 @@ const ressources =
 
                 if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" && !uniteSelectionnee) {
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
+                    // pour ouvrier
+                    hdvSelectionne = event.target.id.supprimerPrefixId("uni");
                     // vueInfoHdv variable D3
 
                 } else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" && uniteSelectionnee) {
