@@ -235,4 +235,10 @@ io.on('connection', (socket) => {
     }
   })
 
+  socket.on("recruterOuvrier",data=>{
+    console.log("recrutement :"+data)
+  })
+
+
+
 });

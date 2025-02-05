@@ -80,9 +80,12 @@ class messager extends unit{
 
 class builder extends unit{
     constructor(position,player){
-        super(30,10,5,10,3,"Builder",position,player,2,1)
+        super(30,10,5,10,3,"Ouvrier",position,player,2,1)
         this.tracked=false
-
+        this.currentBuilding = undefined//currentTask sera un objet de la classe "buildingTask"
+        this.wood=0
+        this.stone=0
+        this.copper=0
     }
 }
 
@@ -396,7 +399,7 @@ class chantier extends building{
     constructor(position,player,buildingInfos){
         super(40,0,3,0,"Chantier",position,player,0,0)
         this.turnsToBuild = buildingInfos.turnsToBuild
-        this.building = buildingInfos.name
+        this.buildingInfos = buildingInfos
     }
 
 
