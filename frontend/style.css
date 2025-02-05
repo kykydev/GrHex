@@ -420,19 +420,17 @@ button:hover {
 #statsUnite img {
     cursor: pointer;
     background-color: #000;
-    height: 92px;
+    height: 110px;
     width: 75px;
     border: 4px double #212529;
-    margin-top: 20px;
 }
 
 #unitStats {
-    margin-top: 20px;
     margin-left: 5%;
     overflow-x: auto;
     display: flex;
     flex-direction: column;
-    height: 92px;
+    height: 100%;
     width: 100%;
 }
 

@@ -157,7 +157,7 @@ class bucheron extends unit{
 
 class mineur extends unit{
     constructor(position,player){
-        super(20,10,5,2,1,"Mineur",position,player,1,1)
+        super(25,10,5,2,1,"Mineur",position,player,1,1)
         this.stone=0
         this.maxStone=8
         this.knownCarrieres = []
@@ -495,6 +495,14 @@ class pierris extends creatureNeutre{
 
 }
 
+class pecheur extends unit{
+    constructor(position,player){
+        super(20,8,3,1,1,"Pecheur",position,player,1,1)
+        this.tracked=false
+
+    }
+}
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder };
+
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur };
