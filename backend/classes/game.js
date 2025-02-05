@@ -879,7 +879,7 @@ recruteOuvrier(pos){
             var uni = new builder(z,joueur)
             if (this.addUnit(uni,z,joueur)){            
                     joueur.gold-=30;
-;                   return z}
+                   return z}
         }
     }
 
