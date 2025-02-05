@@ -236,7 +236,11 @@ io.on('connection', (socket) => {
   })
 
   socket.on("recruterOuvrier",data=>{
-    console.log("recrutement :"+data)
+    let partie = parties[socket.idPartie]
+    if (partie==undefined){return}
+    if (socket.idJoueur==undefined){return}
+    var res = partie.recruteOuvrier(data)
+    if (res!=false){socket.emit("recruterOuvrier",res)}
   })
 
 

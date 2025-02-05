@@ -868,6 +868,25 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
 */
 
 
+recruteOuvrier(pos){
+    if (this.board[pos]==undefined || this.board[pos].name!="Hôtel de ville"){return false}
+    var joueur = this.players[this.board[pos].owner]
+
+    if (joueur.gold<30){return false}
+    
+    for (var z of casesAdjacentes(pos,this.map.width,this.map.height)){
+        if (this.board[z]==undefined){
+            var uni = new builder(z,joueur)
+            if (this.addUnit(uni,z,joueur)){            
+                    joueur.gold-=30;
+;                   return z}
+        }
+    }
+
+
+    return false
+}
+
 
 evolve(uniPos){//Tente de faire évoluer l'unité en position pos
         var uni = this.board[uniPos]
