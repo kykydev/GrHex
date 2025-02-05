@@ -15,9 +15,12 @@
 
 <body>
 
+    <!-- Accueil -->
+
     <div class="accueil" id="accueil">
 
         <h1 id="titreP2">Creer une nouvelle partie</h1>
+
         <div id="form2">
             <label for="nbJ">Nombre de Joueurs</label>
             <select name="nbJ" id="nbJoueurs">
@@ -48,82 +51,57 @@
                         Rejoindre
                     </th>
                 </tr>
-
             </table>
         </div>
-
-
-
 
     </div>
 
     <div class="rejoindrePartie" id="rejoindrePartie">
-        <div class="direction1">
-            <button id="btngauche" class="fleche left"></button>
-            <button id="btndroite" class="fleche right"></button>
-        </div>
-        <div class="direction2">
-            <button id="btnhaut" class="fleche up"></button>
-            <button id="btnbas" class="fleche down"></button>
-        </div>
 
-        <div class="droite" id="droiteAll">
-
-
-            <label for="nbTours">Pseudo</label>
-            <input type="text" id="usernameInput" maxlength="15" required>
-
-            <fieldset class="fieldMoche">
-
-                <div class="radioInput">
-                    <input type="radio" name="cite" id="beotie" value="beotie" />
-                    <label for="beotie"> Béotie </label>
-                </div>
-                <div class="radioInput">
-                    <input type="radio" name="cite" id="attique" value="attique" />
-                    <label for="attique"> Attique </label>
-                </div>
-                <div class="radioInput">
-                    <input type="radio" id="argolide" name="cite" value="argolide" />
-                    <label for="argolide"> Argolide </label>
-                </div>
-            </fieldset>
-            <button id="rejoindrePartie" class="buttonretro">
-                Rejoindre
-            </button>
-
-        </div>
         <div class="haut">
-            <div class="bouton2">
-                <button id="quitter1" class="buttonretro">
-                    Quitter
-                </button>
-                
-            </div>
             <div id="nomPartie"></div>
-            <div> </div>
-
+            <div id="whoami"></div>
+            <input type="text" id="usernameInput" class="inputblack" placeholder="Username" maxlength="15" required>
+            <button id="quitter1" class="buttonblack">Quitter</button>
         </div>
 
         <div class="damier" id="damierPrev">
             <svg id="jeuprev"></svg>
+            <div class="dialoguebox">
+                <div id="textedialogue">
+                    <p>Bienvenue dans le peloponnese, sélectionne la cité dont tu souhaites devenir le stratège!</p>
+                    <div class="choixdialogue">
+                        <p id="beotie" class="choix-cite" tabindex="0">Béotie</p>
+                        <p id="attique" class="choix-cite" tabindex="0">Attique</p>
+                        <p id="argolide" class="choix-cite" tabindex="0">Argolide</p>
+                    </div>
+                </div>
+                <img src="img/personnages/blanc/pierris pompidoris.png">
+            </div>
         </div>
+
     </div>
 
 
     <div class="partie" id="partie">
-        <div class="direction1">
-            <button id="btngauche" class="fleche left"></button>
-            <button id="btndroite" class="fleche right"></button>
-        </div>
-        <div class="direction2">
-            <button id="btnhaut" class="fleche up"></button>
-            <button id="btnbas" class="fleche down"></button>
-        </div>
-        <div class="droite">
-            <div class="mini-map">
-                <svg id="mini"></svg>
+
+        <div class="haut">
+            <div class="ressources"></div>
+            <button id="finTour" class="buttonblack">Fin de tour</button>
+            <div class="txtfintour">
+                <p></p>
             </div>
+            <button id="quitter2" class="buttonblack">Quitter la partie</button>
+        </div>
+
+        <div class="damier" id="damierjeu">
+            
+            <svg id="jeu"></svg>
+            <div id="vueInfoHdv"></div>
+            <div id="vueFin"></div>
+
+            <div id="vueBatiments"></div>
+
             <div id="statsUnite">
                 <img id="uniteImage" src="" width="180" height="150" />
                 <div id="unitStats">
@@ -138,33 +116,8 @@
                 </div>
             </div>
 
-
-            <div id="vueBatiments">
-                
-            </div>
-
-            <div class="bouton1">
-                <button id="finTour" class="buttonretro">
-                    Fin de tour
-                </button>
-            </div>
         </div>
 
-        <div class="haut">
-            <div class="bouton2">
-                <button id="quitter2" class="buttonretro">
-                    Quitter
-                </button>
-                <!-- <button id="recolteButton">Test</button> -->
-            </div>
-            <div class="ressources"></div>
-        </div>
-
-        <div class="damier" id="damierjeu">
-            <svg id="jeu"></svg>
-            <div id="vueInfoHdv"></div>
-            <div id="vueFin"></div>
-        </div>
     </div>
 
 </body>

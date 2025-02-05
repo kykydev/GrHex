@@ -32,14 +32,14 @@ body {
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 80%;
+    width: 100%;
     height: 95%;
     overflow: scroll;
     z-index: 0;
 }
 
 #jeu {
-    width: 2230px;
+    width: 2229px;
     height: 1440px;
     margin-top: -24px;
     margin-left: -40px;
@@ -50,17 +50,6 @@ body {
     height: 1440px;
     margin-top: -24px;
     margin-left: -40px;
-}
-
-.mini-map {
-    width: 100%;
-    height: 35%;
-}
-
-#mini {
-    margin-left: 20px;
-    width: 80%;
-    height: 50%;
 }
 
 /*----------Composants droit----------*/
@@ -96,24 +85,36 @@ body {
 .haut {
     position: fixed;
     display: flex;
-    justify-content: space-between; 
     align-items: center;
+    justify-content: center;
     left: 0;
     top: 0;
-    width: 79%;
-    height: 4vh;
-    background-color: #6c757d;
-    border: 4px solid #212529;
+    width: 100%;
+    height: 5%;
+    background-color: #000;
     z-index: 1;
+    color: wheat;
 }
 
-.ressources{
+.ressources {
     display: flex;
     gap: 15px;
+    margin-right: 65%;
+}
+
+.ressources img {
+    height: 50px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.buttonblack {
+    margin: 0 10px;
 }
 
 #nomPartie {
     font-size: xx-large;
+    margin-right: 60%;
 }
 
 /*----------Page d'accueil + vues----------*/
@@ -189,17 +190,6 @@ body {
     font-size: 2.5vh;
     width: 100%;
 }
-
-#usernameInput {
-    background-color: #b5b4b4;
-    color: #000000;
-    border: solid #555 2px;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 2.5vh;
-    width: 50%;
-}
-
 
 #form2 input[type="number"] {
     background-color: #b5b4b4;
@@ -344,7 +334,8 @@ button:hover {
 
 /* Fleches */
 
-.direction1, .direction2{
+.direction1,
+.direction2 {
     position: fixed;
     left: 90%;
     top: 10%;
@@ -358,7 +349,7 @@ button:hover {
 .direction1 {
     width: 15%;
     height: 10%;
-    top:20%;
+    top: 20%;
     z-index: 20;
     pointer-events: auto;
 }
@@ -371,46 +362,7 @@ button:hover {
     pointer-events: auto;
 }
 
-.fleche {
-    --color-arrow: aliceblue;
-    --size-arrow: 40px;
-    --stroke-arrow: 10px;
-    --style-arrow: groove;
-
-    position: relative;
-    width: var(--size-arrow);
-    height: var(--size-arrow);
-    margin: 40px;
-    background: transparent;
-    border: 0;
-    border-left: var(--stroke-arrow) var(--style-arrow) var(--color-arrow);
-    border-bottom: var(--stroke-arrow) var(--style-arrow) var(--color-arrow);
-    cursor: pointer;
-  }
-  
-  .fleche::before {
-    position: absolute;
-    left: 0;
-    top: calc(var(--size-arrow) - var(--stroke-arrow) * 1.5);
-    clip-path: polygon(0 50%, calc(var(--stroke-arrow) / 2) 0, 100% 0, 100% 100%, calc(var(--stroke-arrow) / 2) 100%);
-    width: calc(var(--size-arrow) * 1.2);
-    height: 0;
-    border-top: var(--stroke-arrow) var(--style-arrow) var(--color-arrow);
-    transform-origin: 0 50%;
-    transform: rotate(-45deg);
-    content: '';
-  }
-  
-  .fleche:hover  { opacity: 0.75; }
-  .fleche:active { opacity: 0.5; }
-  
-  .fleche.left  { transform: rotate(  45deg); }
-  .fleche.right { transform: rotate(-135deg); }
-  .fleche.up    { transform: rotate( 135deg); }
-  .fleche.down  { transform: rotate( -45deg); }
-
-
-#vueInfoHdv{
+#vueInfoHdv {
     display: none;
     height: 350px;
     width: 350px;
@@ -421,46 +373,72 @@ button:hover {
     z-index: 4;
 }
 
-#vueBatiments{
+#vueBatiments {
+    cursor: grab;
+    background-color: #000;
+    position: fixed;
+    left: 80%;
+    top: 10%;
     display: flex;
     overflow-y: auto;
-    width: 80%;
-    margin-top: 5%;
+    width: 15%;
+    height: 120px;
+    z-index: 5000;
 }
 
-.batiments{
+#vueBatiments img {
+    cursor: pointer;
+    margin-top: 20px;
+    background-color: #000;
+    height: 92px;
+    width: 75px;
+    border: 4px double #212529;
+}
+
+.batiments {
     background-color: #000;
     border: 4px double #212529;
 }
 
-#statsUnite{
+#statsUnite {
+    color: wheat;
+    position: fixed;
+    background-color: #000;
+    cursor: grab;
+    left: 80%;
+    top: 25%;
     display: flex;
     overflow: auto;
-    width: 80%;
+    height: 120px;
+    width: 15%;
+    z-index: 5000;
 }
 
-#statsUnite img{
+#statsUnite img {
+    cursor: pointer;
     background-color: #000;
-    height: 150px;
-    width: 100px;
+    height: 92px;
+    width: 75px;
     border: 4px double #212529;
+    margin-top: 20px;
 }
 
-#unitStats{
+#unitStats {
+    margin-top: 20px;
     margin-left: 5%;
     overflow-x: auto;
     display: flex;
     flex-direction: column;
-    height: 150px;
+    height: 92px;
     width: 100%;
 }
 
-#unitStats p{
+#unitStats p {
     width: 100%;
-    margin: 0;
+    margin: 0px;
 }
 
-#vueFin{
+#vueFin {
     display: none;
     height: 350px;
     width: 350px;
@@ -469,4 +447,133 @@ button:hover {
     left: 0;
     top: 0;
     z-index: 4;
+}
+
+/* From Uiverse.io by SelfMadeSystem */
+.buttonblack {
+    position: relative;
+    cursor: pointer;
+    padding: 4px 8px;
+    border: 1px solid black;
+    border-radius: 4px;
+    color: #fff;
+    text-shadow: 1px 1px #000;
+    box-shadow:
+        inset 0px 4px 4px -3px #fff0,
+        inset 0px -3px 4px -3px #fff;
+    background: linear-gradient(#3e3939, #423f3f 50%, #000 50%);
+    isolation: isolate;
+    transition:
+        0.25s all,
+        0.1s background-position;
+}
+
+.buttonblack::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: radial-gradient(circle at 50% 150%, #969797, #0000 50%);
+    background-size: 300% 50%;
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: inherit;
+}
+
+.buttonblack::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: radial-gradient(circle at 50% 320%, #969797, #0000 50%);
+    background-size: 300% 50%;
+    background-position: 50% 0%;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: inherit;
+}
+
+.buttonblack:hover {
+    box-shadow:
+        inset 0px 4px 4px -3px #fff5,
+        inset 0px -3px 4px -3px #fff;
+}
+
+.buttonblack:hover::before,
+.buttonblack:hover::after {
+    opacity: 1;
+}
+
+.buttonblack:active::before,
+.buttonblack:active::after {
+    opacity: 0;
+}
+
+.buttonblack:active {
+    box-shadow:
+        inset 0px 4px 4px -3px #000,
+        inset 0px -4px 4px -3px #000c,
+        inset 0px 0px 24px -3px #000a;
+    background-position: 1px 1px;
+}
+
+.buttonblack div {
+    transition: 0.1s translate;
+}
+
+.buttonblack:active div {
+    translate: 1px 1px;
+}
+
+.dialoguebox {
+    position: fixed;
+    left: 0%;
+    bottom: 0%;
+    height: 20%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.750);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.dialoguebox img {
+    height: 750px;
+}
+
+#textedialogue {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    left: 35%;
+    color: wheat;
+    font-size: 18px;
+    text-align: center;
+}
+
+.choixdialogue {
+    margin-left: 25%;
+}
+
+.choixdialogue p:hover {
+    cursor: pointer;
+    user-select: none;
+    color: green;
+}
+
+#usernameInput {
+    max-width: 10%;
+}
+
+.inputblack {
+    margin: 30px;
+    background: #262525;
+    border: none;
+    outline: none;
+    padding: 5px 15px;
+    font-size: 17px;
+    border-radius: 9999px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: #fff;
 }

@@ -5,117 +5,10 @@ String.prototype.supprimerPrefixId = function (prefix) {
 
 // dico des chemins de chaque unité du jeu
 let dicoPathUnite = {};
-//-------------------Fonction qui déplace vue damier selon boutons/touches-----------------
-
-
-/**
- * créer les événement pour se déplacer sur la carte 
- * @param {string} id 
- */
-function setupBoutonScroll(id) {
-    let scrollAmount = 15;
-    const plateaujeu = document.getElementById(id);
-
-    let btnGaucheEnfonce = false;
-    document.getElementById("btngauche").addEventListener("mousedown", function () {
-        btnGaucheEnfonce = true;
-        scrollEnfonce();
-    });
-    document.getElementById("btngauche").addEventListener("mouseup", function () {
-        btnGaucheEnfonce = false;
-    });
-
-    let btnDroitEnfonce = false;
-    document.getElementById("btndroite").addEventListener("mousedown", function () {
-        btnDroitEnfonce = true;
-        scrollEnfonce();
-    });
-    document.getElementById("btndroite").addEventListener("mouseup", function () {
-        btnDroitEnfonce = false;
-    });
-
-    let btnHautEnfonce = false;
-    document.getElementById("btnhaut").addEventListener("mousedown", function () {
-        btnHautEnfonce = true;
-        scrollEnfonce();
-    });
-    document.getElementById("btnhaut").addEventListener("mouseup", function () {
-        btnHautEnfonce = false;
-    });
-
-    let btnBasEnfonce = false;
-    document.getElementById("btnbas").addEventListener("mousedown", function () {
-        btnBasEnfonce = true;
-        scrollEnfonce();
-    });
-    document.getElementById("btnbas").addEventListener("mouseup", function () {
-        btnBasEnfonce = false;
-    });
-
-    function scrollEnfonce() {
-        if (btnHautEnfonce) {
-            d3.select("#" + id).property("scrollTop", d3.select("#" + id).property("scrollTop") - scrollAmount);
-            setTimeout(scrollEnfonce, 100);
-        }
-        if (btnBasEnfonce) {
-            d3.select("#" + id).property("scrollTop", d3.select("#" + id).property("scrollTop") + scrollAmount);
-            setTimeout(scrollEnfonce, 100);
-        }
-        if (btnGaucheEnfonce) {
-            d3.select("#" + id).property("scrollLeft", d3.select("#" + id).property("scrollLeft") - scrollAmount);
-            setTimeout(scrollEnfonce, 100);
-        }
-        if (btnDroitEnfonce) {
-            d3.select("#" + id).property("scrollLeft", d3.select("#" + id).property("scrollLeft") + scrollAmount);
-            setTimeout(scrollEnfonce, 100);
-        }
-    }
-
-    document.addEventListener("keydown", function (e) {
-        switch (e.key) {
-            case "z":
-                btnHautEnfonce = true;
-                scrollEnfonce();
-                break;
-            case "s":
-                btnBasEnfonce = true;
-                scrollEnfonce();
-                break;
-            case "q":
-                btnGaucheEnfonce = true;
-                scrollEnfonce();
-                break;
-            case "d":
-                btnDroitEnfonce = true;
-                scrollEnfonce();
-                break;
-        }
-    });
-
-    document.addEventListener("keyup", function (e) {
-        switch (e.key) {
-            case "z":
-                btnHautEnfonce = false;
-                break;
-            case "s":
-                btnBasEnfonce = false;
-                break;
-            case "q":
-                btnGaucheEnfonce = false;
-                break;
-            case "d":
-                btnDroitEnfonce = false;
-                break;
-        }
-    });
-}
-
 
 //------------------------------MAIN---------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", function () {
-
-
 
     // attributs global
     let cite;
@@ -126,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let nomPartie;
     let idJoueur;
     let maCite;
-    let pseudo;
+    let pseudo; 
 
     const beotie = document.getElementById("beotie");
     const attique = document.getElementById("attique");
@@ -218,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     socket.on("finTour", data => {
-        console.log(data);
+        // console.log(data);
         // true si tout le monde à fini false sinon
 
         let index = 0;
@@ -226,16 +119,13 @@ document.addEventListener("DOMContentLoaded", function () {
         function jouerAnimationSuivante() {
             if (index < data.length) {
                 const mouvement = data[index];
-                console.log("data.length: " + data.length + " index: " + index)
                 switch (data[index].type) {
-
                     case "mouvement":
-                        if (document.getElementById("uni" + mouvement.départ) == undefined) {
+                        if ((document.getElementById("uni" + mouvement.départ) == undefined) || (map.terrain[[mouvement.départ]][0] == '!')) {
                             index++;
                             jouerAnimationSuivante();
                         }
                         else {
-                            console.log("anim")
                             deplacerUnitesAnim(mouvement.départ, mouvement.arrivée, () => {
                                 index++;
                                 jouerAnimationSuivante();
@@ -243,12 +133,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         break;
                     case "mort":
-                        if (document.getElementById("uni" + mouvement.position) == undefined) {
+                        if ((document.getElementById("uni" + mouvement.position) == undefined) || (map.terrain[[mouvement.position]][0] == '!')) {
                             index++;
                             jouerAnimationSuivante();
                         }
                         else {
-                            tuerUniteAnim(mouvement.position,() => {
+                            tuerUniteAnim(mouvement.position, () => {
                                 index++;
                                 jouerAnimationSuivante();
                             })
@@ -257,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                     case "ressource":
-                        if (document.getElementById("uni" + mouvement.position) == undefined) {
+                        if ((document.getElementById("uni" + mouvement.position) == undefined) || (map.terrain[[mouvement.position]][0] == '!')) {
                             index++;
                             jouerAnimationSuivante();
                         }
@@ -269,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         break;
 
                     case "combat":
-                        if (document.getElementById("uni" + mouvement.départ) == undefined || document.getElementById("uni" + mouvement.arrivée) == undefined) {
+                        if (document.getElementById("uni" + mouvement.départ) == undefined || document.getElementById("uni" + mouvement.arrivée) == undefined || (map.terrain[[mouvement.départ]][0] == '!')) {
                             index++;
                             jouerAnimationSuivante();
                         }
@@ -293,15 +183,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         if (data) {
             d3.select("#finTourData").selectAll("*").remove();
-            d3.select(".bouton1").selectAll("p").remove();
+            d3.select(".txtfintour").selectAll("p").remove();
 
             d3.select("#vueBatiments").style("display", "flex");
             d3.select("#statsUnite").style("display", "flex");
             d3.select("#finTour").style("display", "block");
             jouerAnimationSuivante();
         } else {
-            d3.select(".bouton1").selectAll("p").remove();
-            d3.select(".bouton1").append("p").text("En attente des autres joueurs");
+            d3.select(".txtfintour").selectAll("p").remove();
+            d3.select(".txtfintour").append("p").text("En attente des autres joueurs");
             //d3.select("#vueBatiments").style("display","none");
             //d3.select("#statsUnite").style("display","block");
             d3.select("#finTour").style("display", "none");
@@ -313,11 +203,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("ressources", data => {
 
-        const ressources =
-            `<p>Or: ${data.or}</p>
-        <p>Cuivre: ${data.cuivre}</p>
-        <p>Bois: ${data.bois}</p>
-        <p>Pierre: ${data.pierre}</p>`;
+const ressources =
+    `<p>${data.or} <img src="/img/autre/or.png"/></p>
+        <p>${data.bois} <img src="/img/autre/bois.png"/></p>
+        <p>${data.pierre} <img src="/img/autre/pierre.png"/></p>`;
 
         document.querySelector('.ressources').innerHTML = ressources;
 
@@ -351,8 +240,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("rejoindrePartie", data => {
         if (data) {
-            document.getElementById("droiteAll").innerHTML = "";
-            d3.select("#droiteAll").append("div").text("Connecté en tant que " + pseudo);
+            document.getElementById("whoami").innerHTML = "";
+            d3.select("#whoami").append("").text("Connecté en tant que " + pseudo);
 
             switch (maCite) {
                 case "beotie":
@@ -377,9 +266,9 @@ document.addEventListener("DOMContentLoaded", function () {
         socket.emit("demandeDamier", idJoueur);
         socket.emit('ressources');
 
-        
+
         dicoPathUnite = {};
-        
+
     })
 
     //----------------Pour test, faudra faire ça mieux plus tard-------------------
@@ -424,6 +313,11 @@ document.addEventListener("DOMContentLoaded", function () {
         appelsAjoutTextures("jeu");
         setupBoutonScroll("damierjeu");
         ajouterUnites(data.board, "jeu");
+
+        const vueBatiments = document.getElementById('vueBatiments');
+        const damierjeu = document.getElementById('damierjeu');
+        rendreDeplacable(vueBatiments, damierjeu);
+        rendreDeplacable(statsUnite, damierjeu);
 
         // document.getElementById("recolteButton").addEventListener("click", function() {
         //     attaqueAnim(185, 215, "-9");
@@ -547,26 +441,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     for (let i = 0; i < path.length; ++i) {
                         d3.select("#h" + path[i]).style("filter", null);
-                        if (map.terrain[path[i]][0]=='?'){
-                            d3.select("#h"+path[i]).style("filter", "brightness(0.3")
+                        if (map.terrain[path[i]][0] == '?') {
+                            d3.select("#h" + path[i]).style("filter", "brightness(0.3")
 
                         }
-                        else if(map.terrain[path[i]][0]=='!'){
-                            switch(map.terrain[path[i]][1]){
+                        else if (map.terrain[path[i]][0] == '!') {
+                            switch (map.terrain[path[i]][1]) {
                                 case "1":
-                                    d3.select("#h"+path[i]).style("filter", "hue-rotate(60deg) brightness(1.2)");
+                                    d3.select("#h" + path[i]).style("filter", "hue-rotate(60deg) brightness(1.2)");
                                     break;
-                                
+
                                 case "2":
-                                    d3.select("#h"+path[i]).style("filter", "hue-rotate(60deg) brightness(1.6)");
+                                    d3.select("#h" + path[i]).style("filter", "hue-rotate(60deg) brightness(1.6)");
                                     break;
-                                
+
                                 default:
-                                    d3.select("#h"+path[i]).style("filter", "hue-rotate(55deg) brightness(1.3)");
+                                    d3.select("#h" + path[i]).style("filter", "hue-rotate(55deg) brightness(1.3)");
                             }
-                            d3.select("#h"+path[i]).style("filter", "sepia(1)");
+                            d3.select("#h" + path[i]).style("filter", "sepia(1)").attr("id", "brouillard");
                         }
-                        
+
                     }
                 }
             });
