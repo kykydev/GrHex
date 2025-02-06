@@ -209,7 +209,7 @@ io.on('connection', (socket) => {
     var partie = parties[idPartie]
     if (partie==undefined){return}
     var joueur = partie.players[idJoueur]
-    socket.emit("ressources",{"or":joueur.gold,"bois":joueur.wood,"pierre":joueur.stone,"cuivre":joueur.copper})
+    socket.emit("ressources",{"or":joueur.gold,"bois":joueur.wood,"pierre":joueur.stone,"cuivre":joueur.copper, "tourCourant":partie.tourCourant,"toursMax":partie.nbTours})
 
 
   })
@@ -243,6 +243,17 @@ io.on('connection', (socket) => {
     if (res!=false){socket.emit("recruterOuvrier",res)}
   })
 
+  socket.on("citésDispo",data=>{
+    var partie = parties[socket.idPartie]
+    var idJoueur = socket.idJoueur
+   
+    if (partie==undefined || idJoueur==undefined){return}
+    var retour = []
+    if (partie.citePrise("beotie")!=false){retour.push("beotie")}
+    if (partie.citePrise("argolide")!=false){retour.push("argolide")}
+    if (partie.citePrise("attique")!=false){retour.push("attique")}
+    socket.emit("citésDispo",retour)
 
+  })
 
 });

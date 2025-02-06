@@ -7,8 +7,6 @@ const buildings = [//Liste des bâtiments qui est ensuite envoyée au client par
     {"nom":"Maison","url":"Maison","coûtOr":0,"coûtBois":12,"coûtPierre":10,"coûtCuivre":0, "turnsToBuild":1},
     {"nom":"Entrepôt","url":"Entrepôt","coûtOr":15,"coûtBois":15,"coûtPierre":10,"coûtCuivre":0, "turnsToBuild":2},
     {"nom":"Hôtel de ville","url":"Hôtel de ville","coûtOr":100,"coûtBois":50,"coûtPierre":50,"coûtCuivre":20, "turnsToBuild":5},
-
-
   ]
 
 

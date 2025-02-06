@@ -8,7 +8,7 @@ const { createMap } = require('../modules/mapGeneration')
 const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
-const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction} = require('./turnAction')
+const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
 const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
@@ -89,7 +89,6 @@ class game {
             154: new tour(154,joueur),
             125:new maison(125,joueur),
             121:new maison(121,joueur),
-            126:new builder(126,joueur)
         }
 
 
@@ -558,17 +557,20 @@ class game {
             if (uni.stone=!undefined){
                 if (receiver.stone==undefined){receiver.stone=0}
                 receiver.stone += uni.stone
-                uni.stone = 0                
+                this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "pierre","quantité":uni.stone })             
+                uni.stone = 0   
             }
-
+            
             if (uni.wood!=undefined){
                 if (receiver.wood==undefined){receiver.wood=0}
                 receiver.wood += uni.wood
+                this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "bois","quantité":uni.wood })             
                 uni.wood = 0                    
             }
-
+            
             if (receiver.copper!=undefined){receiver.copper=0}
             receiver.copper += uni.copper
+            this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "cuivre","quantité":uni.copper })             
             uni.copper= 0     
 
             if (uni.gold!=undefined){
@@ -576,6 +578,95 @@ class game {
                 uni.gold = 0                
             }
         }
+    }
+
+
+    testRécup(unité){//Prend la position d'un ouvrier en entrée. Teste si l'ouvrier peut récupérer les ressources nécessaires à son chantier
+        if (unité==undefined){return}
+        if (unité.phase!="getRessources"){return}
+        
+        if (unité.currentBuilding==undefined || this.board[unité.currentBuilding]==undefined){return}
+        
+        
+
+        for (var z of casesAdjacentes(unité.position,this.map.width,this.map.height)){
+            if (this.board[z]!=undefined && (this.board[z].name=="Hôtel de ville" || this.board[z].name=="Entrepôt")){
+                var réserve = this.board[z]
+                var travail = this.board[unité.currentBuilding]//Si l'unité n'a pas les ressources elle tente de les prendre
+                if (travail.buildingInfos.coûtBois<=unité.wood && travail.buildingInfos.coûtPierre<=unité.stone && travail.buildingInfos.coûtCuivre<=unité.copper){unité.phase="buildBuilding";return}
+                if (travail.buildingInfos.coûtBois>unité.wood){
+                    //Après récupération des ressources avec un if pour voir si on en a besoin de plus qu'il y en a
+                    var neededWood = travail.buildingInfos.coûtBois-unité.wood
+                    if (neededWood>réserve.wood){neededWood=réserve.wood}
+                    réserve.wood-=neededWood
+                    unité.wood+=neededWood
+
+                }
+                if (travail.buildingInfos.coûtPierre>unité.stone){
+                    //Après récupération des ressources avec un if pour voir si on en a besoin de plus qu'il y en a
+                    var neededStone = travail.buildingInfos.coûtPierre-unité.stone
+                    if (neededStone>réserve.stone){neededStone=réserve.stone}
+                    réserve.stone-=neededStone
+                    unité.stone+=neededStone
+
+                }
+                if (travail.buildingInfos.coûtCuivre>unité.copper){
+                    //Après récupération des ressources avec un if pour voir si on en a besoin de plus qu'il y en a
+                    var neededCopper = travail.buildingInfos.coûtCuivre-unité.copper
+                    if (neededCopper>réserve.copper){neededCopper=réserve.copper}
+                    réserve.copper-=neededCopper
+                    unité.copper+=neededCopper
+
+                }
+
+
+
+
+            }
+        }
+    }
+
+    testBuild(uni){
+        if (uni==undefined && uni.wood!=undefined){return}
+        var joueur = this.players[uni.owner]
+        if (joueur==undefined){return}
+        //Faire test dépôt des ressources dans le chantier, puis réduction tours si possible et enfin build quand tour=0
+        var travail = this.board[uni.currentBuilding]
+        if (travail==undefined){return}
+        if (travail.buildingInfos.coûtBois!=0){
+            var depositedwood = uni.wood;
+            if (depositedwood>travail.buildingInfos.coûtBois){depositedwood=travail.buildingInfos.coûtBois}
+            travail.buildingInfos.coûtBois-=depositedwood;uni.wood-=depositedwood
+    }
+    
+        if (travail.buildingInfos.coûtPierre!=0 && uni.stone!=undefined){
+            var depositedstone = uni.stone;
+            if (depositedstone>travail.buildingInfos.coûtPierre){depositedstone=travail.buildingInfos.coûtPierre}
+            travail.buildingInfos.coûtPierre-=depositedstone;uni.stone-=depositedstone
+    }
+    
+        if (travail.buildingInfos.coûtCuivre!=0 && uni.copper!=undefined){
+            var depositedcopper = uni.copper;
+            if (depositedcopper>travail.buildingInfos.coûtCuivre){depositedcopper=travail.buildingInfos.coûtCuivre}
+            travail.buildingInfos.coûtCuivre-=depositedcopper;uni.copper-=depositedcopper
+    }
+    
+
+    if (travail.turnsToBuild==0){//Si la construction est terminée, tout reset et créer le bâtiment
+        var nomBuild = travail.buildingInfos.nom.toLowerCase();if (nomBuild=="hôtel de ville"){nomBuild="hdv"} 
+        let build = new (eval(nomBuild))(travail.position,joueur)
+        this.board[build.position]=build
+        joueur.units[build.position]=build
+        uni.phase=undefined
+        uni.currentBuilding=undefined
+    }
+
+    if (travail.buildingInfos.coûtBois==0 && travail.buildingInfos.coûtPierre==0 && travail.buildingInfos.coûtCuivre==0){
+        travail.turnsToBuild-=1
+        
+    }
+    
+    
     }
 
     canTour() {//Check si tous les joueurs ont passé leur tour
@@ -616,6 +707,11 @@ class game {
             this.testRécolteRessources(this.board[uni])
             this.board[uni].updateBase(this)
         }
+        if (this.board[uni].name=="Ouvrier"){
+            this.board[uni].updateBase(this)
+            if (this.board[uni].phase=="getRessources"){this.actions.push(new builderPickupAction(this.board[uni],this.players[this.board[uni].owner]))}
+            if (this.board[uni].phase=="buildBuilding"){this.actions.push(new builderBuildAction(this.board[uni],this.players[this.board[uni].owner]))}
+        }
         }
 
         //------Tri des actions par initiative ---------------------------
@@ -623,23 +719,30 @@ class game {
 
         //Activation des actions
         for (var act of this.actions) {
+            let uni
             switch (act.type) {
                 case "movement":
-                    let uni = this.board[act.pos]
+                     uni = this.board[act.pos]
                     this.moveTurn(uni)
                     if (uni!=undefined && uni.owner!="Système"){this.testDéposeRessources(uni)}
                     break;
+
+                case "builderPickup":
+                uni = act.uni
+                if (uni!=undefined && uni.owner!="Système"){
+                    this.testRécup(uni)}    
+                break
+
+                case "builderBuild":
+                uni = act.uni
+                if (uni!=undefined && uni.owner!="Système"){
+                    this.testBuild(uni)}    
+                break
 
                 default:
                     break;
             }
         }
-
-
-
-        //trie les actions par priorité
-
-        //Fait les actions dans l'ordre
 
 
 
@@ -915,11 +1018,11 @@ if (rand>0.97){nbLoups=2}
         while (ajouted==false){
             var position = Math.floor(Math.random()*this.map.terrain.length)
             var peutAjouter = true
-            if (this.board[position]!=undefined){peutAjouter=false}
+            if (this.board[position]!=undefined || this.map.terrain[position]=="montagne" || this.map.terrain[position]=="eau"){peutAjouter=false}
 
             let oldtab = casesAdjacentes(position,this.map.width,this.map.height)
             let newtab = []    
-            for (let j=0;j<3;j++){
+            for (let j=0;j<5;j++){
                 for (var z of oldtab){
                     if (this.board[z]!=undefined && this.board[z].owner!="Système"){
                         peutAjouter=false

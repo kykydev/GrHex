@@ -25,7 +25,7 @@ class carriereHexagon extends hexagon{
 
     constructor(pos){
         super("carriere","carriere_"+Math.floor(Math.random()*carrierevariants+1),pos)
-        this.nbStone=Math.floor(Math.random(5)+2)
+        this.nbStone=Math.floor(Math.random(5)+12)
     }
     
 }

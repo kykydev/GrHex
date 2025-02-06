@@ -105,43 +105,41 @@ class builder extends unit{
     
     findGoal(partie){//Retourne la meilleure destination possible pour l'unité
 
+        if (this.destination!=undefined){return this.destination}
+
         if (this.currentBuilding==undefined){return undefined}
         var travail = partie.board[this.currentBuilding];
-        if (travail==undefined){return undefined}
+        if (travail==undefined || travail.name!="Chantier"){this.currentBuilding=undefined;this.phase="getRessources";return undefined}
 
 
         //Test pour voir si l'unité peut actuellement faire son build
-        if (this.wood<travail.buildingInfos.coûtBois || this.stone<travail.buildingInfos.coûtPierre || this.copper<travail.buildingInfos.coûtCuivre){this.phase = "getRessources"}
+        if (this.wood<travail.buildingInfos.coûtBois || this.stone<travail.buildingInfos.coûtPierre || this.copper<travail.buildingInfos.coûtCuivre){
+            this.phase = "getRessources"}
+        else{ this.phase="buildBuilding"}
+
+        if (this.phase=="buildBuilding" && casesAdjacentes(this.position,partie.map.width,partie.map.height).includes(this.currentBuilding)){return this.position}
+
+            if (this.phase=="getRessources"){
+                let meilleurebase = undefined
+                if (casesAdjacentes(this.base,partie.map.width,partie.map.height).includes(this.position)){return this.position}
+                for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
+                    if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+                }
 
 
-        if (this.canRécolte(partie)==false){
-            let meilleurebase = undefined
-            for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
-                if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+                return meilleurebase
             }
-            if (meilleurebase!=undefined){return meilleurebase}
-        }
-        if (this.destination!=undefined ){return this.destination}
 
-        if (partie.map.infos[this.position].type=="foret"){return this.position}//Si la case actuelle est une forêt c'est bon
+            else{
 
-        let c =  casesAdjacentes(this.position,partie.map.width,partie.map.height)
-        for (var z of c){
-            //On commence par chercher une forêt adjacente, cas le plus simple
-            if (partie.map.infos[z].type=="foret" && partie.board[z]==undefined){return z}
-        }
+            let meilleureCase = undefined
+            for (var z of casesAdjacentes(this.currentBuilding,partie.map.width,partie.map.height)){
+                if (partie.board[z]==undefined && (meilleureCase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleureCase,partie.map.height)))){meilleureCase=z}
+            }
+            return meilleureCase
 
-        while (this.knownForests.length>0){
-            var z = this.knownForests.shift()
-            if (partie.map.infos[z].type=="foret" && partie.board[z]==undefined){return z}
-        }
-
-        while (c.length>0){
-            var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
-            if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
-
-        }
-        return undefined
+                
+            }
     }
 
 
@@ -394,8 +392,8 @@ class hdv extends building{
     constructor(position,player){
         super(350,0,15,0,"Hôtel de ville",position,player,2,0)
         this.tracked=true
-        this.wood = 0
-        this.stone = 0
+        this.wood = 30
+        this.stone = 30
         this.copper = 0
         this.maxWood = 100
         this.maxStone = 100
@@ -555,7 +553,7 @@ class pierris extends creatureNeutre{
 
 class pecheur extends unit{
     constructor(position,player){
-        super(20,8,3,1,1,"Pecheur",position,player,1,1)
+        super(20,8,3,1,1,"Pêcheur",position,player,1,1)
         this.tracked=false
 
     }

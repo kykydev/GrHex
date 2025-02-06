@@ -39,8 +39,22 @@ class buildAction extends turnAction{
         }
 
 
+class builderPickupAction extends turnAction{
+    constructor(uni,joueur){
+        super("builderPickup",250,joueur)
+        this.uni=uni
+    }
+}
+
+class builderBuildAction extends turnAction{
+    constructor(uni,joueur){
+        super("builderBuild",300,joueur)
+        this.uni=uni
+    }
+}
 
 
 
 
-module.exports = { turnAction,moveAction,newUnitAction,buildAction,neutralMoveAction};
+
+module.exports = { turnAction,moveAction,newUnitAction,buildAction,neutralMoveAction,builderPickupAction,builderBuildAction};
