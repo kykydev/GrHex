@@ -377,6 +377,8 @@ function recolteAnim(ressource, numcase) {
 
 function attaqueAnim(caseDepart, caseArrivee, chiffre, fun) {
     let image = d3.select("#uni" + caseDepart);
+    let ennemi = d3.select("#uni" + caseArrivee);
+    const filtreennemi = ennemi.style("filter");
 
     let BBoxDepart = document.getElementById("h" + caseDepart).getBBox();
     let BBoxArrivee = document.getElementById("h" + caseArrivee).getBBox();
@@ -404,6 +406,13 @@ function attaqueAnim(caseDepart, caseArrivee, chiffre, fun) {
                 .attr("fill", "red")
                 .attr("id", "degat" + caseArrivee)
                 .text(chiffre)
+
+            ennemi.transition()
+            .duration(150)
+            .style("filter", "brightness(0.5) sepia(1) saturate(5) hue-rotate(-50deg)")
+            .on("end", () => {
+                ennemi.style("filter", filtreennemi);
+            });
 
             image.transition()
                 .duration(250)

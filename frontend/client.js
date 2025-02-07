@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let nomPartie;
     let idJoueur;
     let maCite;
-    let pseudo; 
+    let pseudo;
 
     let hdvSelectionne;
 
@@ -113,9 +113,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // recruter ouvrier
-    document.getElementById("bouttonHdv").addEventListener("click", () =>{
-        console.log("hdv : "+hdvSelectionne);
-        socket.emit("recruterOuvrier",hdvSelectionne);
+    document.getElementById("bouttonHdv").addEventListener("click", () => {
+        console.log("hdv : " + hdvSelectionne);
+        socket.emit("recruterOuvrier", hdvSelectionne);
     });
 
 
@@ -212,10 +212,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("ressources", data => {
 
-const ressources =
-    `<p>${data.or} <img src="/img/autre/or.png"/></p>
-        <p>${data.bois} <img src="/img/autre/bois.png"/></p>
-        <p>${data.pierre} <img src="/img/autre/pierre.png"/></p>`;
+        console.log(data);
+
+        const ressources =
+            `<p>${data.or} <img src="/img/autre/or.png"/></p>
+            <p>${data.bois} <img src="/img/autre/bois.png"/></p>
+            <p>${data.pierre} <img src="/img/autre/pierre.png"/></p>
+            <p>${data.tourCourant} / ${data.toursMax} <img src="/img/autre/sablier.png"/></p>`;
 
         document.querySelector('.ressources').innerHTML = ressources;
 
@@ -457,10 +460,10 @@ const ressources =
                         else if (map.terrain[path[i]][0] == '!') {
                             switch (map.terrain[path[i]][1]) {
                                 case "1":
-                                    d3.select("#h"+path[i]).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
+                                    d3.select("#h" + path[i]).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
                                     break
                                 case "2":
-                                    d3.select("#h"+path[i]).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
+                                    d3.select("#h" + path[i]).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
                                     break
                                 default:
                                     d3.select("#h" + path[i]).style("filter", "brightness(0.3) sepia(1) saturate(5) hue-rotate(30deg)");
@@ -544,7 +547,7 @@ const ressources =
             });
     });
 
-    socket.on("recruterOuvrier",data=>{
+    socket.on("recruterOuvrier", data => {
         let bbox = document.getElementById("h" + data).getBBox();
         d3.select("#jeu")
             .append("image")
