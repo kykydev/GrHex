@@ -551,6 +551,7 @@ class game {
 
     //JE DOIS TESTER AVEC UN ENTREPOT   
 
+    
     testDéposeRessources(uni){//Tente de déposer les ressources à sa base
         if (uni == undefined) { return }
         if (uni.canDépose()!=true){return false}
@@ -558,12 +559,12 @@ class game {
         if (uni.base==undefined){return}
         var receiver = this.board[uni.base]; if (receiver.name!="Hôtel de ville" && receiver.name!="Entrepôt"){return}
 
-            if (uni.stone=!undefined && uni.stone>0){
+            if (uni.stone!=undefined && uni.stone>0){
                 if (receiver.stone==undefined){receiver.stone=0}
                 receiver.stone += uni.stone
                 this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "pierre","quantité":uni.stone })             
                 uni.stone = 0   
-            }
+            }   
             
             if (uni.wood!=undefined && uni.wood>0){
                 if (receiver.wood==undefined){receiver.wood=0}
@@ -695,8 +696,7 @@ class game {
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
             this.board[uni].destination = this.board[uni].findGoal(this)            
             if (this.board[uni].destination != undefined) {
-                if (this.board[uni].type != "building") { this.board[uni].path = this.pathfindToDestination(
-                    this.board[uni].position, this.board[uni].destination, this.board[uni].owner);
+                if (this.board[uni].type != "building") { this.board[uni].path = this.pathfindToDestination(this.board[uni].position, this.board[uni].destination, this.board[uni].owner);
                         if (this.board[uni].path==false){this.board[uni].path=undefined}
                         else{this.board[uni].path.shift()}}//Reset les path 
                 if (this.board[uni].owner!="Système"){
