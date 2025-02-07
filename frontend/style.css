@@ -370,7 +370,7 @@ button:hover {
     height: 350px;
     width: 350px;
     background-color: aquamarine;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 81px;
     z-index: 4;

@@ -109,18 +109,21 @@ function actualiserDamier(longueur, largeur, jeu, idHexa) {
 
                 var stringyahou = jeu[i].substring(2)
                 fill(i, "url(#" + stringyahou + "-pattern)", idHexa)
+                console.log("lag "+jeu[i][1]);
                 switch (jeu[i][1]) {
                     case "1":
-                        d3.select("#h" + i).style("filter", "hue-rotate(60deg) brightness(1.2)");
+                        d3.select("#h"+i).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
                         break
                     case "2":
-                        d3.select("#h" + i).style("filter", "hue-rotate(60deg) brightness(1.6)");
+                        d3.select("#h"+i).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
+
+
                         break
                     default:
-                        d3.select("#h" + i).style("filter", "hue-rotate(55deg) brightness(1.3)");
+                        d3.select("#h" + i).style("filter", "brightness(0.3) sepia(1) saturate(5) hue-rotate(30deg)");
                 }
 
-                d3.select("#h" + i).style("filter", "sepia(1) ");
+                // d3.select("#h" + i).style("filter", "sepia(1) ");
                 break
             default:
                 fill(i, "url(#" + jeu[i] + "-pattern)", idHexa)
