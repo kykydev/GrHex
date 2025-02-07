@@ -457,17 +457,15 @@ const ressources =
                         else if (map.terrain[path[i]][0] == '!') {
                             switch (map.terrain[path[i]][1]) {
                                 case "1":
-                                    d3.select("#h" + path[i]).style("filter", "hue-rotate(60deg) brightness(1.2)");
-                                    break;
-
+                                    d3.select("#h"+path[i]).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
+                                    break
                                 case "2":
-                                    d3.select("#h" + path[i]).style("filter", "hue-rotate(60deg) brightness(1.6)");
-                                    break;
-
+                                    d3.select("#h"+path[i]).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
+                                    break
                                 default:
-                                    d3.select("#h" + path[i]).style("filter", "hue-rotate(55deg) brightness(1.3)");
+                                    d3.select("#h" + path[i]).style("filter", "brightness(0.3) sepia(1) saturate(5) hue-rotate(30deg)");
                             }
-                            d3.select("#h" + path[i]).style("filter", "sepia(1)").attr("id", "brouillard");
+                            //d3.select("#h" + path[i]).style("filter", "sepia(1)").attr("id", "brouillard");
                         }
 
                     }
@@ -544,6 +542,19 @@ const ressources =
                     .attr("stroke", "transparent")
                     .style("stroke-width", 0)
             });
+    });
+
+    socket.on("recruterOuvrier",data=>{
+        let bbox = document.getElementById("h" + data).getBBox();
+        d3.select("#jeu")
+            .append("image")
+            .attr("class", "batTemp")
+            .attr("xlink:href", "/img/personnages/rouge/" + "ouvrier" + ".png")
+            .attr("x", `${bbox.x - 10}`)
+            .attr("y", `${bbox.y - 15}`)
+            .attr("width", "70")
+            .attr("height", "80")
+            .style("opacity", 0.4)
     });
 
 
