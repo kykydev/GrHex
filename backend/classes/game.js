@@ -89,6 +89,7 @@ class game {
             154: new tour(154,joueur),
             125:new maison(125,joueur),
             121:new maison(121,joueur),
+            274:new archer(274,joueur)
         }
 
 
@@ -112,6 +113,7 @@ class game {
             269:new maison(269,joueur),
             299:new maison(299,joueur),
             371:new hoplite(371,joueur),
+            242:new hoplite(242,joueur)
 
         }
 
@@ -435,12 +437,13 @@ class game {
             }
             else {//Cas où l'unité 1 n'a pas tué
                 unit2.hp = unit2.hp - damage
+                if (unit2.range>=unit1.range){
                 damage = unit2.attack - unit1.defense
                 if (damage < 0) { damage = 0 }
 
                 if (unit2.type!="building" && damage>0){this.actionsThisTurn.push({ "type": "combat", "départ": unit2.position, "arrivée":unit1.position,"dégâts":"-"+damage})}
 
-                if (damage >= unit1.hp) {//Cas où l'unité 1 a tué
+                if (damage >= unit1.hp) {//Cas où l'unité 2 a tué
                     unit2.steal(unit1)
                     this.kill(unit1)
                     return 1
@@ -449,12 +452,13 @@ class game {
                     unit1.hp = unit1.hp - damage
                     return false
 
+                    }
                 }
-
             }
         }
         else {//Cas où l'unité 2 attaque avant
-
+            
+            if (unit2.range>=unit1.range){
             damage = unit2.attack - unit1.defense
             if (damage < 0) { damage = 0 }
             this.actionsThisTurn.push({ "type": "combat", "départ": unit2.position, "arrivée":unit1.position,"dégâts":"-"+damage})
@@ -480,7 +484,23 @@ class game {
                 }
 
             }
+            }
+            else{
+                damage = (unit1.attack - unit2.defense)
+                if (damage < 0) { damage = 0 }
+                if (unit1.type!="building" && damage>0){ this.actionsThisTurn.push({ "type": "combat", "départ": unit1.position, "arrivée":unit2.position,"dégâts":"-"+damage})}
+                if (damage >= unit2.hp) {//Cas où l'unité 1 a tué
+                    unit1.steal(unit2)
+                    this.kill(unit2)
+                    return 2
+                }
+                else {//Cas où personne n'est mort
+                    unit2.hp = unit2.hp - damage
+                    return false
 
+                }
+
+            }
         }
 
     }

@@ -56,7 +56,7 @@ class hoplite extends unit{
 
 class stratege extends unit{
     constructor(position,player){
-        super(100,10,5,0,2,"Stratege",position,player,3,1)
+        super(100,10,5,0,3,"Stratege",position,player,3,1)
         this.tracked=true
 
     }
@@ -64,7 +64,7 @@ class stratege extends unit{
 
 class archer extends unit{
     constructor(position,player){
-        super(30,10,0,1,1,"Archer",position,player,2,2)
+        super(30,15,0,1,2,"Archer",position,player,2,2)
         this.tracked=true
 
 
@@ -148,7 +148,7 @@ class builder extends unit{
 
 class bucheron extends unit{
     constructor(position,player){
-        super(25,10,5,2,1,"Bûcheron",position,player,1,1)
+        super(25,10,5,2,2,"Bûcheron",position,player,1,1)
         this.wood=0
         this.maxWood=10
         this.knownForests = []
@@ -216,9 +216,9 @@ class bucheron extends unit{
 
 class mineur extends unit{
     constructor(position,player){
-        super(25,10,5,2,1,"Mineur",position,player,1,1)
+        super(25,10,5,2,2,"Mineur",position,player,1,1)
         this.stone=0
-        this.maxStone=8
+        this.maxStone=12
         this.knownCarrieres = []
         this.base=player.hdv[0]
     }
@@ -288,7 +288,7 @@ class mineur extends unit{
 
 class paysanne extends unit{
     constructor(position,player){
-        super(15,0,0,1,1,"Paysanne",position,player,1,1)
+        super(15,0,0,1,2,"Paysanne",position,player,1,1)
         this.wood=0
         this.stone=0
         this.maxRessources = 7
