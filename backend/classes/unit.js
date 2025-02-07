@@ -33,6 +33,7 @@ class unit {
         return this.destination
     }
     
+    canDépose(){return false}
     canRécolte(partie){return false}
 
 
@@ -80,7 +81,7 @@ class messager extends unit{
 
 class builder extends unit{
     constructor(position,player){
-        super(30,0,2,10,3,"Ouvrier",position,player,2,1)
+        super(30,0,2,10,2,"Ouvrier",position,player,2,1)
         this.tracked=false
         this.currentBuilding = undefined//currentBuilding est la position du building actuellement attribué
         this.phase = undefined //Phase qui dit si le builder va chercher les ressources ou s'il va construire.
@@ -153,6 +154,8 @@ class bucheron extends unit{
         this.knownForests = []
         this.base = player.hdv[0]//endroit où déposer les ressources
     }
+    canDépose(){return true}
+
     updateBase(game){
         for (var z of (game.players[this.owner].hdv)){
             if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
@@ -219,6 +222,9 @@ class mineur extends unit{
         this.knownCarrieres = []
         this.base=player.hdv[0]
     }
+
+    canDépose(){return true}
+
 
     updateBase(game){
         for (var z of (game.players[this.owner].hdv)){
@@ -290,6 +296,8 @@ class paysanne extends unit{
         this.knownCarrieres = []
         this.base=player.hdv[0]
     }
+    canDépose(){return true}
+
     canRécolte(partie){
         return ((this.stone+this.wood)<this.maxRessources)
     }
@@ -455,7 +463,7 @@ class chantier extends building{
     constructor(position,player,buildingInfos){
         super(40,0,3,0,"Chantier",position,player,0,0)
         this.turnsToBuild = buildingInfos.turnsToBuild
-        this.buildingInfos = buildingInfos
+        this.buildingInfos = JSON.parse(JSON.stringify(buildingInfos));
     }
 
 

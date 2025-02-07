@@ -227,9 +227,11 @@ class game {
             player.visionsDiff[z].tours--
             if (vision.tours==0){
                     for (var vis of vision.vision){
+                        if (retour.terrain[vis.info.pos][0]=="?"){
                         retour.infos[vis.info.pos] = new hexagon("!"+vision.age+vis.info.type, "!1"+vision.age+vis.info.pattern.pattern,vis.info.pos)
                         retour.terrain[vis.info.pos] = "!"+vision.age+vis.terrain
                         if (vis.board!=undefined){retour.board[vis.info.pos]=vis.board}
+                        }
                     }
             }
         }
@@ -272,7 +274,6 @@ class game {
             }
 
            
-            retour = this.ajoutVisionsDifférées(joueur,retour)
 
             for (var uni of Object.keys(joueur.units)) {//Itération au travers des unités pour trouver les tours et le stratège
             if (this.board[uni].tracked){this.créeVisionDifférée(joueur,visions ,uni,posStratège)}
@@ -330,7 +331,8 @@ class game {
                 }
             }
             
-        
+            retour = this.ajoutVisionsDifférées(joueur,retour)
+
 
 
         return retour
@@ -551,17 +553,19 @@ class game {
 
     testDéposeRessources(uni){//Tente de déposer les ressources à sa base
         if (uni == undefined) { return }
+        if (uni.canDépose()!=true){return false}
         if (casesAdjacentes(uni.position,this.map.width,this.map.height).includes(uni.base)){
         if (uni.base==undefined){return}
-        var receiver = this.board[uni.base]
-            if (uni.stone=!undefined){
+        var receiver = this.board[uni.base]; if (receiver.name!="Hôtel de ville" && receiver.name!="Entrepôt"){return}
+
+            if (uni.stone=!undefined && uni.stone>0){
                 if (receiver.stone==undefined){receiver.stone=0}
                 receiver.stone += uni.stone
                 this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "pierre","quantité":uni.stone })             
                 uni.stone = 0   
             }
             
-            if (uni.wood!=undefined){
+            if (uni.wood!=undefined && uni.wood>0){
                 if (receiver.wood==undefined){receiver.wood=0}
                 receiver.wood += uni.wood
                 this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "bois","quantité":uni.wood })             
@@ -632,6 +636,7 @@ class game {
         if (joueur==undefined){return}
         //Faire test dépôt des ressources dans le chantier, puis réduction tours si possible et enfin build quand tour=0
         var travail = this.board[uni.currentBuilding]
+        if (casesAdjacentes(uni.position,this.map.width,this.map.height).includes(uni.currentBuilding)==false){return}
         if (travail==undefined){return}
         if (travail.buildingInfos.coûtBois!=0){
             var depositedwood = uni.wood;
@@ -643,7 +648,7 @@ class game {
             var depositedstone = uni.stone;
             if (depositedstone>travail.buildingInfos.coûtPierre){depositedstone=travail.buildingInfos.coûtPierre}
             travail.buildingInfos.coûtPierre-=depositedstone;uni.stone-=depositedstone
-    }
+    }   
     
         if (travail.buildingInfos.coûtCuivre!=0 && uni.copper!=undefined){
             var depositedcopper = uni.copper;
