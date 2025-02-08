@@ -256,4 +256,15 @@ io.on('connection', (socket) => {
 
   })
 
+    socket.on("demandeUnitesForge",data=>{//Socket qui prend comme data une case contenant une forge et renvoie les untiés qui peuvent évoluer avec
+    var partie = parties[socket.idPartie]
+    var idJoueur = socket.idJoueur
+    if (partie==undefined || idJoueur==undefined ||data==undefined){return}
+    var retour = partie.getForgeEvolutions(data,idJoueur) 
+    if (retour==false){return}
+      socket.emit("demandeUnitesForge",retour)
+    })
+
+
+
 });

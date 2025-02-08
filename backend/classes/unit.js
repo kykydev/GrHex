@@ -43,6 +43,9 @@ class unit {
         if (uni.stone!=undefined){if (this.stone==undefined){this.stone=uni.stone;} else {this.stone+=uni.stone};uni.stone=0}
         if (uni.copper!=undefined){if (this.copper==undefined){this.copper=uni.copper;} else {this.copper+=uni.copper};uni.copper=0}
     }
+    getForgeEvos(){
+        return false
+    }
 }
 
 
@@ -163,7 +166,9 @@ class bucheron extends unit{
         this.base=z}}
     }
 
-
+    getForgeEvos(){
+        return [{"nom":"Hoplite","prix":100},{"nom":"Archer","prix":150}]
+    }
 
     canEvolve(){
         return true
@@ -225,6 +230,9 @@ class mineur extends unit{
 
     canDépose(){return true}
 
+    getForgeEvos(){
+        return [{"nom":"Hoplite","prix":100},{"nom":"Archer","prix":150}]
+    }
 
     updateBase(game){
         for (var z of (game.players[this.owner].hdv)){

@@ -89,6 +89,7 @@ class game {
             154: new tour(154,joueur),
             125:new maison(125,joueur),
             121:new maison(121,joueur),
+            127:new forge(127,joueur)
         }
 
 
@@ -1068,6 +1069,24 @@ getEmitRessources(idJoueur){//Renvoie les informatios pour le socket.on("ressour
 return {"or":or,"bois":bois,"pierre":pierre,"cuivre":cuivre, "tourCourant":this.tourCourant,"toursMax":this.nbTours}
 
 }
+
+getForgeEvolutions(position,idJoueur) {//Teste si la case ciblée est une forge et, si oui, 
+
+    var joueur = this.players[idJoueur];if (joueur==undefined){return false}
+    if (this.board[position]==undefined ||this.board[position].name!="Forge" || this.board[position].owner!=idJoueur){return false}
+var retour = []
+for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
+    if (this.board[z]!=undefined && this.board[z].owner==idJoueur){
+        var evos = this.board[z].getForgeEvos()
+        if (evos!=false){retour.push({"position":z,"name":this.board[z].name,"evolutions":evos})}
+    }
+}
+
+return retour
+}
+
+
+
 
 }
 module.exports = { game };

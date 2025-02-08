@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
     socket.on("finTour", data => {
         // console.log(data);
         // true si tout le monde à fini false sinon
-
+        
         let index = 0;
 
         function jouerAnimationSuivante() {
