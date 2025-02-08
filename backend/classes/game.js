@@ -680,8 +680,9 @@ class game {
     if (travail.turnsToBuild==0){//Si la construction est terminée, tout reset et créer le bâtiment
         var nomBuild = travail.buildingInfos.nom.toLowerCase();if (nomBuild=="hôtel de ville"){nomBuild="hdv"} 
         let build = new (eval(nomBuild))(travail.position,joueur)
-        this.board[build.position]=build
-        joueur.units[build.position]=build
+        delete this.board[build.position]
+        delete joueur.units[build.position]
+        this.addUnit(build,build.position,joueur)
         uni.phase=undefined
         uni.currentBuilding=undefined
     }
@@ -974,27 +975,6 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
 }
 
 
-/*POur faire le build plus tard
-   if (posStratège==undefined || distance(posStratège,pos,this.map.height)>3){return false}
-    if (batInfos==undefined){return false}
-    
-    if (joueur.gold<batInfos.coûtOr || joueur.wood<batInfos.coûtBois || joueur.stone<batInfos.coûtPierre || joueur.copper<batInfos.coûtCuivre ){return false}
-    //Eval permet de transformer la string en la classe
-    var nomBuild = batInfos.nom.toLowerCase();if (nomBuild=="hôtel de ville"){nomBuild="hdv"} 
-    let uni = new (eval(nomBuild))(pos,joueur)
-    if (this.addUnit(uni,pos,joueur)==true){
-        joueur.gold-=batInfos.coûtOr;
-        joueur.wood-=batInfos.coûtBois;
-        joueur.stone-=batInfos.coûtPierre;
-        joueur.copper-=batInfos.coûtCuivre;
-        if (batInfos.nom=="Hôtel de ville" || batInfos.nom == "Entrepôt"){joueur.hdv.push(pos)}
-        return true
-    }
-    else{
-        return false
-    }
-*/
-
 
 recruteOuvrier(pos){
     if (this.board[pos]==undefined || this.board[pos].name!="Hôtel de ville"){return false}
@@ -1073,8 +1053,21 @@ if (rand>0.97){nbLoups=2}
 
 }
 
-
+getEmitRessources(idJoueur){//Renvoie les informatios pour le socket.on("ressources")
+    var or=0;var bois=0;var pierre=0;var cuivre=0
+    var joueur = this.players[idJoueur]; if (joueur==undefined){return false}
+    or = joueur.gold;
+    for (var z of Object.keys(joueur.units)){
+        let uni = joueur.units[z]
+        if (uni.name=="Hôtel de ville" || uni.name=="Entrepôt"){
+            if (uni.wood!=undefined){bois+=uni.wood}
+            if (uni.stone!=undefined){pierre+=uni.stone}
+            if (uni.copper!=undefined){cuivre+=uni.copper}
+    }
+}
+return {"or":or,"bois":bois,"pierre":pierre,"cuivre":cuivre, "tourCourant":this.tourCourant,"toursMax":this.nbTours}
 
 }
 
+}
 module.exports = { game };

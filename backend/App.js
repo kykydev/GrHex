@@ -209,7 +209,7 @@ io.on('connection', (socket) => {
     var partie = parties[idPartie]
     if (partie==undefined){return}
     var joueur = partie.players[idJoueur]
-    socket.emit("ressources",{"or":joueur.gold,"bois":joueur.wood,"pierre":joueur.stone,"cuivre":joueur.copper, "tourCourant":partie.tourCourant,"toursMax":partie.nbTours})
+    socket.emit("ressources",partie.getEmitRessources(idJoueur))
 
 
   })
