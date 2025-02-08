@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
     socket.on("rejoindrePartie", data => {
         if (data) {
             document.getElementById("whoami").innerHTML = "";
-            d3.select("#whoami").append("").text("Connecté en tant que " + pseudo);
+            d3.select("#whoami").append("p").text("Connecté en tant que " + pseudo);
 
             switch (maCite) {
                 case "beotie":
