@@ -89,7 +89,6 @@ class game {
             154: new tour(154,joueur),
             125:new maison(125,joueur),
             121:new maison(121,joueur),
-            274:new archer(274,joueur)
         }
 
 

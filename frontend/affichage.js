@@ -453,9 +453,10 @@ function fstatsUnite(unite) {
     stats.append("p").attr("id", "uniteDefence").text("Défense : " + unite.defense);
     if (unite.wood != undefined) { stats.append("div").attr("id", "uniteWood").text("Bois : " + unite.wood); }
     if (unite.stone != undefined) { stats.append("div").attr("id", "uniteStone").text("Pierres : " + unite.stone); }
+    if (unite.buildingInfos!=undefined){
     if (unite.buildingInfos.coûtBois != undefined) { stats.append("div").attr("id", "uniteWoodCost").text("Coût en bois : " + unite.buildingInfos.coûtBois); }
     if (unite.buildingInfos.coûtPierre != undefined) { stats.append("div").attr("id", "uniteStoneCost").text("Coût en pierre : " + unite.buildingInfos.coûtPierre); }
-
+    }
 }
 
 /**
