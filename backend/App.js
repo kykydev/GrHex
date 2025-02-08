@@ -249,9 +249,9 @@ io.on('connection', (socket) => {
    
     if (partie==undefined || idJoueur==undefined){return}
     var retour = []
-    if (partie.citePrise("beotie")!=false){retour.push("beotie")}
-    if (partie.citePrise("argolide")!=false){retour.push("argolide")}
-    if (partie.citePrise("attique")!=false){retour.push("attique")}
+    if (partie.citePrise("beotie")==false){retour.push("beotie")}
+    if (partie.citePrise("argolide")==false){retour.push("argolide")}
+    if (partie.citePrise("attique")==false){retour.push("attique")}
     socket.emit("citésDispo",retour)
 
   })

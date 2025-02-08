@@ -555,6 +555,8 @@ const ressources =
             .attr("width", "70")
             .attr("height", "80")
             .style("opacity", 0.4)
+
+            
     });
 
 
