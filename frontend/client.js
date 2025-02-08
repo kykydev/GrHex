@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     socket.on("finTour", data => {
-        // console.log(data);
+        //console.log(data);
         // true si tout le monde à fini false sinon
 
         let index = 0;
@@ -211,8 +211,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     socket.on("ressources", data => {
-
-        console.log(data);
 
         const ressources =
             `<p>${data.or} <img src="/img/autre/or.png"/></p>
@@ -558,8 +556,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .attr("width", "70")
             .attr("height", "80")
             .style("opacity", 0.4)
-
-            
     });
 
 
