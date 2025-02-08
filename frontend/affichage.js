@@ -109,13 +109,13 @@ function actualiserDamier(longueur, largeur, jeu, idHexa) {
 
                 var stringyahou = jeu[i].substring(2)
                 fill(i, "url(#" + stringyahou + "-pattern)", idHexa)
-                console.log("lag "+jeu[i][1]);
+                console.log("lag " + jeu[i][1]);
                 switch (jeu[i][1]) {
                     case "1":
-                        d3.select("#h"+i).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
+                        d3.select("#h" + i).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
                         break
                     case "2":
-                        d3.select("#h"+i).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
+                        d3.select("#h" + i).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
 
 
                         break
@@ -408,11 +408,11 @@ function attaqueAnim(caseDepart, caseArrivee, chiffre, fun) {
                 .text(chiffre)
 
             ennemi.transition()
-            .duration(150)
-            .style("filter", "brightness(0.5) sepia(1) saturate(5) hue-rotate(-50deg)")
-            .on("end", () => {
-                ennemi.style("filter", filtreennemi);
-            });
+                .duration(150)
+                .style("filter", "brightness(0.5) sepia(1) saturate(5) hue-rotate(-50deg)")
+                .on("end", () => {
+                    ennemi.style("filter", filtreennemi);
+                });
 
             image.transition()
                 .duration(250)
@@ -442,22 +442,35 @@ function attaqueAnim(caseDepart, caseArrivee, chiffre, fun) {
 function fstatsUnite(unite) {
     let statsimg = d3.select("#statsUnite");
     statsimg.selectAll("*").remove();
-    statsimg.append("img").attr("src", "img/personnages/" + unite.couleur + "/" + unite.name.toLowerCase() + ".png").attr("width", 180).attr("height", 150);
-    let stats = d3.select("#statsUnite").append("div").attr("id", "unitStats");;
+    statsimg.append("img")
+        .attr("src", "img/personnages/" + unite.couleur + "/" + unite.name.toLowerCase() + ".png")
+        .attr("width", 180).attr("height", 150);
+
+    let stats = d3.select("#statsUnite").append("div").attr("id", "unitStats");
     stats.selectAll("*").remove();
+
     stats.append("p").attr("id", "uniteName").text("Nom : " + unite.name);
     stats.append("p").attr("id", "position").text("Position : " + unite.position);
-    stats.append("p").attr("id", "mov").text("Mouvement : " + unite.movement);
     stats.append("p").attr("id", "uniteHp").text("Points de vie : " + unite.hp);
-    stats.append("p").attr("id", "uniteAttack").text("Attaque : " + unite.attack);
-    stats.append("p").attr("id", "uniteDefence").text("Défense : " + unite.defense);
-    if (unite.wood != undefined) { stats.append("div").attr("id", "uniteWood").text("Bois : " + unite.wood); }
-    if (unite.stone != undefined) { stats.append("div").attr("id", "uniteStone").text("Pierres : " + unite.stone); }
-    if (unite.buildingInfos!=undefined){
-    if (unite.buildingInfos.coûtBois != undefined) { stats.append("div").attr("id", "uniteWoodCost").text("Coût en bois : " + unite.buildingInfos.coûtBois); }
-    if (unite.buildingInfos.coûtPierre != undefined) { stats.append("div").attr("id", "uniteStoneCost").text("Coût en pierre : " + unite.buildingInfos.coûtPierre); }
+
+    if (unite.type !== "building") {
+        stats.append("p").attr("id", "mov").text("Mouvement : " + unite.movement);
+        stats.append("p").attr("id", "uniteAttack").text("Attaque : " + unite.attack);
+        stats.append("p").attr("id", "uniteDefence").text("Défense : " + unite.defense);
     }
+
+    if (unite.wood !== undefined) { stats.append("div").attr("id", "uniteWood").text("Bois : " + unite.wood); }
+    if (unite.stone !== undefined) { stats.append("div").attr("id", "uniteStone").text("Pierres : " + unite.stone); }
+
+    if (unite.buildingInfos) {
+        if (unite.buildingInfos.coûtBois !== undefined) { stats.append("div").attr("id", "uniteWoodCost").text("Coût en bois : " + unite.buildingInfos.coûtBois); }
+        if (unite.buildingInfos.coûtPierre !== undefined) { stats.append("div").attr("id", "uniteStoneCost").text("Coût en pierre : " + unite.buildingInfos.coûtPierre); }
+    }
+
 }
+
+
+
 
 /**
  * ajoute les unités sur le damier avec la fonction afficherUnites
