@@ -397,6 +397,20 @@ class paysanne extends unit{
     }
 }
 
+
+class pecheur extends unit{
+    constructor(position,player){
+        super(20,8,3,1,1,"Pêcheur",position,player,1,1)
+        this.tracked=false
+
+    }
+}
+
+
+
+
+
+
 class building extends unit{
     constructor(hp,attack,defense,initiative,name,position,player,vision, range){
         super(hp,attack,defense,initiative,0,name,position,player,vision,range)
@@ -521,6 +535,8 @@ class creatureNeutre{
         canEvolve(){
             return false
         }
+
+        findGoal(){return undefined}
 }
 
 class loup extends creatureNeutre{
@@ -562,19 +578,16 @@ class pierris extends creatureNeutre{
         return tablo[Math.floor(Math.random()*tablo.length)]
     }
 
-
-
-
 }
 
-class pecheur extends unit{
-    constructor(position,player){
-        super(20,8,3,1,1,"Pêcheur",position,player,1,1)
-        this.tracked=false
-
+class discipleathneutre extends creatureNeutre{
+    constructor(position){
+        super(100,15,30,0,1,"Disciple d'Athéna",position,2,1)
+        this.gold=1
     }
+
 }
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur };
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre };
