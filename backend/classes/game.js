@@ -24,7 +24,7 @@ class game {
         this.actions = []
         this.map = createMap()
         this.board = {}
-        this.positionsDepart = { "beotie": 214, "attique": 1072, "argolide": 297 }
+        this.positionsDepart = { "beotie": 573, "attique": 1072, "argolide": 297 }
         this.name = motsGrece[Math.floor(Math.random() * motsGrece.length)] + "-" + adjectifs[Math.floor(Math.random() * adjectifs.length)]
         this.actionsThisTurn = []
 
@@ -68,8 +68,8 @@ class game {
         if (this.board[position] == undefined) {
             this.board[position] = unit
             player.addUnit(unit, position)
-            if (this.board[position].name=="Maison"){this.board[position].generateVillager(position,player,this);          
-            }
+            if (this.board[position].name=="Maison"){this.board[position].generateVillager(position,player,this);}
+            if (this.board[position].name=="Hôtel de ville" || this.board[position].name=="Entrepôt"){player.hdv.push(parseInt(position))}
             return true
         }
         else {
@@ -79,69 +79,118 @@ class game {
 
 
     initBeotie(joueur) {
-        joueur.hdv = [214]
 
-        var boardBoetie = {
-            185: new stratege(185, joueur),
-            243: new bucheron(243, joueur),
+        var boardBeotie = {
+            //Thèbes
+            573: new hdv(573, joueur),//HDV de thèbes
+            496:new hdv(496,joueur),//HDV de platées
+            515: new stratege(515, joueur),
+            541: new bucheron(541, joueur),
             183: new paysanne(183, joueur),
-            214: new hdv(214, joueur),
             215: new mineur(215, joueur),
-            154: new tour(154,joueur),
-            125: new maison(125,joueur),
-            121: new maison(121,joueur),
             122: new champ(122,joueur),
+            63: new champ(63,joueur),
+            576: new tour(576,joueur),
+            542: new tour(542,joueur),
+            516: new hoplite(516,joueur),
+            696: new hoplite(696,joueur),
+            483: new maison(483,joueur),
+            570: new maison(570,joueur),
+            664: new maison(664,joueur),
+            636: new maison(636,joueur),
+
+            //Platées
+            524:new hoplite(524,joueur),
+            434:new hoplite(434,joueur),
+            437:new maison(437,joueur)
 
             }
 
 
-        for (var position of Object.keys(boardBoetie)) {
-            this.addUnit(boardBoetie[position], position, joueur)
-            this.map.infos[position] = new hexagon("plaine", "plaine_1", position)
-            this.map.terrain[position] = this.map.infos[position].pattern
-        }
-
+            for (var position of Object.keys(boardBeotie)) {
+                this.addUnit(boardBeotie[position], position, joueur)
+                for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
+                    if (this.map.infos[z].type=="montagne"){
+                this.map.infos[z] = new hexagon("plaine", "plaine_1", z)    
+                this.map.terrain[z] = this.map.infos[z].pattern
+                }
+            }
+            }
+            for (var position of Object.keys(joueur.units)) {
+                joueur.units[position].updateBase(this)
+            }
     }
 
     initArgolide(joueur) {
-        joueur.hdv = [297]
         var boardArgolide = {
-            328: new stratege(328, joueur),
+            //Corrinthe
+            327: new stratege(327, joueur),
             288: new bucheron(288, joueur),
-            267: new paysanne(267, joueur),
             268: new mineur(268,joueur),
+            415:new paysanne(415,joueur),
+            359:new champ(359,joueur),
             297: new hdv(297, joueur),
-            357: new tour(357,joueur),
-            269:new maison(269,joueur),
-            299:new maison(299,joueur)
+            386: new tour(386,joueur),
+            299: new tour(299,joueur),
+            179:new hoplite(179,joueur),
+            446:new hoplite(446,joueur),
+            236:new maison(236,joueur),
+            267: new maison(267, joueur),
+            208: new maison(208, joueur),
+            419: new maison(419, joueur),
+            //Mégare
+            680: new hdv(680,joueur),
+            589:new hoplite(589,joueur),
+            559:new hoplite(559,joueur),
+            651:new maison(651,joueur)
+
 
         }
 
         for (var position of Object.keys(boardArgolide)) {
             this.addUnit(boardArgolide[position], position, joueur)
-            this.map.infos[position] = new hexagon("plaine", "plaine_1", position)
-            this.map.terrain[position] = this.map.infos[position].pattern
+            for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
+                if (this.map.infos[z].type=="montagne"){
+            this.map.infos[z] = new hexagon("plaine", "plaine_1", z)    
+            this.map.terrain[z] = this.map.infos[z].pattern
+            }
+        }
         }
     }
 
     initAttique(joueur) {
-        joueur.hdv = [1072]
         var boardAttique = {
+            //Athènes
             1011: new stratege(1011, joueur),
             1043: new bucheron(1043, joueur),
-            1071: new paysanne(1071, joueur),
+            977: new paysanne(977, joueur),
             1072: new hdv(1072, joueur),
             1041: new mineur(1041,joueur),
-            1008: new maison(1008,joueur),
-            950: new maison(950,joueur),
-            981: new tour(981,joueur)
+            949: new hoplite(949,joueur),
+            861: new hoplite(861,joueur),
+            981: new tour(981,joueur),
+            1101: new tour(1101,joueur),
+            1009:new champ(1009,joueur),
+            1192: new maison(1192,joueur),
+            1159: new maison(1159,joueur),
+            1039: new maison(1039,joueur),
+            1134: new maison(1134,joueur),
+            //Décélie
+            1119: new hdv(1119,joueur),
+            1088:new hoplite(1088,joueur),  
+            1087:new bucheron(1087,joueur),
+            1147:new maison(1147,joueur)
         }
-
         for (var position of Object.keys(boardAttique)) {
             this.addUnit(boardAttique[position], position, joueur)
-            this.map.infos[position] = new hexagon("plaine", "plaine_1", position)
-            this.map.terrain[position] = this.map.infos[position].pattern
+            for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
+                if (this.map.infos[z].type=="montagne"){
+            this.map.infos[z] = new hexagon("plaine", "plaine_1", z)    
+            this.map.terrain[z] = this.map.infos[z].pattern
+            }
         }
+        }
+     
 
     }
 
@@ -172,8 +221,7 @@ class game {
 
     init() {//Fonction qui initialise la partie
         this.initCites()
-        this.board[579] = new pierris(579)
-        this.board[130] = new discipleathneutre(130)
+        this.board[94] = new pierris(94)
     }
 
 
@@ -226,16 +274,16 @@ class game {
         var retour = ret
         for (var z in player.visionsDiff){
             var vision = player.visionsDiff[z]
-            player.visionsDiff[z].tours--
             if (vision.tours==0){
-                    for (var vis of vision.vision){
+                for (var vis of vision.vision){
                         if (retour.terrain[vis.info.pos][0]=="?"){
                         retour.infos[vis.info.pos] = new hexagon("!"+vision.age+vis.info.type, "!1"+vision.age+vis.info.pattern.pattern,vis.info.pos)
                         retour.terrain[vis.info.pos] = "!"+vision.age+vis.terrain
-                        if (vis.board!=undefined){retour.board[vis.info.pos]=vis.board}
+                        if (vis.board!=undefined && !(vis.board.tracked==true && vis.board.owner==player.id)){retour.board[vis.info.pos]=vis.board}
                         }
                     }
-            }
+                }
+            player.visionsDiff[z].tours--
         }
         for (var z in player.visionsDiff){
                     if (vision.tours==0){

@@ -36,7 +36,7 @@ class unit {
     
     canDépose(){return false}
     canRécolte(partie){return false}
-
+    updateBase(partie){return}
 
     steal(uni){
         if (uni.gold!=undefined){if (this.gold==undefined){this.gold=uni.gold;} else {this.gold+=uni.gold};uni.gold=0}
@@ -93,10 +93,12 @@ class builder extends unit{
         this.stone=0
         this.copper=0
         this.base = player.hdv[0]//endroit où récupérer les ressources
-
+  
     }
 
     updateBase(game){
+        if (this.base==undefined){this.base=game.players[this.owner].hdv[0]}
+
         for (var z of (game.players[this.owner].hdv)){
             if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
                  this.base=z}}
@@ -162,6 +164,8 @@ class bucheron extends unit{
     canDépose(){return true}
 
     updateBase(game){
+        if (this.base==undefined){this.base=game.players[this.owner].hdv[0]}
+
         for (var z of (game.players[this.owner].hdv)){
             if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
         
@@ -228,6 +232,7 @@ class mineur extends unit{
         this.maxStone=12
         this.knownCarrieres = []
         this.base=player.hdv[0]
+       
         this.fieldRevenu=2
     }
 
@@ -238,9 +243,9 @@ class mineur extends unit{
     }
 
     updateBase(game){
+        if (this.base==undefined){this.base=game.players[this.owner].hdv[0]}
         for (var z of (game.players[this.owner].hdv)){
             if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
-        
         this.base=z}}
     }
 
@@ -315,6 +320,8 @@ class paysanne extends unit{
     }
 
     updateBase(game){
+        if (this.base==undefined){this.base=game.players[this.owner].hdv[0]}
+
         for (var z of (game.players[this.owner].hdv)){
             if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
         

@@ -14,7 +14,7 @@ class player {
         this.wood = 100
         this.stone = 100
         this.copper = 100
-
+        this.hdv=[]
         this.visionsDiff = []
         
 
