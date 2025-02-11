@@ -52,6 +52,7 @@ class game {
         }
         return false
     }
+    
     canStart() {
         if (this.currentPlayers() < this.nbJoueurs) { return false }
         var cites = ["argolide", "beotie", "attique"]
@@ -87,10 +88,11 @@ class game {
             214: new hdv(214, joueur),
             215: new mineur(215, joueur),
             154: new tour(154,joueur),
-            125:new maison(125,joueur),
-            121:new maison(121,joueur),
-            127:new forge(127,joueur)
-        }
+            125: new maison(125,joueur),
+            121: new maison(121,joueur),
+            122: new champ(122,joueur),
+
+            }
 
 
         for (var position of Object.keys(boardBoetie)) {
@@ -111,9 +113,7 @@ class game {
             297: new hdv(297, joueur),
             357: new tour(357,joueur),
             269:new maison(269,joueur),
-            299:new maison(299,joueur),
-            371:new hoplite(371,joueur),
-            242:new hoplite(242,joueur)
+            299:new maison(299,joueur)
 
         }
 
@@ -712,8 +712,7 @@ class game {
         //------------Itère au travers des unités pour générer les actions du tour--------------
         for (let uni of Object.keys(this.board)) {
             this.board[uni].movementLeft = this.board[uni].movement
-            if (this.board[uni].name=="Champ"){this.players[this.board[uni].owner].gold++;this.actionsThisTurn.push({ "type": "ressource", "position": this.board[uni].position, "ressource": "or" })
-            }
+            if (this.board[uni].name=="Champ"){this.revenuChamp(this.board[uni])}
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
             this.board[uni].destination = this.board[uni].findGoal(this)            
             if (this.board[uni].destination != undefined) {
@@ -857,6 +856,7 @@ class game {
     }
 
 
+
 getTurnWinner(){//Récupère le (ou les) joueur qui a le plus d'or, utilisé en cas de fin de partie par tours
     var winner = undefined;
     for (let z of Object.keys(this.players)){
@@ -926,7 +926,17 @@ return winner
 }
 
 
+revenuChamp(unite){
+    var joueur = this.players[unite.owner]
+    if (joueur==undefined){return false}
+    for (var z of unite.workers){
+    var revenu = z.fieldRevenu
+    joueur.gold+=revenu;
+    this.actionsThisTurn.push({ "type": "ressource", "position": unite.position, "ressource": "or" })
+    
+}
 
+}
 
 build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position voulue pour le joueur concerné
     var pos = parseInt(pos)

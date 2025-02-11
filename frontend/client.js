@@ -480,7 +480,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     hdvSelectionne = event.target.id.supprimerPrefixId("uni");
                     // vueInfoHdv variable D3
 
-                } else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" && uniteSelectionnee) {
+                } else if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" || data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ") && uniteSelectionnee) {
                     // l'enrôlement
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                     socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });

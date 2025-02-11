@@ -19,6 +19,7 @@ class unit {
         this.path = undefined
         this.type="unit"
         this.tracked=false
+        this.fieldRevenu=0 //Attribut qui donne le nombre de pièces générées dans un champ
     }
 
     canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
@@ -156,6 +157,7 @@ class bucheron extends unit{
         this.maxWood=10
         this.knownForests = []
         this.base = player.hdv[0]//endroit où déposer les ressources
+        this.fieldRevenu=2
     }
     canDépose(){return true}
 
@@ -226,6 +228,7 @@ class mineur extends unit{
         this.maxStone=12
         this.knownCarrieres = []
         this.base=player.hdv[0]
+        this.fieldRevenu=2
     }
 
     canDépose(){return true}
@@ -303,6 +306,7 @@ class paysanne extends unit{
         this.knownForests = []
         this.knownCarrieres = []
         this.base=player.hdv[0]
+        this.fieldRevenu=1
     }
     canDépose(){return true}
 
@@ -465,6 +469,16 @@ class forge extends building{
 class champ extends building{
     constructor(position,player){
         super(20,0,5,0,"Champ",position,player,0,0)
+        this.workers=[]
+    }
+    addWorker(pos,partie){//Ajoute une unité pour travailler dans ce champ
+        if (this.workers.length>=2){return false}
+        var uni = partie.board[pos]
+        if (uni==undefined || (uni.name!="Bûcheron" && uni.name!="Paysanne" && uni.name!="Mineur" )){return false}
+        this.workers.push(uni)
+        delete partie.players[uni.owner].units[pos]
+        delete partie.board[pos]
+        return true
     }
 }
 
@@ -569,7 +583,7 @@ class pierris extends creatureNeutre{
 
     findGoal(partie){
         var tablo = []
-        for (var z of casesAdjacentes(this.position,partie.map.width,partie.map.height)){
+        for (var z of casesAdjacentes   (this.position,partie.map.width,partie.map.height)){
             for (var zz of casesAdjacentes(z,partie.map.width,partie.map.height)){
                 if (partie.board[zz]!=undefined && partie.board[zz].name!="Stratege"){return zz}
                 tablo.push(zz)

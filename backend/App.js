@@ -157,12 +157,22 @@ io.on('connection', (socket) => {
     
 
     if (partie.board[départ]==undefined || partie.board[départ].type=="building"){return}
+
     if (casesAdjacentes(départ,partie.map.width,partie.map.height).includes(arrivée)){
       if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Forge" && partie.board[arrivée].owner==idJoueur){
         if (partie.evolve(départ)){
           return
         }
        }
+
+       if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Champ" && partie.board[arrivée].owner==idJoueur){
+        console.log("a")
+        if (partie.board[arrivée].addWorker(départ,partie)){
+          socket.emit("désafficherUnité",départ)
+          return
+        }
+       }
+
     }
 
     if (partie.board[départ].owner!=idJoueur){return }
