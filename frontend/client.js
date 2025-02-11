@@ -559,6 +559,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
+    socket.on("désafficherUnité",position=>{
+        if (document.getElementById("uni" + position)) {
+            d3.select("#uni" + position).remove();
+        }
+    });
 });
 
 
