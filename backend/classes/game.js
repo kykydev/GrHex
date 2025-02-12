@@ -70,6 +70,7 @@ class game {
             player.addUnit(unit, position)
             if (this.board[position].name=="Maison"){this.board[position].generateVillager(position,player,this);}
             if (this.board[position].name=="Hôtel de ville" || this.board[position].name=="Entrepôt"){player.hdv.push(parseInt(position))}
+            unit.updateBase(this)
             return true
         }
         else {

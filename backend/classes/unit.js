@@ -101,7 +101,8 @@ class builder extends unit{
 
         for (var z of (game.players[this.owner].hdv)){
             if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
-                 this.base=z}}
+                 this.base=z
+                }}
     }
     canGo(dest){
         if (dest=="X" || dest=="eau" || dest=="montagne"){return false}
