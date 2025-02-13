@@ -367,7 +367,7 @@ button:hover {
 
 /* Jeu */
 
-#vueInfoHdv {
+#vueInfoHdv,#vueForge {
     display: none;
     height: 350px;
     width: 350px;

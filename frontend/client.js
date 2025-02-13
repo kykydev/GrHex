@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
+
     socket.on("finTour", data => {
         //console.log(data);
         // true si tout le monde à fini false sinon
@@ -345,6 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         let vueInfoHdv = d3.select("#vueInfoHdv");
+        let vueInfoForge = d3.select("#vueForge");
 
         let uniteSelectionnee = "";
         let hexagoneSelectionnee = "";
@@ -403,7 +405,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
         });
-
 
         Array.from(batiments).forEach(element => {
             // permet de placer un batiment
@@ -480,10 +481,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     hdvSelectionne = event.target.id.supprimerPrefixId("uni");
                     // vueInfoHdv variable D3
 
-                } else if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" || data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ") && uniteSelectionnee) {
+                } else  if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" || data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ") && uniteSelectionnee) {
                     // l'enrôlement
-                    hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
-                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+                    // hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
+                    // socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+                    socket.emit("demandeUnitesForge");
+                    vueInfoForge.style("display", (vueInfoForge.style("display") == "none" ? "block" : "none"));
 
                 } else if (uniteSelectionnee && uniteSelectionnee == event.target.id.supprimerPrefixId("uni")) {
                     uniteSelectionnee = "";
@@ -563,6 +566,24 @@ document.addEventListener("DOMContentLoaded", function () {
         if (document.getElementById("uni" + position)) {
             d3.select("#uni" + position).remove();
         }
+    });
+
+    socket.on("demandeUnitesForge",data=>{
+        d3.select("#vueForge").selectAll("*").remove();
+
+        data.forEach(uni=>{
+            d3.select("#vueForge").append("img").attr("src", "/img/personnages/rouge/" + (uni.name).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", "forge"+uni.name).attr("class", "batiments");
+
+            uni.evolutions.forEach((evo)=>{
+                d3.select("#vueForge").append("img").attr("src", "/img/personnages/rouge/" + (evo.nom).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", "forge"+evo.nom).attr("class", "batiments").append("p").text(evo.prix+" or");
+
+
+                document.getElementById("forge"+evo.nom).addEventListener("click",(event)=>{
+                    socket.emit("evolution", { avant: uni.name,apres:evo.nom});
+                });
+
+            });
+        });
     });
 });
 
