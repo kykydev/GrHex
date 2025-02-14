@@ -266,7 +266,6 @@ io.on('connection', (socket) => {
     if (partie==undefined || idJoueur==undefined ||data==undefined){return}
     var retour = partie.getForgeEvolutions(data,idJoueur) 
     if (retour==false){return}
-    console.log("renvoi des datas")
       socket.emit("demandeUnitesForge",retour)
     })
 
