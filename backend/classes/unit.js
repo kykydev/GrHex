@@ -488,6 +488,16 @@ class champ extends building{
         delete partie.board[pos]
         return true
     }
+
+    getUnis(){
+        if (this.workers==undefined || this.workers.length==0){return false}
+        var retour = []
+        for (var z of this.workers){
+            retour.push(z.name)
+        }
+        return retour
+    }
+
 }
 
 class entrepôt extends building{

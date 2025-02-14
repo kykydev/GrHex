@@ -159,14 +159,8 @@ io.on('connection', (socket) => {
     if (partie.board[départ]==undefined || partie.board[départ].type=="building"){return}
 
     if (casesAdjacentes(départ,partie.map.width,partie.map.height).includes(arrivée)){
-      if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Forge" && partie.board[arrivée].owner==idJoueur){
-        if (partie.evolve(départ)){
-          return
-        }
-       }
 
        if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Champ" && partie.board[arrivée].owner==idJoueur){
-        console.log("a")
         if (partie.board[arrivée].addWorker(départ,partie)){
           socket.emit("désafficherUnité",départ)
           return
@@ -272,7 +266,34 @@ io.on('connection', (socket) => {
     if (partie==undefined || idJoueur==undefined ||data==undefined){return}
     var retour = partie.getForgeEvolutions(data,idJoueur) 
     if (retour==false){return}
+    console.log("renvoi des datas")
       socket.emit("demandeUnitesForge",retour)
+    })
+
+    socket.on("evolution",data=>{//Socket demandant l'évolution d'une unité. Si l'évolution se fait, on renvoie le même socket pour mettre à jour l'affichage
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data==undefined || partie==undefined || idJoueur==undefined){return}
+      if (data.avant==undefined || data.apres==undefined || data.position==undefined){return}
+      var cbon = false
+      for (var z of casesAdjacentes(data.position,partie.map.width,partie.map.height)){if (partie.board[z]!=undefined && partie.board[z].name=="Forge"){cbon=true}}
+      if (!cbon){return}
+
+      if (partie.evolve(data.position,data.apres)){socket.emit("evolution",{"position":data.position,"newUnit":data.apres}); return}
+
+
+
+    })
+
+    socket.on("demandeUnitesChamp",data=>{
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data==undefined || partie==undefined || idJoueur==undefined){return}
+
+      var retour = partie.getUnitesChamp(data,idJoueur)
+      console.log(retour)
+      if (retour != undefined && retour != false){socket.emit("demandeUnitesChamp",retour)}
+
     })
 
 

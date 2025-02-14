@@ -481,14 +481,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     hdvSelectionne = event.target.id.supprimerPrefixId("uni");
                     // vueInfoHdv variable D3
 
-                } else  if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" || data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ") && uniteSelectionnee) {
+                } else  if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" && !uniteSelectionnee)) {
                     // l'enrôlement
                     // hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                     // socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
-                    socket.emit("demandeUnitesForge");
+                    socket.emit("demandeUnitesForge",event.target.id.supprimerPrefixId("uni"));
                     vueInfoForge.style("display", (vueInfoForge.style("display") == "none" ? "block" : "none"));
 
-                } else if (uniteSelectionnee && uniteSelectionnee == event.target.id.supprimerPrefixId("uni")) {
+                }
+                else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" && uniteSelectionnee){
+                    hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
+                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+
+
+                }
+                else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" && !uniteSelectionnee){
+                    socket.emit("demandeUnitesChamp",event.target.id.supprimerPrefixId("uni"));
+                    //A FAIRE VUE CHAMP
+
+
+                }else if (uniteSelectionnee && uniteSelectionnee == event.target.id.supprimerPrefixId("uni")) {
                     uniteSelectionnee = "";
                 } else if (uniteSelectionnee && data.board[event.target.id.supprimerPrefixId("uni")].owner !== data.board[uniteSelectionnee].owner) {
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
@@ -585,6 +597,11 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
+
+    socket.on("demandeUnitesChamp",data=>{
+        console.log(data)
+    })
+
 });
 
 

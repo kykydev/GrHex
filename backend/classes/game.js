@@ -103,7 +103,8 @@ class game {
             //Platées
             524:new hoplite(524,joueur),
             434:new hoplite(434,joueur),
-            437:new maison(437,joueur)
+            437:new maison(437,joueur),
+            545:new forge(545,joueur)
 
             }
 
@@ -1056,8 +1057,30 @@ recruteOuvrier(pos){
 }
 
 
-evolve(uniPos){//Tente de faire évoluer l'unité en position pos
-        var uni = this.board[uniPos]
+evolve(uniPos,evo ){//Tente de faire évoluer l'unité en position pos
+    var uni = this.board[uniPos]; if (uni==undefined){return false}
+    var evos = uni.getForgeEvos();if (evos==undefined || evos==false){return false}
+    var joueur = this.players[uni.owner]; if (uni==undefined){return false}
+
+     for (var z of evos){
+        if (z.nom==evo){
+            if (joueur.gold>=z.prix){
+                var newUni = new (eval(evo.toLowerCase()))(uniPos,joueur)
+                delete this.board[uniPos] 
+                delete joueur.units[uniPos]
+                if (this.addUnit(newUni,uniPos,joueur)){
+                    joueur.gold-=z.prix
+                    return true
+                }
+            }
+        }
+     }
+
+    
+    return false
+}
+
+/*     var uni = this.board[uniPos]
     if (uni==undefined){return false}
     var joueur = this.players[uni.owner]
 
@@ -1066,9 +1089,7 @@ evolve(uniPos){//Tente de faire évoluer l'unité en position pos
     var newUni = uni.evolution(joueur)
     this.board[uni.position]=newUni
     joueur.units[uni.position]=newUni
-    return true
-    
-}
+    return true */
 
 
 SpawnLoup(){//Fait apparaître un nombre aléatoire de loups sur des cases aléatoires de la carte
@@ -1142,6 +1163,16 @@ for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
 }
 
 return retour
+}
+
+getUnitesChamp(position,idJoueur){
+    var cham = this.board[position]; if (cham==undefined || cham.owner!=idJoueur){return false}
+    if (cham.name!="Champ"){return false}
+    return (cham.getUnis())
+
+
+
+
 }
 
 
