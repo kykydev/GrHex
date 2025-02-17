@@ -1197,18 +1197,21 @@ canOrder(idJoueur,posDépart){//Prend un IDJOUEUR et une position et dit si le j
 
 
 recruteMessager(idJoueur,posDépart,des){
-   if (idJoueur==undefined || posDépart==undefined || this.board[posDépart]==undefined || this.players[idJoueur]==undefined){return undefined}
+    var coûtMessager = 5
+   if (idJoueur==undefined || posDépart==undefined || this.board[posDépart]==undefined||  this.board[posDépart].tracked==false || this.players[idJoueur]==undefined){return undefined}
    var joueur = this.players[idJoueur]; if (joueur==undefined){return undefined}
    for (var z of Object.keys(joueur.units)){
     if (this.board[z].name=="Stratege"){
         for (var pos of casesAdjacentes(z,this.map.width,this.map.height)){
             if (this.board[pos]==undefined){
+                if (joueur.gold<=coûtMessager){return false}
                 var mes = new messager(pos,joueur)
                 if (this.addUnit(mes,pos,joueur)){
+                    joueur.gold-=coûtMessager
                     mes.targetUni = this.board[posDépart]
                     mes.destMessage=des
 
-                return pos
+                return mes
                 }
             }
         }

@@ -102,7 +102,7 @@ class messager extends unit{
                 }
             }
         }
-        if (meilleurePos!=undefined){console.log("c")
+        if (meilleurePos!=undefined){
             return meilleurePos}
 
         

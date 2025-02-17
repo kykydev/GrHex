@@ -181,6 +181,7 @@ io.on('connection', (socket) => {
     else{
       var recruted = partie.recruteMessager(idJoueur,départ,arrivée);
       if (recruted!=false){
+        socket.emit("spawnMessager",recruted)
 
       }
 
