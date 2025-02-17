@@ -180,7 +180,7 @@ io.on('connection', (socket) => {
     }
     else{
       var recruted = partie.recruteMessager(idJoueur,départ,arrivée);
-      if (recruted!=false){
+      if (recruted!=false && recruted!=undefined){
         socket.emit("spawnMessager",recruted)
 
       }
