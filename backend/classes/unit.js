@@ -78,9 +78,39 @@ class archer extends unit{
 class messager extends unit{
     constructor(position,player){
         super(30,0,5,7,3,"Messager",position,player,2,1)
-        this.tracked=true
-
+        this.targetUni = undefined
+        this.destMessage=undefined
     }
+    canGo(dest){
+        if (dest=="X" || dest=="eau" ){return false}
+        return true
+    }
+
+    
+    
+    findGoal(partie){//Retourne la meilleure destination possible pour l'unité
+        if (this.targetUni==undefined){
+            return undefined
+        }
+        
+        var meilleurePos;
+        
+        for (var z of casesAdjacentes(this.targetUni.position,partie.map.width,partie.map.height)){
+            if (this.canGo(partie.map.terrain[z])){
+                if (meilleurePos==undefined || (distance(z,this.position,partie.map.height)<distance(meilleurePos,this.position,partie.map.height))){
+                    meilleurePos=z
+                }
+            }
+        }
+        if (meilleurePos!=undefined){console.log("c")
+            return meilleurePos}
+
+        
+
+
+        }
+    
+
 }
 
 class builder extends unit{

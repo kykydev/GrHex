@@ -66,6 +66,7 @@ class game {
 
     addUnit(unit, position, player) {
         if (this.board[position] == undefined) {
+            if (unit.canGo(this.map.terrain[position])==false){return false}
             this.board[position] = unit
             player.addUnit(unit, position)
             if (this.board[position].name=="Maison"){this.board[position].generateVillager(position,player,this);}
@@ -800,6 +801,7 @@ class game {
                      uni = this.board[act.pos]
                     this.moveTurn(uni)
                     if (uni!=undefined && uni.owner!="Système"){this.testDéposeRessources(uni)}
+                    if (uni!=undefined && uni.owner!="Système" && uni.name=="Messager"){this.testMessager(uni)}
                     break;
 
                 case "builderPickup":
@@ -1169,12 +1171,73 @@ getUnitesChamp(position,idJoueur){
     var cham = this.board[position]; if (cham==undefined || cham.owner!=idJoueur){return false}
     if (cham.name!="Champ"){return false}
     return (cham.getUnis())
+}
+
+getRevenuChamp(position,idJoueur){
+    var cham = this.board[position]; if (cham==undefined || cham.owner!=idJoueur){return false}
+    if (cham.name!="Champ"){return false}
+    var revenu = 0
+    for (var z of cham.workers){revenu+=z.fieldRevenu}
+    return revenu
+}
+
+
+
+canOrder(idJoueur,posDépart){//Prend un IDJOUEUR et une position et dit si le joueur en question peut donner un ordre direct à l'unité se trouvant à cette position, false sinon et undefined si on ne sait pas
+    if (idJoueur==undefined || posDépart==undefined || this.board[posDépart]==undefined || this.players[idJoueur]==undefined){return undefined}
+    var joueur = this.players[idJoueur]; if (joueur==undefined){return undefined}
+    for (var z of Object.keys(joueur.units)){
+        if (this.board[z].name=="Stratege"){
+            return (distance(z,posDépart,this.map.height)<=this.board[z].vision)
+        }
+    }
+
+    return undefined
+}
+
+
+recruteMessager(idJoueur,posDépart,des){
+   if (idJoueur==undefined || posDépart==undefined || this.board[posDépart]==undefined || this.players[idJoueur]==undefined){return undefined}
+   var joueur = this.players[idJoueur]; if (joueur==undefined){return undefined}
+   for (var z of Object.keys(joueur.units)){
+    if (this.board[z].name=="Stratege"){
+        for (var pos of casesAdjacentes(z,this.map.width,this.map.height)){
+            if (this.board[pos]==undefined){
+                var mes = new messager(pos,joueur)
+                if (this.addUnit(mes,pos,joueur)){
+                    mes.targetUni = this.board[posDépart]
+                    mes.destMessage=des
+
+                return pos
+                }
+            }
+        }
+    }
+}
+
+
+    return false
+}
+
+testMessager(uni){//Teste si un messager est toujours utile et s'il a atteint sa destination
+    if (uni==undefined || uni.name!="Messager" ){return}
+    if (uni.targetUni==undefined|| uni.destMessage==undefined){
+        delete this.board[uni.position]
+        delete this.players[uni.owner].units[uni.position]
+    }
+
+    if (casesAdjacentes(uni.position,this.map.width,this.map.height).includes(uni.targetUni.position)){
+        var tar = this.board[uni.targetUni.position]
+        tar.destination=uni.destMessage
+        delete this.board[uni.position]
+        delete this.players[uni.owner].units[uni.position]
+        return true
+    }
 
 
 
 
 }
-
 
 
 

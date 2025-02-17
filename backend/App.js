@@ -154,27 +154,40 @@ io.on('connection', (socket) => {
     if (partie==undefined){return}
     let départ = parseInt(data.départ)
     let arrivée = parseInt(data.arrivée)
+    if (partie.board[départ]==undefined || partie.board[départ].type=="building" ||  partie.board[départ].name=="Messager"){return}
+    if (partie.board[départ].owner!=idJoueur){return }
     
+    
+    var check = partie.canOrder(idJoueur,départ)
+    if (check==undefined){return}
 
-    if (partie.board[départ]==undefined || partie.board[départ].type=="building"){return}
-
-    if (casesAdjacentes(départ,partie.map.width,partie.map.height).includes(arrivée)){
-
-       if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Champ" && partie.board[arrivée].owner==idJoueur){
-        if (partie.board[arrivée].addWorker(départ,partie)){
-          socket.emit("désafficherUnité",départ)
-          return
+    if (check==true){//Check la distance
+      if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Champ" && partie.board[arrivée].owner==idJoueur){
+          if (casesAdjacentes(départ,partie.map.width,partie.map.height).includes(arrivée)){
+          if (partie.board[arrivée].addWorker(départ,partie)){
+            socket.emit("désafficherUnité",départ)
+            return
+            }
+          }
         }
-       }
+        
+      let route = partie.pathfindToDestination(départ, arrivée, idJoueur)
+      if (route == false) { return false }
+      partie.board[départ].destination = arrivée
+      partie.board[départ].path = undefined
+      socket.emit("mouvement", route)
+
+    }
+    else{
+      var recruted = partie.recruteMessager(idJoueur,départ,arrivée);
+      if (recruted!=false){
+
+      }
+
+
 
     }
 
-    if (partie.board[départ].owner!=idJoueur){return }
-    let route = partie.pathfindToDestination(départ,arrivée,idJoueur)
-    if (route==false){return false}
-    partie.board[départ].destination = arrivée
-    partie.board[départ].path = undefined
-    socket.emit("mouvement",route)
 
   })
    
@@ -290,9 +303,12 @@ io.on('connection', (socket) => {
       if (data==undefined || partie==undefined || idJoueur==undefined){return}
 
       var retour = partie.getUnitesChamp(data,idJoueur)
-      console.log(retour)
-      if (retour != undefined && retour != false){socket.emit("demandeUnitesChamp",retour)}
+      if (retour != undefined && retour != false){socket.emit("demandeUnitesChamp",{"unites":retour,"revenu":partie.getRevenuChamp(data,idJoueur)})}
 
+    })
+
+    socket.on("sortirChamp",data=>{
+      console.log(data)
     })
 
 
