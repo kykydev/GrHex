@@ -502,6 +502,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     socket.emit("demandeUnitesChamp",event.target.id.supprimerPrefixId("uni"));
                     //A FAIRE VUE CHAMP
                     vueChamp.style("display",(vueChamp.style("display")=="none" ? "block" : "none"));
+
                     
 
 
@@ -605,11 +606,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("demandeUnitesChamp",data=>{
         d3.select("#vueChamp").selectAll("*").remove();
-        data.forEach(uni=>{
+        data.unites.forEach(uni=>{
             d3.select("#vueChamp").append("img").attr("src", "/img/personnages/rouge/" + (uni).toLowerCase() + ".png")
                 .attr("width", "100").attr("height", "100").attr("id", "champ"+uni+"").attr("class", "batiments")
-                .on("click",()=>{socket.emit("sortirChamp",uni)});
+                .on("click",()=>{socket.emit("sortirChamp",uni, )});
         });
+        vueChamp.append(`Revenu du jour : ${data.revenu}`);
     });
 
 });
