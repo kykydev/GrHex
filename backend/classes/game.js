@@ -1186,13 +1186,41 @@ getRevenuChamp(position,idJoueur){
 canOrder(idJoueur,posDépart){//Prend un IDJOUEUR et une position et dit si le joueur en question peut donner un ordre direct à l'unité se trouvant à cette position, false sinon et undefined si on ne sait pas
     if (idJoueur==undefined || posDépart==undefined || this.board[posDépart]==undefined || this.players[idJoueur]==undefined){return undefined}
     var joueur = this.players[idJoueur]; if (joueur==undefined){return undefined}
-    for (var z of Object.keys(joueur.units)){
-        if (this.board[z].name=="Stratege"){
-            return (distance(z,posDépart,this.map.height)<=this.board[z].vision)
+    var comps = {}; var posStratège=undefined
+    for (var z of Object.keys(joueur.units)){//Trouver les tours et le stratège
+        if (this.board[z].name=="Stratege" || this.board[z].name=="Tour"){
+            comps[z] = z
+            if (this.board[z].name=="Stratege"){posStratège=z}
         }
     }
+    if (posStratège==undefined){return undefined}
 
-    return undefined
+    for (var z of Object.keys(comps)){//Mise à jour des composantes
+        for (var zz of Object.keys(comps)){
+            if (distance(z,zz,this.map.height)<=this.board[z].vision){
+                var compyahou = comps[zz]
+                for (var zzz of Object.keys(comps)){
+                    if (comps[zzz]==compyahou){
+                        comps[zzz]=comps[z]
+                    }
+                }
+            }
+        }
+            
+        console.log(comps)
+        for (var z of Object.keys(comps)){
+            if (comps[z]==comps[posStratège]){
+                if (distance(posDépart,z,this.map.height)<=this.board[z].vision){
+                    return true
+                }
+            }
+        }
+            
+
+    }
+
+    //return (distance(z,posDépart,this.map.height)<=this.board[z].vision)
+    return false
 }
 
 
