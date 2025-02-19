@@ -489,6 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     socket.emit("demandeUnitesForge",event.target.id.supprimerPrefixId("uni"));
                     vueInfoForge.style("display", (vueInfoForge.style("display") == "none" ? "block" : "none"));
 
+                    
                 }
                 else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" && uniteSelectionnee){
 
@@ -500,9 +501,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" && !uniteSelectionnee){
                     socket.emit("demandeUnitesChamp",event.target.id.supprimerPrefixId("uni"));
+                    // console.log("test vueChamp");
                     //A FAIRE VUE CHAMP
-                    vueChamp.style("display",(vueChamp.style("display")=="none" ? "block" : "none"));
-                    vueChamp.attr("id",event.target.id.supprimerPrefixId("uni"));
+
+                    let vueChamp = d3.select("#vueChamp");
+                    //console.log(vueChamp);
+                    vueChamp.style("display",(vueChamp.style("display")=="none" ? "block" : "none"))
+                    .attr("class",event.target.id.supprimerPrefixId("uni"));
                     
 
 
@@ -610,13 +615,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     socket.on("demandeUnitesChamp",data=>{
-        d3.select("#vueChamp").selectAll("*").remove();
+
+
+        let vueChamp =d3.select("#vueChamp");
+
+        vueChamp.selectAll("*").remove();
         // vueChamp.remove();
         data.unites.forEach(uni=>{
             // console.log("zizi", uni.position);
-            d3.select("#vueChamp").append("img").attr("src", "/img/personnages/rouge/" + (uni).toLowerCase() + ".png")
+            vueChamp.append("img").attr("src", "/img/personnages/rouge/" + (uni).toLowerCase() + ".png")
                 .attr("width", "100").attr("height", "100").attr("class", "batiments")
-                .on("click",()=>{socket.emit("sortirChamp",{unite:uni,position:vueChamp.attr("id")} );console.log(vueChamp.attr("id"))});
+                .on("click",()=>{socket.emit("sortirChamp",{unite:uni,position:vueChamp.attr("class")} );});
         });
         vueChamp.append("p").text(`Revenu du jour : ${data.revenu}`);
     });
