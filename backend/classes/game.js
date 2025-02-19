@@ -90,7 +90,7 @@ class game {
             541: new bucheron(541, joueur),
             183: new paysanne(183, joueur),
             215: new mineur(215, joueur),
-            122: new champ(122,joueur),
+            489: new champ(489,joueur),
             63: new champ(63,joueur),
             576: new tour(576,joueur),
             542: new tour(542,joueur),
@@ -1067,7 +1067,8 @@ evolve(uniPos,evo ){//Tente de faire évoluer l'unité en position pos
      for (var z of evos){
         if (z.nom==evo){
             if (joueur.gold>=z.prix){
-                var newUni = new (eval(evo.toLowerCase()))(uniPos,joueur)
+                var newUni = new (eval(evo.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")))(uniPos,joueur)
+                newUni.origin = [{"nom":this.board[uniPos].name ,"prix":0}]
                 delete this.board[uniPos] 
                 delete joueur.units[uniPos]
                 if (this.addUnit(newUni,uniPos,joueur)){
@@ -1207,7 +1208,6 @@ canOrder(idJoueur,posDépart){//Prend un IDJOUEUR et une position et dit si le j
             }
         }
             
-        console.log(comps)
         for (var z of Object.keys(comps)){
             if (comps[z]==comps[posStratège]){
                 if (distance(posDépart,z,this.map.height)<=this.board[z].vision){
@@ -1219,7 +1219,6 @@ canOrder(idJoueur,posDépart){//Prend un IDJOUEUR et une position et dit si le j
 
     }
 
-    //return (distance(z,posDépart,this.map.height)<=this.board[z].vision)
     return false
 }
 

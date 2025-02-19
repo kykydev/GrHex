@@ -54,7 +54,11 @@ class hoplite extends unit{
     constructor(position,player){
         super(50,15,5,5,2,"Hoplite",position,player,2,1)
         this.tracked=true
+        this.origin = false//Attribut qui stocke ce qu'était l'unité avant pour le désenrôlement
 
+    }
+    getForgeEvos(){
+        return this.origin
     }
 }
 
@@ -70,10 +74,22 @@ class archer extends unit{
     constructor(position,player){
         super(30,15,0,1,2,"Archer",position,player,2,2)
         this.tracked=true
-
-
+        this.origin = false//Attribut qui stocke ce qu'était l'unité avant pour le désenrôlement
+    }
+    getForgeEvos(){
+        return this.origin
     }
 }
+
+/*
+class discipleath extends unit{
+    constructor(position,player){
+    super(40,2,10,0,1,"Disciple d'Athéna",player,position,2,1)
+    this.tracked=true
+    this.origin = false//Attribut qui stocke ce qu'était l'unité avant pour le désenrôlement
+    }
+}
+*/
 
 class messager extends unit{
     constructor(position,player){

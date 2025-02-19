@@ -177,7 +177,7 @@ io.on('connection', (socket) => {
       partie.board[départ].path = undefined
       socket.emit("mouvement", route)
 
-    }
+    }   
     else{
       var recruted = partie.recruteMessager(idJoueur,départ,arrivée);
       if (recruted!=false && recruted!=undefined){
@@ -283,6 +283,7 @@ io.on('connection', (socket) => {
       socket.emit("demandeUnitesForge",retour)
     })
 
+    
     socket.on("evolution",data=>{//Socket demandant l'évolution d'une unité. Si l'évolution se fait, on renvoie le même socket pour mettre à jour l'affichage
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
