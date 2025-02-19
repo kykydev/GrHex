@@ -283,7 +283,7 @@ io.on('connection', (socket) => {
       socket.emit("demandeUnitesForge",retour)
     })
 
-    
+
     socket.on("evolution",data=>{//Socket demandant l'évolution d'une unité. Si l'évolution se fait, on renvoie le même socket pour mettre à jour l'affichage
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
@@ -310,7 +310,14 @@ io.on('connection', (socket) => {
     })
 
     socket.on("sortirChamp",data=>{
-      console.log(data)
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data==undefined || partie==undefined || idJoueur==undefined){return}
+      var check = partie.sortirChamp(data.unite,data.position,idJoueur)
+      if (check!=false){
+        socket.emit("evolution",check)
+        return
+      }
     })
 
 

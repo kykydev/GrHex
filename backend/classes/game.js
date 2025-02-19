@@ -88,10 +88,9 @@ class game {
             496:new hdv(496,joueur),//HDV de platées
             515: new stratege(515, joueur),
             541: new bucheron(541, joueur),
-            183: new paysanne(183, joueur),
             215: new mineur(215, joueur),
             489: new champ(489,joueur),
-            63: new champ(63,joueur),
+            519:new paysanne(519,joueur),
             576: new tour(576,joueur),
             542: new tour(542,joueur),
             516: new hoplite(516,joueur),
@@ -1263,7 +1262,33 @@ testMessager(uni){//Teste si un messager est toujours utile et s'il a atteint sa
         delete this.players[uni.owner].units[uni.position]
         return true
     }
+}
 
+    
+    
+    
+sortirChamp(unite,position,idJoueur){
+    if (unite==undefined || position==undefined){return false}
+    var joueur = this.players[idJoueur];if (joueur==undefined){return false}
+    var cham = this.board[position]
+    if (cham.name!="Champ"){return false}
+
+    if (cham.workers==undefined){return false}
+
+    for (var z in cham.workers){
+        if (cham.workers[z].name==unite){
+            var uni = cham.workers[z]
+            for (var zz of casesAdjacentes(position,this.map.width,this.map.height)){
+                if (this.board[zz]==undefined && uni.canGo(this.map.terrain[zz])){
+                    if (this.addUnit(uni,zz,joueur)){
+                        cham.workers.splice(z,1)
+                        uni.position=zz
+                        return {"position":zz,"newUnit":uni.name}
+                    }
+                }
+            }
+        }
+    }
 
 
 
