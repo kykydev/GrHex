@@ -634,6 +634,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let bbox = document.getElementById("h" + data.position).getBBox();
         let pos = document.getElementById("h" + data.position);
 
+        d3.select("#uni"+data.position).remove();
+
         d3.select("#jeu")
             .append("image")
             .attr("class", "batTemp")
