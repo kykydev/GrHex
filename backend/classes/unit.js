@@ -368,9 +368,12 @@ class paysanne extends unit{
         }
 
     }
-    canDépose(){return this.élue}
+    canEvolve(){return this.élue}
     getForgeEvos(){
         return this.forgeEvos
+    }
+    canDépose(){
+        return true
     }
 
     canRécolte(partie){

@@ -1294,7 +1294,20 @@ sortirChamp(unite,position,idJoueur){
 
 }
 
+getHDV(idJoueur){//Revoie les HDV et entrepôts du joueur concerné
+    var joueur = this.players[idJoueur]
+    if (joueur==undefined){return false}
 
+    var retour = []
+    for (var z of joueur.hdv){
+        retour.push({"type":z.name,"position":z.position})
+    }
+
+    if (retour!=undefined && retour.length>0){return retour}
+
+
+return false
+}
 
 }
 module.exports = { game };

@@ -320,6 +320,17 @@ io.on('connection', (socket) => {
       }
     })
 
+    socket.on("demandeHDV",data=>{
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data==undefined || partie==undefined || idJoueur==undefined){return}
+
+      var retour = partie.getHDV(idJoueur)
+      if (retour!=undefined && retour!=false){
+        socket.emit("demandeHDV",retour)
+      }
+
+    })
 
 
 });
