@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder, discipleathneutre } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder, discipleathneutre,discipleath } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
 
@@ -1067,6 +1067,7 @@ evolve(uniPos,evo ){//Tente de faire évoluer l'unité en position pos
      for (var z of evos){
         if (z.nom==evo){
             if (joueur.gold>=z.prix){
+                if (evo=="Disciple d'Athéna"){evo="discipleath"}
                 var newUni = new (eval(evo.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")))(uniPos,joueur)
                 newUni.origin = [{"nom":this.board[uniPos].name ,"prix":0}]
                 delete this.board[uniPos] 
@@ -1079,7 +1080,6 @@ evolve(uniPos,evo ){//Tente de faire évoluer l'unité en position pos
         }
      }
 
-    
     return false
 }
 

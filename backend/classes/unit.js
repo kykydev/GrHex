@@ -81,15 +81,15 @@ class archer extends unit{
     }
 }
 
-/*
+
 class discipleath extends unit{
     constructor(position,player){
-    super(40,2,10,0,1,"Disciple d'Athéna",player,position,2,1)
+    super(40,2,10,0,1,"Disciple d'Athéna",position,player,2,1)
     this.tracked=true
     this.origin = false//Attribut qui stocke ce qu'était l'unité avant pour le désenrôlement
     }
 }
-*/
+
 
 class messager extends unit{
     constructor(position,player){
@@ -359,8 +359,19 @@ class paysanne extends unit{
         this.knownCarrieres = []
         this.base=player.hdv[0]
         this.fieldRevenu=1
+        this.élue = false
+        this.forgeEvos=false
+
+        if (Math.random()<0.05){
+            this.élue=true
+            this.forgeEvos=[{"nom":"Disciple d'Athéna","prix":200}]
+        }
+
     }
-    canDépose(){return true}
+    canDépose(){return this.élue}
+    getForgeEvos(){
+        return this.forgeEvos
+    }
 
     canRécolte(partie){
         return ((this.stone+this.wood)<this.maxRessources)
@@ -668,4 +679,4 @@ class discipleathneutre extends creatureNeutre{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre };
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath};
