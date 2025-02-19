@@ -597,7 +597,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
     socket.on("demandeUnitesForge",data=>{
-        d3.select("#vueForge").selectAll("*").remove();
+        d3.select("#vueForge").selectAll("*:not(.hautvue):not(#bouttonChamp):not(#txthautvue)").remove();
 
         data.forEach(uni=>{
             d3.select("#vueForge").append("img").attr("src", "/img/personnages/rouge/" + (uni.name).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", "forge"+uni.name).attr("class", "batiments");
@@ -618,7 +618,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         let vueChamp = d3.select("#vueChamp");
-        let divHautVueChamp = d3.select(".hautvue");
 
         vueChamp.selectAll("*:not(.hautvue):not(#bouttonChamp):not(#txthautvue)").remove();
 

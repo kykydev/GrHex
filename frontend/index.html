@@ -98,13 +98,22 @@
             
             <svg id="jeu"></svg>
             <div id="vueInfoHdv">
+                <div class="hautvue">
+                    <p id="txthautvue"> Gestionnaire de l'HDV </p>
+                    <button id="bouttonChamp" class="buttonblack" onclick="document.getElementById('vueInfoHdv').style.display = (document.getElementById('vueInfoHdv').style.display == 'none' ? 'block' : 'none');">Quitter</button>
+                </div>
                 <img src="/img/personnages/rouge/ouvrier.png" alt="Builder" height="100px" width="100px"/>
-                <button id="bouttonHdv" class="buttonretro">
+                <button id="bouttonHdv" class="buttonblack">
                     Recruter un ouvrier
                 </button>
             </div>
 
-            <div id="vueForge"></div>
+            <div id="vueForge">
+                <div class="hautvue">
+                    <p id="txthautvue"> Gestionnaire de la forge</p>
+                    <button id="bouttonChamp" class="buttonblack" onclick="document.getElementById('vueForge').style.display = (document.getElementById('vueForge').style.display == 'none' ? 'block' : 'none');">Quitter</button>
+                </div>
+            </div>
             <div id="vueChamp">
                 <div class="hautvue">
                     <p id="txthautvue"> Gestionnaire du champ </p>
