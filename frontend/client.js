@@ -644,7 +644,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .attr("y", `${bbox.y - 15}`)
             .attr("width", "70")
             .attr("height", "80")
-            .style("opacity", 0.4)
             .on("mouseover", () => {
                 d3.select(pos)
                     .attr("stroke", "orange")
