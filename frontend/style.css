@@ -367,15 +367,44 @@ button:hover {
 
 /* Jeu */
 
-#vueInfoHdv,#vueForge,#vueChamp {
+#vueInfoHdv,
+#vueForge,
+#vueChamp {
+    color: wheat;
     display: none;
     height: 350px;
     width: 350px;
-    background-color: aquamarine;
+    background-color: #000;
     position: fixed;
-    left: 0;
-    top: 81px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     z-index: 4;
+    border: 4px double #212529;
+}
+
+#vueChamp p {
+    text-align: center;
+    margin: 0;
+}
+
+.hautvue {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 10%;
+    background-color: #000;
+    z-index: 1;
+    color: wheat;
+    box-sizing: border-box;
+    border: 4px double #212529;
+}
+
+.hautvue button {
+    margin-left: auto;
 }
 
 #vueBatiments {

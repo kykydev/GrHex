@@ -617,9 +617,13 @@ document.addEventListener("DOMContentLoaded", function () {
     socket.on("demandeUnitesChamp",data=>{
 
 
-        let vueChamp =d3.select("#vueChamp");
+        let vueChamp = d3.select("#vueChamp");
+        let divHautVueChamp = d3.select(".hautvue");
 
-        vueChamp.selectAll("*").remove();
+        vueChamp.selectAll("*:not(.hautvue):not(#bouttonChamp):not(#txthautvue)").remove();
+
+        vueChamp.append("p").text(`Revenu du jour : ${data.revenu}`);
+
         // vueChamp.remove();
         data.unites.forEach(uni=>{
             // console.log("zizi", uni.position);
@@ -627,7 +631,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .attr("width", "100").attr("height", "100").attr("class", "batiments")
                 .on("click",()=>{socket.emit("sortirChamp",{unite:uni,position:vueChamp.attr("class")} );});
         });
-        vueChamp.append("p").text(`Revenu du jour : ${data.revenu}`);
+
     });
 
     socket.on("evolution",data=>{
