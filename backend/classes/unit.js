@@ -145,11 +145,34 @@ class builder extends unit{
     updateBase(game){
         if (this.base==undefined){this.base=game.players[this.owner].hdv[0]}
 
+        if (this.phase=="getRessources"){
+        var travail = game.board[this.currentBuilding]
+        if (travail==undefined ||travail.name!="Chantier"){return this.position}
+        var zzpossible = false //Test de possibilité initiale
+        if ((travail.buildingInfos.coûtBois-this.wood<=game.board[this.base].wood || travail.buildingInfos.coûtBois==undefined) && (travail.buildingInfos.coûtPierre-this.stone<=game.board[this.base].stone || travail.buildingInfos.coûtPierre==undefined) && (travail.buildingInfos.coûtCuivre-this.copper<=game.board[this.base].copper || travail.buildingInfos.coûtCuivre==undefined)){zzpossible=true}
         for (var z of (game.players[this.owner].hdv)){
-            if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
+            var zPossible = false/*Dit si le bâtiment en position z permet de construire */
+            if ((travail.buildingInfos.coûtBois-this.wood<=game.board[z].wood || travail.buildingInfos.coûtBois==undefined) && (travail.buildingInfos.coûtPierre-this.stone<=game.board[z].stone || travail.buildingInfos.coûtPierre==undefined) && (travail.buildingInfos.coûtCuivre-this.copper<=game.board[z].copper || travail.buildingInfos.coûtCuivre==undefined)){zPossible=true}
+
+            if ((distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height) || zzpossible==false) && (zPossible)){
                  this.base=z
+                 zzpossible=true//On a passé l'étape initiale
                 }}
-    }
+
+            }  
+            
+        else{
+
+            for (var z of (game.players[this.owner].hdv)){
+                if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
+            
+            this.base=z}}
+
+        }
+
+
+        }
+
     canGo(dest){
         if (dest=="X" || dest=="eau" || dest=="montagne"){return false}
         return true
@@ -494,7 +517,7 @@ class hdv extends building{
     constructor(position,player){
         super(350,0,15,0,"Hôtel de ville",position,player,2,0)
         this.tracked=true
-        this.wood = 30
+        this.wood = 15
         this.stone = 30
         this.copper = 0
         this.maxWood = 100

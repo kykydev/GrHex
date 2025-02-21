@@ -162,6 +162,7 @@ io.on('connection', (socket) => {
     if (check==undefined){return}
 
     if (check==true){//Check la distance
+      //Cas où on met quelqu'un dans un champ
       if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Champ" && partie.board[arrivée].owner==idJoueur){
           if (casesAdjacentes(départ,partie.map.width,partie.map.height).includes(arrivée)){
           if (partie.board[arrivée].addWorker(départ,partie)){
@@ -170,6 +171,14 @@ io.on('connection', (socket) => {
             }
           }
         }
+        //Cas où on a tenté de mettre un nouveau builder sur un job
+        if (partie.board[arrivée]!=undefined && partie.board[départ].name=="Ouvrier" && partie.board[départ].owner==idJoueur){
+            if (partie.addToChantier(départ,arrivée,idJoueur)){
+            return
+            }
+          
+        }
+      
         
       let route = partie.pathfindToDestination(départ, arrivée, idJoueur)
       if (route == false) { return false }

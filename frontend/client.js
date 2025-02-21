@@ -499,6 +499,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 }
+                else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Chantier" && uniteSelectionnee){
+
+                    // console.log("slaut");
+                    hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
+                    console.log("yahou")
+                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+
+
+                }
                 else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" && !uniteSelectionnee){
                     socket.emit("demandeUnitesChamp",event.target.id.supprimerPrefixId("uni"));
                     // console.log("test vueChamp");

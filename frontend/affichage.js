@@ -466,6 +466,11 @@ function fstatsUnite(unite) {
         if (unite.buildingInfos.coûtBois !== undefined) { stats.append("div").attr("id", "uniteWoodCost").text("Coût en bois : " + unite.buildingInfos.coûtBois); }
         if (unite.buildingInfos.coûtPierre !== undefined) { stats.append("div").attr("id", "uniteStoneCost").text("Coût en pierre : " + unite.buildingInfos.coûtPierre); }
     }
+    if (unite.currentBuilding!=undefined){ stats.append("div").attr("id", "uniteCurrentBuilding").text("Chantier en " + unite.currentBuilding);}
+    if (unite.phase!=undefined){ 
+    if (unite.phase=="getRessources"){ stats.append("div").attr("id", "unitePhase").text("Cherche des ressources");}
+    if (unite.phase=="buildBuilding"){ stats.append("div").attr("id", "unitePhase").text("Construit un bâtiment");}
+    }
 
 }
 

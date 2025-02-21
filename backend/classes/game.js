@@ -660,7 +660,7 @@ class game {
         if (unité==undefined){return}
         if (unité.phase!="getRessources"){return}
         
-        if (unité.currentBuilding==undefined || this.board[unité.currentBuilding]==undefined){return}
+        if (unité.currentBuilding==undefined || this.board[unité.currentBuilding]==undefined || this.board[unité.currentBuilding].name!="Chantier"){unité.currentBuilding=undefined;return}
         
         
 
@@ -1036,6 +1036,11 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
 
 }
 
+addToChantier(départ,arrivée,idJoueur){
+    if (this.board[départ]==undefined ||this.board[départ].name!="Ouvrier" || this.board[arrivée]==undefined ||this.board[arrivée].name!="Chantier" || this.board[départ].currentBuilding!=undefined || this.board[départ].owner!=idJoueur || this.board[arrivée].owner!=idJoueur){return false}
+    this.board[départ].currentBuilding=arrivée
+    return true
+}
 
 
 recruteOuvrier(pos){
@@ -1249,15 +1254,16 @@ recruteMessager(idJoueur,posDépart,des){
 }
 
 testMessager(uni){//Teste si un messager est toujours utile et s'il a atteint sa destination
-    if (uni==undefined || uni.name!="Messager" ){return}
-    if (uni.targetUni==undefined|| uni.destMessage==undefined){
+    if (uni==undefined || uni.name!="Messager"){return}
+    if (uni.targetUni==undefined|| uni.destMessage==undefined || this.board[uni.targetUni.position]){
         delete this.board[uni.position]
         delete this.players[uni.owner].units[uni.position]
     }
 
     if (casesAdjacentes(uni.position,this.map.width,this.map.height).includes(uni.targetUni.position)){
         var tar = this.board[uni.targetUni.position]
-        tar.destination=uni.destMessage
+         tar.destination=uni.destMessage
+         
         delete this.board[uni.position]
         delete this.players[uni.owner].units[uni.position]
         return true
