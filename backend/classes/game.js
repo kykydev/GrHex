@@ -1168,7 +1168,6 @@ for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
         if (evos!=false){retour.push({"position":z,"name":this.board[z].name,"evolutions":evos})}
     }
 }
-
 return retour
 }
 
