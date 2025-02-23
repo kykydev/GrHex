@@ -243,7 +243,7 @@ class bucheron extends unit{
     }
 
     getForgeEvos(){
-        return [{"nom":"Hoplite","prix":100},{"nom":"Archer","prix":150}]
+        return [{"nom":"Hoplite","gold":10,"wood":5, "stone":5},{"nom":"Archer","gold":25,"wood":5, "stone":5}]
     }
 
     canEvolve(){
@@ -309,7 +309,7 @@ class mineur extends unit{
     canDépose(){return true}
 
     getForgeEvos(){
-        return [{"nom":"Hoplite","prix":100},{"nom":"Archer","prix":150}]
+        return [{"nom":"Hoplite","gold":10,"wood":5, "stone":5},{"nom":"Archer","gold":25,"wood":5, "stone":5}]
     }
 
     updateBase(game){
@@ -387,7 +387,7 @@ class paysanne extends unit{
 
         if (Math.random()<0.05){
             this.élue=true
-            this.forgeEvos=[{"nom":"Disciple d'Athéna","prix":200}]
+            this.forgeEvos=[{"nom":"Disciple d'Athéna","gold":200}]
         }
 
     }
