@@ -618,6 +618,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 document.getElementById("forge"+evo.nom).addEventListener("click",(event)=>{
                     socket.emit("evolution", { avant: uni.name,apres:evo.nom,position:uni.position});
+                    console.log("evo")
                 });
             });
         });
