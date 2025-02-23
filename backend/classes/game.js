@@ -1070,14 +1070,14 @@ evolve(uniPos,evo ){//Tente de faire évoluer l'unité en position pos
 
      for (var z of evos){
         if (z.nom==evo){
-            if (joueur.gold>=z.prix){
+            if (joueur.gold>=z.gold){
                 if (evo=="Disciple d'Athéna"){evo="discipleath"}
                 var newUni = new (eval(evo.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")))(uniPos,joueur)
-                newUni.origin = [{"nom":this.board[uniPos].name ,"prix":0}]
+                newUni.origin = [{"nom":this.board[uniPos].name }]
                 delete this.board[uniPos] 
                 delete joueur.units[uniPos]
                 if (this.addUnit(newUni,uniPos,joueur)){
-                    joueur.gold-=z.prix
+                    joueur.gold-=z.gold
                     return true
                 }
             }

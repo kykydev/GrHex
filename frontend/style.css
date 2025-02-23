@@ -372,8 +372,8 @@ button:hover {
 #vueChamp {
     color: wheat;
     display: none;
-    height: 350px;
-    width: 350px;
+    height: 500px;
+    width: 700px;
     background-color: #000;
     position: fixed;
     left: 50%;

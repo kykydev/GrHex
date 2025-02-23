@@ -606,19 +606,19 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
     socket.on("demandeUnitesForge",data=>{
+        console.log(data);
         d3.select("#vueForge").selectAll("*:not(.hautvue):not(#bouttonChamp):not(#txthautvue)").remove();
 
         data.forEach(uni=>{
             d3.select("#vueForge").append("img").attr("src", "/img/personnages/rouge/" + (uni.name).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", "forge"+uni.name).attr("class", "batiments");
 
             uni.evolutions.forEach((evo)=>{
-                d3.select("#vueForge").append("img").attr("src", "/img/personnages/rouge/" + (evo.nom).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", "forge"+evo.nom).attr("class", "batiments").append("p").text(evo.prix+" or");
-
+                d3.select("#vueForge").append("img").attr("src", "/img/personnages/rouge/" + (evo.nom).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", "forge"+evo.nom).attr("class", "batiments");
+                d3.select("#vueForge").append("p").text(`Or : ${evo.gold}`);
 
                 document.getElementById("forge"+evo.nom).addEventListener("click",(event)=>{
                     socket.emit("evolution", { avant: uni.name,apres:evo.nom,position:uni.position});
                 });
-
             });
         });
     });
