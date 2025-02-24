@@ -374,13 +374,14 @@ button:hover {
     display: none;
     height: 500px;
     width: 700px;
-    background-color: #000;
+    background-color: #000000e3;
     position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     z-index: 4;
     border: 4px double #212529;
+    overflow: auto;
 }
 
 #vueChamp p {
@@ -396,11 +397,11 @@ button:hover {
     top: 0;
     width: 100%;
     height: 10%;
-    background-color: #000;
     z-index: 1;
     color: wheat;
     box-sizing: border-box;
     border: 4px double #212529;
+    position: sticky;
 }
 
 .hautvue button {
@@ -409,7 +410,7 @@ button:hover {
 
 #vueBatiments {
     cursor: grab;
-    background-color: #000;
+    background-color: #000000e3;
     position: fixed;
     left: 80%;
     top: 10%;
@@ -423,21 +424,19 @@ button:hover {
 #vueBatiments img {
     cursor: pointer;
     margin-top: 20px;
-    background-color: #000;
     height: 92px;
     width: 75px;
     border: 4px double #212529;
 }
 
 .batiments {
-    background-color: #000;
     border: 4px double #212529;
 }
 
 #statsUnite {
     color: wheat;
     position: fixed;
-    background-color: #000;
+    background-color: #000000e3;
     cursor: grab;
     left: 80%;
     top: 25%;
@@ -450,7 +449,6 @@ button:hover {
 
 #statsUnite img {
     cursor: pointer;
-    background-color: #000;
     height: 110px;
     width: 75px;
     border: 4px double #212529;

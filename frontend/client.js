@@ -605,22 +605,25 @@ document.addEventListener("DOMContentLoaded", function () {
         afficherUnites(data, "jeu");
     })
 
-    socket.on("demandeUnitesForge",data=>{
+    socket.on("demandeUnitesForge", data => {
         console.log(data);
         d3.select("#vueForge").selectAll("*:not(.hautvue):not(#bouttonChamp):not(#txthautvue)").remove();
 
-        data.forEach(uni=>{
-            d3.select("#vueForge").append("img").attr("src", "/img/personnages/rouge/" + (uni.name).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", "forge"+uni.name).attr("class", "batiments");
+        data.forEach(uni => {
+            d3.select("#vueForge").append("img").attr("src", "/img/personnages/rouge/" + (uni.name).toLowerCase() + ".png").attr("width", "125").attr("height", "150").attr("id", "forge" + uni.name);
+            d3.select("#vueForge").append("img").attr("src", "/img/autre/fleche.png").attr("width", "125").attr("height", "150");
 
-            uni.evolutions.forEach((evo)=>{
-                d3.select("#vueForge").append("img").attr("src", "/img/personnages/rouge/" + (evo.nom).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", "forge"+evo.nom).attr("class", "batiments");
-                d3.select("#vueForge").append("p").text(`Or : ${evo.gold}`);
-
-                document.getElementById("forge"+evo.nom).addEventListener("click",(event)=>{
-                    socket.emit("evolution", { avant: uni.name,apres:evo.nom,position:uni.position});
-                    console.log("evo")
+            uni.evolutions.forEach((evo) => {
+                const container = d3.select("#vueForge").append("div").style("position", "relative").style("display", "inline-block").style("text-align", "center").style("margin", "0 auto");
+                container.append("img").attr("src", "/img/personnages/rouge/" + (evo.nom).toLowerCase() + ".png").attr("width", "125").attr("height", "150").attr("id", "forge" + evo.nom);
+                if(evo.gold != undefined){
+                container.append("p").text(`Or : ${evo.gold}`).style("position", "absolute").style("top", "0").style("right", "0");}
+                
+                container.select("img").on("click", () => {
+                    socket.emit("evolution", { avant: uni.name, apres: evo.nom, position: uni.position });
                 });
             });
+            d3.select("#vueForge").append("br");
         });
     });
 
