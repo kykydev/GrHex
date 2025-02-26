@@ -442,9 +442,17 @@ function attaqueAnim(caseDepart, caseArrivee, chiffre, fun) {
 function fstatsUnite(unite) {
     let statsimg = d3.select("#statsUnite");
     statsimg.selectAll("*").remove();
-    statsimg.append("img")
+
+    if(unite.name == "Mur") {
+        statsimg.append("img")
+        .attr("src", "img/murs/murdroite.png")
+        .attr("width", 180).attr("height", 150);
+    }
+    else{
+        statsimg.append("img")
         .attr("src", "img/personnages/" + unite.couleur + "/" + unite.name.toLowerCase() + ".png")
         .attr("width", 180).attr("height", 150);
+    }
 
     let stats = d3.select("#statsUnite").append("div").attr("id", "unitStats");
     stats.selectAll("*").remove();
