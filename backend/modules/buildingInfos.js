@@ -1,6 +1,7 @@
 
 
 const buildings = [//Liste des bâtiments qui est ensuite envoyée au client par socket dans app.js
+  {"nom":"Mur","url":"Mur","coûtOr":10,"coûtBois":0,"coûtPierre":10,"coûtCuivre":0, "turnsToBuild":1},
     {"nom":"Tour","url":"tour","coûtOr":15,"coûtBois":20,"coûtPierre":15,"coûtCuivre":0, "turnsToBuild":1},
     {"nom":"Forge","url":"Forge","coûtOr":0,"coûtBois":5,"coûtPierre":10,"coûtCuivre":0, "turnsToBuild":1},
     {"nom":"Champ","url":"Champ","coûtOr":0,"coûtBois":15,"coûtPierre":0,"coûtCuivre":0, "turnsToBuild":1},

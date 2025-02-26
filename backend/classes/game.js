@@ -99,10 +99,6 @@ class game {
             570: new maison(570,joueur),
             664: new maison(664,joueur),
             636: new maison(636,joueur),
-            638: new mur(638,joueur),
-            668: new mur(668,joueur),
-            609: new mur(609,joueur),
-            640: new mur(640,joueur),
 
             //Platées
             524:new hoplite(524,joueur),
@@ -769,10 +765,7 @@ class game {
             if (this.board[uni].name=="Champ"){this.revenuChamp(this.board[uni])}
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
             this.board[uni].destination = this.board[uni].findGoal(this)            
-            if (this.board[uni].destination != undefined) {
-                if (this.board[uni].type != "building") { this.board[uni].path = this.pathfindToDestination(this.board[uni].position, this.board[uni].destination, this.board[uni].owner);
-                        if (this.board[uni].path==false){this.board[uni].path=undefined}
-                        else{this.board[uni].path.shift()}}//Reset les path 
+            if (this.board[uni].destination != undefined) {//Reset les path 
                 if (this.board[uni].owner!="Système"){
                 this.actions.push(new moveAction(this.board[uni].position, this.players[this.board[uni].owner]))
                 }
@@ -783,8 +776,8 @@ class game {
             
         //Récolte des ressources en début de tour
         if (this.board[uni].name=="Bûcheron" || this.board[uni].name=="Paysanne" || this.board[uni].name=="Mineur"){
-            this.testRécolteRessources(this.board[uni])
             this.board[uni].updateBase(this)
+            this.testRécolteRessources(this.board[uni])
         }
         if (this.board[uni].name=="Ouvrier"){
             this.board[uni].updateBase(this)
@@ -802,6 +795,9 @@ class game {
             switch (act.type) {
                 case "movement":
                      uni = this.board[act.pos]
+                     if (uni.type != "building") { uni.path = this.pathfindToDestination(uni.position, uni.destination, uni.owner);
+                        if (uni.path==false){uni.path=undefined}
+                        else{uni.path.shift()}}
                     this.moveTurn(uni)
                     if (uni!=undefined && uni.owner!="Système"){this.testDéposeRessources(uni)}
                     if (uni!=undefined && uni.owner!="Système" && uni.name=="Messager"){this.testMessager(uni)}

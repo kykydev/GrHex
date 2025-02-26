@@ -582,6 +582,9 @@ if (col % 2 != 0) {//odd column
     }
 
 
+    if (retour.length==0){
+        retour = ["centre"]
+    }
 
     return retour;
 
@@ -603,7 +606,8 @@ function dessineMur(pos, width, height, board, type, unite) {
         "gauche": "murgauche.png",
         "droite": "murdroite.png",
         "basgauche": "murbasgauche.png",
-        "basdroite": "murbasdroite.png"
+        "basdroite": "murbasdroite.png",
+        "centre": "mur.png",
     };
 
     directions.forEach(direction => {
