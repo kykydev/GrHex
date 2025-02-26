@@ -181,7 +181,7 @@ class builder extends unit{
 
     
     findGoal(partie){//Retourne la meilleure destination possible pour l'unité
-
+        
         if (this.destination!=undefined){return this.destination}
 
         if (this.currentBuilding==undefined){return undefined}
@@ -200,7 +200,7 @@ class builder extends unit{
                 let meilleurebase = undefined
                 if (casesAdjacentes(this.base,partie.map.width,partie.map.height).includes(this.position)){return this.position}
                 for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
-                    if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+                    if (partie.board[z]==undefined && this.canGo(partie.map.terrain[z]) && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
                 }
 
 
@@ -208,14 +208,20 @@ class builder extends unit{
             }
 
             else{
+                if (this.phase=="buildBuilding"){
 
             let meilleureCase = undefined
             for (var z of casesAdjacentes(this.currentBuilding,partie.map.width,partie.map.height)){
-                if (partie.board[z]==undefined && (meilleureCase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleureCase,partie.map.height)))){meilleureCase=z}
+                if (partie.board[z]==undefined&& this.canGo(partie.map.terrain[z]) && (meilleureCase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleureCase,partie.map.height)))){meilleureCase=z}
             }
             return meilleureCase
 
-                
+        }
+        else{
+            for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
+                if (partie.board[z]==undefined&& this.canGo(partie.map.terrain[z])){return z}
+            }
+        }
             }
     }
 
@@ -267,7 +273,7 @@ class bucheron extends unit{
         if (this.canRécolte(partie)==false){
             let meilleurebase = undefined
             for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
-                if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+                if (partie.board[z]==undefined&& this.canGo(partie.map.terrain[z]) && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
             }
             if (meilleurebase!=undefined){return meilleurebase}
         }
@@ -342,7 +348,7 @@ class mineur extends unit{
         if (this.canRécolte(partie)==false){
             let meilleurebase = undefined
             for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
-                if (partie.board[z]==undefined && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+                if (partie.board[z]==undefined && this.canGo(partie.map.terrain[z])&& (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
             }
             if (meilleurebase!=undefined){return meilleurebase}
         }
