@@ -584,148 +584,44 @@ if (col % 2 != 0) {//odd column
 
 //Prend en entrée des informations relatives à la partie, un type de mur et une position et dessine le bon mur
 //Types de murs: bois, pierre
-function dessineMur(pos,width,height,board,type,unite){
-let directions = mursAdjacentes(pos,width,height,board)
-let hexagone = document.getElementById("h" + pos);
-let bbox = hexagone.getBBox();
+function dessineMur(pos, width, height, board, type, unite) {
+    let directions = mursAdjacentes(pos, width, height, board);
+    let hexagone = document.getElementById("h" + pos);
+    let bbox = hexagone.getBBox();
 
+    const murs = {
+        "hautgauche": "murhautgauche.png",
+        "hautdroite": "murhautdroite.png",
+        "gauche": "murgauche.png",
+        "droite": "murdroite.png",
+        "basgauche": "murbasgauche.png",
+        "basdroite": "murbasdroite.png"
+    };
 
-if (directions.includes("hautgauche")){
-    d3.select("#jeu")
-            .append("image")
-            .attr("class", "unite")
-            .attr("xlink:href", `/img/murs/murhautgauche.png`)
-            .attr("x", `${bbox.x - 10}`)
-            .attr("y", `${bbox.y - 15}`)
-            .attr("width", "70")
-            .attr("height", "80")
-            .attr("id", "uni" + pos)
-            .on("mouseover", () => {
-                fstatsUnite(board[pos]);
-                d3.select(hexagone)
-                    .attr("stroke", `orange`)
-                    .style("stroke-width", 2);
-            })
-            .on("mouseout", () => {
-                d3.select(hexagone)
-                    .attr("stroke", "transparent")
-                    .style("stroke-width", 0)
-            });
-}
-if (directions.includes("hautdroite")){
-    d3.select("#jeu")
-            .append("image")
-            .attr("class", "unite")
-            .attr("xlink:href", `/img/murs/murhautdroite.png`)
-            .attr("x", `${bbox.x - 10}`)
-            .attr("y", `${bbox.y - 15}`)
-            .attr("width", "70")
-            .attr("height", "80")
-            .attr("id", "uni" + pos)
-            .on("mouseover", () => {
-                fstatsUnite(board[pos]);
-                d3.select(hexagone)
-                    .attr("stroke", `orange`)
-                    .style("stroke-width", 2);
-            })
-            .on("mouseout", () => {
-                d3.select(hexagone)
-                    .attr("stroke", "transparent")
-                    .style("stroke-width", 0)
-            });
-
-}
-if (directions.includes("gauche")){
-    d3.select("#jeu")
-            .append("image")
-            .attr("class", "unite")
-            .attr("xlink:href", `/img/murs/murgauche.png`)
-            .attr("x", `${bbox.x - 10}`)
-            .attr("y", `${bbox.y - 15}`)
-            .attr("width", "70")
-            .attr("height", "80")
-            .attr("id", "uni" + pos)
-            .on("mouseover", () => {
-                fstatsUnite(board[pos]);
-                d3.select(hexagone)
-                    .attr("stroke", `orange`)
-                    .style("stroke-width", 2);
-            })
-            .on("mouseout", () => {
-                d3.select(hexagone)
-                    .attr("stroke", "transparent")
-                    .style("stroke-width", 0)
-            });
-
-}
-if (directions.includes("droite")){
-    d3.select("#jeu")
-            .append("image")
-            .attr("class", "unite")
-            .attr("xlink:href", `/img/murs/murdroite.png`)
-            .attr("x", `${bbox.x - 10}`)
-            .attr("y", `${bbox.y - 15}`)
-            .attr("width", "70")
-            .attr("height", "80")
-            .attr("id", "uni" + pos)
-            .on("mouseover", () => {
-                fstatsUnite(board[pos]);
-                d3.select(hexagone)
-                    .attr("stroke", `orange`)
-                    .style("stroke-width", 2);
-            })
-            .on("mouseout", () => {
-                d3.select(hexagone)
-                    .attr("stroke", "transparent")
-                    .style("stroke-width", 0)
-            });
-
-}
-if (directions.includes("basgauche")){
-    d3.select("#jeu")
-            .append("image")
-            .attr("class", "unite")
-            .attr("xlink:href", `/img/murs/murbasgauche.png`)
-            .attr("x", `${bbox.x - 10}`)
-            .attr("y", `${bbox.y - 15}`)
-            .attr("width", "70")
-            .attr("height", "80")
-            .attr("id", "uni" + pos)
-            .on("mouseover", () => {
-                fstatsUnite(board[pos]);
-                d3.select(hexagone)
-                    .attr("stroke", `orange`)
-                    .style("stroke-width", 2);
-            })
-            .on("mouseout", () => {
-                d3.select(hexagone)
-                    .attr("stroke", "transparent")
-                    .style("stroke-width", 0)
-            });
-
-}
-if (directions.includes("basdroite")){
-    d3.select("#jeu")
-            .append("image")
-            .attr("class", "unite")
-            .attr("xlink:href", `/img/murs/murbasdroite.png`)
-            .attr("x", `${bbox.x - 10}`)
-            .attr("y", `${bbox.y - 15}`)
-            .attr("width", "70")
-            .attr("height", "80")
-            .attr("id", "uni" + pos)
-            .on("mouseover", () => {
-                fstatsUnite(board[pos]);
-                d3.select(hexagone)
-                    .attr("stroke", `orange`)
-                    .style("stroke-width", 2);
-            })
-            .on("mouseout", () => {
-                d3.select(hexagone)
-                    .attr("stroke", "transparent")
-                    .style("stroke-width", 0)
-            });
-}
+    directions.forEach(direction => {
+        if (murs[direction]) {
+            d3.select("#jeu")
+                .append("image")
+                .attr("class", "unite")
+                .attr("xlink:href", `/img/murs/${murs[direction]}`)
+                .attr("x", `${bbox.x - 10}`)
+                .attr("y", `${bbox.y - 15}`)
+                .attr("width", "70")
+                .attr("height", "80")
+                .attr("id", "uni" + pos)
+                .on("mouseover", () => {
+                    fstatsUnite(board[pos]);
+                    d3.select(hexagone)
+                        .attr("stroke", `orange`)
+                        .style("stroke-width", 2);
+                })
+                .on("mouseout", () => {
+                    d3.select(hexagone)
+                        .attr("stroke", "transparent")
+                        .style("stroke-width", 0);
+                });
+        }
+    });
 }
 
 /**
