@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
         actualiserDamier(data.width, data.height, data.terrain, "h")
         appelsAjoutTextures("jeu");
         setupBoutonScroll("damierjeu");
-        ajouterUnites(data.board, "jeu");
+        ajouterUnites(data.board, "jeu",data.width,data.height);
 
         const vueBatiments = document.getElementById('vueBatiments');
         const damierjeu = document.getElementById('damierjeu');
@@ -541,8 +541,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-
-    console.log(mursAdjacentes(93,data.width,data.height,data.board))
     });
 
 

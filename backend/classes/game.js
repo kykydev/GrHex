@@ -99,10 +99,10 @@ class game {
             570: new maison(570,joueur),
             664: new maison(664,joueur),
             636: new maison(636,joueur),
-            93:new mur(93,joueur),
-            92:new mur(92,joueur),
-            94:new mur(94,joueur),
-            124:new mur(124,joueur),
+            638: new mur(638,joueur),
+            668: new mur(668,joueur),
+            609: new mur(609,joueur),
+            640: new mur(640,joueur),
 
             //Platées
             524:new hoplite(524,joueur),
@@ -1003,7 +1003,6 @@ unbuild(pos,idJoueur,socket){//Détruit un bâtiment
         || bat.owner!=joueur.id 
         || bat.type!="building"
         || bat.name=="Hôtel de ville"
-        || bat.name=="Mur"
         ||this.canOrder(joueur.id,pos)==false){return false}
 
     delete this.board[pos]

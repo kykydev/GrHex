@@ -218,7 +218,7 @@ function afficherUnites(unite, dam) {
     let hexagone = document.getElementById("h" + unite.position);
     if (hexagone) {
         let bbox = hexagone.getBBox();
-
+        
         let couleur = unite.couleur;
         switch (couleur) {
             case "rouge":
@@ -495,9 +495,9 @@ function fstatsBatiment(batiment) {
     stats.append("p").text("Coût en Cuivre : " + batiment.coûtCuivre);
     stats.append("p").text("Tours pour construire : " + batiment.turnsToBuild);
 }
-
+//Prend en entrée une position et des informations relatives à la partie et renvoie les directions dans lesquelles il y a un mur adjacent
+//Retour:tableau de strings parmis ["droite","gauche","hautdroite","hautgauche","basdroite","basgauche"]
 function mursAdjacentes(pos, width, height,board) {
-    console.log("adjac "+pos)
     pos = parseInt(pos, 10);
     width = parseInt(width, 10)
     height = parseInt(height, 10)
@@ -513,7 +513,7 @@ function mursAdjacentes(pos, width, height,board) {
     }
 
 
-    if (col % 2 == 0) {//even col
+    if (col % 2 == 0) {//even col   
 
         if (row % 2 == 0) {//even row
             if (row > 0) {
@@ -582,15 +582,167 @@ if (col % 2 != 0) {//odd column
 
 }
 
+//Prend en entrée des informations relatives à la partie, un type de mur et une position et dessine le bon mur
+//Types de murs: bois, pierre
+function dessineMur(pos,width,height,board,type,unite){
+let directions = mursAdjacentes(pos,width,height,board)
+let hexagone = document.getElementById("h" + pos);
+let bbox = hexagone.getBBox();
+
+
+if (directions.includes("hautgauche")){
+    d3.select("#jeu")
+            .append("image")
+            .attr("class", "unite")
+            .attr("xlink:href", `/img/murs/murhautgauche.png`)
+            .attr("x", `${bbox.x - 10}`)
+            .attr("y", `${bbox.y - 15}`)
+            .attr("width", "70")
+            .attr("height", "80")
+            .attr("id", "uni" + pos)
+            .on("mouseover", () => {
+                fstatsUnite(board[pos]);
+                d3.select(hexagone)
+                    .attr("stroke", `orange`)
+                    .style("stroke-width", 2);
+            })
+            .on("mouseout", () => {
+                d3.select(hexagone)
+                    .attr("stroke", "transparent")
+                    .style("stroke-width", 0)
+            });
+}
+if (directions.includes("hautdroite")){
+    d3.select("#jeu")
+            .append("image")
+            .attr("class", "unite")
+            .attr("xlink:href", `/img/murs/murhautdroite.png`)
+            .attr("x", `${bbox.x - 10}`)
+            .attr("y", `${bbox.y - 15}`)
+            .attr("width", "70")
+            .attr("height", "80")
+            .attr("id", "uni" + pos)
+            .on("mouseover", () => {
+                fstatsUnite(board[pos]);
+                d3.select(hexagone)
+                    .attr("stroke", `orange`)
+                    .style("stroke-width", 2);
+            })
+            .on("mouseout", () => {
+                d3.select(hexagone)
+                    .attr("stroke", "transparent")
+                    .style("stroke-width", 0)
+            });
+
+}
+if (directions.includes("gauche")){
+    d3.select("#jeu")
+            .append("image")
+            .attr("class", "unite")
+            .attr("xlink:href", `/img/murs/murgauche.png`)
+            .attr("x", `${bbox.x - 10}`)
+            .attr("y", `${bbox.y - 15}`)
+            .attr("width", "70")
+            .attr("height", "80")
+            .attr("id", "uni" + pos)
+            .on("mouseover", () => {
+                fstatsUnite(board[pos]);
+                d3.select(hexagone)
+                    .attr("stroke", `orange`)
+                    .style("stroke-width", 2);
+            })
+            .on("mouseout", () => {
+                d3.select(hexagone)
+                    .attr("stroke", "transparent")
+                    .style("stroke-width", 0)
+            });
+
+}
+if (directions.includes("droite")){
+    d3.select("#jeu")
+            .append("image")
+            .attr("class", "unite")
+            .attr("xlink:href", `/img/murs/murdroite.png`)
+            .attr("x", `${bbox.x - 10}`)
+            .attr("y", `${bbox.y - 15}`)
+            .attr("width", "70")
+            .attr("height", "80")
+            .attr("id", "uni" + pos)
+            .on("mouseover", () => {
+                fstatsUnite(board[pos]);
+                d3.select(hexagone)
+                    .attr("stroke", `orange`)
+                    .style("stroke-width", 2);
+            })
+            .on("mouseout", () => {
+                d3.select(hexagone)
+                    .attr("stroke", "transparent")
+                    .style("stroke-width", 0)
+            });
+
+}
+if (directions.includes("basgauche")){
+    d3.select("#jeu")
+            .append("image")
+            .attr("class", "unite")
+            .attr("xlink:href", `/img/murs/murbasgauche.png`)
+            .attr("x", `${bbox.x - 10}`)
+            .attr("y", `${bbox.y - 15}`)
+            .attr("width", "70")
+            .attr("height", "80")
+            .attr("id", "uni" + pos)
+            .on("mouseover", () => {
+                fstatsUnite(board[pos]);
+                d3.select(hexagone)
+                    .attr("stroke", `orange`)
+                    .style("stroke-width", 2);
+            })
+            .on("mouseout", () => {
+                d3.select(hexagone)
+                    .attr("stroke", "transparent")
+                    .style("stroke-width", 0)
+            });
+
+}
+if (directions.includes("basdroite")){
+    d3.select("#jeu")
+            .append("image")
+            .attr("class", "unite")
+            .attr("xlink:href", `/img/murs/murbasdroite.png`)
+            .attr("x", `${bbox.x - 10}`)
+            .attr("y", `${bbox.y - 15}`)
+            .attr("width", "70")
+            .attr("height", "80")
+            .attr("id", "uni" + pos)
+            .on("mouseover", () => {
+                fstatsUnite(board[pos]);
+                d3.select(hexagone)
+                    .attr("stroke", `orange`)
+                    .style("stroke-width", 2);
+            })
+            .on("mouseout", () => {
+                d3.select(hexagone)
+                    .attr("stroke", "transparent")
+                    .style("stroke-width", 0)
+            });
+}
+}
 
 /**
  * ajoute les unités sur le damier avec la fonction afficherUnites
  * @param {Object} board - une liste d'unité
  * @param {String} dam - le nom de la div du damier
  */
-function ajouterUnites(board, dam) {
+function ajouterUnites(board, dam,width,height) {
     for (let position of Object.keys(board)) {
+
+        if (board[position].name=="Mur"){
+            console.log("mur"+position)
+            dessineMur(position,width,height,board)
+        }
+        else{
         afficherUnites(board[position], dam);
+        }
     }
 }
 
