@@ -367,6 +367,20 @@ button:hover {
 
 /* Jeu */
 
+.ouvrier{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: baseline;
+}
+
+.txtchamp{
+    text-align: center;
+    right: 0;
+    position: absolute;
+    bottom: 0;
+}
+
 #vueInfoHdv,
 #vueForge,
 #vueChamp {

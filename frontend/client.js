@@ -112,14 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('accueil').style.display = 'flex';
     });
 
-    // recruter ouvrier
-    document.getElementById("bouttonHdv").addEventListener("click", () => {
-        // console.log("hdv : " + hdvSelectionne);
-        socket.emit("recruterOuvrier", hdvSelectionne);
-    });
-
-
-
     socket.on("finTour", data => {
         //console.log(data);
         // true si tout le monde à fini false sinon
@@ -478,6 +470,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" && !uniteSelectionnee) {
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
+                    d3.select("#vueInfoHdv").selectAll("img").remove();
+                    const container = d3.select("#vueInfoHdv").append("div").style("position", "relative").style("display", "inline-block").style("text-align", "center").style("margin", "0 auto");
+                    container.append("img").attr("src", "/img/personnages/rouge/ouvrier.png").attr("width", "125").attr("height", "150");
+                    container.append("p").html(`30 <img src="/img/autre/or.png" style="height: 50px; margin-right: 10px; vertical-align: middle;" />`).style("position", "absolute").style("top", "0").style("right", "0").style("margin", "0");
+                    container.on("click", () => {
+                        socket.emit("recruterOuvrier", hdvSelectionne);
+                    });
                     // pour ouvrier
                     hdvSelectionne = event.target.id.supprimerPrefixId("uni");
                     // vueInfoHdv variable D3
@@ -545,10 +544,13 @@ document.addEventListener("DOMContentLoaded", function () {
         d3.select("#vueBatiments").selectAll("img").remove();
         d3.select("#vueBatiments").append("img").attr("src", "/img/autre/" + "croix.png").attr("width", "100").attr("height", "100").attr("id", "croix").attr("class", "batiments");
 
-        //console.log(data);
+        console.log(data);
 
         data.forEach(bat => {
-            d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/" + (bat.url).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", bat.nom).attr("class", "batiments");
+            d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/" + (bat.url).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", bat.nom).attr("class", "batiments")
+            .on("mouseover", () => {
+                fstatsBatiment(bat);
+            });
         });
     });
 
@@ -616,8 +618,7 @@ document.addEventListener("DOMContentLoaded", function () {
             uni.evolutions.forEach((evo) => {
                 const container = d3.select("#vueForge").append("div").style("position", "relative").style("display", "inline-block").style("text-align", "center").style("margin", "0 auto");
                 container.append("img").attr("src", "/img/personnages/rouge/" + (evo.nom).toLowerCase() + ".png").attr("width", "125").attr("height", "150").attr("id", "forge" + evo.nom);
-                if(evo.gold != undefined){
-                container.append("p").text(`Or : ${evo.gold}`).style("position", "absolute").style("top", "0").style("right", "0");}
+                container.append("p").html(`${evo.gold !== undefined ? evo.gold : 0} <img src="/img/autre/or.png" style="height: 50px; margin-right: 10px; vertical-align: middle;" />`).style("position", "absolute").style("top", "0").style("right", "0").style("margin", "0");
                 
                 container.select("img").on("click", () => {
                     socket.emit("evolution", { avant: uni.name, apres: evo.nom, position: uni.position });
@@ -634,14 +635,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         vueChamp.selectAll("*:not(.hautvue):not(#bouttonChamp):not(#txthautvue)").remove();
 
-        vueChamp.append("p").text(`Revenu du jour : ${data.revenu}`);
+        vueChamp.select(".txtchamp").remove();
+        vueChamp.append("p").attr("class", "txtchamp").html(`Revenu du jour : ${data.revenu} <img src="/img/autre/or.png" style="height: 50px; margin-right: 10px; vertical-align: middle;" />`);
 
-        // vueChamp.remove();
         data.unites.forEach(uni=>{
-            // console.log("zizi", uni.position);
             vueChamp.append("img").attr("src", "/img/personnages/rouge/" + (uni).toLowerCase() + ".png")
-                .attr("width", "100").attr("height", "100").attr("class", "batiments")
-                .on("click",()=>{socket.emit("sortirChamp",{unite:uni,position:vueChamp.attr("class")} );});
+                .attr("width", "125").attr("height", "150")
+                .on("click", () => {
+                    socket.emit("sortirChamp", { unite: uni, position: vueChamp.attr("class")});
+                });
         });
 
     });

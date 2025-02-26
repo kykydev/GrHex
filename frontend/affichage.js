@@ -474,7 +474,27 @@ function fstatsUnite(unite) {
 
 }
 
+/**
+ * affiche les stats d'un bâtiment lors d'un mouseover
+ * @param {Object} batiment
+ */
+function fstatsBatiment(batiment) {
+    let statsimg = d3.select("#statsUnite");
+    statsimg.selectAll("*").remove();
+    statsimg.append("img")
+        .attr("src", "img/personnages/rouge/" + batiment.nom.toLowerCase() + ".png")
+        .attr("width", 180).attr("height", 150);
 
+    let stats = d3.select("#statsUnite").append("div").attr("id", "unitStats");
+    stats.selectAll("*").remove();
+
+    stats.append("p").text("Nom : " + batiment.nom);
+    stats.append("p").text("Coût en Or : " + batiment.coûtOr);
+    stats.append("p").text("Coût en Bois : " + batiment.coûtBois);
+    stats.append("p").text("Coût en Pierre : " + batiment.coûtPierre);
+    stats.append("p").text("Coût en Cuivre : " + batiment.coûtCuivre);
+    stats.append("p").text("Tours pour construire : " + batiment.turnsToBuild);
+}
 
 
 /**
