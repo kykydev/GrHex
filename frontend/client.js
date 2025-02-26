@@ -481,7 +481,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     hdvSelectionne = event.target.id.supprimerPrefixId("uni");
                     // vueInfoHdv variable D3
 
-                } else  if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" && !uniteSelectionnee)) {
+                } 
+                else if (batimentSelectionne=="croix"){
+                    socket.emit("croix",event.target.id.supprimerPrefixId("uni"));
+                    batimentSelectionne=""
+                }
+                else  if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" && !uniteSelectionnee)) {
                     // l'enrôlement
                     // hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                     // socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
@@ -535,6 +540,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             });
         });
+
+
+    console.log(mursAdjacentes(93,data.width,data.height,data.board))
     });
 
 
@@ -581,6 +589,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     .style("stroke-width", 0)
             });
     });
+
+    socket.on("destructionBâtiment", data=>{
+        d3.select("#uni" + data).remove();
+    })
 
     socket.on("recruterOuvrier", data => {
         let bbox = document.getElementById("h" + data).getBBox();

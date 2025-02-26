@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder, discipleathneutre,discipleath } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder, discipleathneutre,discipleath,mur } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
 
@@ -99,6 +99,10 @@ class game {
             570: new maison(570,joueur),
             664: new maison(664,joueur),
             636: new maison(636,joueur),
+            93:new mur(93,joueur),
+            92:new mur(92,joueur),
+            94:new mur(94,joueur),
+            124:new mur(124,joueur),
 
             //Platées
             524:new hoplite(524,joueur),
@@ -223,7 +227,7 @@ class game {
 
     init() {//Fonction qui initialise la partie
         this.initCites()
-        this.board[94] = new pierris(94)
+        this.board[39] = new pierris(39)
     }
 
 
@@ -986,6 +990,28 @@ revenuChamp(unite){
     this.actionsThisTurn.push({ "type": "ressource", "position": unite.position, "ressource": "or" })
     
 }
+
+}
+
+unbuild(pos,idJoueur,socket){//Détruit un bâtiment
+    var pos = parseInt(pos)
+    if (pos==undefined || idJoueur==undefined){return false}
+    var joueur = this.players[idJoueur]
+    var bat = this.board[pos]
+    if (joueur==undefined 
+        || bat==undefined 
+        || bat.owner!=joueur.id 
+        || bat.type!="building"
+        || bat.name=="Hôtel de ville"
+        || bat.name=="Mur"
+        ||this.canOrder(joueur.id,pos)==false){return false}
+
+    delete this.board[pos]
+    delete joueur.units[pos]
+    socket.emit("destructionBâtiment",pos)
+
+
+
 
 }
 

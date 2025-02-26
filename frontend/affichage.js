@@ -466,10 +466,10 @@ function fstatsUnite(unite) {
         if (unite.buildingInfos.coûtBois !== undefined) { stats.append("div").attr("id", "uniteWoodCost").text("Coût en bois : " + unite.buildingInfos.coûtBois); }
         if (unite.buildingInfos.coûtPierre !== undefined) { stats.append("div").attr("id", "uniteStoneCost").text("Coût en pierre : " + unite.buildingInfos.coûtPierre); }
     }
-    if (unite.currentBuilding!=undefined){ stats.append("div").attr("id", "uniteCurrentBuilding").text("Chantier en " + unite.currentBuilding);}
-    if (unite.phase!=undefined){ 
-    if (unite.phase=="getRessources"){ stats.append("div").attr("id", "unitePhase").text("Cherche des ressources");}
-    if (unite.phase=="buildBuilding"){ stats.append("div").attr("id", "unitePhase").text("Construit un bâtiment");}
+    if (unite.currentBuilding != undefined) { stats.append("div").attr("id", "uniteCurrentBuilding").text("Chantier en " + unite.currentBuilding); }
+    if (unite.phase != undefined) {
+        if (unite.phase == "getRessources") { stats.append("div").attr("id", "unitePhase").text("Cherche des ressources"); }
+        if (unite.phase == "buildBuilding") { stats.append("div").attr("id", "unitePhase").text("Construit un bâtiment"); }
     }
 
 }
@@ -494,6 +494,92 @@ function fstatsBatiment(batiment) {
     stats.append("p").text("Coût en Pierre : " + batiment.coûtPierre);
     stats.append("p").text("Coût en Cuivre : " + batiment.coûtCuivre);
     stats.append("p").text("Tours pour construire : " + batiment.turnsToBuild);
+}
+
+function mursAdjacentes(pos, width, height,board) {
+    console.log("adjac "+pos)
+    pos = parseInt(pos, 10);
+    width = parseInt(width, 10)
+    height = parseInt(height, 10)
+    var retour = [];
+    if (board[pos]==undefined || board[pos].name!="Mur"){return retour}
+    var row = pos % height;
+    var col = Math.floor(pos / height);
+    if (col > 0) { // not left
+        if (!retour.includes("gauche") &&  board[pos-height]!=undefined &&board[pos-height].name=="Mur"){retour.push("gauche")}; // left
+    }
+    if (col < width - 1) { // not right
+                if (!retour.includes("droite")&&board[pos+height]!=undefined && board[pos+height].name=="Mur"){retour.push("droite")}; // right
+    }
+
+
+    if (col % 2 == 0) {//even col
+
+        if (row % 2 == 0) {//even row
+            if (row > 0) {
+                if (col > 0) {if (!retour.includes("hautgauche")&&board[pos-height-1]!=undefined && board[pos - height - 1].name=="Mur"){retour.push("hautgauche")};}
+                if (!retour.includes("hautdroite") &&board[pos-1]!=undefined&& board[pos-1].name=="Mur"){retour.push("hautdroite")}; // left
+
+            }
+            if (row < height - 1) {
+                if (col > 0) {if (!retour.includes("basgauche") &&board[pos-height+1]!=undefined&& board[pos - height + 1].name=="Mur"){retour.push("basgauche")};}
+                if (!retour.includes("basdroite") &&board[pos+1]!=undefined&& board[pos+1].name=="Mur"){retour.push("basdroite")}; // left
+
+
+
+            }
+        }
+        if (row % 2 != 0) {
+            if (row > 0) {
+                if (col > 0) {if (!retour.includes("hautdroite") &&board[pos+height-1]!=undefined&& board[pos+height-1].name=="Mur"){retour.push("hautdroite")}; // left
+            }
+            if (!retour.includes("hautgauche")&&board[pos-1]!=undefined && board[pos - 1].name=="Mur"){retour.push("hautgauche")};
+
+            }
+            if (row < height - 1) {
+                if (col < width - 1) {if (!retour.includes("basdroite") &&board[pos+height+1]!=undefined&& board[pos+height+1].name=="Mur"){retour.push("basdroite")}; // left
+            }
+            if (!retour.includes("basgauche") &&board[pos+1]!=undefined&& board[pos + 1].name=="Mur"){retour.push("basgauche")}
+        }
+    }
+}
+if (col % 2 != 0) {//odd column
+    
+        if (row % 2 == 0) {//even row
+            if (row > 0) {
+                if (col > 0) {if (!retour.includes("hautgauche")&&board[pos-height-1]!=undefined && board[pos-height - 1].name=="Mur"){retour.push("hautgauche")};
+            }
+            if (!retour.includes("hautdroite") &&board[pos-1]!=undefined&& board[pos-1].name=="Mur"){retour.push("hautdroite")}
+            }
+
+            if (row < height - 1) {
+                if (col > 0) {if (!retour.includes("basgauche") &&board[pos-height+1]!=undefined&& board[pos -height+ 1].name=="Mur"){retour.push("basgauche")}}
+                if (!retour.includes("basdroite") &&board[pos+1]!=undefined&& board[pos+1].name=="Mur"){retour.push("basdroite")}
+            }
+        }
+        if (row % 2 != 0) {//odd row
+
+            if (row > 0) {
+                if (col < width - 1) {if (!retour.includes("hautdroite") &&board[pos+height-1]!=undefined&& board[pos+height-1].name=="Mur"){retour.push("hautdroite")}
+            }
+                if (!retour.includes("hautgauche")&&board[pos-1]!=undefined && board[pos- 1].name=="Mur"){retour.push("hautgauche")}
+            }
+            if (row < height - 1) {
+                if (col > 0) {if (!retour.includes("basdroite") &&board[pos+height+1]!=undefined&& board[pos+height+1].name=="Mur"){retour.push("basdroite")} }
+                if (!retour.includes("basgauche") &&board[pos+1]!=undefined&& board[pos+ 1].name=="Mur"){retour.push("basgauche")}
+
+
+            }
+        }
+    }
+
+
+
+    return retour;
+
+
+
+
 }
 
 

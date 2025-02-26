@@ -513,6 +513,14 @@ class building extends unit{
     }
 }
 
+
+class mur extends building{
+    constructor(position,player){
+        super(50,0,10,0,"Mur",position,player,0,0)
+        this.tracked = true
+    }
+}
+
 class hdv extends building{
     constructor(position,player){
         super(350,0,15,0,"Hôtel de ville",position,player,2,0)
@@ -705,4 +713,4 @@ class discipleathneutre extends creatureNeutre{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath};
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur};

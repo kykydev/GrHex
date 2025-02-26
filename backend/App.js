@@ -262,6 +262,13 @@ io.on('connection', (socket) => {
     }
   })
 
+
+  socket.on("croix",data=>{//Socket permettant la construction/destruction d'un bâtiment
+    let partie = parties[socket.idPartie]
+    if (data==undefined ||socket.idPartie==undefined ||partie==undefined || socket.idJoueur==undefined){return}
+    partie.unbuild(data,socket.idJoueur,socket)
+  })
+
   socket.on("recruterOuvrier",data=>{
     let partie = parties[socket.idPartie]
     if (partie==undefined){return}
