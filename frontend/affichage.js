@@ -582,11 +582,16 @@ if (col % 2 != 0) {//odd column
     }
 
 
-    if (retour.length==0){
-        retour = ["centre"]
-    }
+    var retouryahou = []
+    if (retour.length==0){retour = ["centre"]}
+    if (retour.includes("hautdroite")){retouryahou.push("hautdroite")}
+    if (retour.includes("hautgauche")){retouryahou.push("hautgauche")}
+    if (retour.includes("droite")){retouryahou.push("droite")}
+    if (retour.includes("gauche")){retouryahou.push("gauche")}
+    if (retour.includes("basdroite")){retouryahou.push("basdroite")}
+    if (retour.includes("basgauche")){retouryahou.push("basgauche")}
 
-    return retour;
+    return retouryahou;
 
 
 

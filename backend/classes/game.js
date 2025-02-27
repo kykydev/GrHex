@@ -99,7 +99,10 @@ class game {
             570: new maison(570,joueur),
             664: new maison(664,joueur),
             636: new maison(636,joueur),
-
+            578: new mur(578,joueur),
+            608: new mur(608,joueur),
+            549: new mur(549,joueur),
+            579: new mur(579,joueur),
             //Platées
             524:new hoplite(524,joueur),
             434:new hoplite(434,joueur),
