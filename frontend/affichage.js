@@ -583,7 +583,7 @@ if (col % 2 != 0) {//odd column
 
 
     var retouryahou = []
-    if (retour.length==0){retour = ["centre"]}
+    if (retour.length==0){retouryahou = ["centre"]} else{retouryahou.push("centre")}
     if (retour.includes("hautdroite")){retouryahou.push("hautdroite")}
     if (retour.includes("hautgauche")){retouryahou.push("hautgauche")}
     if (retour.includes("droite")){retouryahou.push("droite")}

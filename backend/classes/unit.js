@@ -523,7 +523,7 @@ class building extends unit{
 class mur extends building{
     constructor(position,player){
         super(50,0,10,0,"Mur",position,player,1,0)
-        this.tracked = true
+        this.tracked = false
     }
 }
 

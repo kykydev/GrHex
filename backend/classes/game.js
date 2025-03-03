@@ -93,16 +93,14 @@ class game {
             519:new paysanne(519,joueur),
             576: new tour(576,joueur),
             542: new tour(542,joueur),
+            662: new tour(662,joueur),
             516: new hoplite(516,joueur),
             696: new hoplite(696,joueur),
             483: new maison(483,joueur),
             570: new maison(570,joueur),
             664: new maison(664,joueur),
             636: new maison(636,joueur),
-            578: new mur(578,joueur),
-            608: new mur(608,joueur),
-            549: new mur(549,joueur),
-            579: new mur(579,joueur),
+        
             //Platées
             524:new hoplite(524,joueur),
             434:new hoplite(434,joueur),
@@ -110,6 +108,9 @@ class game {
             545:new forge(545,joueur)
 
             }
+
+            var mursBeotie = [486, 457,459,490,520,550,580,610,609,638,668,698,697,726,754,753,751,750];
+            for (var wall of mursBeotie){boardBeotie[wall] = new mur(wall,joueur)}
 
 
             for (var position of Object.keys(boardBeotie)) {
