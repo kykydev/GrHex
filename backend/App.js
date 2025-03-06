@@ -210,6 +210,9 @@ io.on('connection', (socket) => {
     partie.players[idJoueur].played=true
     if (partie.canTour()){
       var winner = partie.tour()
+      socket.emit("notification",{"titre":partie.tourCourant,"expéditeur":"Clem","texte":"vite vite vite urgent vite c'est quoi la taille de ton paf"})
+      console.log("aaa")
+
 
       if (winner!=false){
         console.log("PARTIE "+partie.id+" TERMINEE, VAINQUEUR(S): | "+winner)

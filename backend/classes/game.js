@@ -28,10 +28,6 @@ class game {
         this.name = motsGrece[Math.floor(Math.random() * motsGrece.length)] + "-" + adjectifs[Math.floor(Math.random() * adjectifs.length)]
         this.actionsThisTurn = []
 
-      
-
-
-
     }
 
     currentPlayers() { return Object.keys(this.players).length }
@@ -109,11 +105,15 @@ class game {
 
             }
 
+
+
             var mursBeotie = [486, 457,459,490,520,550,580,610,609,638,668,698,697,726,754,753,751,750];
             for (var wall of mursBeotie){boardBeotie[wall] = new mur(wall,joueur)}
 
 
             for (var position of Object.keys(boardBeotie)) {
+                this.map.infos[position] = new hexagon("plaine", "plaine_1", position)    
+                this.map.terrain[position] = this.map.infos[position].pattern
                 this.addUnit(boardBeotie[position], position, joueur)
                 for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
                     if (this.map.infos[z].type=="montagne"){
@@ -154,6 +154,8 @@ class game {
         }
 
         for (var position of Object.keys(boardArgolide)) {
+            this.map.infos[position] = new hexagon("plaine", "plaine_1", position)    
+            this.map.terrain[position] = this.map.infos[position].pattern
             this.addUnit(boardArgolide[position], position, joueur)
             for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
                 if (this.map.infos[z].type=="montagne"){
@@ -176,6 +178,7 @@ class game {
             861: new hoplite(861,joueur),
             981: new tour(981,joueur),
             1101: new tour(1101,joueur),
+            1007: new tour(1007,joueur),
             1009:new champ(1009,joueur),
             1192: new maison(1192,joueur),
             1159: new maison(1159,joueur),
@@ -187,7 +190,16 @@ class game {
             1087:new bucheron(1087,joueur),
             1147:new maison(1147,joueur)
         }
+
+        
+        var mursAttique = [889,918,917,976,1006,1005,1035,1065,1095,1125];
+        for (var wall of mursAttique){boardAttique[wall] = new mur(wall,joueur)}
+
+
+
         for (var position of Object.keys(boardAttique)) {
+            this.map.infos[position] = new hexagon("plaine", "plaine_1", position)    
+            this.map.terrain[position] = this.map.infos[position].pattern
             this.addUnit(boardAttique[position], position, joueur)
             for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
                 if (this.map.infos[z].type=="montagne"){
