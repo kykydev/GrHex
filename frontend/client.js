@@ -341,6 +341,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let vueInfoForge = d3.select("#vueForge");
         let vueChamp = d3.select("#vueChamp");
 
+        [vueInfoForge, vueInfoHdv, vueChamp].forEach(vue => rendreDeplacable(vue.node(), damierjeu));
+
         let uniteSelectionnee = "";
         let hexagoneSelectionnee = "";
 

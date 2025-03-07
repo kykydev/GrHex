@@ -390,9 +390,8 @@ button:hover {
     width: 700px;
     background-color: #000000e3;
     position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    left: 30%;
+    top: 25%;
     z-index: 4;
     border: 4px double #212529;
     overflow: auto;
