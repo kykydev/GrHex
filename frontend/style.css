@@ -481,15 +481,8 @@ button:hover {
     margin: 0px;
 }
 
-#vueFin {
+#vueDialogue {
     display: none;
-    height: 350px;
-    width: 350px;
-    background-color: aquamarine;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 4;
 }
 
 /* Prev */

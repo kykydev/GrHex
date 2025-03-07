@@ -641,6 +641,25 @@ function dessineMur(pos, width, height, board, type, unite) {
     });
 }
 
+function dialogue(message, unite, couleur) {
+    let vueDialogue = d3.select("#vueDialogue");
+    vueDialogue.style("display", (vueDialogue.style("display") == "none" ? "block" : "none"));
+
+    vueDialogue.html(`
+            <div class="dialoguebox">
+                <div id="textedialogue">
+                    <p>${message}</p>
+                </div>
+                <img src="img/personnages/${couleur}/${unite}.png">
+            </div>
+    `);
+
+    document.getElementById("vueDialogue").addEventListener("click", () => {
+        vueDialogue.style("display", "none");
+    }
+    );
+}   
+
 /**
  * ajoute les unités sur le damier avec la fonction afficherUnites
  * @param {Object} board - une liste d'unité
