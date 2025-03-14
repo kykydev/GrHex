@@ -272,6 +272,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         dicoPathUnite = {};
 
+        let msg = "J'arrive dans trois push ^^"
+        dialogue(msg, "troie", "rouge");
     })
 
     //----------------Pour test, faudra faire ça mieux plus tard-------------------
