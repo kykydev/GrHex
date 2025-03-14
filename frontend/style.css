@@ -390,9 +390,8 @@ button:hover {
     width: 700px;
     background-color: #000000e3;
     position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    left: 30%;
+    top: 25%;
     z-index: 4;
     border: 4px double #212529;
     overflow: auto;
@@ -482,15 +481,8 @@ button:hover {
     margin: 0px;
 }
 
-#vueFin {
+#vueDialogue {
     display: none;
-    height: 350px;
-    width: 350px;
-    background-color: aquamarine;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 4;
 }
 
 /* Prev */
