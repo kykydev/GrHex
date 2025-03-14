@@ -43,6 +43,7 @@ class unit {
         if (uni.wood!=undefined){if (this.wood==undefined){this.wood=uni.wood;} else {this.wood+=uni.wood};uni.wood=0}
         if (uni.stone!=undefined){if (this.stone==undefined){this.stone=uni.stone;} else {this.stone+=uni.stone};uni.stone=0}
         if (uni.copper!=undefined){if (this.copper==undefined){this.copper=uni.copper;} else {this.copper+=uni.copper};uni.copper=0}
+        if (uni.tin!=undefined){if (this.tin==undefined){this.tin=uni.tin;} else {this.tin+=uni.tin};uni.tin=0}
     }
     getForgeEvos(){
         return false
@@ -138,6 +139,7 @@ class builder extends unit{
         this.wood=0
         this.stone=0
         this.copper=0
+        this.tin=0
         this.base = player.hdv[0]//endroit où récupérer les ressources
   
     }
@@ -149,10 +151,10 @@ class builder extends unit{
         var travail = game.board[this.currentBuilding]
         if (travail==undefined ||travail.name!="Chantier"){return this.position}
         var zzpossible = false //Test de possibilité initiale
-        if ((travail.buildingInfos.coûtBois-this.wood<=game.board[this.base].wood || travail.buildingInfos.coûtBois==undefined) && (travail.buildingInfos.coûtPierre-this.stone<=game.board[this.base].stone || travail.buildingInfos.coûtPierre==undefined) && (travail.buildingInfos.coûtCuivre-this.copper<=game.board[this.base].copper || travail.buildingInfos.coûtCuivre==undefined)){zzpossible=true}
+        if ((travail.buildingInfos.coûtBois-this.wood<=game.board[this.base].wood || travail.buildingInfos.coûtBois==undefined) && (travail.buildingInfos.coûtPierre-this.stone<=game.board[this.base].stone || travail.buildingInfos.coûtPierre==undefined) && (travail.buildingInfos.coûtCuivre-this.copper<=game.board[this.base].copper || travail.buildingInfos.coûtCuivre==undefined)&& (travail.buildingInfos.coûtEtain-this.tin<=game.board[this.base].tin || travail.buildingInfos.coûtEtain==undefined)){zzpossible=true}
         for (var z of (game.players[this.owner].hdv)){
             var zPossible = false/*Dit si le bâtiment en position z permet de construire */
-            if ((travail.buildingInfos.coûtBois-this.wood<=game.board[z].wood || travail.buildingInfos.coûtBois==undefined) && (travail.buildingInfos.coûtPierre-this.stone<=game.board[z].stone || travail.buildingInfos.coûtPierre==undefined) && (travail.buildingInfos.coûtCuivre-this.copper<=game.board[z].copper || travail.buildingInfos.coûtCuivre==undefined)){zPossible=true}
+            if ((travail.buildingInfos.coûtBois-this.wood<=game.board[z].wood || travail.buildingInfos.coûtBois==undefined) && (travail.buildingInfos.coûtPierre-this.stone<=game.board[z].stone || travail.buildingInfos.coûtPierre==undefined) && (travail.buildingInfos.coûtCuivre-this.copper<=game.board[z].copper || travail.buildingInfos.coûtCuivre==undefined)&&(travail.buildingInfos.coûtEtain-this.tin<=game.board[z].tin || travail.buildingInfos.coûtEtain==undefined)){zPossible=true}
 
             if ((distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height) || zzpossible==false) && (zPossible)){
                  this.base=z
@@ -190,7 +192,7 @@ class builder extends unit{
 
 
         //Test pour voir si l'unité peut actuellement faire son build
-        if (this.wood<travail.buildingInfos.coûtBois || this.stone<travail.buildingInfos.coûtPierre || this.copper<travail.buildingInfos.coûtCuivre){
+        if (this.wood<travail.buildingInfos.coûtBois || this.stone<travail.buildingInfos.coûtPierre || this.copper<travail.buildingInfos.coûtCuivre || this.tin<travail.buildingInfos.coûtEtain){
             this.phase = "getRessources"}
         else{ this.phase="buildBuilding"}
 
@@ -239,13 +241,15 @@ class bucheron extends unit{
     }
     canDépose(){return true}
 
+  
+ 
     updateBase(game){
-        if (this.base==undefined){this.base=game.players[this.owner].hdv[0]}
-
+        if (this.base!=undefined){return this.base}
+        this.base =  game.players[this.owner].hdv[0]
         for (var z of (game.players[this.owner].hdv)){
             if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
-        
-        this.base=z}}
+                this.base=z}
+        }
     }
 
     getForgeEvos(){
@@ -271,9 +275,14 @@ class bucheron extends unit{
 
     findGoal(partie){//Retourne la meilleure destination possible pour l'unité
         if (this.canRécolte(partie)==false){
+
             let meilleurebase = undefined
             for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
-                if (partie.board[z]==undefined&& this.canGo(partie.map.terrain[z]) && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+                if (partie.board[z]==undefined && this.canGo(partie.map.terrain[z]) 
+                && (meilleurebase==undefined 
+                    || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){
+                        meilleurebase=z
+                    }
             }
             if (meilleurebase!=undefined){return meilleurebase}
         }
@@ -319,10 +328,12 @@ class mineur extends unit{
     }
 
     updateBase(game){
-        if (this.base==undefined){this.base=game.players[this.owner].hdv[0]}
+        if (this.base!=undefined){return this.base}
+        this.base =  game.players[this.owner].hdv[0]
         for (var z of (game.players[this.owner].hdv)){
             if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
-        this.base=z}}
+                this.base=z}
+        }
     }
 
     canGo(dest){
@@ -409,13 +420,15 @@ class paysanne extends unit{
         return ((this.stone+this.wood)<this.maxRessources)
     }
 
+  
+    
     updateBase(game){
-        if (this.base==undefined){this.base=game.players[this.owner].hdv[0]}
-
+        if (this.base!=undefined){return this.base}
+        this.base =  game.players[this.owner].hdv[0]
         for (var z of (game.players[this.owner].hdv)){
             if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
-        
-        this.base=z}}
+                this.base=z}
+        }
     }
 
     canGo(dest){
@@ -534,9 +547,11 @@ class hdv extends building{
         this.wood = 15
         this.stone = 30
         this.copper = 0
-        this.maxWood = 100
-        this.maxStone = 100
-        this.maxCopper = 100
+        this.tin = 0
+        this.maxWood = 80
+        this.maxStone = 80
+        this.maxCopper = 60
+        this.maxTin = 60
     }
 }
 
@@ -604,9 +619,11 @@ class entrepôt extends building{
         this.wood = 0
         this.stone = 0
         this.copper = 0
+        this.tin = 0
         this.maxWood = 40
         this.maxStone = 40
         this.maxCopper = 30 
+        this.maxTin = 30 
     }
 }
 
@@ -654,6 +671,7 @@ class creatureNeutre{
             if (uni.wood!=undefined){if (this.wood==undefined){this.wood=uni.wood;} else {this.wood+=uni.wood};uni.wood=0}
             if (uni.stone!=undefined){if (this.stone==undefined){this.stone=uni.stone;} else {this.stone+=uni.stone};uni.stone=0}
             if (uni.copper!=undefined){if (this.copper==undefined){this.copper=uni.copper;} else {this.copper+=uni.copper};uni.copper=0}
+            if (uni.tin!=undefined){if (this.tin==undefined){this.tin=uni.tin;} else {this.tin+=uni.tin};uni.tin=0}
         }
 
         canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
@@ -694,6 +712,7 @@ class pierris extends creatureNeutre{
         this.stone=100
         this.wood=100
         this.copper=100
+        this.tin=100
     }
 
     findGoal(partie){

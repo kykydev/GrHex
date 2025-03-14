@@ -311,8 +311,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         terrain = data.terrain
         board = terrain.board
-        créerDamier(data.height, data.width, 32, "jeu", "h")
-        actualiserDamier(data.width, data.height, data.terrain, "h")
+        créerDamier(data.height, data.width, 32, "jeu", "h");
+        actualiserDamier(data.width, data.height, data.terrain, "h");
         appelsAjoutTextures("jeu");
         setupBoutonScroll("damierjeu");
         ajouterUnites(data.board, "jeu",data.width,data.height);
@@ -494,6 +494,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     vueInfoForge.style("display", (vueInfoForge.style("display") == "none" ? "block" : "none"));
 
                     
+                }
+                else  if (((data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville"||(data.board[event.target.id.supprimerPrefixId("uni")].name == "Entrepôt")) && uniteSelectionnee)) {
+                    // le changement de base
+                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+
                 }
                 else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" && uniteSelectionnee){
 

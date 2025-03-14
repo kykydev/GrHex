@@ -162,6 +162,7 @@ io.on('connection', (socket) => {
     if (check==undefined){return}
 
     if (check==true){//Check la distance
+
       //Cas où on met quelqu'un dans un champ
       if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Champ" && partie.board[arrivée].owner==idJoueur){
           if (casesAdjacentes(départ,partie.map.width,partie.map.height).includes(arrivée)){
@@ -171,6 +172,10 @@ io.on('connection', (socket) => {
             }
           }
         }
+              //Cas de changement de la base d'une unité
+      if (partie.board[arrivée]!=undefined && (partie.board[arrivée].name=="Hôtel de ville" || partie.board[arrivée].name=="Entrepôt") && partie.board[arrivée].owner==idJoueur){
+        partie.board[départ].base=arrivée
+      }
         //Cas où on a tenté de mettre un nouveau builder sur un job
         if (partie.board[arrivée]!=undefined && partie.board[départ].name=="Ouvrier" && partie.board[départ].owner==idJoueur){
             if (partie.addToChantier(départ,arrivée,idJoueur)){
@@ -210,8 +215,7 @@ io.on('connection', (socket) => {
     partie.players[idJoueur].played=true
     if (partie.canTour()){
       var winner = partie.tour()
-      socket.emit("notification",{"titre":partie.tourCourant,"expéditeur":"Clem","texte":"vite vite vite urgent vite c'est quoi la taille de ton paf"})
-      console.log("aaa")
+     
 
 
       if (winner!=false){
