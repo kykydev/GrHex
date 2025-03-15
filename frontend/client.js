@@ -734,7 +734,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     .append("p").text(notificationsSauvegarder[element.textContent]);
 
 
-                notifDetail.selectAll("*").style("display","block");
+                notifDetail.style("display","block");
 
                 ++position;
             });
