@@ -544,7 +544,7 @@ class hdv extends building{
     constructor(position,player){
         super(350,0,15,0,"Hôtel de ville",position,player,2,0)
         this.tracked=true
-        this.wood = 15
+        this.wood = 30
         this.stone = 30
         this.copper = 0
         this.tin = 0
@@ -585,6 +585,33 @@ class forge extends building{
     constructor(position,player){
         super(30,0,5,0,"Forge",position,player,0,0)
     }
+}
+
+
+
+class mine extends building{
+    constructor(position,player){
+        super(35,0,5,0,"Mine",position,player,0,0)
+        this.workers = []
+        this.mineral = "copper"
+        if (Math.random()<0.5){this.mineral="tin"}
+    }
+
+    addWorker(pos,partie){//Ajoute une unité pour travailler dans ce champ
+        if (this.workers.length>=2){return false}
+        var uni = partie.board[pos]
+        if (uni==undefined || (uni.name!="Mineur")){return false}
+        this.workers.push(uni)
+        delete partie.players[uni.owner].units[pos]
+        delete partie.board[pos]
+        return true
+    }
+
+
+
+
+
+
 }
 class champ extends building{
     constructor(position,player){
@@ -738,4 +765,4 @@ class discipleathneutre extends creatureNeutre{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur};
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine};

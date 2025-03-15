@@ -402,6 +402,26 @@ button:hover {
     margin: 0;
 }
 
+
+#vueMine {
+    color: wheat;
+    display: none;
+    height: 500px;
+    width: 700px;
+    background-color: #000000e3;
+    position: fixed;
+    left: 30%;
+    top: 25%;
+    z-index: 4;
+    border: 4px double #212529;
+    overflow: auto;
+}
+
+#vueMine p {
+    text-align: center;
+    margin: 0;
+}
+
 .hautvue {
     display: flex;
     align-items: center;

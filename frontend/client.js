@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         dicoPathUnite = {};
 
-        let msg = "J'arrive dans trois push ^^"
+        let msg = "J'arrive deux trois push :0"
         dialogue(msg, "troie", "rouge");
     })
 
@@ -523,9 +523,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
 
                 }
-                else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" && uniteSelectionnee){
+                else if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" || (data.board[event.target.id.supprimerPrefixId("uni")].name == "Mine"))&& uniteSelectionnee){
 
-                    // console.log("slaut");
+                    console.log("slaut");
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                     socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
 
@@ -552,7 +552,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     
 
 
-                }else if (uniteSelectionnee && uniteSelectionnee == event.target.id.supprimerPrefixId("uni")) {
+                }else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Mine" && !uniteSelectionnee){
+                    socket.emit("demandeUnitesMine",event.target.id.supprimerPrefixId("uni"));
+                
+                    let vueMine = d3.select("#vueMine");
+                    vueMine.style("display",(vueMine.style("display")=="none" ? "block" : "none"))
+                    .attr("class",event.target.id.supprimerPrefixId("uni"));
+                }
+                else if (uniteSelectionnee && uniteSelectionnee == event.target.id.supprimerPrefixId("uni")) {
                     uniteSelectionnee = "";
                 } else if (uniteSelectionnee && data.board[event.target.id.supprimerPrefixId("uni")].owner !== data.board[uniteSelectionnee].owner) {
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
@@ -678,6 +685,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         data.unites.forEach(uni=>{
             vueChamp.append("img").attr("src", "/img/personnages/rouge/" + (uni).toLowerCase() + ".png")
+                .attr("width", "125").attr("height", "150")
+                .on("click", () => {
+                    socket.emit("sortirChamp", { unite: uni, position: vueChamp.attr("class")});
+                });
+        });
+
+    });
+
+    socket.on("demandeUnitesMine",data=>{
+        let vueChamp = d3.select("#vueMine");
+        console.log(data)
+        vueChamp.selectAll("*:not(.hautvue):not(#bouttonChamp):not(#txthautvue)").remove();
+
+        data.unites.forEach(uni=>{
+            vueChamp.append("img").attr("src", "/img/personnages/rouge/mineur.png")
                 .attr("width", "125").attr("height", "150")
                 .on("click", () => {
                     socket.emit("sortirChamp", { unite: uni, position: vueChamp.attr("class")});

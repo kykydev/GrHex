@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder, discipleathneutre,discipleath,mur } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder, discipleathneutre,discipleath,mur,mine } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
 
@@ -1266,6 +1266,23 @@ getUnitesChamp(position,idJoueur){
     if (cham.name!="Champ"){return false}
     return (cham.getUnis())
 }
+
+
+getUnitesMine(position,idJoueur){
+    var min = this.board[position]; if (min==undefined || min.owner!=idJoueur){return false}
+    if (min.name!="Mine"){return false}
+    var retour = {"minerai":min.mineral,"unites":[]}
+    for (var z of min.workers){
+        if (retour.minerai=="copper"){
+            retour.unites.push({"minerai":z.copper})
+        }
+        if (retour.minerai=="tin"){
+            retour.unites.push({"minerai":z.tin})
+        }
+    }
+    return retour
+}
+
 
 getRevenuChamp(position,idJoueur){
     var cham = this.board[position]; if (cham==undefined || cham.owner!=idJoueur){return false}

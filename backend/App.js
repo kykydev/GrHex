@@ -163,8 +163,8 @@ io.on('connection', (socket) => {
 
     if (check==true){//Check la distance
 
-      //Cas où on met quelqu'un dans un champ
-      if (partie.board[arrivée]!=undefined && partie.board[arrivée].name=="Champ" && partie.board[arrivée].owner==idJoueur){
+      //Cas où on met quelqu'un dans un champ ou une mine
+      if (partie.board[arrivée]!=undefined && (partie.board[arrivée].name=="Champ" || partie.board[arrivée].name=="Mine") && partie.board[arrivée].owner==idJoueur){
           if (casesAdjacentes(départ,partie.map.width,partie.map.height).includes(arrivée)){
           if (partie.board[arrivée].addWorker(départ,partie)){
             socket.emit("désafficherUnité",départ)
@@ -323,7 +323,7 @@ io.on('connection', (socket) => {
 
 
     })
-
+    
     socket.on("demandeUnitesChamp",data=>{
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
@@ -331,6 +331,15 @@ io.on('connection', (socket) => {
 
       var retour = partie.getUnitesChamp(data,idJoueur)
       if (retour != undefined && retour != false){socket.emit("demandeUnitesChamp",{"unites":retour,"revenu":partie.getRevenuChamp(data,idJoueur)})}
+
+    })
+    socket.on("demandeUnitesMine",data=>{
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data==undefined || partie==undefined || idJoueur==undefined){return}
+
+      var retour = partie.getUnitesMine(data,idJoueur)
+      if (retour != undefined && retour != false){socket.emit("demandeUnitesMine",retour)}
 
     })
 
