@@ -225,6 +225,8 @@ io.on('connection', (socket) => {
       }
       else{ 
         io.to(partie.id).emit("finTour",partie.actionsThisTurn)
+        io.to(partie.id).emit("notification",{"titre":partie.tourCourant,"texte":partie.tourCourant+" terminé vite urgent"});
+
       }
     }
     else{//Le tour n'est pas fini, renvoi de l'info au client pour qu'il affiche correctement
