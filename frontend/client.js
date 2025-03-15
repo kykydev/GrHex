@@ -112,6 +112,29 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('accueil').style.display = 'flex';
     });
 
+
+    // notifications
+
+    let boutonNotif = d3.select("#afficherNotif");
+    let vueNotifications = d3.select("#vueNotifications");
+
+    let notifDetail = d3.select("#notificationDetail");
+
+    let notificationsSauvegarder = {};
+
+    boutonNotif.on("click",()=>{
+
+        vueNotifications.style("display",(vueNotifications.style("display") == "block" ? "none" : "block"));
+
+        notifDetail.style("display","none");
+    });
+
+
+    let notifications = document.getElementsByClassName("notifications");
+
+    
+
+
     socket.on("finTour", data => {
         //console.log(data);
         // true si tout le monde à fini false sinon
@@ -550,7 +573,7 @@ document.addEventListener("DOMContentLoaded", function () {
         d3.select("#vueBatiments").selectAll("img").remove();
         d3.select("#vueBatiments").append("img").attr("src", "/img/autre/" + "croix.png").attr("width", "100").attr("height", "100").attr("id", "croix").attr("class", "batiments");
 
-        console.log(data);
+        // console.log(data);
 
         data.forEach(bat => {
             d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/" + (bat.url).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", bat.nom).attr("class", "batiments")
@@ -682,6 +705,41 @@ document.addEventListener("DOMContentLoaded", function () {
                     .attr("stroke", "transparent")
                     .style("stroke-width", 0)
             });
+    });
+
+    let numeroNotif=0;
+
+    socket.on("notification",(notif)=>{
+
+        notificationsSauvegarder[notif.titre]=notif.texte;
+
+        d3.select("#vueNotifications").append("p").text(notif.titre).attr("id","notif"+numeroNotif).attr("class","notifications");
+        ++numeroNotif;
+
+        let position=0;
+
+        Array.from(notifications).forEach((element)=>{
+    
+            element.addEventListener("click",(event)=>{
+                console.log("click");
+
+                // notifDetail.selectAll("*").remove();
+
+
+                let notifDetail = d3.select("#notificationDetail");
+    
+                notifDetail.append("div")
+                    .style("top", "150px")
+                    .style("left", position * 150 + 250 + "px")
+                    .append("p").text(element.textContent)
+                    .append("p").text(notificationsSauvegarder[element.textContent]);
+
+
+                notifDetail.selectAll("*").style("display","block");
+
+                ++position;
+            });
+        });
     });
 
 });

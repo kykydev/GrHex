@@ -546,3 +546,41 @@ button:hover {
     box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
     color: #fff;
 }
+
+
+#vueNotifications{
+    display: none;
+    position: fixed;
+    height: 100px;
+    width: 100px;
+    
+    top : 50px;
+    left : 10px;
+    background-color: greenyellow;
+    
+}
+
+.notifications{
+    cursor: pointer;
+}
+
+#noficationDetail{
+    display: block;
+    position: fixed;
+}
+
+
+#notificationDetail * {
+    display: none;
+    position: fixed;
+
+    color: inherit;
+    font-size: inherit;
+
+    top: 20%;
+    left: 20%;
+
+    height: 100px;
+    width: 100px;
+    background-color: greenyellow;
+}

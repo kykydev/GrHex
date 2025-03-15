@@ -650,7 +650,7 @@ function ajouterUnites(board, dam,width,height) {
     for (let position of Object.keys(board)) {
 
         if (board[position].name=="Mur"){
-            console.log("mur"+position)
+            // console.log("mur"+position)
             dessineMur(position,width,height,board)
         }
         else{
