@@ -121,10 +121,16 @@ document.addEventListener("DOMContentLoaded", function () {
     let notifDetail = d3.select("#notificationDetail");
 
     let notificationsSauvegarder = {};
+    let position=0;
 
     boutonNotif.on("click",()=>{
+        position=0;
 
         vueNotifications.style("display",(vueNotifications.style("display") == "block" ? "none" : "block"));
+
+        if(vueNotifications.style("display")=="none"){
+            notifDetail.selectAll("*").remove();
+        }
 
         notifDetail.style("display","none");
     });
@@ -708,36 +714,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let numeroNotif=0;
 
+    let aNotif = {}
+
     socket.on("notification",(notif)=>{
+
+
 
         notificationsSauvegarder[notif.titre]=notif.texte;
 
         d3.select("#vueNotifications").append("p").text(notif.titre).attr("id","notif"+numeroNotif).attr("class","notifications");
         ++numeroNotif;
 
-        let position=0;
+        
 
         Array.from(notifications).forEach((element)=>{
+
+            if(!aNotif[element.id]){
     
-            element.addEventListener("click",(event)=>{
-                console.log("click");
+                element.addEventListener("click",(event)=>{
+                    console.log("click");
 
-                // notifDetail.selectAll("*").remove();
-
-
-                let notifDetail = d3.select("#notificationDetail");
-    
-                notifDetail.append("div")
-                    .style("top", "150px")
-                    .style("left", position * 150 + 250 + "px")
-                    .append("p").text(element.textContent)
-                    .append("p").text(notificationsSauvegarder[element.textContent]);
+                    
 
 
-                notifDetail.style("display","block");
+                    let notifDetail = d3.select("#notificationDetail");
+        
+                    notifDetail.append("div")
+                        .style("top", "150px")
+                        .style("left", position * 150 + 250 + "px")
+                        .append("p").text(element.textContent)
+                        .append("p").text(notificationsSauvegarder[element.textContent]);
 
-                ++position;
-            });
+
+                    notifDetail.style("display","block");
+                    notifDetail.selectAll("*").style("display","block");
+
+                    ++position;
+                });
+                
+                aNotif[element.id]=true;
+            }
         });
     });
 

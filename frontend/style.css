@@ -543,7 +543,7 @@ button:hover {
 #vueNotifications{
     display: none;
     position: fixed;
-    height: 100px;
+    min-height: 100px;
     width: 100px;
     
     top : 50px;
@@ -560,13 +560,13 @@ button:hover {
     display: none;
     position: fixed;
 
-    top : 150px;
-    left: 150px;
+    /* top : 150px;
+    left: 150px; */
 
-    height: 500px;
-    width: 500px;
+    /* height: 1000px;
+    width: 1000px; */
 
-    background-color: yellow;
+    /* background-color: yellow; */
 
 }
 
