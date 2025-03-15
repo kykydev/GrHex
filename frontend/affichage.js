@@ -469,12 +469,18 @@ function fstatsUnite(unite) {
 
     if (unite.wood !== undefined) { stats.append("div").attr("id", "uniteWood").text("Bois : " + unite.wood); }
     if (unite.stone !== undefined) { stats.append("div").attr("id", "uniteStone").text("Pierres : " + unite.stone); }
+    if (unite.copper !== undefined) { stats.append("div").attr("id", "uniteCuivre").text("Cuivre : " + unite.copper); }
+    if (unite.tin !== undefined) { stats.append("div").attr("id", "uniteTin").text("Etain : " + unite.tin); }
 
     if (unite.buildingInfos) {
         if (unite.buildingInfos.coûtBois !== undefined) { stats.append("div").attr("id", "uniteWoodCost").text("Coût en bois : " + unite.buildingInfos.coûtBois); }
         if (unite.buildingInfos.coûtPierre !== undefined) { stats.append("div").attr("id", "uniteStoneCost").text("Coût en pierre : " + unite.buildingInfos.coûtPierre); }
+        if (unite.buildingInfos.coûtCuivre !== undefined) { stats.append("div").attr("id", "uniteCopperCost").text("Coût en cuivre : " + unite.buildingInfos.coûtCuivre); }
+        if (unite.buildingInfos.coûtEtain !== undefined) { stats.append("div").attr("id", "uniteTinCost").text("Coût en étain : " + unite.buildingInfos.coûtEtain); }
     }
     if (unite.currentBuilding != undefined) { stats.append("div").attr("id", "uniteCurrentBuilding").text("Chantier en " + unite.currentBuilding); }
+    console.log(unite)
+    if (unite.base != undefined) { stats.append("div").attr("id", "uniteCurrentBase").text("Base: " + unite.base); }
     if (unite.phase != undefined) {
         if (unite.phase == "getRessources") { stats.append("div").attr("id", "unitePhase").text("Cherche des ressources"); }
         if (unite.phase == "buildBuilding") { stats.append("div").attr("id", "unitePhase").text("Construit un bâtiment"); }
@@ -640,6 +646,25 @@ function dessineMur(pos, width, height, board, type, unite) {
         }
     });
 }
+
+function dialogue(message, unite, couleur) {
+    let vueDialogue = d3.select("#vueDialogue");
+    vueDialogue.style("display", (vueDialogue.style("display") == "none" ? "block" : "none"));
+
+    vueDialogue.html(`
+            <div class="dialoguebox">
+                <div id="textedialogue">
+                    <p>${message}</p>
+                </div>
+                <img src="img/personnages/${couleur}/${unite}.png">
+            </div>
+    `);
+
+    document.getElementById("vueDialogue").addEventListener("click", () => {
+        vueDialogue.style("display", "none");
+    }
+    );
+}   
 
 /**
  * ajoute les unités sur le damier avec la fonction afficherUnites

@@ -67,7 +67,6 @@ class game {
             player.addUnit(unit, position)
             if (this.board[position].name=="Maison"){this.board[position].generateVillager(position,player,this);}
             if (this.board[position].name=="Hôtel de ville" || this.board[position].name=="Entrepôt"){player.hdv.push(parseInt(position))}
-            unit.updateBase(this)
             return true
         }
         else {
@@ -78,10 +77,17 @@ class game {
 
     initBeotie(joueur) {
 
+        var hdvs = [573,496]
+
+        
+        for (var z of hdvs) {
+            this.map.infos[z] = new hexagon("plaine", "plaine_1", z)    
+            this.map.terrain[z] = this.map.infos[z].pattern
+            this.addUnit(new hdv(z,joueur), z, joueur)  
+        }
         var boardBeotie = {
             //Thèbes
-            573: new hdv(573, joueur),//HDV de thèbes
-            496:new hdv(496,joueur),//HDV de platées
+           
             515: new stratege(515, joueur),
             541: new bucheron(541, joueur),
             215: new mineur(215, joueur),
@@ -128,6 +134,21 @@ class game {
     }
 
     initArgolide(joueur) {
+
+
+    //METTRE HDV D'ABORD POUR LES BASES
+    //Ou alors hdv = [aeroazreazre] et ensuite comme murs  
+    
+        var hdvs = [297,680]
+
+        
+        for (var z of hdvs) {
+            this.map.infos[z] = new hexagon("plaine", "plaine_1", z)    
+            this.map.terrain[z] = this.map.infos[z].pattern
+            this.addUnit(new hdv(z,joueur), z, joueur)  
+        }
+
+
         var boardArgolide = {
             //Corrinthe
             327: new stratege(327, joueur),
@@ -135,9 +156,9 @@ class game {
             268: new mineur(268,joueur),
             415:new paysanne(415,joueur),
             359:new champ(359,joueur),
-            297: new hdv(297, joueur),
             386: new tour(386,joueur),
             299: new tour(299,joueur),
+            443: new tour(443,joueur),
             179:new hoplite(179,joueur),
             446:new hoplite(446,joueur),
             236:new maison(236,joueur),
@@ -145,13 +166,17 @@ class game {
             208: new maison(208, joueur),
             419: new maison(419, joueur),
             //Mégare
-            680: new hdv(680,joueur),
             589:new hoplite(589,joueur),
             559:new hoplite(559,joueur),
             651:new maison(651,joueur)
 
 
         }
+
+        
+        var mursArgolide = [355,385,445,476];
+        for (var wall of mursArgolide){boardArgolide[wall] = new mur(wall,joueur)}
+
 
         for (var position of Object.keys(boardArgolide)) {
             this.map.infos[position] = new hexagon("plaine", "plaine_1", position)    
@@ -167,12 +192,22 @@ class game {
     }
 
     initAttique(joueur) {
+
+
+        var hdvs = [1072,1119]
+
+        
+        for (var z of hdvs) {
+            this.map.infos[z] = new hexagon("plaine", "plaine_1", z)    
+            this.map.terrain[z] = this.map.infos[z].pattern
+            this.addUnit(new hdv(z,joueur), z, joueur)  
+        }
+
         var boardAttique = {
             //Athènes
             1011: new stratege(1011, joueur),
             1043: new bucheron(1043, joueur),
             977: new paysanne(977, joueur),
-            1072: new hdv(1072, joueur),
             1041: new mineur(1041,joueur),
             949: new hoplite(949,joueur),
             861: new hoplite(861,joueur),
@@ -185,7 +220,6 @@ class game {
             1039: new maison(1039,joueur),
             1134: new maison(1134,joueur),
             //Décélie
-            1119: new hdv(1119,joueur),
             1088:new hoplite(1088,joueur),  
             1087:new bucheron(1087,joueur),
             1147:new maison(1147,joueur)
@@ -662,7 +696,12 @@ class game {
             if (receiver.copper!=undefined){receiver.copper=0}
             receiver.copper += uni.copper
             this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "cuivre","quantité":uni.copper })             
-            uni.copper= 0     
+            uni.copper= 0  
+            
+            if (receiver.tin!=undefined){receiver.tin=0}
+            receiver.tin += uni.tin
+            this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "étain","quantité":uni.tin })             
+            uni.tin= 0  
 
             if (uni.gold!=undefined){
                 this.players[uni.owner].gold += uni.gold
@@ -684,7 +723,7 @@ class game {
             if (this.board[z]!=undefined && (this.board[z].name=="Hôtel de ville" || this.board[z].name=="Entrepôt")){
                 var réserve = this.board[z]
                 var travail = this.board[unité.currentBuilding]//Si l'unité n'a pas les ressources elle tente de les prendre
-                if (travail.buildingInfos.coûtBois<=unité.wood && travail.buildingInfos.coûtPierre<=unité.stone && travail.buildingInfos.coûtCuivre<=unité.copper){unité.phase="buildBuilding";return}
+                if (travail.buildingInfos.coûtBois<=unité.wood && travail.buildingInfos.coûtPierre<=unité.stone && travail.buildingInfos.coûtCuivre<=unité.copper && travail.buildingInfos.coûtEtain<=unité.tin){unité.phase="buildBuilding";return}
                 if (travail.buildingInfos.coûtBois>unité.wood){
                     //Après récupération des ressources avec un if pour voir si on en a besoin de plus qu'il y en a
                     var neededWood = travail.buildingInfos.coûtBois-unité.wood
@@ -707,6 +746,14 @@ class game {
                     if (neededCopper>réserve.copper){neededCopper=réserve.copper}
                     réserve.copper-=neededCopper
                     unité.copper+=neededCopper
+
+                }
+                if (travail.buildingInfos.coûtEtain>unité.tin){
+                    //Après récupération des ressources avec un if pour voir si on en a besoin de plus qu'il y en a
+                    var neededTin = travail.buildingInfos.coûtEtain-unité.tin
+                    if (neededTin>réserve.tin){neededTin=réserve.tin}
+                    réserve.tin-=neededTin
+                    unité.tin+=neededTin
 
                 }
 
@@ -742,6 +789,11 @@ class game {
             if (depositedcopper>travail.buildingInfos.coûtCuivre){depositedcopper=travail.buildingInfos.coûtCuivre}
             travail.buildingInfos.coûtCuivre-=depositedcopper;uni.copper-=depositedcopper
     }
+    if (travail.buildingInfos.coûtEtain!=0 && uni.tin!=undefined){
+        var depositedtin = uni.tin;
+        if (depositedtin>travail.buildingInfos.coûtEtain){depositedtin=travail.buildingInfos.coûtEtain}
+        travail.buildingInfos.coûtEtain-=depositedtin;uni.tin-=depositedtin
+}
     
 
     if (travail.turnsToBuild==0){//Si la construction est terminée, tout reset et créer le bâtiment
@@ -1179,7 +1231,7 @@ if (rand>0.97){nbLoups=2}
 }
 
 getEmitRessources(idJoueur){//Renvoie les informatios pour le socket.on("ressources")
-    var or=0;var bois=0;var pierre=0;var cuivre=0
+    var or=0;var bois=0;var pierre=0;var cuivre=0;var etain = 0
     var joueur = this.players[idJoueur]; if (joueur==undefined){return false}
     or = joueur.gold;
     for (var z of Object.keys(joueur.units)){
@@ -1188,9 +1240,10 @@ getEmitRessources(idJoueur){//Renvoie les informatios pour le socket.on("ressour
             if (uni.wood!=undefined){bois+=uni.wood}
             if (uni.stone!=undefined){pierre+=uni.stone}
             if (uni.copper!=undefined){cuivre+=uni.copper}
+            if (uni.tin!=undefined){etain+=uni.tin}
     }
 }
-return {"or":or,"bois":bois,"pierre":pierre,"cuivre":cuivre, "tourCourant":this.tourCourant,"toursMax":this.nbTours}
+return {"or":or,"bois":bois,"pierre":pierre,"cuivre":cuivre,"étain":etain, "tourCourant":this.tourCourant,"toursMax":this.nbTours}
 
 }
 

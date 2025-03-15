@@ -295,6 +295,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         dicoPathUnite = {};
 
+        let msg = "J'arrive dans trois push ^^"
+        dialogue(msg, "troie", "rouge");
     })
 
     //----------------Pour test, faudra faire ça mieux plus tard-------------------
@@ -312,18 +314,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // termine une partie 
     socket.on("PARTIEFINIE", data => {
-        console.log(data);
-        let vueFin = d3.select("#vueFin");
-        vueFin.style("display", (vueFin.style("display") == "none" ? "block" : "none"));
-
-        vueFin.html("");
-        if (Array.isArray(data)) {
-            vueFin.append("p").text("Les cités gagnantes sont :");
-            data.forEach(gagnant => { vueFin.append("p").text(gagnant.cite); });
-        }
-        else {
-            vueFin.append("p").text(`La cité gagnante est : ${data.cite}`);
-        }
+        let msg = "MOUAHAHAHAHAH, la cité " + data.cite + " a écrasé la concurrence, j'en attendais pas moins de leur part!"
+        dialogue(msg, "pierris pompidoris", "blanc");
     });
 
 
@@ -334,8 +326,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         terrain = data.terrain
         board = terrain.board
-        créerDamier(data.height, data.width, 32, "jeu", "h")
-        actualiserDamier(data.width, data.height, data.terrain, "h")
+        créerDamier(data.height, data.width, 32, "jeu", "h");
+        actualiserDamier(data.width, data.height, data.terrain, "h");
         appelsAjoutTextures("jeu");
         setupBoutonScroll("damierjeu");
         ajouterUnites(data.board, "jeu",data.width,data.height);
@@ -363,6 +355,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let vueInfoHdv = d3.select("#vueInfoHdv");
         let vueInfoForge = d3.select("#vueForge");
         let vueChamp = d3.select("#vueChamp");
+
+        [vueInfoForge, vueInfoHdv, vueChamp].forEach(vue => rendreDeplacable(vue.node(), damierjeu));
 
         let uniteSelectionnee = "";
         let hexagoneSelectionnee = "";
@@ -517,6 +511,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     vueInfoForge.style("display", (vueInfoForge.style("display") == "none" ? "block" : "none"));
 
                     
+                }
+                else  if (((data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville"||(data.board[event.target.id.supprimerPrefixId("uni")].name == "Entrepôt")) && uniteSelectionnee)) {
+                    // le changement de base
+                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+
                 }
                 else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" && uniteSelectionnee){
 
