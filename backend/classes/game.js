@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder, discipleathneutre,discipleath,mur,mine } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder, discipleathneutre,discipleath,mur,mine,chevaldetroie } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
 
@@ -67,6 +67,7 @@ class game {
             player.addUnit(unit, position)
             if (this.board[position].name=="Maison"){this.board[position].generateVillager(position,player,this);}
             if (this.board[position].name=="Hôtel de ville" || this.board[position].name=="Entrepôt"){player.hdv.push(parseInt(position))}
+            if (this.board[position].name=="Mine"){this.board[position].mineral = this.map.mines[position]}
             return true
         }
         else {
@@ -102,6 +103,7 @@ class game {
             570: new maison(570,joueur),
             664: new maison(664,joueur),
             636: new maison(636,joueur),
+            756: new chevaldetroie(756,joueur),
         
             //Platées
             524:new hoplite(524,joueur),
@@ -679,29 +681,86 @@ class game {
         if (uni.base==undefined){return}
         var receiver = this.board[uni.base]; if (receiver.name!="Hôtel de ville" && receiver.name!="Entrepôt"){return}
 
-            if (uni.stone!=undefined && uni.stone>0){
-                if (receiver.stone==undefined){receiver.stone=0}
-                receiver.stone += uni.stone
-                this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "pierre","quantité":uni.stone })             
-                uni.stone = 0   
-            }   
+        if (uni.stone !== undefined && uni.stone > 0) {
+            if (receiver.stone === undefined) { receiver.stone = 0; }
             
-            if (uni.wood!=undefined && uni.wood>0){
-                if (receiver.wood==undefined){receiver.wood=0}
-                receiver.wood += uni.wood
-                this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "bois","quantité":uni.wood })             
-                uni.wood = 0                    
+            var deposited = uni.stone;
+            if (receiver.stone + deposited > receiver.maxStone) {
+                deposited = receiver.maxStone - receiver.stone;
             }
+        
+            receiver.stone += deposited;
             
-            if (receiver.copper!=undefined){receiver.copper=0}
-            receiver.copper += uni.copper
-            this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "cuivre","quantité":uni.copper })             
-            uni.copper= 0  
+            this.actionsThisTurn.push({ 
+                "type": "poseHDV", 
+                "position": receiver.position, 
+                "ressource": "pierre", 
+                "quantité": deposited 
+            });
+        
+            uni.stone -= deposited;
+        }
+        
+        if (uni.wood !== undefined && uni.wood > 0) {
+            if (receiver.wood === undefined) { receiver.wood = 0; }
             
-            if (receiver.tin!=undefined){receiver.tin=0}
-            receiver.tin += uni.tin
-            this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "étain","quantité":uni.tin })             
-            uni.tin= 0  
+            var deposited = uni.wood;
+            if (receiver.wood + deposited > receiver.maxWood) {
+                deposited = receiver.maxWood - receiver.wood;
+            }
+        
+            receiver.wood += deposited;
+            
+            this.actionsThisTurn.push({ 
+                "type": "poseHDV", 
+                "position": receiver.position, 
+                "ressource": "bois", 
+                "quantité": deposited 
+            });
+        
+            uni.wood -= deposited;
+        }
+        
+        if (uni.copper !== undefined && uni.copper > 0) {
+            if (receiver.copper === undefined) { receiver.copper = 0; }
+            
+            var deposited = uni.copper;
+            if (receiver.copper + deposited > receiver.maxCopper) {
+                deposited = receiver.maxCopper - receiver.copper;
+            }
+        
+            receiver.copper += deposited;
+            
+            this.actionsThisTurn.push({ 
+                "type": "poseHDV", 
+                "position": receiver.position, 
+                "ressource": "cuivre", 
+                "quantité": deposited 
+            });
+        
+            uni.copper -= deposited;
+        }
+        
+        if (uni.tin !== undefined && uni.tin > 0) {
+            if (receiver.tin === undefined) { receiver.tin = 0; }
+            
+            var deposited = uni.tin;
+            if (receiver.tin + deposited > receiver.maxTin) {
+                deposited = receiver.maxTin - receiver.tin;
+            }
+        
+            receiver.tin += deposited;
+            
+            this.actionsThisTurn.push({ 
+                "type": "poseHDV", 
+                "position": receiver.position, 
+                "ressource": "étain", 
+                "quantité": deposited 
+            });
+        
+            uni.tin -= deposited;
+        }
+        
 
             if (uni.gold!=undefined){
                 this.players[uni.owner].gold += uni.gold
@@ -831,6 +890,7 @@ class game {
         for (let uni of Object.keys(this.board)) {
             this.board[uni].movementLeft = this.board[uni].movement
             if (this.board[uni].name=="Champ"){this.revenuChamp(this.board[uni])}
+            if (this.board[uni].name=="Mine"){this.tourMine(this.board[uni])}
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
             this.board[uni].destination = this.board[uni].findGoal(this)            
             if (this.board[uni].destination != undefined) {//Reset les path 
@@ -1053,8 +1113,16 @@ revenuChamp(unite){
     joueur.gold+=revenu;
     this.actionsThisTurn.push({ "type": "ressource", "position": unite.position, "ressource": "or" })
     
+    }
 }
 
+//Effectue le tour d'une mine: Génère des ressources pour les mineurs qui sont dedans
+tourMine(unite){
+    var joueur = this.players[unite.owner]
+    if (joueur==undefined||unite.mineral==undefined){return false}
+    for (var z of unite.workers){
+        z[unite.mineral]+= Math.round(Math.random())+1
+    }
 }
 
 unbuild(pos,idJoueur,socket){//Détruit un bâtiment
@@ -1273,7 +1341,6 @@ getUnitesMine(position,idJoueur){
     if (min.name!="Mine"){return false}
     var retour = {"minerai":min.mineral,"unites":[]}
     for (var z of min.workers){
-        console.log(z)
         if (retour.minerai=="copper"){
             retour.unites.push({"minerai":z.copper})
         }
@@ -1281,7 +1348,6 @@ getUnitesMine(position,idJoueur){
             retour.unites.push({"minerai":z.tin})
         }
     }
-    console.log(retour)
     return retour
 }
 
@@ -1364,8 +1430,7 @@ recruteMessager(idJoueur,posDépart,des){
 
 testMessager(uni){//Teste si un messager est toujours utile et s'il a atteint sa destination
     if (uni==undefined || uni.name!="Messager"){return}
-    if (uni.targetUni==undefined|| uni.destMessage==undefined || this.board[uni.targetUni.position == undefined]){
-
+    if (uni.targetUni==undefined|| uni.destMessage==undefined || this.board[uni.targetUni.position] == undefined){
         delete this.board[uni.position]
         delete this.players[uni.owner].units[uni.position]
     }
@@ -1383,31 +1448,26 @@ testMessager(uni){//Teste si un messager est toujours utile et s'il a atteint sa
     
     
     
-sortirChamp(unite,position,idJoueur){
-    if (unite==undefined || position==undefined){return false}
+sortirChamp(unite,position,idJoueur,index){//A CONTINUER: ADAPTER POUR SORTIR L4UNITE D'INDEX CORRESPONDANT
+    if (unite==undefined || position==undefined||index==undefined){return false}
     var joueur = this.players[idJoueur];if (joueur==undefined){return false}
     var cham = this.board[position]
     if (cham.name!="Champ"&&cham.name!="Mine"){return false}
-
     if (cham.workers==undefined){return false}
-
-    for (var z in cham.workers){
-        if (cham.workers[z].name==unite){
-            var uni = cham.workers[z]
-            for (var zz of casesAdjacentes(position,this.map.width,this.map.height)){
-                if (this.board[zz]==undefined && uni.canGo(this.map.terrain[zz])){
-                    if (this.addUnit(uni,zz,joueur)){
-                        cham.workers.splice(z,1)
-                        uni.position=zz
-                        return {"position":zz,"newUnit":uni.name}
-                    }
-                }
+    if (index>cham.workers.length || cham.workers[index].name!=unite){return false}
+    
+    var uni = cham.workers[index]
+    for (var zz of casesAdjacentes(position,this.map.width,this.map.height)){
+        if (this.board[zz]==undefined && uni.canGo(this.map.terrain[zz])){
+            if (this.addUnit(uni,zz,joueur)){
+                cham.workers.splice(index,1)
+                uni.position=zz
+                return {"position":zz,"newUnit":uni.name}
             }
         }
     }
 
-
-
+    return false
 }
 
 getHDV(idJoueur){//Revoie les HDV et entrepôts du joueur concerné

@@ -344,10 +344,11 @@ io.on('connection', (socket) => {
     })
 
     socket.on("sortirChamp",data=>{
+      console.log(data)
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
       if (data==undefined || partie==undefined || idJoueur==undefined){return}
-      var check = partie.sortirChamp(data.unite,data.position,idJoueur)
+      var check = partie.sortirChamp(data.unite,data.position,idJoueur,data.index)
       if (check!=false){
         socket.emit("evolution",check)
         return

@@ -238,7 +238,7 @@ function afficherUnites(unite, dam) {
                 break
         }
 
-        d3.select("#" + dam)
+        let image = d3.select("#" + dam)
             .append("image")
             .attr("class", "unite")
             .attr("xlink:href", `/img/personnages/${unite.couleur}/${unite.name.toLowerCase()}.png`)
@@ -258,6 +258,10 @@ function afficherUnites(unite, dam) {
                     .attr("stroke", "transparent")
                     .style("stroke-width", 0)
             });
+
+        if (terrain[unite.position].startsWith("!")) {
+            image.style("filter", "grayscale(100%)");
+        }
 
         if (unite.type != "building") {
 
@@ -299,6 +303,7 @@ function afficherUnites(unite, dam) {
     } else {
         console.log("L'élément avec l'ID h" + unite.position + " n'existe pas.");
     }
+
 }
 
 function deplacerUnitesAnim(caseDepart, caseArrivee, fun) {
@@ -649,7 +654,8 @@ function dessineMur(pos, width, height, board, type, unite) {
 
 function dialogue(message, unite, couleur) {
     let vueDialogue = d3.select("#vueDialogue");
-    vueDialogue.style("display", (vueDialogue.style("display") == "none" ? "block" : "none"));
+    vueDialogue.selectAll("*").remove();
+    vueDialogue.style("display", "block");
 
     vueDialogue.html(`
             <div class="dialoguebox">
@@ -660,11 +666,10 @@ function dialogue(message, unite, couleur) {
             </div>
     `);
 
-    document.getElementById("vueDialogue").addEventListener("click", () => {
+    document.getElementById("vueDialogue").onclick = () => {
         vueDialogue.style("display", "none");
-    }
-    );
-}   
+    };
+}
 
 /**
  * ajoute les unités sur le damier avec la fonction afficherUnites

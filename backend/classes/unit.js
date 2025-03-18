@@ -113,19 +113,15 @@ class messager extends unit{
         var meilleurePos;
         
         for (var z of casesAdjacentes(this.targetUni.position,partie.map.width,partie.map.height)){
-            if (this.canGo(partie.map.terrain[z])){
+            if (this.canGo(partie.map.terrain[z]) && partie.board[z]==undefined){
                 if (meilleurePos==undefined || (distance(z,this.position,partie.map.height)<distance(meilleurePos,this.position,partie.map.height))){
                     meilleurePos=z
                 }
             }
         }
-        if (meilleurePos!=undefined){
-            return meilleurePos}
-
-        
-
-
-        }
+        return meilleurePos
+    }
+   
     
 
 }
@@ -522,6 +518,14 @@ class pecheur extends unit{
     }
 }
 
+class chevaldetroie extends unit{
+    constructor(position,player){
+        super(100,10,10,1,1,"Cheval de Troie",position,player,1,1)
+        this.tracked=true
+
+    }
+}
+
 
 
 
@@ -595,8 +599,7 @@ class mine extends building{
     constructor(position,player){
         super(35,0,5,0,"Mine",position,player,0,0)
         this.workers = []
-        this.mineral = "copper"
-        if (Math.random()<0.5){this.mineral="tin"}
+        this.mineral = undefined
     }
 
     addWorker(pos,partie){//Ajoute une unité pour travailler dans ce champ
@@ -767,4 +770,4 @@ class discipleathneutre extends creatureNeutre{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine};
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie};
