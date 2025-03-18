@@ -157,10 +157,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   
-    
+    let envoyerMail = document.getElementById("envoyerMail");
 
     
+    
+    document.getElementById("objetMail").addEventListener("click",(event)=>{
+        event.stopImmediatePropagation();
+    });
 
+    document.getElementById("contenuMail").addEventListener("click",(event)=>{
+        event.stopImmediatePropagation();
+    })
 
     socket.on("finTour", data => {
         //console.log(data);
@@ -311,6 +318,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+
+
     socket.on("commencerPartie", data => {
         //document.querySelector('.rejoindrePartie').innerHTML = ""
         document.querySelector('.rejoindrePartie').style.display = 'none';
@@ -334,7 +344,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
                 d3.select("#selectionnerCitePourMail").append("label").text(nom)
                 .append("input")
-                .attr("type","radio").attr("name","choixCite").attr("value",nom)
+                .attr("type","radio").attr("name","choixCiteMail").attr("value",nom)
                 
                 d3.select("#selectionnerCitePourMail").append("br");
 
@@ -544,6 +554,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     // container.on("click", () => {
                     // //     socket.emit("recruterOuvrier", hdvSelectionne);
                     // });
+
+                    envoyerMail.addEventListener("click",()=>{
+                        const cite = document.querySelector('input[name="choixCiteMail"]:checked');
+                        
+                        let objetMail = document.getElementById("objetMail");
+                        let contenuMail = document.getElementById("contenuMail");
+                
+
+                        // console.log("position hdv : " , event.target.id.supprimerPrefixId("uni"));
+                
+                        socket.emit("mail",{objet:objetMail.value,contenu:contenuMail.value,cite:event.target.id.supprimerPrefixId("uni"),to:cite.value});
+                    });
 
 
                     // pour ouvrier
