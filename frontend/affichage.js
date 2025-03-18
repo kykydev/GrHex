@@ -238,7 +238,7 @@ function afficherUnites(unite, dam) {
                 break
         }
 
-        d3.select("#" + dam)
+        let image = d3.select("#" + dam)
             .append("image")
             .attr("class", "unite")
             .attr("xlink:href", `/img/personnages/${unite.couleur}/${unite.name.toLowerCase()}.png`)
@@ -258,6 +258,10 @@ function afficherUnites(unite, dam) {
                     .attr("stroke", "transparent")
                     .style("stroke-width", 0)
             });
+
+        if (terrain[unite.position].startsWith("!")) {
+            image.style("filter", "grayscale(100%)");
+        }
 
         if (unite.type != "building") {
 
@@ -299,6 +303,7 @@ function afficherUnites(unite, dam) {
     } else {
         console.log("L'élément avec l'ID h" + unite.position + " n'existe pas.");
     }
+
 }
 
 function deplacerUnitesAnim(caseDepart, caseArrivee, fun) {
@@ -471,9 +476,8 @@ function fstatsUnite(unite) {
     if (unite.stone !== undefined) { stats.append("div").attr("id", "uniteStone").text("Pierres : " + unite.stone); }
     if (unite.copper !== undefined) { stats.append("div").attr("id", "uniteCuivre").text("Cuivre : " + unite.copper); }
     if (unite.tin !== undefined) { stats.append("div").attr("id", "uniteTin").text("Etain : " + unite.tin); }
-    if (unite.name=="Mine"){
-    if (unite.mineral !== undefined) { stats.append("div").attr("id", "uniteMined").text("Ressource exploitée: : " + unite.mineral); }else{ stats.append("div").attr("id", "uniteMined").text("Ressource exploitée: Aucune" )}}
-        if (unite.buildingInfos) {
+
+    if (unite.buildingInfos) {
         if (unite.buildingInfos.coûtBois !== undefined) { stats.append("div").attr("id", "uniteWoodCost").text("Coût en bois : " + unite.buildingInfos.coûtBois); }
         if (unite.buildingInfos.coûtPierre !== undefined) { stats.append("div").attr("id", "uniteStoneCost").text("Coût en pierre : " + unite.buildingInfos.coûtPierre); }
         if (unite.buildingInfos.coûtCuivre !== undefined) { stats.append("div").attr("id", "uniteCopperCost").text("Coût en cuivre : " + unite.buildingInfos.coûtCuivre); }
