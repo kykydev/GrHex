@@ -233,11 +233,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     socket.on("ressources", data => {
+        console.log(data);
 
         const ressources =
             `<p>${data.or} <img src="/img/autre/or.png"/></p>
             <p>${data.bois} <img src="/img/autre/bois.png"/></p>
             <p>${data.pierre} <img src="/img/autre/pierre.png"/></p>
+            <p>${data.cuivre} <img src="/img/autre/cuivre.png"/></p>
+            <p>${data.étain} <img src="/img/autre/etain.png"/></p>
             <p>${data.tourCourant} / ${data.toursMax} <img src="/img/autre/sablier.png"/></p>`;
 
         document.querySelector('.ressources').innerHTML = ressources;
