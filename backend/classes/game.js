@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder, discipleathneutre,discipleath,mur,mine } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder, discipleathneutre,discipleath,mur,mine,chevaldetroie } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
 
@@ -67,6 +67,7 @@ class game {
             player.addUnit(unit, position)
             if (this.board[position].name=="Maison"){this.board[position].generateVillager(position,player,this);}
             if (this.board[position].name=="Hôtel de ville" || this.board[position].name=="Entrepôt"){player.hdv.push(parseInt(position))}
+            if (this.board[position].name=="Mine"){this.board[position].mineral = this.map.mines[position]}
             return true
         }
         else {
@@ -102,6 +103,7 @@ class game {
             570: new maison(570,joueur),
             664: new maison(664,joueur),
             636: new maison(636,joueur),
+            756: new chevaldetroie(756,joueur),
         
             //Platées
             524:new hoplite(524,joueur),
@@ -831,6 +833,7 @@ class game {
         for (let uni of Object.keys(this.board)) {
             this.board[uni].movementLeft = this.board[uni].movement
             if (this.board[uni].name=="Champ"){this.revenuChamp(this.board[uni])}
+            if (this.board[uni].name=="Mine"){this.tourMine(this.board[uni])}
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
             this.board[uni].destination = this.board[uni].findGoal(this)            
             if (this.board[uni].destination != undefined) {//Reset les path 
@@ -1053,8 +1056,16 @@ revenuChamp(unite){
     joueur.gold+=revenu;
     this.actionsThisTurn.push({ "type": "ressource", "position": unite.position, "ressource": "or" })
     
+    }
 }
 
+//Effectue le tour d'une mine: Génère des ressources pour les mineurs qui sont dedans
+tourMine(unite){
+    var joueur = this.players[unite.owner]
+    if (joueur==undefined||unite.mineral==undefined){return false}
+    for (var z of unite.workers){
+        z[unite.mineral]+= Math.round(Math.random())+1
+    }
 }
 
 unbuild(pos,idJoueur,socket){//Détruit un bâtiment
@@ -1383,7 +1394,7 @@ testMessager(uni){//Teste si un messager est toujours utile et s'il a atteint sa
     
     
     
-sortirChamp(unite,position,idJoueur){
+sortirChamp(unite,position,idJoueur,index){//A CONTINUER: ADAPTER POUR SORTIR L4UNITE D'INDEX CORRESPONDANT
     if (unite==undefined || position==undefined){return false}
     var joueur = this.players[idJoueur];if (joueur==undefined){return false}
     var cham = this.board[position]

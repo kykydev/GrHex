@@ -34,12 +34,12 @@ for (var j=0;j<width*height;j++){
 //{tin: [], copper:[]}    et renvoie un tableau des régions minières en conséquence
 //Le retour est un dictionnaire dont l'indice est l'ID de l'hexagone et l'objet est 
 function addMines(width,height,cart,clusters){
-    /*
+    
 var mines = {}
 
     for (var minerai of Object.keys(clusters)){
         for (var z of clusters[minerai]){
-            var replacing = []
+            var replacing = [z]
 
         var soldeMine = Math.floor(Math.random()*12)+3
         while (soldeMine>0){
@@ -48,35 +48,22 @@ var mines = {}
         let added=potcases[Math.floor(Math.random()*(potcases.length))]
         if (!replacing.includes(added)){
             replacing.push(added)
-            soldeExtension-=1
+            soldeMine-=1
             }
         }
         
-       for (z of replacing){
-            if (soldeMontagnes<1){break}
-            if (map[z].type=="plaine"){
-                map[z] = new hexagon("montagne","montagne",z)
-                soldeMontagnes=soldeMontagnes-1
-            }
+       for (zz of replacing){
+           mines[zz]=minerai
         }
         
     }
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
+console.log("mines: ")
+console.log(mines)
 return mines
-*/
+
 }
 
 function addMontagne(width,height,cart){

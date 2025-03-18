@@ -471,8 +471,9 @@ function fstatsUnite(unite) {
     if (unite.stone !== undefined) { stats.append("div").attr("id", "uniteStone").text("Pierres : " + unite.stone); }
     if (unite.copper !== undefined) { stats.append("div").attr("id", "uniteCuivre").text("Cuivre : " + unite.copper); }
     if (unite.tin !== undefined) { stats.append("div").attr("id", "uniteTin").text("Etain : " + unite.tin); }
-
-    if (unite.buildingInfos) {
+    if (unite.name=="Mine"){
+    if (unite.mineral !== undefined) { stats.append("div").attr("id", "uniteMined").text("Ressource exploitée: : " + unite.mineral); }else{ stats.append("div").attr("id", "uniteMined").text("Ressource exploitée: Aucune" )}}
+        if (unite.buildingInfos) {
         if (unite.buildingInfos.coûtBois !== undefined) { stats.append("div").attr("id", "uniteWoodCost").text("Coût en bois : " + unite.buildingInfos.coûtBois); }
         if (unite.buildingInfos.coûtPierre !== undefined) { stats.append("div").attr("id", "uniteStoneCost").text("Coût en pierre : " + unite.buildingInfos.coûtPierre); }
         if (unite.buildingInfos.coûtCuivre !== undefined) { stats.append("div").attr("id", "uniteCopperCost").text("Coût en cuivre : " + unite.buildingInfos.coûtCuivre); }
