@@ -1373,8 +1373,7 @@ recruteMessager(idJoueur,posDépart,des){
 
 testMessager(uni){//Teste si un messager est toujours utile et s'il a atteint sa destination
     if (uni==undefined || uni.name!="Messager"){return}
-    if (uni.targetUni==undefined|| uni.destMessage==undefined || this.board[uni.targetUni.position == undefined]){
-
+    if (uni.targetUni==undefined|| uni.destMessage==undefined || this.board[uni.targetUni.position] == undefined){
         delete this.board[uni.position]
         delete this.players[uni.owner].units[uni.position]
     }

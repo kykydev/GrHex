@@ -113,19 +113,15 @@ class messager extends unit{
         var meilleurePos;
         
         for (var z of casesAdjacentes(this.targetUni.position,partie.map.width,partie.map.height)){
-            if (this.canGo(partie.map.terrain[z])){
+            if (this.canGo(partie.map.terrain[z]) && partie.board[z]==undefined){
                 if (meilleurePos==undefined || (distance(z,this.position,partie.map.height)<distance(meilleurePos,this.position,partie.map.height))){
                     meilleurePos=z
                 }
             }
         }
-        if (meilleurePos!=undefined){
-            return meilleurePos}
-
-        
-
-
-        }
+        return meilleurePos
+    }
+   
     
 
 }

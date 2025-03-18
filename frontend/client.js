@@ -301,8 +301,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         dicoPathUnite = {};
 
-        let msg = "Je suis là !!!"
-        dialogue(msg, "Cheval de Troie", "rouge");
     })
 
     //----------------Pour test, faudra faire ça mieux plus tard-------------------
