@@ -650,7 +650,8 @@ function dessineMur(pos, width, height, board, type, unite) {
 
 function dialogue(message, unite, couleur) {
     let vueDialogue = d3.select("#vueDialogue");
-    vueDialogue.style("display", (vueDialogue.style("display") == "none" ? "block" : "none"));
+    vueDialogue.selectAll("*").remove();
+    vueDialogue.style("display", "block");
 
     vueDialogue.html(`
             <div class="dialoguebox">
@@ -661,11 +662,10 @@ function dialogue(message, unite, couleur) {
             </div>
     `);
 
-    document.getElementById("vueDialogue").addEventListener("click", () => {
+    document.getElementById("vueDialogue").onclick = () => {
         vueDialogue.style("display", "none");
-    }
-    );
-}   
+    };
+}
 
 /**
  * ajoute les unités sur le damier avec la fonction afficherUnites
