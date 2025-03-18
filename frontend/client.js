@@ -699,13 +699,14 @@ document.addEventListener("DOMContentLoaded", function () {
     socket.on("demandeUnitesMine",data=>{
         let vueMine = d3.select("#vueMine");
         console.log(data)
-        vueChamp.selectAll("*:not(.hautvue):not(#bouttonMine):not(#txthautvue)").remove();
+        vueMine.selectAll("*:not(.hautvue):not(#bouttonMine):not(#txthautvue)").remove();
 
-        data.unites.forEach(uni=>{
+        data.unites.forEach((uni,index)=>{
             vueMine.append("img").attr("src", "/img/personnages/rouge/mineur.png")
                 .attr("width", "125").attr("height", "150")
                 .on("click", () => {
-                    socket.emit("sortirChamp", { unite: uni, position: vueChamp.attr("class")});
+                    socket.emit("sortirChamp", { unite: uni, position: vueMine.attr("class"),index:index});
+                
                 });
             vueMine.append("p").text(uni.minerai);
         });

@@ -479,7 +479,7 @@ function fstatsUnite(unite) {
         if (unite.buildingInfos.coûtEtain !== undefined) { stats.append("div").attr("id", "uniteTinCost").text("Coût en étain : " + unite.buildingInfos.coûtEtain); }
     }
     if (unite.currentBuilding != undefined) { stats.append("div").attr("id", "uniteCurrentBuilding").text("Chantier en " + unite.currentBuilding); }
-    console.log(unite)
+    // console.log(unite)
     if (unite.base != undefined) { stats.append("div").attr("id", "uniteCurrentBase").text("Base: " + unite.base); }
     if (unite.phase != undefined) {
         if (unite.phase == "getRessources") { stats.append("div").attr("id", "unitePhase").text("Cherche des ressources"); }
