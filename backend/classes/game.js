@@ -1284,7 +1284,6 @@ getUnitesMine(position,idJoueur){
     if (min.name!="Mine"){return false}
     var retour = {"minerai":min.mineral,"unites":[]}
     for (var z of min.workers){
-        console.log(z)
         if (retour.minerai=="copper"){
             retour.unites.push({"minerai":z.copper})
         }
@@ -1292,7 +1291,6 @@ getUnitesMine(position,idJoueur){
             retour.unites.push({"minerai":z.tin})
         }
     }
-    console.log(retour)
     return retour
 }
 
@@ -1395,30 +1393,25 @@ testMessager(uni){//Teste si un messager est toujours utile et s'il a atteint sa
     
     
 sortirChamp(unite,position,idJoueur,index){//A CONTINUER: ADAPTER POUR SORTIR L4UNITE D'INDEX CORRESPONDANT
-    if (unite==undefined || position==undefined){return false}
+    if (unite==undefined || position==undefined||index==undefined){return false}
     var joueur = this.players[idJoueur];if (joueur==undefined){return false}
     var cham = this.board[position]
     if (cham.name!="Champ"&&cham.name!="Mine"){return false}
-
     if (cham.workers==undefined){return false}
-
-    for (var z in cham.workers){
-        if (cham.workers[z].name==unite){
-            var uni = cham.workers[z]
-            for (var zz of casesAdjacentes(position,this.map.width,this.map.height)){
-                if (this.board[zz]==undefined && uni.canGo(this.map.terrain[zz])){
-                    if (this.addUnit(uni,zz,joueur)){
-                        cham.workers.splice(z,1)
-                        uni.position=zz
-                        return {"position":zz,"newUnit":uni.name}
-                    }
-                }
+    if (index>cham.workers.length || cham.workers[index].name!=unite){return false}
+    
+    var uni = cham.workers[index]
+    for (var zz of casesAdjacentes(position,this.map.width,this.map.height)){
+        if (this.board[zz]==undefined && uni.canGo(this.map.terrain[zz])){
+            if (this.addUnit(uni,zz,joueur)){
+                cham.workers.splice(index,1)
+                uni.position=zz
+                return {"position":zz,"newUnit":uni.name}
             }
         }
     }
 
-
-
+    return false
 }
 
 getHDV(idJoueur){//Revoie les HDV et entrepôts du joueur concerné

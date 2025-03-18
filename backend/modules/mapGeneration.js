@@ -60,8 +60,8 @@ var mines = {}
 }
 
 
-console.log("mines: ")
-console.log(mines)
+
+
 return mines
 
 }

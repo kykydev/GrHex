@@ -301,8 +301,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         dicoPathUnite = {};
 
-        let msg = "J'arrive au prochain push :3"
-        dialogue(msg, "troie", "rouge");
+        let msg = "Je suis là !!!"
+        dialogue(msg, "Cheval de Troie", "rouge");
     })
 
     //----------------Pour test, faudra faire ça mieux plus tard-------------------
@@ -705,8 +705,7 @@ document.addEventListener("DOMContentLoaded", function () {
             vueMine.append("img").attr("src", "/img/personnages/rouge/mineur.png")
                 .attr("width", "125").attr("height", "150")
                 .on("click", () => {
-                    socket.emit("sortirChamp", { unite: uni, position: vueMine.attr("class"),index:index});
-                
+                    socket.emit("sortirChamp", { unite: "Mineur", position: vueMine.attr("class"),index:index});
                 });
             vueMine.append("p").text(uni.minerai);
         });

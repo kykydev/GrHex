@@ -344,6 +344,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on("sortirChamp",data=>{
+      console.log(data)
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
       if (data==undefined || partie==undefined || idJoueur==undefined){return}
