@@ -69,7 +69,8 @@
             <svg id="jeuprev"></svg>
             <div class="dialoguebox">
                 <div id="textedialogue">
-                    <p>Bienvenue dans le péloponnèse. Commence par sélectionner la cité dont tu souhaites devenir le stratège !</p>
+                    <p>Bienvenue dans le péloponnèse. Commence par sélectionner la cité dont tu souhaites devenir le
+                        stratège !</p>
                     <div class="choixdialogue">
                         <p id="beotie" class="choix-cite" tabindex="0">Béotie</p>
                         <p id="attique" class="choix-cite" tabindex="0">Attique</p>
@@ -98,62 +99,95 @@
         </div>
 
         <div class="damier" id="damierjeu">
-            
+
             <svg id="jeu"></svg>
             <div id="vueInfoHdv">
                 <div class="hautvue">
                     <p id="txthautvue"> Gestionnaire de l'HDV </p>
-                    <button id="bouttonChamp" class="buttonblack" onclick="document.getElementById('vueInfoHdv').style.display = (document.getElementById('vueInfoHdv').style.display == 'none' ? 'block' : 'none');">Quitter</button>
+
+                    <button id="bouttonOuvrier" class="buttonblack">Ouvrier</button>
+                    <button id="bouttonDiplomatie" class="buttonblack">Diplomatie</button>
+
+
+                    <button id="bouttonChamp" class="buttonblack"
+                        onclick="document.getElementById('vueInfoHdv').style.display = (document.getElementById('vueInfoHdv').style.display == 'none' ? 'block' : 'none');">Quitter</button>
+                </div>
+
+                <div id="vueOuvrier">
+                    <!--  -->
+                    <div style="position: relative; display: inline-block; text-align: center; margin: 0px auto;">
+                        <img src="/img/personnages/rouge/ouvrier.png" width="125" height="150" id="imgOuvrier">
+                        <p style="position: absolute; top: 0px; right: 0px; margin: 0px;">
+                            30
+                            <img src="/img/autre/or.png"
+                                style="height: 50px; margin-right: 10px; vertical-align: middle;">
+                        </p>
+                    </div>
+                </div>
+
+                <div id="vueDiplomatie">
+                    <p>Ma cite</p>
+                    
+                    <form id="selectionnerCitePourMail">
+                        
+                    </form>
+
+                    <input type="text" placeholder="Objet"/> <br>
+    
+                    <textarea ></textarea>
                 </div>
             </div>
 
             <div id="vueForge">
                 <div class="hautvue">
                     <p id="txthautvue"> Gestionnaire de la forge</p>
-                    <button id="bouttonChamp" class="buttonblack" onclick="document.getElementById('vueForge').style.display = (document.getElementById('vueForge').style.display == 'none' ? 'block' : 'none');">Quitter</button>
+                    <button id="bouttonChamp" class="buttonblack"
+                        onclick="document.getElementById('vueForge').style.display = (document.getElementById('vueForge').style.display == 'none' ? 'block' : 'none');">Quitter</button>
                 </div>
             </div>
             <div id="vueChamp">
                 <div class="hautvue">
                     <p id="txthautvue"> Gestionnaire du champ </p>
-                    <button id="bouttonChamp" class="buttonblack" onclick="document.getElementById('vueChamp').style.display = (document.getElementById('vueChamp').style.display == 'none' ? 'block' : 'none');">Quitter</button>
+                    <button id="bouttonChamp" class="buttonblack"
+                        onclick="document.getElementById('vueChamp').style.display = (document.getElementById('vueChamp').style.display == 'none' ? 'block' : 'none');">Quitter</button>
                 </div>
                 <p class="txtchamp"></p>
             </div>
             <div id="vueMine">
                 <div class="hautvue">
                     <p id="txthautvue"> Vue de la mine </p>
-                    <button id="bouttonMine" class="buttonblack" onclick="document.getElementById('vueMine').style.display = (document.getElementById('vueMine').style.display == 'none' ? 'block' : 'none');">Quitter</button>
+                    <button id="bouttonMine" class="buttonblack"
+                        onclick="document.getElementById('vueMine').style.display = (document.getElementById('vueMine').style.display == 'none' ? 'block' : 'none');">Quitter</button>
                 </div>
             </div>
-            </div>
-            <div id="vueDialogue"></div>
+        </div>
+        <div id="vueDialogue"></div>
 
-            <div id="vueBatiments"></div>
+        <div id="vueBatiments"></div>
 
-            <div id="vueNotifications">
-                
-            </div>
-
-            <div id="notificationDetail">
-                
-            </div>
-
-            <div id="statsUnite">
-                <img id="uniteImage" src="" width="180" height="150" />
-                <div id="unitStats">
-                    <p id="uniteName">Nom : </p>
-                    <p id="position">Position : </p>
-                    <p id="mov">Mouvement : </p>
-                    <p id="uniteHp">Points de vie : </p>
-                    <p id="uniteAttack">Attaque : </p>
-                    <p id="uniteDefence">Défense : </p>
-                    <div id="uniteWood">Bois : </div>
-                    <div id="uniteStone">Pierres : </div>
-                </div>
-            </div>
+        <div id="vueNotifications">
 
         </div>
+
+        <div id="notificationDetail">
+
+        </div>
+
+        <div id="statsUnite">
+            <img id="uniteImage" src="" width="180" height="150" />
+            <div id="unitStats">
+                <p id="uniteName">Nom : </p>
+                <p id="position">Position : </p>
+                <p id="mov">Mouvement : </p>
+                <p id="uniteHp">Points de vie : </p>
+                <p id="uniteAttack">Attaque : </p>
+                <p id="uniteDefence">Défense : </p>
+                <div id="uniteWood">Bois : </div>
+                <div id="uniteStone">Pierres : </div>
+            </div>
+        </div>
+
+    </div>
 
     </div>
 

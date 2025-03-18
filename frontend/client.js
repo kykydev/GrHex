@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // séléction des citées dans le lobby d'une partie
     beotie.addEventListener("click", () => {
+        console.log("selection beoti");
         maCite = "beotie";
         fill(cite.beotie, "red", "prev");
         fill(cite.attique, "url(#" + map.terrain[cite.attique] + "-pattern", "prev");
@@ -137,6 +138,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     let notifications = document.getElementsByClassName("notifications");
+
+
+    // changer de vue HDV (ouvrier ou diplomatie)
+
+    let bouttonOuvrier = document.getElementById("bouttonOuvrier");
+    let bouttonDiplomatie = document.getElementById("bouttonDiplomatie");
+
+    bouttonOuvrier.addEventListener("click",(event)=>{
+        d3.select("#vueDiplomatie").style("display","none");
+        d3.select("#vueOuvrier").style("display","block");
+    });
+
+    bouttonDiplomatie.addEventListener("click",(event)=>{
+        d3.select("#vueOuvrier").style("display","none");
+        d3.select("#vueDiplomatie").style("display","block");
+    });
+
+
+  
+    
 
     
 
@@ -303,6 +324,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let msg = "J'arrive au prochain push :3"
         dialogue(msg, "troie", "rouge");
+
+        Object.keys(cite).forEach((nom)=>{
+
+            if(maCite!=nom){
+    
+                d3.select("#selectionnerCitePourMail").append("label").text(nom)
+                .append("input")
+                .attr("type","radio").attr("name","choixCite").attr("value",nom)
+                
+                d3.select("#selectionnerCitePourMail").append("br");
+
+                
+            }
+        });
     })
 
     //----------------Pour test, faudra faire ça mieux plus tard-------------------
@@ -495,16 +530,26 @@ document.addEventListener("DOMContentLoaded", function () {
             element.addEventListener("click", (event) => {
 
                 if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" && !uniteSelectionnee) {
+
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
-                    d3.select("#vueInfoHdv").selectAll("img").remove();
-                    const container = d3.select("#vueInfoHdv").append("div").style("position", "relative").style("display", "inline-block").style("text-align", "center").style("margin", "0 auto");
-                    container.append("img").attr("src", "/img/personnages/rouge/ouvrier.png").attr("width", "125").attr("height", "150");
-                    container.append("p").html(`30 <img src="/img/autre/or.png" style="height: 50px; margin-right: 10px; vertical-align: middle;" />`).style("position", "absolute").style("top", "0").style("right", "0").style("margin", "0");
-                    container.on("click", () => {
-                        socket.emit("recruterOuvrier", hdvSelectionne);
-                    });
+
+                    // d3.select("#vueInfoHdv").selectAll("img").remove();
+
+                    // const container = d3.select("#vueInfoHdv").append("div").style("position", "relative").style("display", "inline-block").style("text-align", "center").style("margin", "0 auto");
+                    // container.append("img").attr("src", "/img/personnages/rouge/ouvrier.png").attr("width", "125").attr("height", "150");
+                    // container.append("p").html(`30 <img src="/img/autre/or.png" style="height: 50px; margin-right: 10px; vertical-align: middle;" />`).style("position", "absolute").style("top", "0").style("right", "0").style("margin", "0");
+                    // container.on("click", () => {
+                    // //     socket.emit("recruterOuvrier", hdvSelectionne);
+                    // });
+
+
                     // pour ouvrier
                     hdvSelectionne = event.target.id.supprimerPrefixId("uni");
+
+                    let imgOuvrier = document.getElementById("imgOuvrier");
+                    imgOuvrier.addEventListener("click",()=>{
+                        socket.emit('recruterOuvrier', hdvSelectionne);
+                    });
                     // vueInfoHdv variable D3
 
                 } 
@@ -686,11 +731,11 @@ document.addEventListener("DOMContentLoaded", function () {
         vueChamp.select(".txtchamp").remove();
         vueChamp.append("p").attr("class", "txtchamp").html(`Revenu du jour : ${data.revenu} <img src="/img/autre/or.png" style="height: 50px; margin-right: 10px; vertical-align: middle;" />`);
 
-        data.unites.forEach(uni=>{
+        data.unites.forEach((uni,index)=>{
             vueChamp.append("img").attr("src", "/img/personnages/rouge/" + (uni).toLowerCase() + ".png")
                 .attr("width", "125").attr("height", "150")
                 .on("click", () => {
-                    socket.emit("sortirChamp", { unite: uni, position: vueChamp.attr("class")});
+                    socket.emit("sortirChamp", { unite: uni, position: vueChamp.attr("class"),index:index});
                 });
         });
 

@@ -599,3 +599,7 @@ button:hover {
     background-color: greenyellow;
 }
 
+
+#vueDiplomatie{
+    display: none;
+}
