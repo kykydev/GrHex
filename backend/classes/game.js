@@ -681,29 +681,86 @@ class game {
         if (uni.base==undefined){return}
         var receiver = this.board[uni.base]; if (receiver.name!="Hôtel de ville" && receiver.name!="Entrepôt"){return}
 
-            if (uni.stone!=undefined && uni.stone>0){
-                if (receiver.stone==undefined){receiver.stone=0}
-                receiver.stone += uni.stone
-                this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "pierre","quantité":uni.stone })             
-                uni.stone = 0   
-            }   
+        if (uni.stone !== undefined && uni.stone > 0) {
+            if (receiver.stone === undefined) { receiver.stone = 0; }
             
-            if (uni.wood!=undefined && uni.wood>0){
-                if (receiver.wood==undefined){receiver.wood=0}
-                receiver.wood += uni.wood
-                this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "bois","quantité":uni.wood })             
-                uni.wood = 0                    
+            var deposited = uni.stone;
+            if (receiver.stone + deposited > receiver.maxStone) {
+                deposited = receiver.maxStone - receiver.stone;
             }
+        
+            receiver.stone += deposited;
             
-            if (receiver.copper!=undefined){receiver.copper=0}
-            receiver.copper += uni.copper
-            this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "cuivre","quantité":uni.copper })             
-            uni.copper= 0  
+            this.actionsThisTurn.push({ 
+                "type": "poseHDV", 
+                "position": receiver.position, 
+                "ressource": "pierre", 
+                "quantité": deposited 
+            });
+        
+            uni.stone -= deposited;
+        }
+        
+        if (uni.wood !== undefined && uni.wood > 0) {
+            if (receiver.wood === undefined) { receiver.wood = 0; }
             
-            if (receiver.tin!=undefined){receiver.tin=0}
-            receiver.tin += uni.tin
-            this.actionsThisTurn.push({ "type": "poseHDV", "position": receiver.position, "ressource": "étain","quantité":uni.tin })             
-            uni.tin= 0  
+            var deposited = uni.wood;
+            if (receiver.wood + deposited > receiver.maxWood) {
+                deposited = receiver.maxWood - receiver.wood;
+            }
+        
+            receiver.wood += deposited;
+            
+            this.actionsThisTurn.push({ 
+                "type": "poseHDV", 
+                "position": receiver.position, 
+                "ressource": "bois", 
+                "quantité": deposited 
+            });
+        
+            uni.wood -= deposited;
+        }
+        
+        if (uni.copper !== undefined && uni.copper > 0) {
+            if (receiver.copper === undefined) { receiver.copper = 0; }
+            
+            var deposited = uni.copper;
+            if (receiver.copper + deposited > receiver.maxCopper) {
+                deposited = receiver.maxCopper - receiver.copper;
+            }
+        
+            receiver.copper += deposited;
+            
+            this.actionsThisTurn.push({ 
+                "type": "poseHDV", 
+                "position": receiver.position, 
+                "ressource": "cuivre", 
+                "quantité": deposited 
+            });
+        
+            uni.copper -= deposited;
+        }
+        
+        if (uni.tin !== undefined && uni.tin > 0) {
+            if (receiver.tin === undefined) { receiver.tin = 0; }
+            
+            var deposited = uni.tin;
+            if (receiver.tin + deposited > receiver.maxTin) {
+                deposited = receiver.maxTin - receiver.tin;
+            }
+        
+            receiver.tin += deposited;
+            
+            this.actionsThisTurn.push({ 
+                "type": "poseHDV", 
+                "position": receiver.position, 
+                "ressource": "étain", 
+                "quantité": deposited 
+            });
+        
+            uni.tin -= deposited;
+        }
+        
 
             if (uni.gold!=undefined){
                 this.players[uni.owner].gold += uni.gold
