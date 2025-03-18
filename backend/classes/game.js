@@ -90,7 +90,7 @@ class game {
            
             515: new stratege(515, joueur),
             541: new bucheron(541, joueur),
-            215: new mineur(215, joueur),
+            692: new mineur(692, joueur),
             489: new champ(489,joueur),
             519:new paysanne(519,joueur),
             576: new tour(576,joueur),
@@ -1273,6 +1273,7 @@ getUnitesMine(position,idJoueur){
     if (min.name!="Mine"){return false}
     var retour = {"minerai":min.mineral,"unites":[]}
     for (var z of min.workers){
+        console.log(z)
         if (retour.minerai=="copper"){
             retour.unites.push({"minerai":z.copper})
         }
@@ -1280,8 +1281,10 @@ getUnitesMine(position,idJoueur){
             retour.unites.push({"minerai":z.tin})
         }
     }
+    console.log(retour)
     return retour
 }
+
 
 
 getRevenuChamp(position,idJoueur){
@@ -1384,7 +1387,7 @@ sortirChamp(unite,position,idJoueur){
     if (unite==undefined || position==undefined){return false}
     var joueur = this.players[idJoueur];if (joueur==undefined){return false}
     var cham = this.board[position]
-    if (cham.name!="Champ"){return false}
+    if (cham.name!="Champ"&&cham.name!="Mine"){return false}
 
     if (cham.workers==undefined){return false}
 

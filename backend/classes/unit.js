@@ -315,6 +315,8 @@ class mineur extends unit{
         super(25,10,5,2,2,"Mineur",position,player,1,1)
         this.stone=0
         this.maxStone=12
+        this.copper=0;
+        this.tin=0;
         this.knownCarrieres = []
         this.base=player.hdv[0]
        
