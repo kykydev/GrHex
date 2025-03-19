@@ -169,21 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
         event.stopImmediatePropagation();
     })
 
-<<<<<<< HEAD
     
-=======
-    envoyerMail.addEventListener("click",()=>{
-        const cite = document.querySelector('input[name="choixCiteMail"]:checked');
-        
-        let objetMail = document.getElementById("objetMail");
-        let contenuMail = document.getElementById("contenuMail");
-
-
-        // console.log("position hdv : " , event.target.id.supprimerPrefixId("uni"));
-
-        socket.emit("mail",{objet:objetMail.value,contenu:contenuMail.value,cite:cite.value,"hdv":hdvSelectionne});
-    });
->>>>>>> c54f1c746eb2a62f1faaf49306181ed6e022dc9b
 
 
     socket.on("finTour", data => {
