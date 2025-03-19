@@ -169,17 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
         event.stopImmediatePropagation();
     })
 
-    envoyerMail.addEventListener("click",()=>{
-        const cite = document.querySelector('input[name="choixCiteMail"]:checked');
-        
-        let objetMail = document.getElementById("objetMail");
-        let contenuMail = document.getElementById("contenuMail");
-
-
-        // console.log("position hdv : " , event.target.id.supprimerPrefixId("uni"));
-
-        socket.emit("mail",{objet:objetMail.value,contenu:contenuMail.value,cite:cite.value});
-    });
+    
 
 
     socket.on("finTour", data => {
@@ -274,7 +264,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     socket.on("ressources", data => {
-        console.log(data);
 
         const ressources =
             `<p>${data.or} <img src="/img/autre/or.png"/></p>
@@ -559,16 +548,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
 
-                    // d3.select("#vueInfoHdv").selectAll("img").remove();
-
-                    // const container = d3.select("#vueInfoHdv").append("div").style("position", "relative").style("display", "inline-block").style("text-align", "center").style("margin", "0 auto");
-                    // container.append("img").attr("src", "/img/personnages/rouge/ouvrier.png").attr("width", "125").attr("height", "150");
-                    // container.append("p").html(`30 <img src="/img/autre/or.png" style="height: 50px; margin-right: 10px; vertical-align: middle;" />`).style("position", "absolute").style("top", "0").style("right", "0").style("margin", "0");
-                    // container.on("click", () => {
-                    // //     socket.emit("recruterOuvrier", hdvSelectionne);
-                    // });
-
-
 
                     // pour ouvrier
                     hdvSelectionne = event.target.id.supprimerPrefixId("uni");
@@ -578,6 +557,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         socket.emit('recruterOuvrier', hdvSelectionne);
                     });
                     // vueInfoHdv variable D3
+
+
+                    // socket mail 
+                    envoyerMail.addEventListener("click",()=>{
+                        const cite = document.querySelector('input[name="choixCiteMail"]:checked');
+                        
+                        let objetMail = document.getElementById("objetMail");
+                        let contenuMail = document.getElementById("contenuMail");
+                
+                
+                        // console.log("position hdv : " , event.target.id.supprimerPrefixId("uni"));
+                
+                        socket.emit("mail",{objet:objetMail.value,contenu:contenuMail.value,cite:cite.value,hdv:event.target.id.supprimerPrefixId("uni")});
+                    });
 
                 } 
                 else if (batimentSelectionne=="croix"){
@@ -770,8 +763,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("demandeUnitesMine",data=>{
         let vueMine = d3.select("#vueMine");
-        console.log(data)
-        vueMine.selectAll("*:not(.hautvue):not(#bouttonMine):not(#txthautvue)").remove();
+        console.log(data);
+        vueMine.selectAll("*:not(.hautvue):not(#bouttonMine):not(#txthautvue):not(#titreVueMine):not(#txthauvue)").remove();
+
+        let titreMine = d3.select("#titreVueMine");
+
+        switch(data.minerai){
+            case "copper":
+
+                titreMine.append("p").text("Mine de cuivre");
+
+                titreMine.append("img").attr("src","/img/autre/cuivre.png")
+                .attr("width", "50").attr("height", "50");
+                break;
+
+            case "tin":
+                titreMine.append("p").text("Mine d'étain");
+
+                titreMine.append("img").attr("src","/img/autre/etain.png")
+                .attr("width", "50").attr("height", "50");
+                break;
+        }
 
         data.unites.forEach((uni,index)=>{
             vueMine.append("img").attr("src", "/img/personnages/rouge/mineur.png")
