@@ -16,7 +16,7 @@ class player {
         this.copper = 100
         this.hdv=[]
         this.visionsDiff = []
-        
+        this.letters = []
 
     }
 

@@ -142,6 +142,7 @@ io.on('connection', (socket) => {
     if (partie.players[socket.idJoueur].eliminated){return}
     var retour = partie.calculVue(socket.idJoueur)
     socket.emit("demandeDamier",retour)
+    partie.handleLetters(socket,socket.idJoueur)
   })
 
 
@@ -225,7 +226,6 @@ io.on('connection', (socket) => {
       }
       else{ 
         io.to(partie.id).emit("finTour",partie.actionsThisTurn)
-        io.to(partie.id).emit("notification",{"titre":partie.tourCourant,"texte":partie.tourCourant+" terminé vite urgent"});
 
       }
     }
@@ -366,6 +366,26 @@ io.on('connection', (socket) => {
       }
 
     })
+
+
+    socket.on("mail",data=>{
+
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      var joueur = partie.players[idJoueur]
+      if (data==undefined || partie==undefined || idJoueur==undefined || joueur==undefined){return}
+      var check = partie.canOrder(idJoueur,data.hdv)
+      if (check==true){
+          if (partie.addLetter(data.objet,data.contenu,joueur,data.cite)){
+            socket.emit("mail",true);
+          }
+        //{objet:objetMail.textContent,contenu:contenuMail.textContent});
+
+
+      }
+    })
+
+
 
 
 });

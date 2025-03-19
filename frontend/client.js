@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // console.log("position hdv : " , event.target.id.supprimerPrefixId("uni"));
 
-        socket.emit("mail",{objet:objetMail.value,contenu:contenuMail.value,cite:cite.value});
+        socket.emit("mail",{objet:objetMail.value,contenu:contenuMail.value,cite:cite.value,"hdv":hdvSelectionne});
     });
 
 
@@ -348,8 +348,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         dicoPathUnite = {};
 
-        let msg = "J'arrive au prochain push :3"
-        dialogue(msg, "troie", "rouge");
 
         Object.keys(cite).forEach((nom)=>{
 
@@ -816,7 +814,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("notification",(notif)=>{
 
-
+        dialogue("Général, un message vous a été adressé !", "Messager", "rouge");
 
         notificationsSauvegarder[notif.titre]=notif.texte;
 
