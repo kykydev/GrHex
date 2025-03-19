@@ -812,7 +812,7 @@ function rendreDeplacable(element, conteneur) {
 
     element.addEventListener('mousedown', (e) => {
 
-        if (e.target.tagName === 'IMG') {
+        if (e.target.tagName === 'IMG' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
             estImageCliquee = true;
             return;
         }

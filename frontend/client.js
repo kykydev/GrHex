@@ -169,6 +169,19 @@ document.addEventListener("DOMContentLoaded", function () {
         event.stopImmediatePropagation();
     })
 
+    envoyerMail.addEventListener("click",()=>{
+        const cite = document.querySelector('input[name="choixCiteMail"]:checked');
+        
+        let objetMail = document.getElementById("objetMail");
+        let contenuMail = document.getElementById("contenuMail");
+
+
+        // console.log("position hdv : " , event.target.id.supprimerPrefixId("uni"));
+
+        socket.emit("mail",{objet:objetMail.value,contenu:contenuMail.value,cite:cite.value});
+    });
+
+
     socket.on("finTour", data => {
         //console.log(data);
         // true si tout le monde à fini false sinon
@@ -555,17 +568,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     // //     socket.emit("recruterOuvrier", hdvSelectionne);
                     // });
 
-                    envoyerMail.addEventListener("click",()=>{
-                        const cite = document.querySelector('input[name="choixCiteMail"]:checked');
-                        
-                        let objetMail = document.getElementById("objetMail");
-                        let contenuMail = document.getElementById("contenuMail");
-                
-
-                        // console.log("position hdv : " , event.target.id.supprimerPrefixId("uni"));
-                
-                        socket.emit("mail",{objet:objetMail.value,contenu:contenuMail.value,cite:event.target.id.supprimerPrefixId("uni"),to:cite.value});
-                    });
 
 
                     // pour ouvrier
