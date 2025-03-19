@@ -1485,5 +1485,64 @@ getHDV(idJoueur){//Revoie les HDV et entrepôts du joueur concerné
 return false
 }
 
+
+addLetter(objetMail,contenu,joueur,cite,){
+    if (objetMail==undefined || contenu==undefined || cite==undefined){return false}
+    var destinataire = undefined
+    for (var z of Object.keys(this.players)){if (this.players[z].cite!=undefined && this.players[z].cite==cite){destinataire = this.players[z]}}
+  
+    //Calcul de la distance pour le nombre de tours qu'il faudra
+    var dist = 0
+   
+    var stratege1 = undefined
+    var stratege2 = undefined
+    for (var z of Object.keys(joueur.units)){
+        if (joueur.units[z].name=="Stratege"){stratege1=joueur.units[z].position}
+    }
+    for (var z of Object.keys(destinataire.units)){
+        if (destinataire.units[z].name=="Stratege"){stratege2=destinataire.units[z].position}
+    }
+ 
+    if (stratege1==undefined || stratege2==undefined){return false}
+    var distanceHex = distance(stratege1,stratege2,this.map.height)
+    dist = Math.floor(distanceHex/8)
+
+
+
+   
+    destinataire.letters.push({"titre":objetMail,"texte":(contenu+"\n\nDe: "+joueur.name),"tours":dist})
+
+}
+
+//Gère les lettres du joueur: baisse le nombre de tours d'attente de 1 et lorsque le tour est à 0, envoie la lettre
+handleLetters(socket,idJoueur){
+var joueur = this.players[idJoueur]
+
+var index = 0
+var nbLettres = joueur.letters.length
+while (index<nbLettres){
+    var lettre = joueur.letters[index]
+    if (lettre.tours==0){
+        socket.emit("notification",{"titre":lettre.titre,"texte":lettre.texte});
+        joueur.letters.splice(index,1)
+        nbLettres--
+    }
+    else{
+        lettre.tours--
+        index++
+    }
+}
+
+
+
+
+}
+
+
+//{"titre":objetMail,"texte":(contenu+"\n\nDe: "+joueur.name),"tours":distance}
+
+
+
+
 }
 module.exports = { game };
