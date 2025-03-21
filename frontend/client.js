@@ -167,7 +167,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("contenuMail").addEventListener("click",(event)=>{
         event.stopImmediatePropagation();
-    })
+    });
+
+
+    // vue Espionnage
+
+    let selectionPositionEspion = false;
+    let hdvSelectionnePourEspion;
+
+
+    d3.select("#bouttonEspionnage")
+    .on("click",()=>{
+        d3.select("#vueOuvrier").style("display","none");
+        d3.select("#vueDiplomatie").style("display","none");
+        d3.select("#vueEspionnage").style("display","block");
+    });
+    
+    d3.select("#bouttonRecruter")
+    .on("click",()=>{
+        d3.select("#vueInfoHdv").style("display","none");
+        selectionPositionEspion=true;
+
+    });
 
     
 
@@ -459,6 +480,14 @@ document.addEventListener("DOMContentLoaded", function () {
             element.addEventListener("click", (event) => {
                 hexagoneSelectionnee = event.target.id.supprimerPrefixId("h");
 
+                if(selectionPositionEspion && hdvSelectionnePourEspion){
+
+                    console.log("espion" , {hdv:hdvSelectionnePourEspion,positionEspion:event.target.id.supprimerPrefixId("h")});
+                    socket.emit("nouveauEspion",{hdv:hdvSelectionnePourEspion,positionEspion:event.target.id.supprimerPrefixId("h")});
+
+
+                } else
+
                 if (uniteSelectionnee && hexagoneSelectionnee) {
                     socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
                     uniteSelectionnee = "";
@@ -569,6 +598,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                         socket.emit("mail",{objet:objetMail.value,contenu:contenuMail.value,cite:cite.value,hdv:event.target.id.supprimerPrefixId("uni")});
                     });
+
+                    // socket espion
+                    hdvSelectionnePourEspion = event.target.id.supprimerPrefixId("uni");
+
+
 
                 } 
                 else if (batimentSelectionne=="croix"){
