@@ -331,7 +331,7 @@ class game {
             if (vision.tours==0){
                 for (var vis of vision.vision){
                         if (retour.terrain[vis.info.pos][0]=="?"){
-                        retour.infos[vis.info.pos] = new hexagon("!"+vision.age+vis.info.type, "!1"+vision.age+vis.info.pattern.pattern,vis.info.pos)
+                        retour.infos[vis.info.pos] = new hexagon("!"+vision.age+vis.info.type, "!"+vision.age+vis.info.pattern.pattern,vis.info.pos)
                         retour.terrain[vis.info.pos] = "!"+vision.age+vis.terrain
                         if (vis.board!=undefined && !(vis.board.tracked==true && vis.board.owner==player.id)){retour.board[vis.info.pos]=vis.board}
                         }
@@ -381,6 +381,11 @@ class game {
 
             for (var uni of Object.keys(joueur.units)) {//Itération au travers des unités pour trouver les tours et le stratège
             if (this.board[uni].tracked){this.créeVisionDifférée(joueur,visions ,uni,posStratège)}
+            }
+            for (var espion of joueur.espions){
+                var esp = [{ "info": this.map.infos[espion], "terrain": this.map.infos[espion].pattern, "board": this.board[espion] }]
+                
+                joueur.visionsDiff.push(new visionDiff(esp,1))
             }
 
 
@@ -1533,13 +1538,19 @@ while (index<nbLettres){
     }
 }
 
+}
 
-
-
+addEspion(idJoueur,positionEspion){
+    var joueur = this.players[idJoueur] ; if (joueur==undefined){return false}
+    if (joueur.gold<25){return false}
+    if (joueur.espions.includes(positionEspion)){return false}
+    joueur.gold-=25
+    joueur.espions.push(positionEspion)
+    return true
 }
 
 
-//{"titre":objetMail,"texte":(contenu+"\n\nDe: "+joueur.name),"tours":distance}
+
 
 
 

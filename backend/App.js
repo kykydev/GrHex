@@ -385,7 +385,13 @@ io.on('connection', (socket) => {
       }
     })
 
-
+    socket.on("nouveauEspion",data=>{
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data==undefined || partie==undefined || idJoueur==undefined){return}
+      var check = partie.canOrder(idJoueur,data.hdv)
+      if (check==true){if (partie.addEspion(idJoueur,data.positionEspion)){socket.emit("nouveauEspeion",true)}}
+    })
 
 
 });

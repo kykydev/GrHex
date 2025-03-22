@@ -17,6 +17,7 @@ class player {
         this.hdv=[]
         this.visionsDiff = []
         this.letters = []
+        this.espions = []
 
     }
 
