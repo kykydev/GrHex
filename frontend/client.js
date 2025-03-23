@@ -207,9 +207,13 @@ document.addEventListener("DOMContentLoaded", function () {
     let bouttonEchange = document.getElementById("bouttonEchange");
 
     bouttonEchange.addEventListener("click", () => {
-        let mesRessources = document.getElementById("mesRessourcesForm").value;
-        let ville = document.getElementById("selectionnerVille").value;
-        let ressourcesEnnemies = document.getElementById("ressourcesEnnemiesForm").value;
+        let mesRessources = document.querySelector("input[name='mesRessources']:checked").value;
+
+        let ville = document.querySelector("input[name='ville']:checked").value;
+
+        let ressourcesEnnemies = document.querySelector("input[name='ressourcesEnnemies']:checked").value;
+        
+        
         let mesQuantites = document.getElementById("mesQuantites").value;
         let quantitesEnnemies = document.getElementById("quantitesEnnemies").value;
 
