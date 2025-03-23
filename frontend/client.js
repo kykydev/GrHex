@@ -148,11 +148,15 @@ document.addEventListener("DOMContentLoaded", function () {
     bouttonOuvrier.addEventListener("click",(event)=>{
         d3.select("#vueDiplomatie").style("display","none");
         d3.select("#vueOuvrier").style("display","block");
+        d3.select("#vueEspions").style("display","none");
+        d3.select("#vueEspionnage").style("display","none");
     });
 
     bouttonDiplomatie.addEventListener("click",(event)=>{
         d3.select("#vueOuvrier").style("display","none");
         d3.select("#vueDiplomatie").style("display","block");
+        d3.select("#vueEspions").style("display","none");
+        d3.select("#vueEspionnage").style("display","none");
     });
 
 
@@ -180,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .on("click",()=>{
         d3.select("#vueOuvrier").style("display","none");
         d3.select("#vueDiplomatie").style("display","none");
+        d3.select("#vueEspions").style("display","none");
         d3.select("#vueEspionnage").style("display","block");
     });
     
@@ -190,7 +195,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-    
+    d3.select("#bouttonEspions")
+    .on("click",()=>{
+        d3.select("#vueOuvrier").style("display","none");
+        d3.select("#vueDiplomatie").style("display","none");
+        d3.select("#vueEspionnage").style("display","none");
+        d3.select("#vueEspions").style("display","block");
+    });
+
+
+    let bouttonEchange = document.getElementById("bouttonEchange");
+
+    bouttonEchange.addEventListener("click", () => {
+        let mesRessources = document.getElementById("mesRessourcesForm").value;
+        let ville = document.getElementById("selectionnerVille").value;
+        let ressourcesEnnemies = document.getElementById("ressourcesEnnemiesForm").value;
+        let mesQuantites = document.getElementById("mesQuantites").value;
+        let quantitesEnnemies = document.getElementById("quantitesEnnemies").value;
+
+        console.log({
+            mesRessources: mesRessources,
+            ville: ville,
+            ressourcesEnnemies: ressourcesEnnemies,
+            mesQuantites: mesQuantites,
+            quantitesEnnemies: quantitesEnnemies
+        });
+
+        socket.emit("echangeRessources", {
+            mesRessources: mesRessources,
+            ville: ville,
+            ressourcesEnnemies: ressourcesEnnemies,
+            mesQuantites: mesQuantites,
+            quantitesEnnemies: quantitesEnnemies,
+            hdv:hdvSelectionne
+        });
+    });
 
 
     socket.on("finTour", data => {
@@ -601,6 +640,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // socket espion
                     hdvSelectionnePourEspion = event.target.id.supprimerPrefixId("uni");
+                    socket.emit("demandeEspions");
 
 
 
@@ -897,6 +937,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 aNotif[element.id]=true;
             }
         });
+    });
+
+    
+    socket.on("demandeEspions",(data)=>{
+        console.log("espions")
+        d3.select("#nbEspions").text(data.nombre);
+
+        d3.select("#positions").selectAll("*").remove();
+
+        data.positions.forEach((p)=>{
+            d3.select("#positions").append("p").text(p);
+        })
     });
 
 });

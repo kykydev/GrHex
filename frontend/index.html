@@ -108,7 +108,7 @@
                     <button id="bouttonOuvrier" class="buttonblack">Ouvrier</button>
                     <button id="bouttonDiplomatie" class="buttonblack">Diplomatie</button>
                     <button id="bouttonEspionnage" class="buttonblack">Espionnage</button>
-                    <button id="bouttonOnglet4" class="buttonblack">Onglet 4</button>
+                    <button id="bouttonEspions" class="buttonblack">Échange</button>
 
                     <button id="bouttonChamp" class="buttonblack"
                         onclick="document.getElementById('vueInfoHdv').style.display = (document.getElementById('vueInfoHdv').style.display == 'none' ? 'block' : 'none');">Quitter</button>
@@ -143,7 +143,72 @@
                     <p>Coût pour recruter un espion 25 ors</p>
                     <button id="bouttonRecruter">Recruter un espion</button>
 
+                    <p>Nombre d'espions</p>
+                    <p id="nbEspions"></p>
+                    <p>Positions</p>
+                    <p id="positions"></p>
+
                 </div>
+
+                <div id="vueEspions" >
+
+                    <p>Mes ressources</p>
+                    <form id="mesRessourcesForm">
+                        <label for="bois">Bois:</label>
+                        <input type="radio" id="bois" name="ressource" value="bois"><br>
+                        
+                        <label for="cuivre">Cuivre:</label>
+                        <input type="radio" id="cuivre" name="ressource" value="cuivre"><br>
+                        
+                        <label for="etain">Étain:</label>
+                        <input type="radio" id="etain" name="ressource" value="etain"><br>
+                        
+                        <label for="or">Or:</label>
+                        <input type="radio" id="or" name="ressource" value="or"><br>
+                        
+                        <label for="pierre">Pierre:</label>
+                        <input type="radio" id="pierre" name="ressource" value="pierre"><br>
+
+                    </form>
+                    <label for="quantite">Quantité:</label>
+                    <input type="number" id="mesQuantites" name="quantite" min="1" step="1"><br>
+                
+
+                <p>Villes Disponibles</p>
+                <form id="selectionnerVille">
+                    <label for="argolide">Argolide:</label>
+                    <input type="radio" id="argolide" name="ville" value="argolide"><br>
+                    
+                    <label for="attique">Attique:</label>
+                    <input type="radio" id="attique" name="ville" value="attique"><br>
+                    
+                    <label for="beotie">Béotie:</label>
+                    <input type="radio" id="beotie" name="ville" value="beotie"><br>
+                </form>
+
+                <p>Ressources Ennemies</p>
+                <form id="ressourcesEnnemiesForm">
+                    <label for="bois">Bois:</label>
+                    <input type="radio" id="bois" name="ressource" value="bois"><br>
+                    
+                    <label for="cuivre">Cuivre:</label>
+                    <input type="radio" id="cuivre" name="ressource" value="cuivre"><br>
+                    
+                    <label for="etain">Étain:</label>
+                    <input type="radio" id="etain" name="ressource" value="etain"><br>
+                    
+                    <label for="or">Or:</label>
+                    <input type="radio" id="or" name="ressource" value="or"><br>
+                    
+                    <label for="pierre">Pierre:</label>
+                    <input type="radio" id="pierre" name="ressource" value="pierre"><br>
+
+                </form>
+                <label for="quantite">Quantité:</label>
+                <input type="number" id="quantitesEnnemies" name="quantite" min="1" step="1"><br>
+
+                <button id="bouttonEchange">Proposer un échange</button>
+                    
             </div>
 
             <div id="vueForge">

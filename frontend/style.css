@@ -600,7 +600,7 @@ button:hover {
 }
 
 
-#vueDiplomatie{
+#vueDiplomatie,#vueEspionnage,#vueEspions{
     display: none;
 }
 
