@@ -367,14 +367,14 @@ button:hover {
 
 /* Jeu */
 
-.ouvrier{
+.ouvrier {
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: baseline;
 }
 
-.txtchamp{
+.txtchamp {
     text-align: center;
     right: 0;
     position: absolute;
@@ -398,12 +398,35 @@ button:hover {
     overflow: auto;
 }
 
+#vueNotifications {
+    color: wheat;
+    display: none;
+    height: 94%;
+    width: 15%;
+    background-color: #000000e3;
+    position: fixed;
+    left: 0%;
+    bottom: 0%;
+    z-index: 4;
+    border: 4px double #212529;
+    overflow: auto;
+    display: none;
+    flex-direction: column;
+}
+
+.notifications {
+    display: flex;
+    padding: 10px;
+    background-color: #212529;
+    color: wheat;
+    cursor: pointer;
+    margin: 5px;
+}
+
 #vueChamp p {
     text-align: center;
     margin: 0;
 }
-
-
 
 #vueMine p {
     text-align: center;
@@ -547,29 +570,13 @@ button:hover {
     color: #fff;
 }
 
-#afficherNotif{
-    all:unset;
+#afficherNotif {
+    all: unset;
     cursor: pointer;
     font-size: 25px;
 }
 
-#vueNotifications{
-    display: none;
-    position: fixed;
-    min-height: 100px;
-    width: 100px;
-    
-    top : 50px;
-    left : 10px;
-    background-color: greenyellow;
-    
-}
-
-.notifications{
-    cursor: pointer;
-}
-
-#notificationDetail{
+#notificationDetail {
     display: none;
     position: fixed;
 
@@ -600,10 +607,13 @@ button:hover {
 }
 
 
-#vueDiplomatie,#vueEspionnage,#vueEspions{
+#vueDiplomatie,
+#vueEspionnage,
+#vueEspions {
     display: none;
 }
 
-#envoyerMail,#contenuMail{
+#envoyerMail,
+#contenuMail {
     z-index: 6;
 }

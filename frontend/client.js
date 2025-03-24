@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
     boutonNotif.on("click",()=>{
         position=0;
 
-        vueNotifications.style("display",(vueNotifications.style("display") == "block" ? "none" : "block"));
+        vueNotifications.style("display",(vueNotifications.style("display") == "flex" ? "none" : "flex"));
 
         if(vueNotifications.style("display")=="none"){
             notifDetail.selectAll("*").remove();
@@ -904,7 +904,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("notification",(notif)=>{
 
-        dialogue("Général, un message vous a été adressé !", "Messager", "rouge");
+        dialogue("Général, un message vous a été adressé !", "messager", "rouge");
 
         notificationsSauvegarder[notif.titre]=notif.texte;
 
