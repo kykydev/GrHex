@@ -218,7 +218,7 @@ function afficherUnites(unite, dam) {
     let hexagone = document.getElementById("h" + unite.position);
     if (hexagone) {
         let bbox = hexagone.getBBox();
-        
+
         let couleur = unite.couleur;
         switch (couleur) {
             case "rouge":
@@ -448,15 +448,15 @@ function fstatsUnite(unite) {
     let statsimg = d3.select("#statsUnite");
     statsimg.selectAll("*").remove();
 
-    if(unite.name == "Mur") {
+    if (unite.name == "Mur") {
         statsimg.append("img")
-        .attr("src", "img/murs/murdroite.png")
-        .attr("width", 180).attr("height", 150);
+            .attr("src", "img/murs/murdroite.png")
+            .attr("width", 180).attr("height", 150);
     }
-    else{
+    else {
         statsimg.append("img")
-        .attr("src", "img/personnages/" + unite.couleur + "/" + unite.name.toLowerCase() + ".png")
-        .attr("width", 180).attr("height", 150);
+            .attr("src", "img/personnages/" + unite.couleur + "/" + unite.name.toLowerCase() + ".png")
+            .attr("width", 180).attr("height", 150);
     }
 
     let stats = d3.select("#statsUnite").append("div").attr("id", "unitStats");
@@ -516,19 +516,19 @@ function fstatsBatiment(batiment) {
 }
 //Prend en entrée une position et des informations relatives à la partie et renvoie les directions dans lesquelles il y a un mur adjacent
 //Retour:tableau de strings parmis ["droite","gauche","hautdroite","hautgauche","basdroite","basgauche"]
-function mursAdjacentes(pos, width, height,board) {
+function mursAdjacentes(pos, width, height, board) {
     pos = parseInt(pos, 10);
     width = parseInt(width, 10)
     height = parseInt(height, 10)
     var retour = [];
-    if (board[pos]==undefined || board[pos].name!="Mur"){return retour}
+    if (board[pos] == undefined || board[pos].name != "Mur") { return retour }
     var row = pos % height;
     var col = Math.floor(pos / height);
     if (col > 0) { // not left
-        if (!retour.includes("gauche") &&  board[pos-height]!=undefined &&board[pos-height].name=="Mur"){retour.push("gauche")}; // left
+        if (!retour.includes("gauche") && board[pos - height] != undefined && board[pos - height].name == "Mur") { retour.push("gauche") }; // left
     }
     if (col < width - 1) { // not right
-                if (!retour.includes("droite")&&board[pos+height]!=undefined && board[pos+height].name=="Mur"){retour.push("droite")}; // right
+        if (!retour.includes("droite") && board[pos + height] != undefined && board[pos + height].name == "Mur") { retour.push("droite") }; // right
     }
 
 
@@ -536,13 +536,13 @@ function mursAdjacentes(pos, width, height,board) {
 
         if (row % 2 == 0) {//even row
             if (row > 0) {
-                if (col > 0) {if (!retour.includes("hautgauche")&&board[pos-height-1]!=undefined && board[pos - height - 1].name=="Mur"){retour.push("hautgauche")};}
-                if (!retour.includes("hautdroite") &&board[pos-1]!=undefined&& board[pos-1].name=="Mur"){retour.push("hautdroite")}; // left
+                if (col > 0) { if (!retour.includes("hautgauche") && board[pos - height - 1] != undefined && board[pos - height - 1].name == "Mur") { retour.push("hautgauche") }; }
+                if (!retour.includes("hautdroite") && board[pos - 1] != undefined && board[pos - 1].name == "Mur") { retour.push("hautdroite") }; // left
 
             }
             if (row < height - 1) {
-                if (col > 0) {if (!retour.includes("basgauche") &&board[pos-height+1]!=undefined&& board[pos - height + 1].name=="Mur"){retour.push("basgauche")};}
-                if (!retour.includes("basdroite") &&board[pos+1]!=undefined&& board[pos+1].name=="Mur"){retour.push("basdroite")}; // left
+                if (col > 0) { if (!retour.includes("basgauche") && board[pos - height + 1] != undefined && board[pos - height + 1].name == "Mur") { retour.push("basgauche") }; }
+                if (!retour.includes("basdroite") && board[pos + 1] != undefined && board[pos + 1].name == "Mur") { retour.push("basdroite") }; // left
 
 
 
@@ -550,42 +550,46 @@ function mursAdjacentes(pos, width, height,board) {
         }
         if (row % 2 != 0) {
             if (row > 0) {
-                if (col > 0) {if (!retour.includes("hautdroite") &&board[pos+height-1]!=undefined&& board[pos+height-1].name=="Mur"){retour.push("hautdroite")}; // left
-            }
-            if (!retour.includes("hautgauche")&&board[pos-1]!=undefined && board[pos - 1].name=="Mur"){retour.push("hautgauche")};
+                if (col > 0) {
+                    if (!retour.includes("hautdroite") && board[pos + height - 1] != undefined && board[pos + height - 1].name == "Mur") { retour.push("hautdroite") }; // left
+                }
+                if (!retour.includes("hautgauche") && board[pos - 1] != undefined && board[pos - 1].name == "Mur") { retour.push("hautgauche") };
 
             }
             if (row < height - 1) {
-                if (col < width - 1) {if (!retour.includes("basdroite") &&board[pos+height+1]!=undefined&& board[pos+height+1].name=="Mur"){retour.push("basdroite")}; // left
+                if (col < width - 1) {
+                    if (!retour.includes("basdroite") && board[pos + height + 1] != undefined && board[pos + height + 1].name == "Mur") { retour.push("basdroite") }; // left
+                }
+                if (!retour.includes("basgauche") && board[pos + 1] != undefined && board[pos + 1].name == "Mur") { retour.push("basgauche") }
             }
-            if (!retour.includes("basgauche") &&board[pos+1]!=undefined&& board[pos + 1].name=="Mur"){retour.push("basgauche")}
         }
     }
-}
-if (col % 2 != 0) {//odd column
-    
+    if (col % 2 != 0) {//odd column
+
         if (row % 2 == 0) {//even row
             if (row > 0) {
-                if (col > 0) {if (!retour.includes("hautgauche")&&board[pos-height-1]!=undefined && board[pos-height - 1].name=="Mur"){retour.push("hautgauche")};
-            }
-            if (!retour.includes("hautdroite") &&board[pos-1]!=undefined&& board[pos-1].name=="Mur"){retour.push("hautdroite")}
+                if (col > 0) {
+                    if (!retour.includes("hautgauche") && board[pos - height - 1] != undefined && board[pos - height - 1].name == "Mur") { retour.push("hautgauche") };
+                }
+                if (!retour.includes("hautdroite") && board[pos - 1] != undefined && board[pos - 1].name == "Mur") { retour.push("hautdroite") }
             }
 
             if (row < height - 1) {
-                if (col > 0) {if (!retour.includes("basgauche") &&board[pos-height+1]!=undefined&& board[pos -height+ 1].name=="Mur"){retour.push("basgauche")}}
-                if (!retour.includes("basdroite") &&board[pos+1]!=undefined&& board[pos+1].name=="Mur"){retour.push("basdroite")}
+                if (col > 0) { if (!retour.includes("basgauche") && board[pos - height + 1] != undefined && board[pos - height + 1].name == "Mur") { retour.push("basgauche") } }
+                if (!retour.includes("basdroite") && board[pos + 1] != undefined && board[pos + 1].name == "Mur") { retour.push("basdroite") }
             }
         }
         if (row % 2 != 0) {//odd row
 
             if (row > 0) {
-                if (col < width - 1) {if (!retour.includes("hautdroite") &&board[pos+height-1]!=undefined&& board[pos+height-1].name=="Mur"){retour.push("hautdroite")}
-            }
-                if (!retour.includes("hautgauche")&&board[pos-1]!=undefined && board[pos- 1].name=="Mur"){retour.push("hautgauche")}
+                if (col < width - 1) {
+                    if (!retour.includes("hautdroite") && board[pos + height - 1] != undefined && board[pos + height - 1].name == "Mur") { retour.push("hautdroite") }
+                }
+                if (!retour.includes("hautgauche") && board[pos - 1] != undefined && board[pos - 1].name == "Mur") { retour.push("hautgauche") }
             }
             if (row < height - 1) {
-                if (col > 0) {if (!retour.includes("basdroite") &&board[pos+height+1]!=undefined&& board[pos+height+1].name=="Mur"){retour.push("basdroite")} }
-                if (!retour.includes("basgauche") &&board[pos+1]!=undefined&& board[pos+ 1].name=="Mur"){retour.push("basgauche")}
+                if (col > 0) { if (!retour.includes("basdroite") && board[pos + height + 1] != undefined && board[pos + height + 1].name == "Mur") { retour.push("basdroite") } }
+                if (!retour.includes("basgauche") && board[pos + 1] != undefined && board[pos + 1].name == "Mur") { retour.push("basgauche") }
 
 
             }
@@ -594,13 +598,13 @@ if (col % 2 != 0) {//odd column
 
 
     var retouryahou = []
-    if (retour.length==0){retouryahou = ["centre"]} else{retouryahou.push("centre")}
-    if (retour.includes("hautdroite")){retouryahou.push("hautdroite")}
-    if (retour.includes("hautgauche")){retouryahou.push("hautgauche")}
-    if (retour.includes("droite")){retouryahou.push("droite")}
-    if (retour.includes("gauche")){retouryahou.push("gauche")}
-    if (retour.includes("basdroite")){retouryahou.push("basdroite")}
-    if (retour.includes("basgauche")){retouryahou.push("basgauche")}
+    if (retour.length == 0) { retouryahou = ["centre"] } else { retouryahou.push("centre") }
+    if (retour.includes("hautdroite")) { retouryahou.push("hautdroite") }
+    if (retour.includes("hautgauche")) { retouryahou.push("hautgauche") }
+    if (retour.includes("droite")) { retouryahou.push("droite") }
+    if (retour.includes("gauche")) { retouryahou.push("gauche") }
+    if (retour.includes("basdroite")) { retouryahou.push("basdroite") }
+    if (retour.includes("basgauche")) { retouryahou.push("basgauche") }
 
     return retouryahou;
 
@@ -628,7 +632,7 @@ function dessineMur(pos, width, height, board, type, unite) {
 
     directions.forEach(direction => {
         if (murs[direction]) {
-            d3.select("#jeu")
+            let image = d3.select("#jeu")
                 .append("image")
                 .attr("class", "unite")
                 .attr("xlink:href", `/img/murs/${murs[direction]}`)
@@ -648,6 +652,11 @@ function dessineMur(pos, width, height, board, type, unite) {
                         .attr("stroke", "transparent")
                         .style("stroke-width", 0);
                 });
+
+                if ((terrain[pos]).startsWith("!")) {
+                    image.style("filter", "grayscale(100%)");
+                }
+
         }
     });
 }
@@ -676,15 +685,15 @@ function dialogue(message, unite, couleur) {
  * @param {Object} board - une liste d'unité
  * @param {String} dam - le nom de la div du damier
  */
-function ajouterUnites(board, dam,width,height) {
+function ajouterUnites(board, dam, width, height) {
     for (let position of Object.keys(board)) {
 
-        if (board[position].name=="Mur"){
+        if (board[position].name == "Mur") {
             // console.log("mur"+position)
-            dessineMur(position,width,height,board)
+            dessineMur(position, width, height, board)
         }
-        else{
-        afficherUnites(board[position], dam);
+        else {
+            afficherUnites(board[position], dam);
         }
     }
 }
