@@ -393,5 +393,23 @@ io.on('connection', (socket) => {
       if (check==true){if (partie.addEspion(idJoueur,data.positionEspion)){socket.emit("nouveauEspeion",true)}}
     })
 
+    socket.on("echangeRessources",data=>{
+      console.log(data)
+    })
+
+
+
+    socket.on("demandeMines",data=>{
+      var partie = parties[socket.idPartie]
+      if ( partie==undefined ){return}
+      socket.emit("demandeMines",partie.map.mines)
+    })
+
+    socket.on("echangeRessources",data=>{
+      console.log(data)
+    })
+
+
+
 
 });
