@@ -397,6 +397,7 @@ document.addEventListener("DOMContentLoaded", function () {
         socket.emit("demandeBâtiments");
         socket.emit("demandeDamier", idJoueur);
         socket.emit('ressources');
+        socket.emit("demandeMines");
 
 
         dicoPathUnite = {};
@@ -954,11 +955,29 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     });
 
-    socket.on("",(data)=>{
-        data.forEach((hex)=>{
-            
+    socket.on("demandeMines",(data)=>{
 
-        })
+        console.log(data)
+
+        Object.keys(data).forEach((cle)=>{
+
+            switch(data[cle]){
+                case "tin":
+                    d3.select("#h" + cle).style("filter", " opacity(0.6) grayscale(100%) brightness(85%) contrast(110%) sepia(20%) saturate(80%)");
+                    break;
+
+                case "copper":
+                    d3.select("#h" + cle).style("filter"," opacity(0.6) sepia(100%) saturate(500%) hue-rotate(-20deg) brightness(90%) contrast(120%)");
+                    break;
+
+                case "argent":
+                    d3.select("#h" + cle).style("filter", "opacity(0.6) brightness(0.8) sepia(1) saturate(5) hue-rotate(90deg)");
+                    break;
+
+            }
+
+
+        });
 
     });
 
