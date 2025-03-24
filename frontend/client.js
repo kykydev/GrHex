@@ -839,7 +839,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("demandeUnitesMine",data=>{
         let vueMine = d3.select("#vueMine");
-        console.log(data);
         vueMine.selectAll("*:not(.hautvue):not(#bouttonMine):not(#txthautvue):not(#titreVueMine):not(#txthauvue)").remove();
 
         let titreMine = d3.select("#titreVueMine");
@@ -953,6 +952,14 @@ document.addEventListener("DOMContentLoaded", function () {
         data.positions.forEach((p)=>{
             d3.select("#positions").append("p").text(p);
         })
+    });
+
+    socket.on("",(data)=>{
+        data.forEach((hex)=>{
+            
+
+        })
+
     });
 
 });
