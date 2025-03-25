@@ -276,6 +276,8 @@ class game {
     init() {//Fonction qui initialise la partie
         this.initCites()
         this.board[39] = new pierris(39)
+        this.board[517] = new discipleathneutre(517)
+        this.board[518] = new discipleathneutre(518)
     }
 
 
@@ -977,15 +979,40 @@ class game {
     pathfindToDestination(départ, arrivée, owner) {
         var rules = []
         var uni = this.board[départ];if (uni==undefined){return}
-        for (var z in this.map.terrain){
-            let zz = this.map.terrain[z]
-            if (uni.canGo(zz)==false || (this.board[z] != undefined && this.board[z].owner == owner)) { rules.push("X") }
-            else if (zz == "montagne") { rules.push(2) }
-            else { rules.push(1) }
-        }
+        switch (uni.strategy){
+            case "agression":
+            for (var z in this.map.terrain){
+                let zz = this.map.terrain[z]
+                if (uni.canGo(zz)==false || (this.board[z] != undefined && this.board[z].owner == owner)) { rules.push("X") }
+                else if (zz == "montagne") { rules.push(2) }
+                else { rules.push(1) }
+            }
+            break
 
-        let route = pathFind(départ, arrivée, this.map.height, this.map.width, rules)
-        return route
+            case "modere":
+                for (var z in this.map.terrain){
+                    let zz = this.map.terrain[z]
+                    if (uni.canGo(zz)==false || (this.board[z] != undefined && this.board[z].owner == owner)) { rules.push("X") }
+                    else if (zz == "montagne" || (this.board[z]!=undefined)) { rules.push(2) }
+                    else { rules.push(1) }
+                }
+            break
+
+            default:
+                for (var z in this.map.terrain){
+                    let zz = this.map.terrain[z]
+                    if (uni.canGo(zz)==false || (this.board[z] != undefined)) { rules.push("X") }
+                    else if (zz == "montagne") { rules.push(2) }
+                    else { rules.push(1) }
+                }
+
+            break
+
+
+        }
+            
+            let route = pathFind(départ, arrivée, this.map.height, this.map.width, rules)
+            return route
     }
 
 
@@ -1542,13 +1569,11 @@ while (index<nbLettres){
 
 //newTrade ajoute une demande d'échange
 newTrade(data,idJoueur){
-    console.log("a")
     var joueur = this.players[idJoueur]
     if (joueur==undefined){return false}
     if (data.mesRessources==undefined || data.ville==undefined || data.ressourcesEnnemies==undefined || data.mesQuantites==undefined || data.quantitesEnnemies==undefined){return false}
     
-    console.log("b")
-    if (joueur.units[data.hdvStock][data.mesRessources]==undefined ||joueur.units[data.hdvStock][data.mesRessources]<data.mesQuantites){return false}
+    if (joueur.units[data.hdvStock]==undefined ||joueur.units[data.hdvStock][data.mesRessources]==undefined ||joueur.units[data.hdvStock][data.mesRessources]<data.mesQuantites){return false}
     
     for (var z of Object.keys(this.players)){
         if (z.cite==data.ville){

@@ -57,7 +57,6 @@ if (partie.canStart()){
 io.on('connection', (socket) => {
 
   socket.on('nouvellemap', (data) => {
-    console.log("il veut une map")
   });
 
   socket.on("creerPartie",data=>{
@@ -187,9 +186,9 @@ io.on('connection', (socket) => {
       
         
       let route = partie.pathfindToDestination(départ, arrivée, idJoueur)
-      if (route == false) { return false }
       partie.board[départ].destination = arrivée
-      partie.board[départ].path = undefined
+      if (route == false) { return false }
+      partie.board[départ].path = route
       socket.emit("mouvement", route)
 
     }   
@@ -344,7 +343,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on("sortirChamp",data=>{
-      console.log(data)
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
       if (data==undefined || partie==undefined || idJoueur==undefined){return}
