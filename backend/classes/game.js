@@ -1481,7 +1481,7 @@ getHDV(idJoueur){//Revoie les HDV et entrepôts du joueur concerné
 
     var retour = []
     for (var z of joueur.hdv){
-        retour.push({"type":z.name,"position":z.position})
+        retour.push({"type":this.board[z].name,"position":this.board[z].position})
     }
 
     if (retour!=undefined && retour.length>0){return retour}
@@ -1515,7 +1515,7 @@ addLetter(objetMail,contenu,joueur,cite,){
 
 
    
-    destinataire.letters.push({"titre":objetMail,"texte":(contenu+"\n\nDe: "+joueur.name),"tours":dist})
+    destinataire.letters.push({"titre":objetMail,"texte":(contenu+"\n\nDe: "+joueur.name),"tours":dist,"type":"diplomatique"})
 
 }
 
@@ -1539,6 +1539,44 @@ while (index<nbLettres){
 }
 
 }
+
+//newTrade ajoute une demande d'échange
+newTrade(data,idJoueur){
+    console.log("a")
+    var joueur = this.players[idJoueur]
+    if (joueur==undefined){return false}
+    if (data.mesRessources==undefined || data.ville==undefined || data.ressourcesEnnemies==undefined || data.mesQuantites==undefined || data.quantitesEnnemies==undefined){return false}
+    
+    console.log("b")
+    if (joueur.units[data.hdvStock][data.mesRessources]==undefined ||joueur.units[data.hdvStock][data.mesRessources]<data.mesQuantites){return false}
+    
+    for (var z of Object.keys(this.players)){
+        if (z.cite==data.ville){
+            
+            var trade = {
+                "envoyeur":joueur.idJoueur,
+                "ressourcesEnvoyées":data.mesRessources,
+                "quantitéEnvoyée":data.mesQuantites,
+                "stockEnvoyeur":data.hdvStock,
+                "receveur": z.idJoueur,
+                "ressourceDemandée":z.ressourcesEnnemies,
+                "quantitéDemandée":data.quantitesEnnemies,
+                "idRequête":uuidv4()
+            }
+            z.trades[trade.idRequête]=trade
+            console.log(z)
+            
+            return true
+        }
+        
+    }
+     return false   
+    
+
+
+}
+
+
 
 addEspion(idJoueur,positionEspion){
     var joueur = this.players[idJoueur] ; if (joueur==undefined){return false}
