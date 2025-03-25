@@ -187,9 +187,9 @@ io.on('connection', (socket) => {
       
         
       let route = partie.pathfindToDestination(départ, arrivée, idJoueur)
-      if (route == false) { return false }
       partie.board[départ].destination = arrivée
-      partie.board[départ].path = undefined
+      if (route == false) { return false }
+      partie.board[départ].path = route
       socket.emit("mouvement", route)
 
     }   

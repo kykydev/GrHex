@@ -1542,13 +1542,11 @@ while (index<nbLettres){
 
 //newTrade ajoute une demande d'échange
 newTrade(data,idJoueur){
-    console.log("a")
     var joueur = this.players[idJoueur]
     if (joueur==undefined){return false}
     if (data.mesRessources==undefined || data.ville==undefined || data.ressourcesEnnemies==undefined || data.mesQuantites==undefined || data.quantitesEnnemies==undefined){return false}
     
-    console.log("b")
-    if (joueur.units[data.hdvStock][data.mesRessources]==undefined ||joueur.units[data.hdvStock][data.mesRessources]<data.mesQuantites){return false}
+    if (joueur.units[data.hdvStock]==undefined ||joueur.units[data.hdvStock][data.mesRessources]==undefined ||joueur.units[data.hdvStock][data.mesRessources]<data.mesQuantites){return false}
     
     for (var z of Object.keys(this.players)){
         if (z.cite==data.ville){
