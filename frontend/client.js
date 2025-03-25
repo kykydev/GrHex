@@ -219,13 +219,9 @@ document.addEventListener("DOMContentLoaded", function () {
         let mesQuantites = document.getElementById("mesQuantites").value;
         let quantitesEnnemies = document.getElementById("quantitesEnnemies").value;
 
-        console.log({
-            mesRessources: mesRessources,
-            ville: ville,
-            ressourcesEnnemies: ressourcesEnnemies,
-            mesQuantites: mesQuantites,
-            quantitesEnnemies: quantitesEnnemies
-        });
+
+        let entrepot = document.querySelector("input[name='mesEntrepots']:checked").value;
+
 
         socket.emit("echangeRessources", {
             mesRessources: mesRessources,
@@ -233,7 +229,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ressourcesEnnemies: ressourcesEnnemies,
             mesQuantites: mesQuantites,
             quantitesEnnemies: quantitesEnnemies,
-            hdv:hdvSelectionne
+            hdv:hdvSelectionne,
+            hdvStock:entrepot
         });
     });
 
@@ -782,6 +779,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     }else if(map.terrain[cle][0]=="?"){
                         d3.select("#h" + cle).style("filter", "brightness(0.3")
+                    }else{
+                        d3.select("h"+cle).style("filtre","");
                     }
                     
                 });
@@ -1014,6 +1013,17 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(data);
 
         console.log(Object.keys(data[0]));
+
+        let choisirEntrepot = d3.select("#choisirEntrepot");
+
+        data.forEach((entrepot)=>{
+            choisirEntrepot.append("label").attr("for",entrepot.position).text(entrepot.type);
+            choisirEntrepot.append("input").attr("type","radio").attr("name","mesEntrepots")
+            .attr("value",entrepot.position).attr("id","e"+entrepot.position);
+
+            choisirEntrepot.append("br");
+
+        });
 
     });
 
