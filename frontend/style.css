@@ -384,7 +384,8 @@ button:hover {
 #vueInfoHdv,
 #vueForge,
 #vueChamp,
-#vueMine {
+#vueMine,
+#vueNotificationMessage {
     color: wheat;
     display: none;
     height: 500px;
@@ -396,6 +397,10 @@ button:hover {
     z-index: 4;
     border: 4px double #212529;
     overflow: auto;
+}
+
+#vueNoificationMessage p{
+    word-wrap: break-word;
 }
 
 #vueNotifications {
@@ -421,6 +426,11 @@ button:hover {
     color: wheat;
     cursor: pointer;
     margin: 5px;
+}
+
+.notifications:hover {
+    background-color: #343a40;
+
 }
 
 #vueChamp p {
@@ -528,6 +538,7 @@ button:hover {
     display: flex;
     align-items: center;
     flex-direction: row;
+    z-index: 5;
 }
 
 .dialoguebox img {
@@ -575,37 +586,6 @@ button:hover {
     cursor: pointer;
     font-size: 25px;
 }
-
-#notificationDetail {
-    display: none;
-    position: fixed;
-
-    /* top : 150px;
-    left: 150px; */
-
-    /* height: 1000px;
-    width: 1000px; */
-
-    /* background-color: yellow; */
-
-}
-
-
-#notificationDetail * {
-    display: none;
-    position: fixed;
-
-    color: inherit;
-    font-size: inherit;
-
-    /* top: 20%;
-    left: 20%; */
-
-    height: 100px;
-    width: 100px;
-    background-color: greenyellow;
-}
-
 
 #vueDiplomatie,
 #vueEspionnage,

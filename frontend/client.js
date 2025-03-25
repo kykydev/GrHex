@@ -121,21 +121,21 @@ document.addEventListener("DOMContentLoaded", function () {
     let boutonNotif = d3.select("#afficherNotif");
     let vueNotifications = d3.select("#vueNotifications");
 
-    let notifDetail = d3.select("#notificationDetail");
+    let notifDetail = d3.select("#vueNotificationMessage");
 
     let notificationsSauvegarder = {};
-    let position=0;
+    let position = 0;
 
-    boutonNotif.on("click",()=>{
-        position=0;
+    boutonNotif.on("click", () => {
+        position = 0;
 
-        vueNotifications.style("display",(vueNotifications.style("display") == "flex" ? "none" : "flex"));
+        vueNotifications.style("display", (vueNotifications.style("display") == "flex" ? "none" : "flex"));
 
-        if(vueNotifications.style("display")=="none"){
+        if (vueNotifications.style("display") == "none") {
             notifDetail.selectAll("*").remove();
         }
 
-        notifDetail.style("display","none");
+        notifDetail.style("display", "none");
     });
 
 
@@ -147,31 +147,31 @@ document.addEventListener("DOMContentLoaded", function () {
     let bouttonOuvrier = document.getElementById("bouttonOuvrier");
     let bouttonDiplomatie = document.getElementById("bouttonDiplomatie");
 
-    bouttonOuvrier.addEventListener("click",(event)=>{
-        d3.select("#vueDiplomatie").style("display","none");
-        d3.select("#vueOuvrier").style("display","block");
-        d3.select("#vueEspions").style("display","none");
-        d3.select("#vueEspionnage").style("display","none");
+    bouttonOuvrier.addEventListener("click", (event) => {
+        d3.select("#vueDiplomatie").style("display", "none");
+        d3.select("#vueOuvrier").style("display", "block");
+        d3.select("#vueEspions").style("display", "none");
+        d3.select("#vueEspionnage").style("display", "none");
     });
 
-    bouttonDiplomatie.addEventListener("click",(event)=>{
-        d3.select("#vueOuvrier").style("display","none");
-        d3.select("#vueDiplomatie").style("display","block");
-        d3.select("#vueEspions").style("display","none");
-        d3.select("#vueEspionnage").style("display","none");
+    bouttonDiplomatie.addEventListener("click", (event) => {
+        d3.select("#vueOuvrier").style("display", "none");
+        d3.select("#vueDiplomatie").style("display", "block");
+        d3.select("#vueEspions").style("display", "none");
+        d3.select("#vueEspionnage").style("display", "none");
     });
 
 
-  
+
     let envoyerMail = document.getElementById("envoyerMail");
 
-    
-    
-    document.getElementById("objetMail").addEventListener("click",(event)=>{
+
+
+    document.getElementById("objetMail").addEventListener("click", (event) => {
         event.stopImmediatePropagation();
     });
 
-    document.getElementById("contenuMail").addEventListener("click",(event)=>{
+    document.getElementById("contenuMail").addEventListener("click", (event) => {
         event.stopImmediatePropagation();
     });
 
@@ -183,27 +183,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     d3.select("#bouttonEspionnage")
-    .on("click",()=>{
-        d3.select("#vueOuvrier").style("display","none");
-        d3.select("#vueDiplomatie").style("display","none");
-        d3.select("#vueEspions").style("display","none");
-        d3.select("#vueEspionnage").style("display","block");
-    });
-    
-    d3.select("#bouttonRecruter")
-    .on("click",()=>{
-        d3.select("#vueInfoHdv").style("display","none");
-        selectionPositionEspion=true;
+        .on("click", () => {
+            d3.select("#vueOuvrier").style("display", "none");
+            d3.select("#vueDiplomatie").style("display", "none");
+            d3.select("#vueEspions").style("display", "none");
+            d3.select("#vueEspionnage").style("display", "block");
+        });
 
-    });
+    d3.select("#bouttonRecruter")
+        .on("click", () => {
+            d3.select("#vueInfoHdv").style("display", "none");
+            selectionPositionEspion = true;
+
+        });
 
     d3.select("#bouttonEspions")
-    .on("click",()=>{
-        d3.select("#vueOuvrier").style("display","none");
-        d3.select("#vueDiplomatie").style("display","none");
-        d3.select("#vueEspionnage").style("display","none");
-        d3.select("#vueEspions").style("display","block");
-    });
+        .on("click", () => {
+            d3.select("#vueOuvrier").style("display", "none");
+            d3.select("#vueDiplomatie").style("display", "none");
+            d3.select("#vueEspionnage").style("display", "none");
+            d3.select("#vueEspions").style("display", "block");
+        });
 
 
     let bouttonEchange = document.getElementById("bouttonEchange");
@@ -214,8 +214,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let ville = document.querySelector("input[name='ville']:checked").value;
 
         let ressourcesEnnemies = document.querySelector("input[name='ressourcesEnnemies']:checked").value;
-        
-        
+
+
         let mesQuantites = document.getElementById("mesQuantites").value;
         let quantitesEnnemies = document.getElementById("quantitesEnnemies").value;
 
@@ -229,8 +229,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ressourcesEnnemies: ressourcesEnnemies,
             mesQuantites: mesQuantites,
             quantitesEnnemies: quantitesEnnemies,
-            hdv:hdvSelectionne,
-            hdvStock:entrepot
+            hdv: hdvSelectionne,
+            hdvStock: entrepot
         });
     });
 
@@ -238,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
     socket.on("finTour", data => {
         //console.log(data);
         // true si tout le monde à fini false sinon
-        
+
         let index = 0;
 
         function jouerAnimationSuivante() {
@@ -403,17 +403,17 @@ document.addEventListener("DOMContentLoaded", function () {
         dicoPathUnite = {};
 
 
-        Object.keys(cite).forEach((nom)=>{
+        Object.keys(cite).forEach((nom) => {
 
-            if(maCite!=nom){
-    
+            if (maCite != nom) {
+
                 d3.select("#selectionnerCitePourMail").append("label").text(nom)
-                .append("input")
-                .attr("type","radio").attr("name","choixCiteMail").attr("value",nom)
-                
+                    .append("input")
+                    .attr("type", "radio").attr("name", "choixCiteMail").attr("value", nom)
+
                 d3.select("#selectionnerCitePourMail").append("br");
 
-                
+
             }
         });
     })
@@ -449,7 +449,7 @@ document.addEventListener("DOMContentLoaded", function () {
         actualiserDamier(data.width, data.height, data.terrain, "h");
         appelsAjoutTextures("jeu");
         setupBoutonScroll("damierjeu");
-        ajouterUnites(data.board, "jeu",data.width,data.height);
+        ajouterUnites(data.board, "jeu", data.width, data.height);
 
         const vueBatiments = document.getElementById('vueBatiments');
         const damierjeu = document.getElementById('damierjeu');
@@ -457,7 +457,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         rendreDeplacable(vueBatiments, damierjeu);
         rendreDeplacable(statsUnite, damierjeu);
-        rendreDeplacable(vueMine,damierjeu);
+        rendreDeplacable(vueMine, damierjeu);
 
         // document.getElementById("recolteButton").addEventListener("click", function() {
         //     attaqueAnim(185, 215, "-9");
@@ -524,25 +524,25 @@ document.addEventListener("DOMContentLoaded", function () {
             element.addEventListener("click", (event) => {
                 hexagoneSelectionnee = event.target.id.supprimerPrefixId("h");
 
-                if(selectionPositionEspion && hdvSelectionnePourEspion){
+                if (selectionPositionEspion && hdvSelectionnePourEspion) {
 
-                    console.log("espion" , {hdv:hdvSelectionnePourEspion,positionEspion:event.target.id.supprimerPrefixId("h")});
-                    socket.emit("nouveauEspion",{hdv:hdvSelectionnePourEspion,positionEspion:event.target.id.supprimerPrefixId("h")});
+                    console.log("espion", { hdv: hdvSelectionnePourEspion, positionEspion: event.target.id.supprimerPrefixId("h") });
+                    socket.emit("nouveauEspion", { hdv: hdvSelectionnePourEspion, positionEspion: event.target.id.supprimerPrefixId("h") });
 
 
                 } else
 
-                if (uniteSelectionnee && hexagoneSelectionnee) {
-                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
-                    uniteSelectionnee = "";
-                    hexagoneSelectionnee = "";
+                    if (uniteSelectionnee && hexagoneSelectionnee) {
+                        socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+                        uniteSelectionnee = "";
+                        hexagoneSelectionnee = "";
 
-                } else if (batimentSelectionne) {
-                    // console.log(batimentSelectionne, hexagoneSelectionnee);
-                    socket.emit("construireBâtiment", { nomBat: batimentSelectionne, position: hexagoneSelectionnee });
-                    batimentSelectionne = "";
-                    hexagoneSelectionnee = "";
-                }
+                    } else if (batimentSelectionne) {
+                        // console.log(batimentSelectionne, hexagoneSelectionnee);
+                        socket.emit("construireBâtiment", { nomBat: batimentSelectionne, position: hexagoneSelectionnee });
+                        batimentSelectionne = "";
+                        hexagoneSelectionnee = "";
+                    }
             });
         });
 
@@ -619,30 +619,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
 
-                    socket.emit("demandeHDV","ze");
+                    socket.emit("demandeHDV", "ze");
 
 
                     // pour ouvrier
                     hdvSelectionne = event.target.id.supprimerPrefixId("uni");
 
                     let imgOuvrier = document.getElementById("imgOuvrier");
-                    imgOuvrier.addEventListener("click",()=>{
+                    imgOuvrier.addEventListener("click", () => {
                         socket.emit('recruterOuvrier', hdvSelectionne);
                     });
                     // vueInfoHdv variable D3
 
 
                     // socket mail 
-                    envoyerMail.addEventListener("click",()=>{
+                    envoyerMail.addEventListener("click", () => {
                         const cite = document.querySelector('input[name="choixCiteMail"]:checked');
-                        
+
                         let objetMail = document.getElementById("objetMail");
                         let contenuMail = document.getElementById("contenuMail");
-                
-                
+
+
                         // console.log("position hdv : " , event.target.id.supprimerPrefixId("uni"));
-                
-                        socket.emit("mail",{objet:objetMail.value,contenu:contenuMail.value,cite:cite.value,hdv:event.target.id.supprimerPrefixId("uni")});
+
+                        socket.emit("mail", { objet: objetMail.value, contenu: contenuMail.value, cite: cite.value, hdv: event.target.id.supprimerPrefixId("uni") });
                     });
 
                     // socket espion
@@ -651,26 +651,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-                } 
-                else if (batimentSelectionne=="croix"){
-                    socket.emit("croix",event.target.id.supprimerPrefixId("uni"));
-                    batimentSelectionne=""
                 }
-                else  if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" && !uniteSelectionnee)) {
+                else if (batimentSelectionne == "croix") {
+                    socket.emit("croix", event.target.id.supprimerPrefixId("uni"));
+                    batimentSelectionne = ""
+                }
+                else if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Forge" && !uniteSelectionnee)) {
                     // l'enrôlement
                     // hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                     // socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
-                    socket.emit("demandeUnitesForge",event.target.id.supprimerPrefixId("uni"));
+                    socket.emit("demandeUnitesForge", event.target.id.supprimerPrefixId("uni"));
                     vueInfoForge.style("display", (vueInfoForge.style("display") == "none" ? "block" : "none"));
 
-                    
+
                 }
-                else  if (((data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville"||(data.board[event.target.id.supprimerPrefixId("uni")].name == "Entrepôt")) && uniteSelectionnee)) {
+                else if (((data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" || (data.board[event.target.id.supprimerPrefixId("uni")].name == "Entrepôt")) && uniteSelectionnee)) {
                     // le changement de base
                     socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
 
                 }
-                else if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" || (data.board[event.target.id.supprimerPrefixId("uni")].name == "Mine"))&& uniteSelectionnee){
+                else if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" || (data.board[event.target.id.supprimerPrefixId("uni")].name == "Mine")) && uniteSelectionnee) {
 
                     console.log("slaut");
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
@@ -678,7 +678,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 }
-                else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Chantier" && uniteSelectionnee){
+                else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Chantier" && uniteSelectionnee) {
 
                     // console.log("slaut");
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
@@ -686,24 +686,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 }
-                else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" && !uniteSelectionnee){
-                    socket.emit("demandeUnitesChamp",event.target.id.supprimerPrefixId("uni"));
+                else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" && !uniteSelectionnee) {
+                    socket.emit("demandeUnitesChamp", event.target.id.supprimerPrefixId("uni"));
                     // console.log("test vueChamp");
                     //A FAIRE VUE CHAMP
 
                     let vueChamp = d3.select("#vueChamp");
                     //console.log(vueChamp);
-                    vueChamp.style("display",(vueChamp.style("display")=="none" ? "block" : "none"))
-                    .attr("class",event.target.id.supprimerPrefixId("uni"));
-                    
+                    vueChamp.style("display", (vueChamp.style("display") == "none" ? "block" : "none"))
+                        .attr("class", event.target.id.supprimerPrefixId("uni"));
 
 
-                }else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Mine" && !uniteSelectionnee){
-                    socket.emit("demandeUnitesMine",event.target.id.supprimerPrefixId("uni"));
-                
+
+                } else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Mine" && !uniteSelectionnee) {
+                    socket.emit("demandeUnitesMine", event.target.id.supprimerPrefixId("uni"));
+
                     let vueMine = d3.select("#vueMine");
-                    vueMine.style("display",(vueMine.style("display")=="none" ? "block" : "none"))
-                    .attr("class",event.target.id.supprimerPrefixId("uni"));
+                    vueMine.style("display", (vueMine.style("display") == "none" ? "block" : "none"))
+                        .attr("class", event.target.id.supprimerPrefixId("uni"));
                 }
                 else if (uniteSelectionnee && uniteSelectionnee == event.target.id.supprimerPrefixId("uni")) {
                     uniteSelectionnee = "";
@@ -735,56 +735,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
         data.forEach(bat => {
             d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/" + (bat.url).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", bat.nom).attr("class", "batiments")
-            .on("mouseover", () => {
-                fstatsBatiment(bat);
+                .on("mouseover", () => {
+                    fstatsBatiment(bat);
 
-                if( bat.nom  ==  "Mine"){
-                    Object.keys(localisationMines).forEach((cle)=>{
-            
-                        switch(localisationMines[cle]){
+                    if (bat.nom == "Mine") {
+                        Object.keys(localisationMines).forEach((cle) => {
 
-
-
-                            case "tin":
-                                d3.select("#h" + cle).style("filter", " opacity(0.6) grayscale(100%) brightness(85%) contrast(110%) sepia(20%) saturate(80%)");
-                                break;
-            
-                            case "copper":
-                                d3.select("#h" + cle).style("filter"," opacity(0.6) sepia(100%) saturate(500%) hue-rotate(-20deg) brightness(90%) contrast(120%)");
-                                break;
-            
-                            case "argent":
-                                d3.select("#h" + cle).style("filter", "opacity(0.6) brightness(0.8) sepia(1) saturate(5) hue-rotate(90deg)");
-                                break;
-            
-                        }
-                    });
-                }
-
-            })
-            .on("mouseleave",()=>{ 
-                Object.keys(localisationMines).forEach((cle)=>{
+                            switch (localisationMines[cle]) {
 
 
-                    if(map.terrain[cle][0]=="!"){
-                        switch (map.terrain[cle][1]) {
-                            case "1":
-                                d3.select("#h" + cle).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
-                                break
-                            case "2":
-                                d3.select("#h" + cle).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
-                                break
-                            case "3":
-                                d3.select("#h" + cle).style("filter", "brightness(0.3) sepia(1) saturate(5) hue-rotate(30deg)");
-                        }
-                    }else if(map.terrain[cle][0]=="?"){
-                        d3.select("#h" + cle).style("filter", "brightness(0.3")
-                    }else{
-                        d3.select("#h"+cle).style("filter","");
+
+                                case "tin":
+                                    d3.select("#h" + cle).style("filter", " opacity(0.6) grayscale(100%) brightness(85%) contrast(110%) sepia(20%) saturate(80%)");
+                                    break;
+
+                                case "copper":
+                                    d3.select("#h" + cle).style("filter", " opacity(0.6) sepia(100%) saturate(500%) hue-rotate(-20deg) brightness(90%) contrast(120%)");
+                                    break;
+
+                                case "argent":
+                                    d3.select("#h" + cle).style("filter", "opacity(0.6) brightness(0.8) sepia(1) saturate(5) hue-rotate(90deg)");
+                                    break;
+
+                            }
+                        });
                     }
-                    
+
+                })
+                .on("mouseleave", () => {
+                    Object.keys(localisationMines).forEach((cle) => {
+
+
+                        if (map.terrain[cle][0] == "!") {
+                            switch (map.terrain[cle][1]) {
+                                case "1":
+                                    d3.select("#h" + cle).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
+                                    break
+                                case "2":
+                                    d3.select("#h" + cle).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
+                                    break
+                                case "3":
+                                    d3.select("#h" + cle).style("filter", "brightness(0.3) sepia(1) saturate(5) hue-rotate(30deg)");
+                            }
+                        } else if (map.terrain[cle][0] == "?") {
+                            d3.select("#h" + cle).style("filter", "brightness(0.3")
+                        } else {
+                            d3.select("#h" + cle).style("filter", "");
+                        }
+
+                    });
                 });
-            });
         });
     });
 
@@ -816,7 +816,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
-    socket.on("destructionBâtiment", data=>{
+    socket.on("destructionBâtiment", data => {
         d3.select("#uni" + data).remove();
     })
 
@@ -834,13 +834,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    socket.on("désafficherUnité",position=>{
+    socket.on("désafficherUnité", position => {
         if (document.getElementById("uni" + position)) {
             d3.select("#uni" + position).remove();
         }
     });
 
-    socket.on("spawnMessager", data=>{
+    socket.on("spawnMessager", data => {
         console.log(data);
         afficherUnites(data, "jeu");
     })
@@ -857,7 +857,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const container = d3.select("#vueForge").append("div").style("position", "relative").style("display", "inline-block").style("text-align", "center").style("margin", "0 auto");
                 container.append("img").attr("src", "/img/personnages/rouge/" + (evo.nom).toLowerCase() + ".png").attr("width", "125").attr("height", "150").attr("id", "forge" + evo.nom);
                 container.append("p").html(`${evo.gold !== undefined ? evo.gold : 0} <img src="/img/autre/or.png" style="height: 50px; margin-right: 10px; vertical-align: middle;" />`).style("position", "absolute").style("top", "0").style("right", "0").style("margin", "0");
-                
+
                 container.select("img").on("click", () => {
                     socket.emit("evolution", { avant: uni.name, apres: evo.nom, position: uni.position });
                 });
@@ -866,7 +866,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    socket.on("demandeUnitesChamp",data=>{
+    socket.on("demandeUnitesChamp", data => {
 
 
         let vueChamp = d3.select("#vueChamp");
@@ -876,55 +876,55 @@ document.addEventListener("DOMContentLoaded", function () {
         vueChamp.select(".txtchamp").remove();
         vueChamp.append("p").attr("class", "txtchamp").html(`Revenu du jour : ${data.revenu} <img src="/img/autre/or.png" style="height: 50px; margin-right: 10px; vertical-align: middle;" />`);
 
-        data.unites.forEach((uni,index)=>{
+        data.unites.forEach((uni, index) => {
             vueChamp.append("img").attr("src", "/img/personnages/rouge/" + (uni).toLowerCase() + ".png")
                 .attr("width", "125").attr("height", "150")
                 .on("click", () => {
-                    socket.emit("sortirChamp", { unite: uni, position: vueChamp.attr("class"),index:index});
+                    socket.emit("sortirChamp", { unite: uni, position: vueChamp.attr("class"), index: index });
                 });
         });
 
     });
 
-    socket.on("demandeUnitesMine",data=>{
+    socket.on("demandeUnitesMine", data => {
         let vueMine = d3.select("#vueMine");
         vueMine.selectAll("*:not(.hautvue):not(#bouttonMine):not(#txthautvue):not(#titreVueMine):not(#txthauvue)").remove();
 
         let titreMine = d3.select("#titreVueMine");
 
-        switch(data.minerai){
+        switch (data.minerai) {
             case "copper":
 
                 titreMine.append("p").text("Mine de cuivre");
 
-                titreMine.append("img").attr("src","/img/autre/cuivre.png")
-                .attr("width", "50").attr("height", "50");
+                titreMine.append("img").attr("src", "/img/autre/cuivre.png")
+                    .attr("width", "50").attr("height", "50");
                 break;
 
             case "tin":
                 titreMine.append("p").text("Mine d'étain");
 
-                titreMine.append("img").attr("src","/img/autre/etain.png")
-                .attr("width", "50").attr("height", "50");
+                titreMine.append("img").attr("src", "/img/autre/etain.png")
+                    .attr("width", "50").attr("height", "50");
                 break;
         }
 
-        data.unites.forEach((uni,index)=>{
+        data.unites.forEach((uni, index) => {
             vueMine.append("img").attr("src", "/img/personnages/rouge/mineur.png")
                 .attr("width", "125").attr("height", "150")
                 .on("click", () => {
-                    socket.emit("sortirChamp", { unite: "Mineur", position: vueMine.attr("class"),index:index});
+                    socket.emit("sortirChamp", { unite: "Mineur", position: vueMine.attr("class"), index: index });
                 });
             vueMine.append("p").text(uni.minerai);
         });
 
     });
 
-    socket.on("evolution",data=>{
+    socket.on("evolution", data => {
         let bbox = document.getElementById("h" + data.position).getBBox();
         let pos = document.getElementById("h" + data.position);
 
-        d3.select("#uni"+data.position).remove();
+        d3.select("#uni" + data.position).remove();
 
         d3.select("#jeu")
             .append("image")
@@ -946,80 +946,74 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
-    let numeroNotif=0;
+    let numeroNotif = 0;
 
     let aNotif = {}
 
-    socket.on("notification",(notif)=>{
+    socket.on("notification", (notif) => {
 
         dialogue("Général, un message vous a été adressé !", "messager", "rouge");
 
-        notificationsSauvegarder[notif.titre]=notif.texte;
+        notificationsSauvegarder[notif.titre] = notif.texte;
 
-        d3.select("#vueNotifications").append("p").text(notif.titre).attr("id","notif"+numeroNotif).attr("class","notifications");
+        d3.select("#vueNotifications").append("p").text(notif.titre).attr("id", "notif" + numeroNotif).attr("class", "notifications");
         ++numeroNotif;
 
-        
+        Array.from(notifications).forEach((element) => {
 
-        Array.from(notifications).forEach((element)=>{
+            if (!aNotif[element.id]) {
 
-            if(!aNotif[element.id]){
-    
-                element.addEventListener("click",(event)=>{
-                    console.log("click");
+                element.addEventListener("click", (event) => {
 
-                    
+                    let notifDetail = d3.select("#vueNotificationMessage");
 
+                    notifDetail.selectAll("*").remove();
 
-                    let notifDetail = d3.select("#notificationDetail");
-        
-                    notifDetail.append("div")
-                        .style("top", "150px")
-                        .style("left", position * 150 + 250 + "px")
-                        .append("p").text(element.textContent)
-                        .append("p").text(notificationsSauvegarder[element.textContent]);
-
-
-                    notifDetail.style("display","block");
-                    notifDetail.selectAll("*").style("display","block");
+                    if (notifDetail.style("display") == "none"){
+                        notifDetail.append("p").text(notificationsSauvegarder[element.textContent]);
+                        notifDetail.style("display", "block");
+                        notifDetail.selectAll("*").style("display", "block");
+                    } else {
+                        notifDetail.style("display", "none");
+                    }
 
                     ++position;
                 });
-                
-                aNotif[element.id]=true;
+
+                aNotif[element.id] = true;
             }
         });
     });
 
-    
-    socket.on("demandeEspions",(data)=>{
+
+    socket.on("demandeEspions", (data) => {
         console.log("espions")
         d3.select("#nbEspions").text(data.nombre);
 
         d3.select("#positions").selectAll("*").remove();
 
-        data.positions.forEach((p)=>{
+        data.positions.forEach((p) => {
             d3.select("#positions").append("p").text(p);
         })
     });
 
-    socket.on("demandeMines",(data)=>{
+    socket.on("demandeMines", (data) => {
 
-       localisationMines=data;
+        localisationMines = data;
 
     });
 
-    socket.on("demandeHDV",(data)=>{
+    socket.on("demandeHDV", (data) => {
         console.log(data);
 
         console.log(Object.keys(data[0]));
 
         let choisirEntrepot = d3.select("#choisirEntrepot");
 
-        data.forEach((entrepot)=>{
-            choisirEntrepot.append("label").attr("for",entrepot.position).text(entrepot.type);
-            choisirEntrepot.append("input").attr("type","radio").attr("name","mesEntrepots")
-            .attr("value",entrepot.position).attr("id","e"+entrepot.position);
+        data.forEach((entrepot) => {
+            choisirEntrepot.append("label").attr("for", entrepot.position).text(entrepot.type);
+            choisirEntrepot.append("input").attr("type", "radio").attr("name", "mesEntrepots")
+                .attr("value", entrepot.position).attr("id", "e" + entrepot.position);
 
             choisirEntrepot.append("br");
 
