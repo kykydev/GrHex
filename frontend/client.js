@@ -780,7 +780,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }else if(map.terrain[cle][0]=="?"){
                         d3.select("#h" + cle).style("filter", "brightness(0.3")
                     }else{
-                        d3.select("h"+cle).style("filtre","");
+                        d3.select("#h"+cle).style("filter","");
                     }
                     
                 });
