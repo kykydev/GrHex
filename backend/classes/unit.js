@@ -20,6 +20,7 @@ class unit {
         this.type="unit"
         this.tracked=false
         this.fieldRevenu=0 //Attribut qui donne le nombre de pièces générées dans un champ
+        this.strategy = "prudence"
     }
 
     canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
@@ -56,6 +57,7 @@ class hoplite extends unit{
         super(50,15,5,5,2,"Hoplite",position,player,2,1)
         this.tracked=true
         this.origin = false//Attribut qui stocke ce qu'était l'unité avant pour le désenrôlement
+        this.strategy = "agression"
 
     }
     getForgeEvos(){
@@ -76,6 +78,8 @@ class archer extends unit{
         super(30,15,0,1,2,"Archer",position,player,2,2)
         this.tracked=true
         this.origin = false//Attribut qui stocke ce qu'était l'unité avant pour le désenrôlement
+        this.strategy = "agression"
+
     }
     getForgeEvos(){
         return this.origin
@@ -88,7 +92,9 @@ class discipleath extends unit{
     super(40,2,10,0,1,"Disciple d'Athéna",position,player,2,1)
     this.tracked=true
     this.origin = false//Attribut qui stocke ce qu'était l'unité avant pour le désenrôlement
-    }
+    this.strategy = "agression"
+
+}
 }
 
 
