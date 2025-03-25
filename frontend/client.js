@@ -27,7 +27,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const attique = document.getElementById("attique");
     const argolide = document.getElementById("argolide");
 
-    const pseudoInput = document.getElementById("usernameInput")
+    const pseudoInput = document.getElementById("usernameInput");
+
+    let localisationMines;
 
     socket.emit("getListeParties", "")
 
@@ -325,6 +327,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
     });
 
     socket.on("ressources", data => {
@@ -619,6 +622,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
 
+                    socket.emit("demandeHDV","ze");
+
 
                     // pour ouvrier
                     hdvSelectionne = event.target.id.supprimerPrefixId("uni");
@@ -680,7 +685,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // console.log("slaut");
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
-                    console.log("yahou")
                     socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
 
 
@@ -736,6 +740,51 @@ document.addEventListener("DOMContentLoaded", function () {
             d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/" + (bat.url).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", bat.nom).attr("class", "batiments")
             .on("mouseover", () => {
                 fstatsBatiment(bat);
+
+                if( bat.nom  ==  "Mine"){
+                    Object.keys(localisationMines).forEach((cle)=>{
+            
+                        switch(localisationMines[cle]){
+
+
+
+                            case "tin":
+                                d3.select("#h" + cle).style("filter", " opacity(0.6) grayscale(100%) brightness(85%) contrast(110%) sepia(20%) saturate(80%)");
+                                break;
+            
+                            case "copper":
+                                d3.select("#h" + cle).style("filter"," opacity(0.6) sepia(100%) saturate(500%) hue-rotate(-20deg) brightness(90%) contrast(120%)");
+                                break;
+            
+                            case "argent":
+                                d3.select("#h" + cle).style("filter", "opacity(0.6) brightness(0.8) sepia(1) saturate(5) hue-rotate(90deg)");
+                                break;
+            
+                        }
+                    });
+                }
+
+            })
+            .on("mouseleave",()=>{ 
+                Object.keys(localisationMines).forEach((cle)=>{
+
+
+                    if(map.terrain[cle][0]=="!"){
+                        switch (map.terrain[cle][1]) {
+                            case "1":
+                                d3.select("#h" + cle).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
+                                break
+                            case "2":
+                                d3.select("#h" + cle).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
+                                break
+                            case "3":
+                                d3.select("#h" + cle).style("filter", "brightness(0.3) sepia(1) saturate(5) hue-rotate(30deg)");
+                        }
+                    }else if(map.terrain[cle][0]=="?"){
+                        d3.select("#h" + cle).style("filter", "brightness(0.3")
+                    }
+                    
+                });
             });
         });
     });
@@ -957,31 +1006,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("demandeMines",(data)=>{
 
-        console.log(data)
+       localisationMines=data;
 
-        Object.keys(data).forEach((cle)=>{
+    });
 
-            switch(data[cle]){
-                case "tin":
-                    d3.select("#h" + cle).style("filter", " opacity(0.6) grayscale(100%) brightness(85%) contrast(110%) sepia(20%) saturate(80%)");
-                    break;
+    socket.on("demandeHDV",(data)=>{
+        console.log(data);
 
-                case "copper":
-                    d3.select("#h" + cle).style("filter"," opacity(0.6) sepia(100%) saturate(500%) hue-rotate(-20deg) brightness(90%) contrast(120%)");
-                    break;
-
-                case "argent":
-                    d3.select("#h" + cle).style("filter", "opacity(0.6) brightness(0.8) sepia(1) saturate(5) hue-rotate(90deg)");
-                    break;
-
-            }
-
-
-        });
+        console.log(Object.keys(data[0]));
 
     });
 
 });
-
-
-
