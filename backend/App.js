@@ -358,7 +358,7 @@ io.on('connection', (socket) => {
     socket.on("demandeHDV",data=>{
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
-      if (data==undefined || partie==undefined || idJoueur==undefined){return}
+      if (partie==undefined || idJoueur==undefined){return}
 
       var retour = partie.getHDV(idJoueur)
       if (retour!=undefined && retour!=false){
@@ -393,9 +393,20 @@ io.on('connection', (socket) => {
       if (check==true){if (partie.addEspion(idJoueur,data.positionEspion)){socket.emit("nouveauEspeion",true)}}
     })
 
+
+
+
     socket.on("echangeRessources",data=>{
-      console.log(data)
-    })
+
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data==undefined || partie==undefined || idJoueur==undefined || data.hdv==undefined){return}
+      var check = partie.canOrder(idJoueur,data.hdv)
+      if (check==true){
+          if (partie.newTrade(data,idJoueur)){
+            socket.emit("echangeRessources",true);
+          }
+      }})
 
 
 
@@ -405,9 +416,6 @@ io.on('connection', (socket) => {
       socket.emit("demandeMines",partie.map.mines)
     })
 
-    socket.on("echangeRessources",data=>{
-      console.log(data)
-    })
 
 
 
