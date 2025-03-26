@@ -214,7 +214,7 @@ function appelsAjoutTextures(selected) {
  * @param {Object} unite - Object ayant les attributs name, couleur, position, etc
  * @param {String} dam - id du damier sur lequel mettre l'unité 
  */
-function afficherUnites(unite, dam) {
+function afficherUnites(unite, dam,opacity=1) {
     let hexagone = document.getElementById("h" + unite.position);
     if (hexagone) {
         let bbox = hexagone.getBBox();
@@ -257,7 +257,8 @@ function afficherUnites(unite, dam) {
                 d3.select(hexagone)
                     .attr("stroke", "transparent")
                     .style("stroke-width", 0)
-            });
+            })
+            .style("opacity",opacity); // opacité c'est entre 0 et 1
 
         if (terrain[unite.position].startsWith("!")) {
             image.style("filter", "grayscale(100%)");

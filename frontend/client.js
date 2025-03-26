@@ -195,6 +195,9 @@ document.addEventListener("DOMContentLoaded", function () {
             d3.select("#vueInfoHdv").style("display", "none");
             selectionPositionEspion = true;
 
+            d3.select("#placeUnEspionStp").text("Places un Espion sur le damier");
+            
+
         });
 
     d3.select("#bouttonEspions")
@@ -526,9 +529,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (selectionPositionEspion && hdvSelectionnePourEspion) {
 
-                    console.log("espion", { hdv: hdvSelectionnePourEspion, positionEspion: event.target.id.supprimerPrefixId("h") });
+                    // console.log("espion", { hdv: hdvSelectionnePourEspion, positionEspion: event.target.id.supprimerPrefixId("h") });
                     socket.emit("nouveauEspion", { hdv: hdvSelectionnePourEspion, positionEspion: event.target.id.supprimerPrefixId("h") });
+                    
 
+                    afficherUnites({
+                        couleur:"rouge",
+                        name:"messager",
+                        position: event.target.id.supprimerPrefixId("h")}
+                    , "jeu",0.5);
+
+                    d3.select("#placeUnEspionStp").text("");
+                    
 
                 } else
 
@@ -669,18 +681,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     // le changement de base
                     socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
 
+
                 }
                 else if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" || (data.board[event.target.id.supprimerPrefixId("uni")].name == "Mine")) && uniteSelectionnee) {
 
-                    console.log("slaut");
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                     socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+                    uniteSelectionnee=""
 
 
                 }
                 else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Chantier" && uniteSelectionnee) {
 
-                    // console.log("slaut");
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                     socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
 
