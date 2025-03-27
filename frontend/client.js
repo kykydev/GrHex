@@ -361,6 +361,8 @@ document.addEventListener("DOMContentLoaded", function () {
         idPartie = data.idPartie;
         nomPartie = data.nom
         idJoueur = data.idJoueur;
+        socket.idJoueur = data.idJoueur;
+        socket.idPartie = data.idPartie;
 
         setupBoutonScroll("damierPrev");
         afficherNomPartie(nomPartie);
