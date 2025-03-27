@@ -281,6 +281,10 @@ io.on('connection', (socket) => {
     let partie = parties[socket.idPartie]
     if (partie==undefined){return}
     if (socket.idJoueur==undefined){return}
+
+    if (partie.canOrder(socket.idJoueur,data)==false){return }
+
+
     var res = partie.recruteOuvrier(data)
     if (res!=false){socket.emit("recruterOuvrier",res)}
   })
@@ -412,6 +416,25 @@ io.on('connection', (socket) => {
       var partie = parties[socket.idPartie]
       if ( partie==undefined ){return}
       socket.emit("demandeMines",partie.map.mines)
+    })
+
+
+
+    socket.on("Stratégie",data=>{
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data==undefined || partie==undefined || idJoueur==undefined || data.position == data.newStrat ||data.newStrat==undefined){return}
+      var check = partie.canOrder(idJoueur,data.position)
+      
+      if (check==true){
+        if (partie.changeStrat(idJoueur,data.position,data.newStrat)){
+          socket.emit("Stratégie",true)
+        }
+      }
+      
+
+
+
     })
 
 

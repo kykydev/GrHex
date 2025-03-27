@@ -161,7 +161,6 @@ function appelsAjoutTextures(selected) {
     var images = [
 
         //Plaines
-        { id: "?-pattern", url: "/img/textures/plaines/plaine_brouillard.jpg" },
         { id: "plaine_1-pattern", url: "/img/textures/plaines/plaine_1.jpg" },
         { id: "plaine_2-pattern", url: "/img/textures/plaines/plaine_2.jpg" },
         { id: "plaine_3-pattern", url: "/img/textures/plaines/plaine_3.jpg" },
@@ -214,7 +213,7 @@ function appelsAjoutTextures(selected) {
  * @param {Object} unite - Object ayant les attributs name, couleur, position, etc
  * @param {String} dam - id du damier sur lequel mettre l'unité 
  */
-function afficherUnites(unite, dam,opacity=1) {
+function afficherUnites(unite, dam, opacity = 1) {
     let hexagone = document.getElementById("h" + unite.position);
     if (hexagone) {
         let bbox = hexagone.getBBox();
@@ -258,7 +257,7 @@ function afficherUnites(unite, dam,opacity=1) {
                     .attr("stroke", "transparent")
                     .style("stroke-width", 0)
             })
-            .style("opacity",opacity); // opacité c'est entre 0 et 1
+            .style("opacity", opacity); // opacité c'est entre 0 et 1
 
         if (terrain[unite.position].startsWith("!")) {
             image.style("filter", "grayscale(100%)");
@@ -471,6 +470,17 @@ function fstatsUnite(unite) {
         stats.append("p").attr("id", "mov").text("Mouvement : " + unite.movement);
         stats.append("p").attr("id", "uniteAttack").text("Attaque : " + unite.attack);
         stats.append("p").attr("id", "uniteDefence").text("Défense : " + unite.defense);
+        if (unite.owner == socket.idJoueur) {
+            stats.append("p").attr("id", "uniteMode").text("Stratégie : ");
+            stats.append("select")
+                .attr("id", "uniteSelectMode")
+                .on("change", function () {
+                    const selectedMode = d3.select(this).property("value");
+                    socket.emit("Stratégie", { position: unite.position, "newStrat": d3.select(this).property("value").toLowerCase() });
+                    // console.log(unite.position);
+                })
+                .selectAll("option").data(["Agression", "Modere", "Prudence"]).enter().append("option").text(d => d).attr("value", d => d);
+        }
     }
 
     if (unite.wood !== undefined) { stats.append("div").attr("id", "uniteWood").text("Bois : " + unite.wood); }
@@ -654,9 +664,9 @@ function dessineMur(pos, width, height, board, type, unite) {
                         .style("stroke-width", 0);
                 });
 
-                if ((terrain[pos]).startsWith("!")) {
-                    image.style("filter", "grayscale(100%)");
-                }
+            if ((terrain[pos]).startsWith("!")) {
+                image.style("filter", "grayscale(100%)");
+            }
 
         }
     });
@@ -822,7 +832,7 @@ function rendreDeplacable(element, conteneur) {
 
     element.addEventListener('mousedown', (e) => {
 
-        if (e.target.tagName === 'IMG' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        if (e.target.tagName === 'IMG' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
             estImageCliquee = true;
             return;
         }
