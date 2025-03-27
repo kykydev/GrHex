@@ -339,14 +339,16 @@ class game {
                         }
                     }
                 }
-            player.visionsDiff[z].tours--
-        }
-        for (var z in player.visionsDiff){
-                    if (vision.tours==0){
-                    player.visionsDiff.splice(z,1)
-                    z--
-                    }
-        }
+               
+                
+            }
+            player.visionsDiff = player.visionsDiff.filter(v => v.tours > 0);
+            
+            for (var z in player.visionsDiff){
+                player.visionsDiff[z].tours--
+            }
+
+
         return retour
     }
 
