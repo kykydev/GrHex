@@ -466,8 +466,13 @@ function fstatsUnite(unite) {
     stats.append("p").attr("id", "uniteName").text("Nom : " + unite.name);
     stats.append("p").attr("id", "position").text("Position : " + unite.position);
     stats.append("p").attr("id", "uniteHp").text("Points de vie : " + unite.hp);
-    stats.append("p").attr("id", "uniteMode").text("Stratégie : ");
-    stats.append("select")
+
+    if (unite.type !== "building") {
+        stats.append("p").attr("id", "mov").text("Mouvement : " + unite.movement);
+        stats.append("p").attr("id", "uniteAttack").text("Attaque : " + unite.attack);
+        stats.append("p").attr("id", "uniteDefence").text("Défense : " + unite.defense);
+        stats.append("p").attr("id", "uniteMode").text("Stratégie : ");
+        stats.append("select")
         .attr("id", "uniteSelectMode")
         .on("change", function () {
             const selectedMode = d3.select(this).property("value");
@@ -476,11 +481,6 @@ function fstatsUnite(unite) {
             // console.log(unite.position);
         })
         .selectAll("option").data(["Agression", "Modere", "Prudence"]).enter().append("option").text(d => d).attr("value", d => d);
-
-    if (unite.type !== "building") {
-        stats.append("p").attr("id", "mov").text("Mouvement : " + unite.movement);
-        stats.append("p").attr("id", "uniteAttack").text("Attaque : " + unite.attack);
-        stats.append("p").attr("id", "uniteDefence").text("Défense : " + unite.defense);
     }
 
     if (unite.wood !== undefined) { stats.append("div").attr("id", "uniteWood").text("Bois : " + unite.wood); }
