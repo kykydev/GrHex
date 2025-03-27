@@ -4,12 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <link href="/script/style.css" rel="stylesheet" />
     <script src="/script/client.js" type="text/javascript"></script>
     <script src="/script/affichage.js" type="text/javascript"></script>
 
+    <link href="/script/style.css" rel="stylesheet" />
+    <link href="./script/vues.css"rel="stylesheet" />
+    
     <title>GrHex</title>
 </head>
 
@@ -128,21 +131,25 @@
                 </div>
 
                 <div id="vueDiplomatie">
-                    <p>Ma cite</p>
-                    
-                    <form id="selectionnerCitePourMail">
-                        
-                    </form>
+                    <div id ="flexDiplomatie">
+                        <p>Ma cite</p>
 
-                    <input type="text" placeholder="Objet" id="objetMail"/> <br>
-    
-                    <textarea id="contenuMail"></textarea>
-                    <button id="envoyerMail">Envoyer</button>
+
+                        <p>Cités ennemies : </p>
+                        <form id="selectionnerCitePourMail">
+                            
+                        </form>
+
+                        <input type="text" placeholder="Objet" id="objetMail"/> <br>
+        
+                        <textarea id="contenuMail"></textarea>
+                        <button id="envoyerMail" class="buttonblack">Envoyer</button>
+                    </div>
                 </div>
 
                 <div id="vueEspionnage">
                     <p>Coût pour recruter un espion 25 ors</p>
-                    <button id="bouttonRecruter">Recruter un espion</button>
+                    <button id="bouttonRecruter" class="buttonblack">Recruter un espion</button>
 
                     <p>Nombre d'espions</p>
                     <p id="nbEspions"></p>
@@ -151,70 +158,72 @@
 
                 </div>
 
-                <div id="vueEspions" >
+                <div id="vueEspions" > 
+                    <!-- c'est la vue échange -->
+                    <div id="flexEchange"> 
 
-                    <p>Mes ressources</p>
-                    <form id="mesRessourcesForm">
-                        <label for="bois">Bois:</label>
-                        <input type="radio" id="bois" name="mesRessources" value="bois"><br>
-                        
-                        <label for="cuivre">Cuivre:</label>
-                        <input type="radio" id="cuivre" name="mesRessources" value="cuivre"><br>
-                        
-                        <label for="etain">Étain:</label>
-                        <input type="radio" id="etain" name="mesRessources" value="etain"><br>
-                        
-                        <label for="or">Or:</label>
-                        <input type="radio" id="or" name="mesRessources" value="or"><br>
-                        
-                        <label for="pierre">Pierre:</label>
-                        <input type="radio" id="pierre" name="mesRessources" value="pierre"><br>
+                        <p>Mes ressources</p>
+                        <form id="mesRessourcesForm">
+                            <label for="bois">Bois:</label>
+                            <input type="radio" id="bois" name="mesRessources" value="bois"><br>
+                            
+                            <label for="cuivre">Cuivre:</label>
+                            <input type="radio" id="cuivre" name="mesRessources" value="cuivre"><br>
+                            
+                            <label for="etain">Étain:</label>
+                            <input type="radio" id="etain" name="mesRessources" value="etain"><br>
+                            
+                            <label for="or">Or:</label>
+                            <input type="radio" id="or" name="mesRessources" value="or"><br>
+                            
+                            <label for="pierre">Pierre:</label>
+                            <input type="radio" id="pierre" name="mesRessources" value="pierre"><br>
 
-                    </form>
-                    <label for="quantite">Quantité:</label>
-                    <input type="number" id="mesQuantites" name="quantite" min="1" step="1"><br>
-                
-                    <p>Choisir mon entrepot</p>
-                    <form id="choisirEntrepot">
-
-                    </form>
-
-                    <p>Villes Disponibles</p>
-                    <form id="selectionnerVille">
-                        <label for="argolide">Argolide:</label>
-                        <input type="radio" id="argolide" name="ville" value="argolide"><br>
-                        
-                        <label for="attique">Attique:</label>
-                        <input type="radio" id="attique" name="ville" value="attique"><br>
-                        
-                        <label for="beotie">Béotie:</label>
-                        <input type="radio" id="beotie" name="ville" value="beotie"><br>
-                    </form>
-
-                    <p>Ressources Ennemies</p>
-                    <form id="ressourcesEnnemiesForm">
-                        <label for="bois">Bois:</label>
-                        <input type="radio" id="bois" name="ressourcesEnnemies" value="bois"><br>
-                        
-                        <label for="cuivre">Cuivre:</label>
-                        <input type="radio" id="cuivre" name="ressourcesEnnemies" value="cuivre"><br>
-                        
-                        <label for="etain">Étain:</label>
-                        <input type="radio" id="etain" name="ressourcesEnnemies" value="etain"><br>
-                        
-                        <label for="or">Or:</label>
-                        <input type="radio" id="or" name="ressourcesEnnemies" value="or"><br>
-                        
-                        <label for="pierre">Pierre:</label>
-                        <input type="radio" id="pierre" name="ressourcesEnnemies" value="pierre"><br>
-
-                    </form>
-                    <label for="quantite">Quantité:</label>
-                    <input type="number" id="quantitesEnnemies" name="quantite" min="1" step="1"><br>
-
-                    <button id="bouttonEchange">Proposer un échange</button>
+                        </form>
+                        <label for="quantite">Quantité:</label>
+                        <input type="number" id="mesQuantites" name="quantite" min="0" step="1" value="1"><br>
                     
+                        <p>Choisir mon entrepot</p>
+                        <form id="choisirEntrepot">
 
+                        </form>
+
+                        <p>Villes Disponibles</p>
+                        <form id="selectionnerVille">
+                            <label for="argolide">Argolide:</label>
+                            <input type="radio" id="argolide" name="ville" value="argolide"><br>
+                            
+                            <label for="attique">Attique:</label>
+                            <input type="radio" id="attique" name="ville" value="attique"><br>
+                            
+                            <label for="beotie">Béotie:</label>
+                            <input type="radio" id="beotie" name="ville" value="beotie"><br>
+                        </form>
+
+                        <p>Ressources Ennemies</p>
+                        <form id="ressourcesEnnemiesForm">
+                            <label for="bois">Bois:</label>
+                            <input type="radio" id="bois" name="ressourcesEnnemies" value="bois"><br>
+                            
+                            <label for="cuivre">Cuivre:</label>
+                            <input type="radio" id="cuivre" name="ressourcesEnnemies" value="cuivre"><br>
+                            
+                            <label for="etain">Étain:</label>
+                            <input type="radio" id="etain" name="ressourcesEnnemies" value="etain"><br>
+                            
+                            <label for="or">Or:</label>
+                            <input type="radio" id="or" name="ressourcesEnnemies" value="or"><br>
+                            
+                            <label for="pierre">Pierre:</label>
+                            <input type="radio" id="pierre" name="ressourcesEnnemies" value="pierre"><br>
+
+                        </form>
+                        <label for="quantite">Quantité:</label>
+                        <input type="number" id="quantitesEnnemies" name="quantite" min="0" step="1" value="1"><br>
+
+                        <button id="bouttonEchange" class="buttonblack">Proposer un échange</button>
+                        
+                    </div>
 
                 </div>
             </div>

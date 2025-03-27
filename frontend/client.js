@@ -1015,10 +1015,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-    socket.on("demandeHDV", (data) => {
-        console.log(data);
-
-        console.log(Object.keys(data[0]));
+    socket.on("demandeHDV", (data) => { 
 
         let choisirEntrepot = d3.select("#choisirEntrepot");
 

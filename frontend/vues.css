@@ -1,0 +1,25 @@
+#flexEchange{
+    display: flex;
+    flex-wrap: wrap;
+
+    
+    height: 450px;
+   
+    flex-direction: column;
+}
+
+#vueEspions *,#vueDiplomatie *  {
+    max-width: 250px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
+
+
+#flexDiplomatie{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
+}
