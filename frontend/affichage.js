@@ -466,6 +466,16 @@ function fstatsUnite(unite) {
     stats.append("p").attr("id", "uniteName").text("Nom : " + unite.name);
     stats.append("p").attr("id", "position").text("Position : " + unite.position);
     stats.append("p").attr("id", "uniteHp").text("Points de vie : " + unite.hp);
+    stats.append("p").attr("id", "uniteMode").text("Stratégie : ");
+    stats.append("select")
+        .attr("id", "uniteSelectMode")
+        .on("change", function () {
+            const selectedMode = d3.select(this).property("value");
+            socket.emit("Stratégies", { position: unite.position, mode: d3.select(this).property("value").toLowerCase() });
+            // console.log(selectedMode.toLowerCase());
+            // console.log(unite.position);
+        })
+        .selectAll("option").data(["Agression", "Modere", "Prudence"]).enter().append("option").text(d => d).attr("value", d => d);
 
     if (unite.type !== "building") {
         stats.append("p").attr("id", "mov").text("Mouvement : " + unite.movement);
@@ -822,7 +832,7 @@ function rendreDeplacable(element, conteneur) {
 
     element.addEventListener('mousedown', (e) => {
 
-        if (e.target.tagName === 'IMG' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        if (e.target.tagName === 'IMG' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
             estImageCliquee = true;
             return;
         }
