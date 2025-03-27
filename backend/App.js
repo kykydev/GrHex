@@ -281,6 +281,10 @@ io.on('connection', (socket) => {
     let partie = parties[socket.idPartie]
     if (partie==undefined){return}
     if (socket.idJoueur==undefined){return}
+
+    if (partie.canOrder(socket.idJoueur,data)==false){return }
+
+
     var res = partie.recruteOuvrier(data)
     if (res!=false){socket.emit("recruterOuvrier",res)}
   })
