@@ -995,7 +995,7 @@ class game {
                 for (var z in this.map.terrain){
                     let zz = this.map.terrain[z]
                     if (uni.canGo(zz)==false || (this.board[z] != undefined && this.board[z].owner == owner)) { rules.push("X") }
-                    else if (zz == "montagne" || (this.board[z]!=undefined)) { rules.push(2) }
+                    else if (zz == "montagne" || (this.board[z]!=undefined)) { rules.push(3) }
                     else { rules.push(1) }
                 }
             break
@@ -1544,7 +1544,7 @@ addLetter(objetMail,contenu,joueur,cite,){
 
 
    
-    destinataire.letters.push({"titre":objetMail,"texte":(contenu+"\n\nDe: "+joueur.name),"tours":dist,"type":"diplomatique"})
+    destinataire.letters.push({"titre":objetMail,"texte":contenu,"expéditeur":joueur.name,"tours":dist,"type":"diplomatique"})
 
 }
 
@@ -1591,7 +1591,6 @@ newTrade(data,idJoueur){
                 "idRequête":uuidv4()
             }
             z.trades[trade.idRequête]=trade
-            console.log(z)
             
             return true
         }
@@ -1614,6 +1613,17 @@ addEspion(idJoueur,positionEspion){
     return true
 }
 
+
+changeStrat(idJoueur,position,newStrat){
+    var uni = this.board[position]
+    if (uni==undefined){return false}
+    if (uni.owner!=idJoueur){return false}
+    if (!["prudence","agression","modere"].includes(newStrat)){return}
+
+
+    uni.strategy=newStrat
+    return true
+}
 
 
 

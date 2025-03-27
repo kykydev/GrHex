@@ -476,8 +476,7 @@ function fstatsUnite(unite) {
                 .attr("id", "uniteSelectMode")
                 .on("change", function () {
                     const selectedMode = d3.select(this).property("value");
-                    socket.emit("Stratégies", { position: unite.position, mode: d3.select(this).property("value").toLowerCase() });
-                    // console.log(selectedMode.toLowerCase());
+                    socket.emit("Stratégie", { position: unite.position, "newStrat": d3.select(this).property("value").toLowerCase() });
                     // console.log(unite.position);
                 })
                 .selectAll("option").data(["Agression", "Modere", "Prudence"]).enter().append("option").text(d => d).attr("value", d => d);

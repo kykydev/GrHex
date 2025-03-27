@@ -416,6 +416,25 @@ io.on('connection', (socket) => {
 
 
 
+    socket.on("Stratégie",data=>{
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data==undefined || partie==undefined || idJoueur==undefined || data.position == data.newStrat ||data.newStrat==undefined){return}
+      var check = partie.canOrder(idJoueur,data.position)
+      
+      if (check==true){
+        if (partie.changeStrat(idJoueur,data.position,data.newStrat)){
+          socket.emit("Stratégie",true)
+        }
+      }
+      
+
+
+
+    })
+
+
+
 
 
 });
