@@ -1158,6 +1158,8 @@ tourMine(unite){
     if (joueur==undefined||unite.mineral==undefined){return false}
     for (var z of unite.workers){
         z[unite.mineral]+= Math.round(Math.random())+1
+        if (z.copper>z.maxCopper){z.copper=z.maxCopper}
+        if (z.tin>z.maxTin){z.tin=z.maxTin}
     }
 }
 
