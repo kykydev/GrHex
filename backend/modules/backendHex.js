@@ -145,7 +145,7 @@ function pathFind(pos1, pos2, height, width, rules) {
         }
     }
 
-    return false; // No path found
+    return false; //Pire des cas: pas de route
 }
 
 

@@ -119,7 +119,7 @@ class messager extends unit{
         var meilleurePos;
         
         for (var z of casesAdjacentes(this.targetUni.position,partie.map.width,partie.map.height)){
-            if (this.canGo(partie.map.terrain[z]) && partie.board[z]==undefined){
+            if (this.canGo(partie.map.terrain[z]) && (partie.pathfindToDestination(this.position,z,this.owner)!=false) && partie.board[z]==undefined){
                 if (meilleurePos==undefined || (distance(z,this.position,partie.map.height)<distance(meilleurePos,this.position,partie.map.height))){
                     meilleurePos=z
                 }
@@ -197,14 +197,13 @@ class builder extends unit{
         if (this.wood<travail.buildingInfos.coûtBois || this.stone<travail.buildingInfos.coûtPierre || this.copper<travail.buildingInfos.coûtCuivre || this.tin<travail.buildingInfos.coûtEtain){
             this.phase = "getRessources"}
         else{ this.phase="buildBuilding"}
-
         if (this.phase=="buildBuilding" && casesAdjacentes(this.position,partie.map.width,partie.map.height).includes(this.currentBuilding)){return this.position}
 
             if (this.phase=="getRessources"){
                 let meilleurebase = undefined
                 if (casesAdjacentes(this.base,partie.map.width,partie.map.height).includes(this.position)){return this.position}
                 for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
-                    if (partie.board[z]==undefined && this.canGo(partie.map.terrain[z]) && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+                    if (partie.board[z]==undefined&& (partie.pathfindToDestination(this.position,z,this.owner)!=false)&& this.canGo(partie.map.terrain[z]) && (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
                 }
 
 
@@ -216,14 +215,15 @@ class builder extends unit{
 
             let meilleureCase = undefined
             for (var z of casesAdjacentes(this.currentBuilding,partie.map.width,partie.map.height)){
-                if (partie.board[z]==undefined&& this.canGo(partie.map.terrain[z]) && (meilleureCase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleureCase,partie.map.height)))){meilleureCase=z}
+                if (partie.board[z]==undefined&& (partie.pathfindToDestination(this.position,z,this.owner)!=false)&& this.canGo(partie.map.terrain[z]) && (meilleureCase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleureCase,partie.map.height)))){meilleureCase=z}
             }
             return meilleureCase
+           
 
         }
         else{
             for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
-                if (partie.board[z]==undefined&& this.canGo(partie.map.terrain[z])){return z}
+                if (partie.board[z]==undefined&& (partie.pathfindToDestination(this.position,z,this.owner)!=false)&& this.canGo(partie.map.terrain[z])){return z}
             }
         }
             }
@@ -280,7 +280,7 @@ class bucheron extends unit{
 
             let meilleurebase = undefined
             for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
-                if (partie.board[z]==undefined && this.canGo(partie.map.terrain[z]) 
+                if (partie.board[z]==undefined && (partie.pathfindToDestination(this.position,z,this.owner)!=false) && this.canGo(partie.map.terrain[z]) 
                 && (meilleurebase==undefined 
                     || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){
                         meilleurebase=z
@@ -363,7 +363,7 @@ class mineur extends unit{
         if (this.canRécolte(partie)==false){
             let meilleurebase = undefined
             for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
-                if (partie.board[z]==undefined && this.canGo(partie.map.terrain[z])&& (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+                if (partie.board[z]==undefined && (partie.pathfindToDestination(this.position,z,this.owner)!=false) && this.canGo(partie.map.terrain[z])&& (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
             }
             if (meilleurebase!=undefined){return meilleurebase}
         }

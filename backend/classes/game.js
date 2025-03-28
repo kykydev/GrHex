@@ -276,8 +276,6 @@ class game {
     init() {//Fonction qui initialise la partie
         this.initCites()
         this.board[39] = new pierris(39)
-        this.board[517] = new discipleathneutre(517)
-        this.board[518] = new discipleathneutre(518)
     }
 
 
@@ -537,8 +535,12 @@ class game {
 
     combat(unit1, unit2) {//Fait se battre l'unité 1 avec l'unité 2. Renvoie false s'il n'y a pas de mort, 1 ou 2 pour dire qui est mort si un seul et 3 si les deux unités sont mortes
         let damage = 0
-        if (unit1.initiative >= unit2.initiative) {//L'unité 1 attaque avant
-            damage = unit1.attack - unit2.defense
+        let buffMontagneUni1=0;let buffMontagneUni2=0;
+        if (this.map.infos[unit1.position].terrain=="Montagne"){buffMontagneUni1=0.2}
+        if (this.map.infos[unit2.position].terrain=="Montagne"){buffMontagneUni2=0.2}
+        if (buffMontagneUni1!=0 && buffMontagneUni2!=0){ buffMontagneUni1=0; buffMontagneUni2=0;}
+        if (unit1.initiative*(1+buffMontagneUni1) >= unit2.initiative*(1+buffMontagneUni2)) {//L'unité 1 attaque avant
+            damage = unit1.attack*(1+buffMontagneUni1) - unit2.defense
             if (damage < 0) { damage = 0 }
             this.actionsThisTurn.push({ "type": "combat", "départ": unit1.position, "arrivée":unit2.position,"dégâts":"-"+damage})
             if (damage >= unit2.hp) {//Cas où l'unité 1 a tué
@@ -549,7 +551,7 @@ class game {
             else {//Cas où l'unité 1 n'a pas tué
                 unit2.hp = unit2.hp - damage
                 if (unit2.range>=unit1.range){
-                damage = unit2.attack - unit1.defense
+                damage = unit2.attack*(1+buffMontagneUni2) - unit1.defense
                 if (damage < 0) { damage = 0 }
 
                 if (unit2.type!="building" && damage>0){this.actionsThisTurn.push({ "type": "combat", "départ": unit2.position, "arrivée":unit1.position,"dégâts":"-"+damage})}
@@ -901,7 +903,7 @@ class game {
             if (this.board[uni].name=="Champ"){this.revenuChamp(this.board[uni])}
             if (this.board[uni].name=="Mine"){this.tourMine(this.board[uni])}
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
-            this.board[uni].destination = this.board[uni].findGoal(this)            
+            this.board[uni].destination = this.board[uni].findGoal(this)      
             if (this.board[uni].destination != undefined) {//Reset les path 
                 if (this.board[uni].owner!="Système"){
                 this.actions.push(new moveAction(this.board[uni].position, this.players[this.board[uni].owner]))
@@ -1191,12 +1193,6 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
         if (z.nom==nomBat){batInfos=z}
     }
     
-    var posStratège
-    for (var z of Object.keys(joueur.units)){
-        if (joueur.units[z].name=="Stratege"){
-            posStratège=z
-        }
-    }
     
     
     var assignedBuilder = undefined
@@ -1207,7 +1203,7 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
         }
     }
     
-    if (posStratège==undefined || distance(posStratège,pos,this.map.height)>3){return false}
+    if (this.canOrder(joueur.idJoueur,pos)==false){return false}
     if (batInfos==undefined){return false}
     if (assignedBuilder==undefined){return false}
     
@@ -1398,7 +1394,7 @@ getRevenuChamp(position,idJoueur){
 
 
 canOrder(idJoueur,posDépart){//Prend un IDJOUEUR et une position et dit si le joueur en question peut donner un ordre direct à l'unité se trouvant à cette position, false sinon et undefined si on ne sait pas
-    if (idJoueur==undefined || posDépart==undefined || this.board[posDépart]==undefined || this.players[idJoueur]==undefined){return undefined}
+    if (idJoueur==undefined || posDépart==undefined || this.players[idJoueur]==undefined){return undefined}
     var joueur = this.players[idJoueur]; if (joueur==undefined){return undefined}
     var comps = {}; var posStratège=undefined
     for (var z of Object.keys(joueur.units)){//Trouver les tours et le stratège
@@ -1591,6 +1587,8 @@ newTrade(data,idJoueur){
                 "idRequête":uuidv4()
             }
             z.trades[trade.idRequête]=trade
+            z.letters.push({"titre":"Demande d'échange de "+joueur.name,"expéditeur":joueur.name,"tours":dist,"échange":trade,"type":"commerce"})
+
             
             return true
         }
