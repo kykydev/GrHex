@@ -442,6 +442,10 @@ document.addEventListener("DOMContentLoaded", function () {
         dialogue(msg, "pierris pompidoris", "blanc");
     });
 
+    socket.on("dialogue",data=>{
+        dialogue(data.message, data.unite, data.couleur);
+    })
+
 
     //-----------------------------------------------------------------------
     // demande le damier

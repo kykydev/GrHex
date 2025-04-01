@@ -1,0 +1,89 @@
+{
+    "nom":"Peloponnese",
+    "height":30,
+    "width":40,
+    "clustersMiniers" :
+        {      "copper":[
+                    547
+                    ],
+                "tin":[
+
+                         ]
+        },
+
+    "positionsDépart":{ "beotie": 573, "attique": 1072, "argolide": 297 },
+
+    "boards":{
+        "beotie":{
+
+            "515": "stratege",
+            "541": "bucheron",
+            "692":  "mineur",
+            "489": "champ",
+            "519": "paysanne",
+            "576": "tour",
+            "542": "tour",
+            "662": "tour",
+            "516": "hoplite",
+            "696": "hoplite",
+            "483": "maison",
+            "570": "maison",
+            "664": "maison",
+            "636": "maison",        
+            
+            "524":"hoplite",
+            "434":"hoplite",
+            "437":"maison",
+            "545":"forge"
+        },
+        "hdvBeotie":[573,496],
+        "mursBeotie": [486, 457,459,490,520,550,580,610,609,638,668,698,697,726,754,753,751,750],
+        "argolide":{
+                "327": "stratege",
+                "288": "bucheron",
+                "268": "mineur",
+                "415": "paysanne",
+                "359": "champ",
+                "386": "tour",
+                "299": "tour",
+                "443": "tour",
+                "179": "hoplite",
+                "446": "hoplite",
+                "236": "maison",
+                "267": "maison",
+                "208": "maison",
+                "419": "maison",
+                "589": "hoplite",
+                "559": "hoplite",
+                "651": "maison"             
+        },
+        "hdvArgolide":[297,680],
+        "mursArgolide":[355,385,445,476],
+
+        "attique" : {
+            "1011": "stratege",
+            "1043": "bucheron",
+            "977": "paysanne",
+            "1041": "mineur",
+            "949": "hoplite",
+            "861": "hoplite",
+            "981": "tour",
+            "1101": "tour",
+            "1007": "tour",
+            "1009": "champ",
+            "1192": "maison",
+            "1159": "maison",
+            "1039": "maison",
+            "1134": "maison",
+            "1088": "hoplite",
+            "1087": "bucheron",
+            "1147": "maison"
+        },
+        "hdvAttique":[1072,1119],
+        "mursAttique":[889,918,917,976,1006,1005,1035,1065,1095,1125]
+        
+
+    },
+
+    "map" : ["plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","montagne","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","plaine","plaine","plaine","eau","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","plaine","eau","eau","eau","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","eau","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","plaine","plaine","plaine","eau","eau","plaine","plaine","plaine","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","montagne","montagne","eau","plaine","plaine","montagne","montagne","plaine","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","montagne","plaine","plaine","montagne","montagne","plaine","plaine","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","eau","montagne","plaine","plaine","montagne","plaine","plaine","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","plaine","eau","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","plaine","plaine","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","plaine","montagne","montagne","montagne","montagne","montagne","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","montagne","montagne","montagne","montagne","montagne","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","eau","eau","eau","eau","eau","plaine","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","eau","plaine","plaine","eau","eau","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","montagne","montagne","plaine","plaine","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","montagne","montagne","montagne","plaine","plaine","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","plaine","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","montagne","montagne","plaine","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","plaine","montagne","montagne","plaine","plaine","plaine","plaine","eau","plaine","eau","eau","montagne","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine"]
+} 

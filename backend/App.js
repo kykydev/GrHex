@@ -63,7 +63,7 @@ io.on('connection', (socket) => {
     var nbJoueurs = data.nbJoueurs
     var nbTours = data.nbTours
 
-    var partie = new game(nbJoueurs,nbTours)
+    var partie = new game(nbJoueurs,nbTours,"peloponnese")
     lobbies[partie.id]=partie
     
     var createur = partie.addPlayer()
@@ -286,7 +286,9 @@ io.on('connection', (socket) => {
 
 
     var res = partie.recruteOuvrier(data)
-    if (res!=false){socket.emit("recruterOuvrier",res)}
+    if (res!=false){
+      socket.emit("dialogue",{"message":"Je m'y mets tout-de-suite, general !", "unite":"ouvrier","couleur": "rouge"})
+      socket.emit("recruterOuvrier",res)}
   })
 
   socket.on("citésDispo",data=>{
@@ -379,6 +381,7 @@ io.on('connection', (socket) => {
       var check = partie.canOrder(idJoueur,data.hdv)
       if (check==true){
           if (partie.addLetter(data.objet,data.contenu,joueur,data.cite)){
+            socket.emit("dialogue",{"message":"Je pars sur le champ !", "unite":"messager","couleur": "rouge"})
             socket.emit("mail",true);
           }
         //{objet:objetMail.textContent,contenu:contenuMail.textContent});
@@ -392,7 +395,10 @@ io.on('connection', (socket) => {
       var idJoueur = socket.idJoueur
       if (data==undefined || partie==undefined || idJoueur==undefined){return}
       var check = partie.canOrder(idJoueur,data.hdv)
-      if (check==true){if (partie.addEspion(idJoueur,data.positionEspion)){socket.emit("nouveauEspeion",true)}}
+      if (check==true){if (partie.addEspion(idJoueur,data.positionEspion)){
+        socket.emit("dialogue",{"message":"Ils ne vont rien voir venir 🕵️", "unite":"pecheur","couleur": "rouge"})
+
+        socket.emit("nouveauEspeion",true)}}
     })
 
 
@@ -407,6 +413,8 @@ io.on('connection', (socket) => {
       if (check==true){
           if (partie.newTrade(data,idJoueur)){
             socket.emit("echangeRessources",true);
+            socket.emit("dialogue",{"message":"Je pars sur le champ !", "unite":"messager","couleur": "rouge"})
+
           }
       }})
 
@@ -429,6 +437,8 @@ io.on('connection', (socket) => {
       if (check==true){
         if (partie.changeStrat(idJoueur,data.position,data.newStrat)){
           socket.emit("Stratégie",true)
+          var uni = partie.board[data.position]; if (uni!=undefined){socket.emit("dialogue",{"message":"C'est compris !", "unite":uni.name,"couleur": "rouge"})
+          }
         }
       }
       
