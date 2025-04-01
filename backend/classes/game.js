@@ -1451,7 +1451,7 @@ addLetter(objetMail,contenu,joueur,cite,){
     if (objetMail==undefined || contenu==undefined || cite==undefined){return false}
     var destinataire = undefined
     for (var z of Object.keys(this.players)){if (this.players[z].cite!=undefined && this.players[z].cite==cite){destinataire = this.players[z]}}
-  
+    if (destinataire==undefined){return false}
     //Calcul de la distance pour le nombre de tours qu'il faudra
     var dist = 0
    
@@ -1472,7 +1472,7 @@ addLetter(objetMail,contenu,joueur,cite,){
 
    
     destinataire.letters.push({"titre":objetMail,"texte":contenu,"expéditeur":joueur.name,"tours":dist,"type":"diplomatique"})
-
+    return true
 }
 
 //Gère les lettres du joueur: baisse le nombre de tours d'attente de 1 et lorsque le tour est à 0, envoie la lettre

@@ -967,6 +967,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let numeroNotif = 0;
 
     let aNotif = {}
+    socket.on("mail",data=>{
+        dialogue("J'y vais de ce pas !", "messager", "rouge");
+    })
 
     socket.on("notification", (notif) => {
 
