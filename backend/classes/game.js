@@ -201,10 +201,26 @@ class game {
 
     }
 
+    initNeutre(){
+
+
+        var boardNeutre = this.map.boards.boardNeutre
+        if (boardNeutre==undefined){return false}
+        for (var position of Object.keys(boardNeutre)) {
+            if (this.board[position]==undefined){
+            this.map.infos[position] = new hexagon("plaine", "plaine_1", position)    
+            this.map.terrain[position] = this.map.infos[position].pattern
+            var uni = new (eval(boardNeutre[position]))(position)
+            if (uni.canGo(this.map.terrain[position])){this.board[position] = uni}
+            }
+            }
+        }
+        
+    
 
     init() {//Fonction qui initialise la partie
         this.initCites()
-        this.board[39] = new pierris(39)
+        this.initNeutre()
     }
 
 
@@ -1534,7 +1550,7 @@ newTrade(data,idJoueur){
                 "quantitéEnvoyée":data.mesQuantites,
                 "stockEnvoyeur":data.hdvStock,
                 "receveur": z.idJoueur,
-                "ressourceDemandée":z.ressourcesEnnemies,
+                "ressourceDemandée":data.ressourcesEnnemies,
                 "quantitéDemandée":data.quantitesEnnemies,
                 "idRequête":uuidv4()
             }
