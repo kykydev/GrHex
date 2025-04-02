@@ -487,6 +487,7 @@ function fstatsUnite(unite) {
     if (unite.stone !== undefined) { stats.append("div").attr("id", "uniteStone").text("Pierres : " + unite.stone); }
     if (unite.copper !== undefined) { stats.append("div").attr("id", "uniteCuivre").text("Cuivre : " + unite.copper); }
     if (unite.tin !== undefined) { stats.append("div").attr("id", "uniteTin").text("Etain : " + unite.tin); }
+    if (unite.fish !== undefined) { stats.append("div").attr("id", "uniteFish").text("Poissons : " + unite.fish+" poissons d'une valeur de "+unite.fishValue); }
 
     if (unite.buildingInfos) {
         if (unite.buildingInfos.coûtBois !== undefined) { stats.append("div").attr("id", "uniteWoodCost").text("Coût en bois : " + unite.buildingInfos.coûtBois); }

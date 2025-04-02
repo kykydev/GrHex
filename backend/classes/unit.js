@@ -349,7 +349,7 @@ class mineur extends unit{
     }
 
     canRécolte(partie){
-        return (this.sotne<this.maxStone)
+        return (this.stone<this.maxStone)
     }
 
     evolution(player){
@@ -520,8 +520,85 @@ class pecheur extends unit{
     constructor(position,player){
         super(20,8,3,1,1,"Pêcheur",position,player,1,1)
         this.tracked=false
-
+        this.fish=0
+        this.maxFish=5
+        this.fishValue=0
+        this.knownWater = []
     }
+
+
+
+    canDépose(){return true}
+
+    getForgeEvos(){
+        return [{"nom":"Archer","gold":25}]
+    }
+
+    updateBase(game){
+        if (this.base!=undefined){return this.base}
+        this.base =  game.players[this.owner].hdv[0]
+        for (var z of (game.players[this.owner].hdv)){
+            if (distance(this.position,z,game.map.height)<distance(this.position,this.base,game.map.height)){
+                this.base=z}
+        }
+    }
+    canGo(dest){
+        if (dest=="X" || dest=="eau" || dest=="montagne"){return false}
+        return true
+    }
+    canEvolve(){
+        return true
+    }
+
+    canRécolte(partie){
+        return (this.fish<this.maxFish)
+    }
+
+    evolution(player){
+        return (new hoplite(this.position,player))
+    }
+
+
+    
+    findGoal(partie){//Retourne la meilleure destination possible pour l'unité
+
+        if (this.canRécolte(partie)==false){
+            let meilleurebase = undefined
+            for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
+                if (partie.board[z]==undefined && (partie.pathfindToDestination(this.position,z,this.owner)!=false) && this.canGo(partie.map.terrain[z])&& (meilleurebase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleurebase,partie.map.height)))){meilleurebase=z}
+            }
+            if (meilleurebase!=undefined){return meilleurebase}
+        }
+        
+        if (this.destination!=undefined ){return this.destination}
+        if (partie.map.infos[this.position].type=="carriere"){return this.position}//Si la case actuelle est une forêt c'est bon
+
+        let c =  casesAdjacentes(this.position,partie.map.width,partie.map.height)
+        for (var z of c){
+            //On commence par chercher une forêt adjacente, cas le plus simple
+            if (partie.map.infos[z].type=="eau" && partie.board[z]==undefined){return this.position}
+        }
+
+        while (this.knownWater.length>0){
+            var z = this.knownWater.shift()
+            for (var z of casesAdjacentes(z,partie.map.width,partie.map.height)){
+                if (partie.pathfindToDestination(this.position,z,this.owner)!=false){return z}
+            }
+        }
+
+        while (c.length>0){
+            var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
+            if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
+
+        }
+        return undefined
+    }
+   
+
+
+
+
+
 }
 
 class chevaldetroie extends unit{
@@ -727,6 +804,7 @@ class creatureNeutre{
 class loup extends creatureNeutre{
     constructor(position){
         super(20,15,4,10,1,"Loup",position,2,1)
+        this.strategy="agression"
     }
 
     findGoal(partie){
@@ -751,6 +829,8 @@ class pierris extends creatureNeutre{
         this.wood=100
         this.copper=100
         this.tin=100
+        this.strategy = "agression"
+
     }
 
     findGoal(partie){
@@ -770,6 +850,7 @@ class discipleathneutre extends creatureNeutre{
     constructor(position){
         super(100,15,30,0,1,"Disciple d'Athéna",position,2,1)
         this.gold=1
+        this.strategy = "agression"
     }
 
 }

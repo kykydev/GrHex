@@ -411,7 +411,6 @@ io.on('connection', (socket) => {
       if (data==undefined || partie==undefined || idJoueur==undefined || data.hdv==undefined){return}
       var check = partie.canOrder(idJoueur,data.hdv)
       if (check==true){
-        console.log("doublea")
           if (partie.newTrade(data,idJoueur)){
             socket.emit("echangeRessources",true);
             console.log("aaa")
@@ -437,6 +436,7 @@ io.on('connection', (socket) => {
       var check = partie.canOrder(idJoueur,data.position)
       
       if (check==true){
+        console.log("u")
         if (partie.changeStrat(idJoueur,data.position,data.newStrat)){
           socket.emit("Stratégie",true)
           var uni = partie.board[data.position]; if (uni!=undefined){socket.emit("dialogue",{"message":"C'est compris !", "unite":uni.name,"couleur": "rouge"})

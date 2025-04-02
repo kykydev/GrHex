@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder, discipleathneutre,discipleath,mur,mine,chevaldetroie } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie } = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
 
@@ -247,6 +247,7 @@ class game {
             retour.push({ "info": this.map.infos[z], "terrain": this.map.infos[z].pattern, "board": this.board[z] })
             if ((unit.name=="Paysanne" || unit.name=="Bûcheron") && this.map.infos[z].type=="foret" && unit.knownForests.includes(z)==false){unit.knownForests.push(z)}
             if ((unit.name=="Paysanne" || unit.name=="Mineur") && this.map.infos[z].type=="carriere" && unit.knownCarrieres.includes(z)==false){unit.knownCarrieres.push(z)}
+            if ((unit.name=="Pêcheur") && this.map.infos[z].type=="eau" && unit.knownWater.includes(z)==false){unit.knownWater.push(z)}
         }
         return retour
 
@@ -621,6 +622,17 @@ class game {
 
             break
 
+            case "Pêcheur":
+                if (uni.canRécolte(this)==false){return}
+                for (var z of casesAdjacentes(uni.position,this.map.width,this.map.height)){
+                        if (this.map.infos[z].type=="eau"){
+                            this.récoltePoisson(uni.position)
+                            return
+                        }
+                }
+
+            break
+
             default: 
                 return
                 
@@ -722,6 +734,12 @@ class game {
                 this.players[uni.owner].gold += uni.gold
                 uni.gold = 0                
             }
+            if (uni.fishValue!=undefined && uni.fishValue>0){
+                this.players[uni.owner].gold+=uni.fishValue
+                uni.fishValue=0
+                uni.fish=0
+            }
+
         }
     }
 
@@ -859,7 +877,7 @@ class game {
             }
             
         //Récolte des ressources en début de tour
-        if (this.board[uni].name=="Bûcheron" || this.board[uni].name=="Paysanne" || this.board[uni].name=="Mineur"){
+        if (this.board[uni].name=="Bûcheron" || this.board[uni].name=="Paysanne" || this.board[uni].name=="Mineur" || this.board[uni].name=="Pêcheur"){
             this.board[uni].updateBase(this)
             this.testRécolteRessources(this.board[uni])
         }
@@ -1236,8 +1254,8 @@ evolve(uniPos,evo ){//Tente de faire évoluer l'unité en position pos
 SpawnLoup(){//Fait apparaître un nombre aléatoire de loups sur des cases aléatoires de la carte
 let nbLoups=0
 var rand = Math.random()
-if (rand<0.15){nbLoups=1}
-if (rand>0.97){nbLoups=2}
+if (rand<0.03){nbLoups=1}
+if (rand>0.99){nbLoups=2}
 
     while (nbLoups>0){
 
@@ -1592,7 +1610,40 @@ changeStrat(idJoueur,position,newStrat){
 }
 
 
+récoltePoisson(position){
+    var uni = this.board[position]
+    if (uni.name!="Pêcheur"){return}
+    var random = Math.random()*1000
+    var valPoisson = 0
+    var revenu = 0
+   
+    if (random > 400) {
+        return;
+    } else if (random > 200) {
+        valPoisson = 1;
+        revenu=1
+    } else if (random > 70) {
+        valPoisson = 2;
+        revenu=4
+    } else if (random > 11) {
+        valPoisson = 3;
+        revenu=7
+    } else {
+        valPoisson = 4;
+        revenu=40
 
+    }
+    
+
+
+    uni.fish++
+    uni.fishValue+=revenu
+    this.actionsThisTurn.push({ "type": "ressource", "position": uni.position, "ressource": "poisson"+valPoisson })
+
+    return
+
+
+}
 
 
 
