@@ -26,7 +26,7 @@ body {
 }
 
 /* From Uiverse.io by SelfMadeSystem */
-.buttonblack {
+.buttonblack, .selectblack {
     position: relative;
     cursor: pointer;
     padding: 4px 8px;
@@ -44,7 +44,7 @@ body {
         0.1s background-position;
 }
 
-.buttonblack::after {
+.buttonblack::after, .selectblack::after {
     content: "";
     position: absolute;
     z-index: -1;
@@ -57,7 +57,7 @@ body {
     transition: inherit;
 }
 
-.buttonblack::before {
+.buttonblack::before, .selectblack::before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -70,23 +70,27 @@ body {
     transition: inherit;
 }
 
-.buttonblack:hover {
+.buttonblack:hover, .selectblack:hover {
     box-shadow:
         inset 0px 4px 4px -3px #fff5,
         inset 0px -3px 4px -3px #fff;
 }
 
 .buttonblack:hover::before,
-.buttonblack:hover::after {
+.buttonblack:hover::after,
+.selectblack:hover::before,
+.selectblack:hover::after {
     opacity: 1;
 }
 
 .buttonblack:active::before,
-.buttonblack:active::after {
+.buttonblack:active::after,
+.selectblack:active::before,
+.selectblack:active::after {
     opacity: 0;
 }
 
-.buttonblack:active {
+.buttonblack:active, .selectblack:active {
     box-shadow:
         inset 0px 4px 4px -3px #000,
         inset 0px -4px 4px -3px #000c,
@@ -94,11 +98,11 @@ body {
     background-position: 1px 1px;
 }
 
-.buttonblack div {
+.buttonblack div, .selectblack div {
     transition: 0.1s translate;
 }
 
-.buttonblack:active div {
+.buttonblack:active div, .selectblack:active div {
     translate: 1px 1px;
 }
 
@@ -397,6 +401,7 @@ button:hover {
     z-index: 4;
     border: 4px double #212529;
     overflow: auto;
+    transition: 0.25s all, 0.1s background-position;
 }
 
 #vueNoificationMessage p{
@@ -473,6 +478,7 @@ button:hover {
     width: 300px;
     height: 120px;
     z-index: 5000;
+    transition: 0.25s all, 0.1s background-position;
 }
 
 #vueBatiments img {
@@ -499,6 +505,7 @@ button:hover {
     height: 120px;
     width: 300px;
     z-index: 5000;
+    transition: 0.25s all, 0.1s background-position;
 }
 
 #statsUnite img {
@@ -596,4 +603,9 @@ button:hover {
 #envoyerMail,
 #contenuMail {
     z-index: 6;
+}
+
+.uniteMode{
+    display: flex;
+    flex-direction: row;
 }

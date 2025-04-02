@@ -471,15 +471,17 @@ function fstatsUnite(unite) {
         stats.append("p").attr("id", "uniteAttack").text("Attaque : " + unite.attack);
         stats.append("p").attr("id", "uniteDefence").text("Défense : " + unite.defense);
         if (unite.owner == socket.idJoueur) {
-            stats.append("p").attr("id", "uniteMode").text("Stratégie : ");
-            stats.append("select")
-                .attr("id", "uniteSelectMode")
-                .on("change", function () {
-                    const selectedMode = d3.select(this).property("value");
-                    socket.emit("Stratégie", { position: unite.position, "newStrat": d3.select(this).property("value").toLowerCase() });
-                    // console.log(unite.position);
-                })
+            let unimode = stats.append("div").attr("id", "unimode");
+            unimode.append("p").attr("id", "uniteMode").text("Stratégie : ");
+            const selectMode = unimode.append("select").attr("class", "selectblack").attr("id", "uniteSelectMode")
                 .selectAll("option").data(["Agression", "Modere", "Prudence"]).enter().append("option").text(d => d).attr("value", d => d);
+
+            unimode.append("button").attr("id", "uniteModeButton").attr("class", "buttonblack").text("Appliquer").on("click", function () {
+                const selectedMode = d3.select("#uniteSelectMode").property("value");
+                console.log(selectedMode.toLowerCase());
+                console.log(unite.position);
+                socket.emit("Stratégie", { position: unite.position, newStrat: selectedMode.toLowerCase() });
+            });
         }
     }
 
@@ -682,7 +684,7 @@ function dialogue(message, unite, couleur) {
                 <div id="textedialogue">
                     <p>${message}</p>
                 </div>
-                <img src="img/personnages/${couleur}/${unite}.png">
+                <img src="img/personnages/${couleur}/${unite.toLowerCase()}.png">
             </div>
     `);
 
