@@ -4,10 +4,11 @@
     "width":40,
     "clustersMiniers" :
         {      "copper":[
-                    547
+                    526,
+                    584
                     ],
                 "tin":[
-
+                    647
                          ]
         },
 
@@ -48,13 +49,23 @@
         "attique" : {
            "1043":"stratege",
            "1102":"tour",
+           "30":"hoplite",
            "1194":"maison",
            "1162":"paysanne",
            "1013":"bucheron",
            "1009":"hoplite"
         },
         "hdvAttique":[1134],
-        "mursAttique":[]
+        "mursAttique":[],
+
+        "boardNeutre":{
+            "644":"loup",
+            "556":"loup",
+            "587":"loup",
+            "676":"loup",
+            "60":"pierris"
+
+        }
         
 
     },
