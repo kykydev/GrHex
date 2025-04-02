@@ -361,6 +361,7 @@ function createMapFromName(nom){
 
 module.exports = {
     createMapFromName:createMapFromName,
+    getMapList:getMapList
 }
 
 

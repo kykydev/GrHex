@@ -5,7 +5,7 @@ const { isNumberObject } = require('util/types');
 const server = http.createServer(app);
 const io = new require("socket.io")(server);
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
-const {createMap,getMaps} = require('./modules/mapGeneration')
+const {createMap, getMapList} = require('./modules/mapGeneration')
 const {game} = require('./classes/game')
 const {buildings} = require('./modules/buildingInfos')
 const { turnAction,moveAction,newUnitAction,buildAction} = require('./classes/turnAction')
@@ -448,7 +448,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on("askMaps",data=>{
-      socket.emit(getMaps())
+      socket.emit("askMaps",getMapList())
     })
 
 
