@@ -31,7 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let localisationMines;
 
-    socket.emit("getListeParties", "")
+    socket.emit("getListeParties", "");
+    socket.emit("askMaps","a");
 
     socket.on("getListeParties", data => {
         afficherListeParties(data);
@@ -57,7 +58,15 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("creerPartie").addEventListener("click", () => {
         const nbJoueurs = document.getElementById("nbJoueurs");
         const nbTours = document.getElementById("nbTours");
-        socket.emit("creerPartie", { "nbJoueurs": parseInt(nbJoueurs.value), "nbTours": parseInt(nbTours.value) });
+        let choisirMap = document.getElementById("choisirMap").value;
+
+
+        if(!choisirMap){
+            choisirMap="peloponnese.json";
+        }
+
+        console.log("map",choisirMap);
+        socket.emit("creerPartie", { "nbJoueurs": parseInt(nbJoueurs.value), "nbTours": parseInt(nbTours.value),map: choisirMap});
 
         document.querySelector('.accueil').style.display = 'none';
         document.querySelector('.rejoindrePartie').style.display = 'block';
@@ -1035,6 +1044,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
             choisirEntrepot.append("br");
 
+        });
+
+    });
+
+    socket.on("askMaps",data=>{
+        
+        let choisirMap = d3.select("#choisirMap");
+
+        data.forEach((nom)=>{
+            choisirMap.append("option").attr("value",nom).text(nom);
         });
 
     });

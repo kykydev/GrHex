@@ -23,3 +23,7 @@
     flex-direction: column;
     gap: 10px;
 }
+
+#choisirMap * {
+    text-align: center;
+}
