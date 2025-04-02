@@ -1484,7 +1484,8 @@ var nbLettres = joueur.letters.length
 while (index<nbLettres){
     var lettre = joueur.letters[index]
     if (lettre.tours==0){
-        socket.emit("notification",{"titre":lettre.titre,"texte":lettre.texte});
+        if (lettre.type=="diplomatique"){socket.emit("notification",{"titre":lettre.titre,"texte":lettre.texte});}
+        else{socket.emit("notification",lettre);}
         joueur.letters.splice(index,1)
         nbLettres--
     }

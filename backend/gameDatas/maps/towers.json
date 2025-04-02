@@ -1,0 +1,54 @@
+{
+    "nom":"Peloponnese",
+    "height":30,
+    "width":40,
+    "clustersMiniers" :
+        {      "copper":[
+                    547
+                    ],
+                "tin":[
+
+                         ]
+        },
+
+    "positionsDépart":{ "beotie": 573, "attique": 1072, "argolide": 783 },
+
+    "boards":{
+        "beotie":{
+
+        },
+        "hdvBeotie":[],
+        "mursBeotie": [],
+
+
+        "argolide":{
+                "875":"stratege",
+               "936":"maison",
+               "933":"maison",
+               "785":"maison",
+               "874":"champ",
+               "815":"tour",
+               "816":"champ",
+               "966":"hoplite"
+
+        },
+        "hdvArgolide":[697832],
+        "mursArgolide":[818,848,847,877,907],
+
+
+        "attique" : {
+           
+        },
+        "hdvAttique":[],
+        "mursAttique":[]
+        
+
+    },
+
+    "map" : ["plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","plaine","eau","eau","eau","plaine","eau","eau","eau","plaine","eau","montagne","eau","montagne","eau","plaine","eau","plaine","eau","plaine","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","montagne","montagne","plaine","plaine","eau","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","montagne","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","plaine","eau","montagne","montagne","eau","eau","plaine","plaine","eau","eau","eau","plaine","eau","eau","eau","plaine","plaine","plaine","montagne","montagne","montagne","plaine","plaine","eau","eau","eau","eau","plaine","carriere","carriere","carriere","plaine","eau","eau","eau","eau","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","montagne","plaine","montagne","montagne","plaine","plaine","montagne","montagne","eau","eau","plaine","carriere","carriere","carriere","plaine","eau","eau","eau","eau","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","plaine","plaine","montagne","montagne","plaine","montagne","plaine","plaine","eau","eau","montagne","montagne","plaine","carriere","carriere","carriere","plaine","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","eau","eau","eau","eau","plaine","plaine","montagne","plaine","plaine","montagne","plaine","plaine","eau","eau","eau","eau","plaine","carriere","carriere","carriere","plaine","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","montagne","montagne","montagne","montagne","plaine","plaine","eau","eau","eau","eau","plaine","plaine","carriere","carriere","plaine","eau","eau","eau","eau","eau","eau","eau","montagne","plaine","montagne","eau","eau","eau","plaine","plaine","plaine","plaine","montagne","montagne","plaine","plaine","eau","eau","eau","eau","eau","eau","carriere","plaine","plaine","montagne","eau","eau","eau","eau","eau","eau","montagne","plaine","montagne","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","montagne","montagne","eau","eau","eau","eau","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","montagne","montagne","eau","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","montagne","plaine","montagne","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","montagne","montagne","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","eau","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","eau","plaine","eau","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","plaine","eau","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","eau","eau","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","eau","eau"]
+    
+
+} 
+
+
+

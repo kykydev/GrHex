@@ -284,7 +284,7 @@ function simplifyMap(map){
 //Prend un nom et renvoie les informations pour createMpa
 function getMap(nom){
     var name = nom
-    if (getMapList().includes(nom+".json")==false){name="peloponnese";console.log("Carte "+nom+" introuvable, défaut: peloponnese")}
+    if (getMapList().includes(nom)==false){name="peloponnese";console.log("Carte "+nom+" introuvable, défaut: peloponnese")}
     
     var mappath = path.join(mapsDirectoryPath,name+".json")
     console.log("lecture de " +mappath)
@@ -351,7 +351,11 @@ function getMapList(){
 
     var fichiers = fs.readdirSync(mapsDirectoryPath)
     if (fichiers==undefined){return false}
-    return fichiers
+    var retour = []
+    for (var z of fichiers){
+        retour.push(z.slice(0,z.length-5));
+    }
+    return retour
     
 }
 

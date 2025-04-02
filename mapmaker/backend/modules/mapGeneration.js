@@ -291,7 +291,6 @@ function createMap(width,height){
 
 module.exports = {
     createMap: createMap,
-    getMaps: thisgetMaps
 }
 
 

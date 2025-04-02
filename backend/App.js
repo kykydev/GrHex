@@ -63,7 +63,7 @@ io.on('connection', (socket) => {
     var nbJoueurs = data.nbJoueurs
     var nbTours = data.nbTours
 
-    var partie = new game(nbJoueurs,nbTours,"peloponnese")
+    var partie = new game(nbJoueurs,nbTours,data.map)
     lobbies[partie.id]=partie
     
     var createur = partie.addPlayer()
