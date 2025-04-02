@@ -235,6 +235,16 @@ document.addEventListener("DOMContentLoaded", function () {
         let entrepot = document.querySelector("input[name='mesEntrepots']:checked").value;
 
 
+        console.log({
+            mesRessources: mesRessources,
+            ville: ville,
+            ressourcesEnnemies: ressourcesEnnemies,
+            mesQuantites: mesQuantites,
+            quantitesEnnemies: quantitesEnnemies,
+            hdv: hdvSelectionne,
+            hdvStock: entrepot
+        });
+
         socket.emit("echangeRessources", {
             mesRessources: mesRessources,
             ville: ville,
@@ -981,10 +991,11 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
     socket.on("notification", (notif) => {
+        console.log(notif);
 
         dialogue("Général, un message vous a été adressé !", "messager", "rouge");
 
-        notificationsSauvegarder[notif.titre] = notif.texte;
+        notificationsSauvegarder[notif.titre] = notif;
 
         d3.select("#vueNotifications").append("p").text(notif.titre).attr("id", "notif" + numeroNotif).attr("class", "notifications");
         ++numeroNotif;
@@ -1000,7 +1011,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     notifDetail.selectAll("*").remove();
 
                     if (notifDetail.style("display") == "none"){
-                        notifDetail.append("p").text(notificationsSauvegarder[element.textContent]);
+                        notifDetail.append("p").text(notificationsSauvegarder[element.textContent].texte);
+                        if(notificationsSauvegarder[element.textContent].type == "commerce"){
+                            notifDetail.append("button").text("accepter").on("click",()=>{
+                                socket.on("")
+                            });
+                            notifDetail.append("button").text("refuser").on("click",()=>{
+                                socket
+                            });
+                        }
+
                         notifDetail.style("display", "block");
                         notifDetail.selectAll("*").style("display", "block");
                     } else {
