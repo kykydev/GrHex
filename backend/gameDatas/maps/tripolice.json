@@ -1,0 +1,126 @@
+{
+    "nom": "tripolice",
+    "height": 30,
+    "width": 40,
+    "clustersMiniers": {
+        "copper": [
+            582
+        ],
+        "tin": [
+            615
+        ]
+    },
+    "positionsDépart": {
+        "beotie": 243,
+        "attique": 923,
+        "argolide": 137
+    },
+    "boards": {
+        "boardNeutre": {
+            "1025": "pierris"
+        },
+        
+        "beotie": {
+            "275": "stratege",
+            "184": "bucheron",
+            "247": "mineur",
+            "392": "champ",
+            "189": "paysanne",
+            "187": "tour",
+            "363": "tour",
+            "427": "tour",
+            "335": "hoplite",
+            "246": "hoplite",
+            "212": "maison",
+            "301": "maison",
+            "278": "maison",
+            "151": "maison",
+            "159": "hoplite",
+            "154": "hoplite",
+            "338": "maison",
+            "155": "forge"
+        },
+        "hdvBeotie": [
+            243
+        ],
+        "mursBeotie": [
+            157,
+            188,
+            218,
+            457,
+            458,
+            428,
+            393,
+            394,
+            364
+        ],
+        "argolide": {
+            "198": "stratege",
+            "172": "bucheron",
+            "79": "mineur",
+            "196": "paysanne",
+            "376": "champ",
+            "171": "tour",
+            "287": "tour",
+            "75": "tour",
+            "139": "hoplite",
+            "375": "hoplite",
+            "78": "maison",
+            "259": "maison",
+            "44": "maison",
+            "114": "maison",
+            "282": "hoplite",
+            "135": "hoplite",
+            "226": "maison",
+            "254": "forge"
+        },
+        "hdvArgolide": [
+            137
+        ],
+        "mursArgolide": [
+            201,
+            202,
+            172,
+            316,
+            317,
+            318,
+            74,
+            104,
+            105
+
+        ],
+        "attique": {
+            "1011": "stratege",
+            "1043": "bucheron",
+            "977": "paysanne",
+            "1041": "mineur",
+            "895": "hoplite",
+            "831": "hoplite",
+            "800": "tour",
+            "1010": "tour",
+            "888": "tour",
+            "1009": "champ",
+            "897": "maison",
+            "950": "maison",
+            "864": "maison",
+            "1102": "maison",
+            "916": "hoplite",
+            "983": "hoplite",
+            "1046": "bucheron",
+            "1147": "maison",
+            "956": "forge"
+        },
+        "hdvAttique": [
+            923
+        ],
+        "mursAttique": [
+            799,
+            769,
+            770,
+            858,
+            857,
+            887
+        ]
+    },
+    "map": ["plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","foret","foret","foret","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","foret","foret","foret","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","carriere","eau","eau","plaine","plaine","plaine","plaine","foret","plaine","plaine","plaine","carriere","carriere","plaine","plaine","plaine","plaine","plaine","carriere","eau","plaine","plaine","plaine","plaine","foret","foret","foret","plaine","plaine","plaine","plaine","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","carriere","plaine","plaine","carriere","carriere","montagne","eau","plaine","plaine","plaine","foret","foret","foret","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","carriere","plaine","plaine","plaine","carriere","montagne","eau","eau","plaine","plaine","plaine","foret","foret","foret","foret","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","foret","foret","plaine","plaine","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","foret","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","carriere","carriere","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","eau","eau","eau","foret","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","foret","plaine","plaine","plaine","plaine","plaine","foret","eau","eau","plaine","plaine","plaine","foret","eau","foret","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","carriere","plaine","plaine","plaine","carriere","montagne","foret","foret","plaine","plaine","plaine","plaine","foret","eau","foret","plaine","plaine","plaine","plaine","foret","plaine","foret","plaine","plaine","plaine","plaine","plaine","plaine","carriere","carriere","montagne","montagne","montagne","plaine","carriere","montagne","carriere","foret","plaine","plaine","plaine","plaine","foret","foret","foret","plaine","plaine","plaine","plaine","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","plaine","carriere","montagne","plaine","plaine","plaine","plaine","montagne","carriere","foret","plaine","plaine","plaine","plaine","carriere","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","plaine","plaine","plaine","plaine","plaine","plaine","carriere","plaine","plaine","plaine","plaine","montagne","montagne","foret","foret","plaine","plaine","plaine","carriere","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","carriere","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","foret","plaine","plaine","plaine","plaine","carriere","carriere","plaine","plaine","plaine","plaine","plaine","plaine","carriere","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","foret","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","carriere","montagne","montagne","montagne","plaine","plaine","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","montagne","foret","foret","foret","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","montagne","montagne","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","montagne","foret","foret","foret","plaine","carriere","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","montagne","montagne","plaine","plaine","foret","foret","eau","eau","plaine","plaine","plaine","carriere","montagne","foret","foret","montagne","plaine","montagne","carriere","carriere","plaine","montagne","montagne","plaine","plaine","plaine","montagne","montagne","montagne","montagne","montagne","montagne","plaine","carriere","foret","foret","eau","foret","plaine","plaine","plaine","carriere","montagne","montagne","montagne","plaine","plaine","plaine","montagne","montagne","montagne","plaine","plaine","plaine","plaine","carriere","montagne","montagne","montagne","montagne","montagne","montagne","montagne","montagne","plaine","plaine","foret","foret","plaine","plaine","plaine","plaine","carriere","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","carriere","montagne","montagne","montagne","montagne","montagne","montagne","montagne","carriere","carriere","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","plaine","plaine","plaine","plaine","plaine","montagne","plaine","plaine","plaine","plaine","plaine","plaine","carriere","carriere","montagne","montagne","montagne","montagne","carriere","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","carriere","montagne","montagne","montagne","montagne","plaine","montagne","montagne","carriere","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","carriere","montagne","montagne","montagne","montagne","montagne","carriere","carriere","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","plaine","montagne","montagne","montagne","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","eau","eau","eau","eau","plaine","eau","eau","eau","eau","eau","montagne","montagne","montagne","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","carriere","montagne","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","montagne","montagne","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","montagne","montagne","montagne","plaine","plaine","carriere","carriere","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","montagne","carriere","carriere","plaine","plaine","plaine","foret","foret","foret","plaine","plaine","carriere","montagne","carriere","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","foret","foret","eau","eau","plaine","plaine","plaine","carriere","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","foret","foret","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","foret","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","foret","foret","foret","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","montagne","carriere","plaine","plaine","plaine","plaine","plaine","plaine","plaine","foret","foret","foret","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","montagne","montagne","carriere","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","foret","foret","foret","plaine","plaine","eau","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","montagne","carriere","carriere","plaine","plaine","plaine","plaine","foret","plaine","plaine","plaine","plaine","foret","foret","montagne","plaine","plaine","plaine","montagne","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","plaine","eau","eau","plaine","plaine","plaine","plaine","plaine","foret","foret","foret","foret","plaine","carriere","plaine","plaine","plaine","plaine","montagne","plaine","plaine","plaine","montagne","plaine","montagne","eau","eau","eau","eau","eau","plaine","plaine","eau","plaine","plaine","plaine","plaine","plaine","foret","foret","foret","foret","foret","montagne","plaine","plaine","montagne","plaine","plaine","plaine","montagne","eau","eau","montagne","plaine","eau","eau","eau","eau","eau","plaine","plaine","eau","eau","plaine","plaine","plaine","plaine","plaine","foret","foret","plaine","montagne","carriere","plaine","plaine","plaine","plaine","montagne","plaine","eau","eau","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","montagne","carriere","plaine","plaine","plaine","montagne","plaine","plaine","eau","eau","montagne","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","eau","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine","plaine"]
+}
