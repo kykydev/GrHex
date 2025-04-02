@@ -22,10 +22,9 @@ for (var j=0;j<width*height;j++){
 
 
 function baseBlueMap(width,height){
-    map = []
-for (var j=0;j<width*height;j++){
-    variant = Math.floor(Math.random()*plainvariants+1)
-    map.push(new hexagon("eau","eau",j))
+    var    map = []
+    for (var j=0;j<width*height;j++){
+        map.push("eau")
 }
     return map
 }
@@ -252,9 +251,12 @@ function simplifyMap(map){
 
 
 function createMap(width,height){
-    /*    map = []
+
+    var map = []
+    let mapb = baseBlueMap(40,30)
+       
     index = 0
-    for (z of mapBase){
+    for (z of mapb){
         let hex
         switch (z){
             case "plaine":
@@ -280,7 +282,7 @@ function createMap(width,height){
         index++
     }
     return {"infos":map,"terrain":simplifyMap(map),"height":height,"width":width}
-    */
+    
 }
 
 
