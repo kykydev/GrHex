@@ -11,13 +11,19 @@
                          ]
         },
 
-    "positionsDépart":{ "beotie": 573, "attique": 1072, "argolide": 783 },
+    "positionsDépart":{ "beotie": 296, "attique": 1134, "argolide": 783 },
 
     "boards":{
         "beotie":{
-
+            "296":"stratege",
+            "298":"champ",
+            "356":"tour",
+            "323":"maison",
+            "386":"paysanne",
+            "235":"bucheron",
+            "353":"hoplite"
         },
-        "hdvBeotie":[],
+        "hdvBeotie":[297],
         "mursBeotie": [],
 
 
@@ -29,17 +35,25 @@
                "874":"champ",
                "815":"tour",
                "816":"champ",
-               "966":"hoplite"
+               "966":"hoplite",
+               "753":"bucheron",
+               "726":"mineur",
+               "843":"paysanne"
 
         },
-        "hdvArgolide":[697832],
+        "hdvArgolide":[844],
         "mursArgolide":[818,848,847,877,907],
 
 
         "attique" : {
-           
+           "1043":"stratege",
+           "1102":"tour",
+           "1194":"maison",
+           "1162":"paysanne",
+           "1013":"bucheron",
+           "1009":"hoplite"
         },
-        "hdvAttique":[],
+        "hdvAttique":[1134],
         "mursAttique":[]
         
 

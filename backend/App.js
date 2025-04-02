@@ -405,14 +405,16 @@ io.on('connection', (socket) => {
 
 
     socket.on("echangeRessources",data=>{
-
+      console.log(data)
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
       if (data==undefined || partie==undefined || idJoueur==undefined || data.hdv==undefined){return}
       var check = partie.canOrder(idJoueur,data.hdv)
       if (check==true){
+        console.log("doublea")
           if (partie.newTrade(data,idJoueur)){
             socket.emit("echangeRessources",true);
+            console.log("aaa")
             socket.emit("dialogue",{"message":"Je pars sur le champ !", "unite":"messager","couleur": "rouge"})
 
           }

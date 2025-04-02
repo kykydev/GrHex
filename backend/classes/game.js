@@ -1503,11 +1503,31 @@ newTrade(data,idJoueur){
     if (joueur==undefined){return false}
     if (data.mesRessources==undefined || data.ville==undefined || data.ressourcesEnnemies==undefined || data.mesQuantites==undefined || data.quantitesEnnemies==undefined){return false}
     
+    if (data.mesRessources=="or"){
+        if (joueur.gold<data.mesQuantites){return false}
+    }
+    else{
     if (joueur.units[data.hdvStock]==undefined ||joueur.units[data.hdvStock][data.mesRessources]==undefined ||joueur.units[data.hdvStock][data.mesRessources]<data.mesQuantites){return false}
+    }
     
-    for (var z of Object.keys(this.players)){
+    for (var zk of Object.keys(this.players)){
+        var z = this.players[zk]
         if (z.cite==data.ville){
-            
+
+            var dist = 0
+   
+            var stratege1 = undefined
+            var stratege2 = undefined
+            for (var zz of Object.keys(joueur.units)){
+                if (joueur.units[zz].name=="Stratege"){stratege1=joueur.units[zz].position}
+            }
+            for (var zz of Object.keys(z.units)){
+                if (z.units[zz].name=="Stratege"){stratege2=z.units[zz].position}
+            }
+         
+
+
+            console.log("f"+dist)
             var trade = {
                 "envoyeur":joueur.idJoueur,
                 "ressourcesEnvoyées":data.mesRessources,
