@@ -1009,15 +1009,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     let notifDetail = d3.select("#vueNotificationMessage");
 
                     notifDetail.selectAll("*").remove();
+                    let notifTraite = notificationsSauvegarder[element.textContent];
 
                     if (notifDetail.style("display") == "none"){
-                        notifDetail.append("p").text(notificationsSauvegarder[element.textContent].texte);
-                        if(notificationsSauvegarder[element.textContent].type == "commerce"){
+                        notifDetail.append("p").text(notifTraite.texte);
+                        if(notifTraite.type == "commerce"){
+
+                            notifDetail.append("p").text("ressource demandées : " + notifTraite.quantitéDemandée +" "+notifTraite.ressourceDemandée
+                                +", ressource reçu : "+notifTraite.quantitéEnvoyée +" " +notifTraite.ressourcesEnvoyées);
+
                             notifDetail.append("button").text("accepter").on("click",()=>{
-                                socket.on("")
+                                socket.on("retourTrade",{idRequête:notifDetail.idRequête,accepte:true});
                             });
                             notifDetail.append("button").text("refuser").on("click",()=>{
-                                socket
+                                socket.on("retourTrade",{idRequête:notifDetail.idRequête,accepte:false});
                             });
                         }
 
