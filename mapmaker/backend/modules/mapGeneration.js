@@ -252,7 +252,7 @@ function simplifyMap(map){
 
 
 function createMap(width,height){
-    map = []
+    /*    map = []
     index = 0
     for (z of mapBase){
         let hex
@@ -280,7 +280,7 @@ function createMap(width,height){
         index++
     }
     return {"infos":map,"terrain":simplifyMap(map),"height":height,"width":width}
-
+    */
 }
 
 
@@ -289,6 +289,7 @@ function createMap(width,height){
 
 module.exports = {
     createMap: createMap,
+    getMaps: this.getMaps
 }
 
 
