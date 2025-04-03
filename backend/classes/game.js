@@ -1563,11 +1563,11 @@ newTrade(data,idJoueur){
 
             console.log("f"+dist)
             var trade = {
-                "envoyeur":joueur.idJoueur,
+                "envoyeur":joueur.id,
                 "ressourcesEnvoyées":data.mesRessources,
                 "quantitéEnvoyée":data.mesQuantites,
                 "stockEnvoyeur":data.hdvStock,
-                "receveur": z.idJoueur,
+                "receveur": z.id,
                 "ressourceDemandée":data.ressourcesEnnemies,
                 "quantitéDemandée":data.quantitesEnnemies,
                 "idRequête":uuidv4()
@@ -1735,6 +1735,41 @@ var trade = {
 }
 */
 
+
+
+
+créerCaravaneCommerce(position,idRequête){
+    var trade = this.trades[idRequête]
+    var receveur = this.players[trade.receveur]
+
+    var uni = new caravaneCommerce(position,receveur)
+    uni.currentTrade = trade
+    uni.phase="aller"
+    uni.objectif = trade.stockEnvoyeur
+    if (this.addUnit(uni,position,receveur)==false){return false}
+
+
+
+
+
+
+
+    return true
+    }
+
+canAcceptTrade(idRequête,hdv){
+    var trade = this.trades[idRequête]
+    var hotel = this.board[hdv]
+    if (trade==undefined || hotel==undefined){return false}
+    if (hotel[trade.ressourceDemandée]==undefined || hotel[trade.ressourceDemandée]<quantitéDemandée){return false}
+
+
+    return true
+
+}
+
+
+
 //Fonction qui essaye de faire accepter un échange et renvoie la position de la caravane si acceptation possible
 accepteTrade(idJoueur,idRequête,hdv){
     var trade = this.trades[idRequête]
@@ -1743,13 +1778,14 @@ accepteTrade(idJoueur,idRequête,hdv){
     var receveur = this.players[idJoueur]
     var envoyeur = this.players[trade.envoyeur]
     if (envoyeur==undefined || receveur==undefined){return false}
+    if (this.canAcceptTrade(trade.idRequête,hdvOrdre))
     //var hdvOrdre ==  this.board[hdv]
     var hdvOrdre = receveur.hdv[0]
     if (this.canOrder(receveur.idJoueur,hdvOrdre)==false){return false}
 
 
-    var waterCheck = this.waterTradePossible(trade.stockEnvoyeur,hdvOrdre)
-    var groundCheck = this.groundTradePossible(trade.stockEnvoyeur,hdvOrdre)
+    var waterCheck = this.waterTradePossible(hdvOrdre,trade.stockEnvoyeur)
+    var groundCheck = this.groundTradePossible(hdvOrdre,trade.stockEnvoyeur)
     console.log("départ "+hdvOrdre+" arrivée: "+trade.stockEnvoyeur)
     //if (waterCheck!=undefined && waterCheck!=false){}    
     console.log("ROUTE MARITIME TROUVEE: ")
@@ -1757,6 +1793,18 @@ accepteTrade(idJoueur,idRequête,hdv){
     console.log("ROUTE TERRESTRE TROUVEE: ")
     console.log(groundCheck)
     
+
+    if ((groundCheck==undefined && waterCheck)||(waterCheck.dist<groundCheck.dist)){
+        createTradeBoat(waterCheck.depart,trade.idRequête)
+        return {"position":waterCheck.depart,"newUnit":"Navire de commerce"}
+    }
+
+    if (groundCheck){
+        this.créerCaravaneCommerce(groundCheck.depart,trade.idRequête)
+        return {"position":groundCheck.depart,"newUnit":"cCaravane de commerce"}
+    }
+    
+    return false
 
 
 

@@ -79,10 +79,14 @@ io.on('connection', (socket) => {
 
   socket.on("saveçastp",data=>{
     const fs = require('fs');
+    
+    /*
     savedstring = "["
-    for (z of data){savedstring=savedstring+"'"+z+"',"}
-    savedstring += "]"
+    for (z of data){savedstring=savedstring+'"'+z+"',"}
+    savedstring = savedstring[savedstring.length-1]="]"
 
     fs.writeFileSync('lastmap.json', savedstring);
+    */
+    fs.writeFileSync(data.nom+'.json', JSON.stringify(data));
   })
 });

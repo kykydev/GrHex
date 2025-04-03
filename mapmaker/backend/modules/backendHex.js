@@ -15,6 +15,7 @@ function casesAdjacentes(pos, width, height) {
     if (col < width - 1) { // not right
         adj.push(pos + height); // right
     }
+
    
     if (col%2==0){//even col
 
@@ -31,9 +32,9 @@ function casesAdjacentes(pos, width, height) {
             }
         }
         if (row%2!=0){
-            if (row<width-1){
+            if (row<height-1){
                 if (col<width-1){adj.push(pos+height+1)}
-                adj.push(pos-1)
+                adj.push(pos+1)
             }
             if (row>0){
                 if (col>0){adj.push(pos+height-1)}
@@ -60,7 +61,7 @@ function casesAdjacentes(pos, width, height) {
                 if (col<width-1){adj.push(pos+height-1)}
                 adj.push(pos-1)
             }
-            if (row<width-1){
+            if (row<height-1){
                 if (col>0){adj.push(pos+height+1)}
                 adj.push(pos+1)
 
@@ -126,25 +127,25 @@ function pathFind(pos1, pos2, height, width, rules) {
         closed.add(pos);
 
         for (const neighbor of casesAdjacentes(pos, width, height)) {
-            if (closed.has(neighbor) || rules[neighbor] !== "O") {
-                continue; // Skip visited or blocked nodes
+            if (closed.has(neighbor) || rules[neighbor] == "X") {
+                continue; 
             }
 
-            const tentativeG = g + 1;
+            const tentativeG = g /*+1 peut-être nécessaire*/+ rules[neighbor];
             const h = distance(neighbor, pos2, height);
             const f = tentativeG + h;
 
             const existing = open.find(n => n.pos === neighbor);
             if (existing && tentativeG >= existing.g) {
-                continue; // Skip if we already have a better path
+                continue;
             }
 
-            cameFrom[neighbor] = pos; // Track the path
+            cameFrom[neighbor] = pos; 
             open.insert({ pos: neighbor, g: tentativeG, h, f });
         }
     }
 
-    return false; // No path found
+    return false; //Pire des cas: pas de route
 }
 
 

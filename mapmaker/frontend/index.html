@@ -20,15 +20,23 @@
 
     <div class="partie">
         <div class="droite">
-            <div class="mini-map">
-                <svg id="mini"></svg>
-            </div>
+                <input type="number" id="height" placeholder="height">
+                <input type="number" id="width" placeholder="width">
+                <button id="remakeMap" onclick="reloadMap()">Change !</button>
+
             <button id="1" onclick="paint()">
                 Paint 🖌️
             </button>
             <button id="1" onclick="fillmode()">
                 Fill 🪣
             </button>
+            
+            <input type="text" id="nomMap" placeholder="Nom de la carte">
+
+            <button id="1" onclick="mapprint()">
+                print map
+            </button>
+
         </div>
 
         <div class="haut">
@@ -49,9 +57,6 @@
                     foret
                 </button>
 
-                <button id="1" onclick="mapprint()">
-                    print map
-                </button>
                       
 
 
@@ -72,8 +77,6 @@
         });
     </script>
 
-document.querySelector('.accueil').style.display = 'none';
-document.querySelector('.partie').style.display = 'block';
 
 </body>
 </html>

@@ -487,10 +487,9 @@ io.on('connection', (socket) => {
       console.log(data)
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
-      if (data.accept!=true || idJoueur==undefined || partie==undefined){return false}
-      console.log("requête "+data.idRequête)
+      if (data.accepte!=true || idJoueur==undefined || partie==undefined){return false}
 
-      var check = partie.accepteTrade(idJoueur,idRequête)
+      var check = partie.accepteTrade(idJoueur,data.idRequête)
       if (check!=false && check!=undefined){
         socket.emit("evolution",check)
       }

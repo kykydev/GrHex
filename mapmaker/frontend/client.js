@@ -20,6 +20,7 @@ function creerHexagone(rayon) {
 //-------------------Création du damier d'hexagones----------------------------------------
 
 
+
 function casesAdjacentes(pos, width, height) {
     pos = parseInt(pos, 10);
     width = parseInt(width,10)
@@ -33,6 +34,7 @@ function casesAdjacentes(pos, width, height) {
     if (col < width - 1) { // not right
         adj.push(pos + height); // right
     }
+
    
     if (col%2==0){//even col
 
@@ -49,9 +51,9 @@ function casesAdjacentes(pos, width, height) {
             }
         }
         if (row%2!=0){
-            if (row<width-1){
+            if (row<height-1){
                 if (col<width-1){adj.push(pos+height+1)}
-                adj.push(pos-1)
+                adj.push(pos+1)
             }
             if (row>0){
                 if (col>0){adj.push(pos+height-1)}
@@ -78,7 +80,7 @@ function casesAdjacentes(pos, width, height) {
                 if (col<width-1){adj.push(pos+height-1)}
                 adj.push(pos-1)
             }
-            if (row<width-1){
+            if (row<height-1){
                 if (col>0){adj.push(pos+height+1)}
                 adj.push(pos+1)
 
@@ -92,6 +94,7 @@ function casesAdjacentes(pos, width, height) {
 
     return adj; 
 }
+
 
 function créerDamier(nbColumns, nbLines, rayon) {
     document.getElementById("jeu").style.visibility="visible";
@@ -246,7 +249,7 @@ var mode = "paint"
 
 function mapprint(){
     console.log(map)
-    socket.emit("saveçastp",map)
+    socket.emit("saveçastp",{"map":map,"width":width,"height":height,"nom":document.getElementById("nomMap").value})
 }
 
 function plaine(){
@@ -384,6 +387,23 @@ function remplirSceau(id){
     }
 }
 
+function reloadMap(){
+    console.log("reloading map")
+    width = parseInt(document.getElementById("height").value)
+    height = parseInt(document.getElementById("width").value)
+    map = []
+    document.getElementById("jeu").innerHTML=""
+    créerDamier(width,height,16)
+    appelsAjoutTextures()
+    
+    for (var z=0;z<width*height;z++){
+        map.push("plaine")
+        fill(z,"url(plaine_1-pattern)")
+    }
+    remplirSceau(0)
+
+
+}
 
 
 function appelsAjoutTextures(){
@@ -456,11 +476,9 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(data)
         width = data.width;height = data.height
         créerDamier(data.height,data.width,16)
-        créerMiniMap(data.height, data.width, 2)
         
         appelsAjoutTextures();
         actualiserDamier(data.width,data.height,data.terrain)
-        actualiserMini(data.width,data.height,data.terrain)
         
         map = []
         for (z of data.infos){map.push(z.type)}
