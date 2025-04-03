@@ -610,6 +610,25 @@ class chevaldetroie extends unit{
 }
 
 
+class caravaneCommerce extends unit{
+    constructor(position,player){
+        super(100,10,10,1,1,"Caravane de commerce",position,player,1,1)
+        this.tracked=false
+        this.pacifist=true
+        
+    }
+}
+class bateauCommerce extends unit{
+    constructor(position,player){
+        super(100,10,10,1,1,"Caravane de commerce",position,player,1,1)
+        this.tracked=false
+        this.pacifist=true
+
+    }
+}
+
+
+
 
 
 
@@ -857,4 +876,5 @@ class discipleathneutre extends creatureNeutre{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie};
+
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce};

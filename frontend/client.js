@@ -1019,10 +1019,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                 +", ressource reçu : "+notifTraite.quantitéEnvoyée +" " +notifTraite.ressourcesEnvoyées);
 
                             notifDetail.append("button").text("accepter").on("click",()=>{
-                                socket.on("retourTrade",{idRequête:notifDetail.idRequête,accepte:true});
+                                socket.emit("retourTrade",{idRequête:notifDetail.idRequête,accepte:true});
                             });
                             notifDetail.append("button").text("refuser").on("click",()=>{
-                                socket.on("retourTrade",{idRequête:notifDetail.idRequête,accepte:false});
+                                socket.emit("retourTrade",{idRequête:notifDetail.idRequête,accepte:false});
                             });
                         }
 

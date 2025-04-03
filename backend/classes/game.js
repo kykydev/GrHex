@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie } = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce} = require('./unit')
 const {buildings} = require('../modules/buildingInfos')
 
 
@@ -27,7 +27,7 @@ class game {
         this.positionsDepart = this.map.positionsDépart
         this.name = motsGrece[Math.floor(Math.random() * motsGrece.length)] + "-" + adjectifs[Math.floor(Math.random() * adjectifs.length)]
         this.actionsThisTurn = []
-
+        this.trades = {}
     }
 
     currentPlayers() { return Object.keys(this.players).length }
@@ -959,7 +959,7 @@ class game {
             case "modere":
                 for (var z in this.map.terrain){
                     let zz = this.map.terrain[z]
-                    if (uni.canGo(zz)==false || (this.board[z] != undefined && this.board[z].owner == owner)) { rules.push("X") }
+                    if (uni.canGo(zz)==false || (this.board[z] != undefined && this.board[z].owner == owner) ||(this.board[z]!=undefined && this.board[z].diplomatic==true)) { rules.push("X") }
                     else if (zz == "montagne" || (this.board[z]!=undefined)) { rules.push(3) }
                     else { rules.push(1) }
                 }
@@ -968,7 +968,7 @@ class game {
             default:
                 for (var z in this.map.terrain){
                     let zz = this.map.terrain[z]
-                    if (uni.canGo(zz)==false || (this.board[z] != undefined)) { rules.push("X") }
+                    if (uni.canGo(zz)==false || (this.board[z] != undefined||(this.board[z]!=undefined && this.board[z].diplomatic==true))) { rules.push("X") }
                     else if (zz == "montagne") { rules.push(2) }
                     else { rules.push(1) }
                 }
@@ -1572,7 +1572,7 @@ newTrade(data,idJoueur){
                 "quantitéDemandée":data.quantitesEnnemies,
                 "idRequête":uuidv4()
             }
-            z.trades[trade.idRequête]=trade
+            this.trades[trade.idRequête]=trade
             z.letters.push({"titre":"Demande d'échange de "+joueur.name,"expéditeur":joueur.name,"tours":dist,"échange":trade,"type":"commerce"})
 
             
@@ -1642,6 +1642,125 @@ récoltePoisson(position){
 
     return
 
+
+}
+
+//Teste
+
+waterTradePossible(pos1,pos2){
+    var eauDépart = []
+    var eauArrivée = []
+
+for (var z of casesAdjacentes(pos1,this.map.width,this.map.height)){
+    if (this.map.infos[z].type=="eau"){
+        eauDépart.push(z)
+    }
+}
+for (var z of casesAdjacentes(pos2,this.map.width,this.map.height)){
+    if (this.map.infos[z].type=="eau"){
+        eauArrivée.push(z)
+    }
+}
+
+var rules = []
+
+for (var z in this.map.terrain){
+    if (this.map.terrain[z] == "eau") { rules.push(1) }
+    else { rules.push("X") }
+}
+
+
+
+for (var dep of eauDépart){
+    for (var arr of eauArrivée){
+        var route = pathFind(dep,arr,this.map.height,this.map.width,rules)
+        if (route!=false&&route!=undefined){return {"dist":route.length,"depart":dep}}   
+    }
+}
+
+
+return false
+
+
+}
+
+
+groundTradePossible(pos1,pos2){
+    var solDépart = []
+    var solArrivée = []
+
+for (var z of casesAdjacentes(pos1,this.map.width,this.map.height)){
+    if (this.map.infos[z].type!="montagne" && this.map.infos[z].type!="eau"){
+        solDépart.push(z)
+    }
+}
+for (var z of casesAdjacentes(pos2,this.map.width,this.map.height)){
+    if (this.map.infos[z].type!="montagne" && this.map.infos[z].type!="eau"){
+        solArrivée.push(z)
+    }
+}
+
+var rules = []
+
+for (var z in this.map.terrain){
+    if (this.map.infos[z].type=="montagne" | this.map.infos[z].type=="eau"){ rules.push("X") }
+    else { rules.push(1) }
+}
+
+
+for (var dep of solDépart){
+    for (var arr of solArrivée){
+        var route = pathFind(dep,arr,this.map.height,this.map.width,rules)
+        if (route!=false&&route!=undefined){return {"dist":route.length,"depart":dep}}   
+    }
+}
+
+
+return false
+
+
+}
+
+
+/*
+var trade = {
+    "envoyeur":joueur.idJoueur,
+    "ressourcesEnvoyées":data.mesRessources,
+    "quantitéEnvoyée":data.mesQuantites,
+    "stockEnvoyeur":data.hdvStock,
+    "receveur": z.idJoueur,
+    "ressourceDemandée":data.ressourcesEnnemies,
+    "quantitéDemandée":data.quantitesEnnemies,
+    "idRequête":uuidv4()
+}
+*/
+
+//Fonction qui essaye de faire accepter un échange et renvoie la position de la caravane si acceptation possible
+accepteTrade(idJoueur,idRequête,hdv){
+    var trade = this.trades[idRequête]
+    console.log(trade)
+    if (trade==undefined || idJoueur==undefined ||idJoueur!=trade.receveur){return false}
+    var receveur = this.players[idJoueur]
+    var envoyeur = this.players[trade.envoyeur]
+    if (envoyeur==undefined || receveur==undefined){return false}
+    //var hdvOrdre ==  this.board[hdv]
+    var hdvOrdre = receveur.hdv[0]
+    if (this.canOrder(receveur.idJoueur,hdvOrdre)==false){return false}
+
+
+    var waterCheck = this.waterTradePossible(trade.stockEnvoyeur,hdvOrdre)
+    var groundCheck = this.groundTradePossible(trade.stockEnvoyeur,hdvOrdre)
+    console.log("départ "+hdvOrdre+" arrivée: "+trade.stockEnvoyeur)
+    //if (waterCheck!=undefined && waterCheck!=false){}    
+    console.log("ROUTE MARITIME TROUVEE: ")
+    console.log(waterCheck)
+    console.log("ROUTE TERRESTRE TROUVEE: ")
+    console.log(groundCheck)
+    
+
+
+
+    //return {"position":zz,"newUnit":uni.name}
 
 }
 

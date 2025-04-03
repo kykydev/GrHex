@@ -38,6 +38,38 @@ var lobbies = {}
 var parties = {}
 
 
+
+
+//------------------------------
+/*
+var partie   = new game(2,100,"z")
+
+partie.addPlayer()
+partie.players[Object.keys(partie.players)[0]].choseCite("beotie")
+partie.addPlayer()
+partie.players[Object.keys(partie.players)[1]].choseCite("argolide")
+parties[partie.id]=partie
+partie.init()
+
+var trade = {
+  "envoyeur":partie.players[Object.keys(partie.players)[0]].id,
+  "ressourcesEnvoyées":"wood",
+  "quantitéEnvoyée":1,
+  "stockEnvoyeur":573,
+  "receveur": partie.players[Object.keys(partie.players)[1]].id,
+  "ressourceDemandée":"wood",
+  "quantitéDemandée":1,
+  "idRequête":1
+}
+partie.trades[1]=trade
+partie.accepteTrade(trade.receveur,1)
+
+*/
+//------------------------------
+
+
+
+
 //-----------------------Fonctions de gestion des parties-----------------------------
 
 function testStartPartie(partie,io){
@@ -374,6 +406,7 @@ io.on('connection', (socket) => {
 
     socket.on("mail",data=>{
 
+
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
       var joueur = partie.players[idJoueur]
@@ -405,7 +438,6 @@ io.on('connection', (socket) => {
 
 
     socket.on("echangeRessources",data=>{
-      console.log(data)
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
       if (data==undefined || partie==undefined || idJoueur==undefined || data.hdv==undefined){return}
@@ -413,9 +445,7 @@ io.on('connection', (socket) => {
       if (check==true){
           if (partie.newTrade(data,idJoueur)){
             socket.emit("echangeRessources",true);
-            console.log("aaa")
             socket.emit("dialogue",{"message":"Je pars sur le champ !", "unite":"messager","couleur": "rouge"})
-
           }
       }})
 
@@ -436,7 +466,6 @@ io.on('connection', (socket) => {
       var check = partie.canOrder(idJoueur,data.position)
       
       if (check==true){
-        console.log("u")
         if (partie.changeStrat(idJoueur,data.position,data.newStrat)){
           socket.emit("Stratégie",true)
           var uni = partie.board[data.position]; if (uni!=undefined){socket.emit("dialogue",{"message":"C'est compris !", "unite":uni.name,"couleur": "rouge"})
@@ -453,6 +482,23 @@ io.on('connection', (socket) => {
       socket.emit("askMaps",getMapList())
     })
 
+
+    socket.on("retourTrade",data=>{
+      console.log(data)
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data.accept!=true || idJoueur==undefined || partie==undefined){return false}
+      console.log("requête "+data.idRequête)
+
+      var check = partie.accepteTrade(idJoueur,idRequête)
+      if (check!=false && check!=undefined){
+        socket.emit("evolution",check)
+      }
+
+
+
+
+    })
 
 
 

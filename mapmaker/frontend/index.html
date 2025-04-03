@@ -23,11 +23,12 @@
             <div class="mini-map">
                 <svg id="mini"></svg>
             </div>
-            <div class="bouton1">
-                <button>
-                    Fin de tour
-                </button>
-            </div>
+            <button id="1" onclick="paint()">
+                Paint 🖌️
+            </button>
+            <button id="1" onclick="fillmode()">
+                Fill 🪣
+            </button>
         </div>
 
         <div class="haut">
@@ -71,7 +72,8 @@
         });
     </script>
 
-
+document.querySelector('.accueil').style.display = 'none';
+document.querySelector('.partie').style.display = 'block';
 
 </body>
 </html>

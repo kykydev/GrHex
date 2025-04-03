@@ -2,6 +2,8 @@
 const socket = io('http://localhost:8888');
 
 
+var width;var height
+
 //-------------------Création d'hexagone sous forme de tableau de points----------------------------------------
 
 function creerHexagone(rayon) {
@@ -16,6 +18,80 @@ function creerHexagone(rayon) {
 }
 
 //-------------------Création du damier d'hexagones----------------------------------------
+
+
+function casesAdjacentes(pos, width, height) {
+    pos = parseInt(pos, 10);
+    width = parseInt(width,10)
+    height = parseInt(height,10)
+    var adj = [];
+    var row = pos%height;
+    var col = Math.floor(pos / height)  ;
+    if (col > 0) { // not left
+        adj.push(pos - height); // left
+    }
+    if (col < width - 1) { // not right
+        adj.push(pos + height); // right
+    }
+   
+    if (col%2==0){//even col
+
+        if (row%2==0){//even row
+            if (row>0){
+                if (col>0){adj.push(pos-height-1)}
+                adj.push(pos-1)
+            }
+            if (row<height-1){
+                if (col>0){adj.push(pos-height+1)}
+                adj.push(pos+1)
+
+
+            }
+        }
+        if (row%2!=0){
+            if (row<width-1){
+                if (col<width-1){adj.push(pos+height+1)}
+                adj.push(pos-1)
+            }
+            if (row>0){
+                if (col>0){adj.push(pos+height-1)}
+                adj.push(pos-1)
+
+
+            }
+        }
+    }
+    if (col%2!=0){//odd column
+
+        if (row%2==0){//even row
+            if (row>0){
+                if (col>0){adj.push(pos-height-1)}
+                adj.push(pos-1)
+            }
+            if (row<height-1){
+                if (col>0){adj.push(pos-height+1)}
+                adj.push(pos+1)
+            }
+        }
+        if (row%2!=0){//odd row
+            if (row>0){
+                if (col<width-1){adj.push(pos+height-1)}
+                adj.push(pos-1)
+            }
+            if (row<width-1){
+                if (col>0){adj.push(pos+height+1)}
+                adj.push(pos+1)
+
+
+            }
+        }
+    }
+
+    adj = adj.filter(j => j >= 0 && j < height * width);
+    
+
+    return adj; 
+}
 
 function créerDamier(nbColumns, nbLines, rayon) {
     document.getElementById("jeu").style.visibility="visible";
@@ -42,80 +118,48 @@ function créerDamier(nbColumns, nbLines, rayon) {
                 }
             }
             d += "Z";
-
-
-
             d3.select("#jeu")
                 .append("path")
                 .attr("d", d)
                 .attr("stroke", "transparent")
                 .attr("shape-rendering", "crispEdges")
                 .attr("id", "h" + (l * nbColumns + c))
-
+                .on("click",function(){
+                    const id = d3.select(this).attr("id").substring(1); 
+                    if (mode=="fill"){
+                        remplirSceau(id)
+                    }
+                    if (mode=="paint"){
+                        peindre(id)
+                    }
+                })
                 .on("mouseover", function() {
                     d3.select(this)
                     .attr("stroke", "orange")
                     .style("stroke-width", 2)
+
+                    if (isDown==false || mode!="paint"){return}
+                    const id = d3.select(this).attr("id").substring(1); 
+                    peindre(id)
                 })
 
                 .on("mouseout", function() {
                     d3.select(this)
                         .attr("stroke", "transparent")
                 })
-                .on("click", function () {
-                    // Extract the numeric part of the hexagon ID
-                    const fullId = d3.select(this).attr("id"); // Get the full ID, e.g., "h5"
-                    const id = parseInt(fullId.substring(1)); // Extract the numeric part, e.g., 5
-                
-                    let patterne = "plaine_1-pattern";
-                    let terrain = "plaine";
-                
-                    // Determine the pattern and terrain based on the selected tool
-                    switch (outil) {
-                        case "plaine":
-                            patterne = "plaine_1-pattern";
-                            terrain = "plaine";
-                            break;
-                
-                        case "eau":
-                            patterne = "eau-pattern";
-                            terrain = "eau";
-                            break;
-                
-                        case "montagne":
-                            patterne = "montagne-pattern";
-                            terrain = "montagne";
-                            break;
-                
-                        case "foret":
-                            patterne = "foret1_1-pattern";
-                            terrain = "foret1";
-                            break;
-                
-                        case "carriere":
-                            patterne = "carriere_1-pattern";
-                            terrain = "carriere";
-                            break;
-                
-                        default:
-                            console.warn("Unknown tool selected:", outil);
-                            return; // Exit if the tool is not valid
-                    }
-                
-                    // Apply the pattern fill to the clicked hexagon
-                    fill(id, `url(#${patterne})`);
-                
-                    // Update the map array with the new terrain value
-                    if (map.length > id) {
-                        map[id] = terrain;
-                    }
-                
-                    console.log(`Hexagon ${id} updated to terrain: ${terrain}, pattern: ${patterne}`);
-                });
-                
         }
     }
 }
+
+document.addEventListener("mousedown", function(event) {
+    isDown=true
+});
+
+document.addEventListener("mouseup", function(event) {
+isDown=false
+});
+
+
 
 function créerMiniMap(nbColumns, nbLines, rayon) {
     document.getElementById("mini").style.visibility="visible";
@@ -197,6 +241,8 @@ function ajouterTextures(id, url) {
 }
 
 var outil = "plaine"
+var isDown = false
+var mode = "paint"
 
 function mapprint(){
     console.log(map)
@@ -228,6 +274,115 @@ function eau(){
     outil= "eau"
 }
 
+function paint(){
+    mode="paint"
+}
+
+function fillmode(){
+    mode = "fill"
+}
+
+function peindre(id){
+
+                    
+    let patterne = "plaine_1-pattern";
+    let terrain = "plaine";
+    switch (outil) {
+        case "plaine":
+            patterne = "plaine_1-pattern";
+            terrain = "plaine";
+            break;
+
+        case "eau":
+            patterne = "eau-pattern";
+            terrain = "eau";
+            break;
+
+        case "montagne":
+            patterne = "montagne-pattern";
+            terrain = "montagne";
+            break;
+
+        case "foret":
+            patterne = "foret1_1-pattern";
+            terrain = "foret1";
+            break;
+
+        case "carriere":
+            patterne = "carriere_1-pattern";
+            terrain = "carriere";
+            break;
+
+        default:
+            console.warn("Unknown tool selected:", outil);
+            return; 
+    } 
+    fill(id, `url(#${patterne})`);                
+    if (map.length > id) {
+        map[id] = terrain;
+    }
+}
+
+
+
+function remplirSceau(id){
+    console.log("a")
+    var patternebase = map[id]
+    var atester = [id]
+    var testees = []
+    while (atester.length>0){
+        var test = atester.shift()
+        console.log(test)
+        if (map[test]==patternebase){
+            testees.push(test)
+            for (var z of casesAdjacentes(test,width,height)){
+                if (!testees.includes(z) && !atester.includes(z)){
+                atester.push(z)
+                }
+            }
+        }
+    }
+    
+    console.log(testees)
+
+    for (var z of testees){
+
+    let patterne = "plaine_1-pattern";
+    let terrain = "plaine";
+    switch (outil) {
+        case "plaine":
+            patterne = "plaine_1-pattern";
+            terrain = "plaine";
+            break;
+
+        case "eau":
+            patterne = "eau-pattern";
+            terrain = "eau";
+            break;
+
+        case "montagne":
+            patterne = "montagne-pattern";
+            terrain = "montagne";
+            break;
+
+        case "foret":
+            patterne = "foret1_1-pattern";
+            terrain = "foret1";
+            break;
+
+        case "carriere":
+            patterne = "carriere_1-pattern";
+            terrain = "carriere";
+            break;
+
+        default:
+    } 
+    fill(z, `url(#${patterne})`);                
+    if (map.length > z) {
+        map[z] = terrain;
+    }
+    }
+}
 
 
 
@@ -291,12 +446,15 @@ function appelsAjoutTextures(){
 //--------------------------------------------------------------------------------------------------
 
 var map = []
+board = []
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    document.querySelector('.accueil').style.display = 'none';
+    document.querySelector('.partie').style.display = 'block';
     socket.on("map",data=>{
         console.log(data)
-
+        width = data.width;height = data.height
         créerDamier(data.height,data.width,16)
         créerMiniMap(data.height, data.width, 2)
         
