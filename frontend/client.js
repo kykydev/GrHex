@@ -995,9 +995,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         dialogue("Général, un message vous a été adressé !", "messager", "rouge");
 
-        notificationsSauvegarder[notif.titre] = notif;
+        if(!notif.titre.startsWith("Demande d'échange de ")){
+            notificationsSauvegarder[notif.titre] = notif;
+            d3.select("#vueNotifications").append("p").text(notif.titre).attr("id", "notif" + numeroNotif).attr("class", "notifications");
+        }else{
+            notificationsSauvegarder[notif.échange.idRequête] = notif;
+            d3.select("#vueNotifications").append("p").text(notif.échange.idRequête).attr("id", "notif" + numeroNotif).attr("class", "notifications");
+        }
 
-        d3.select("#vueNotifications").append("p").text(notif.titre).attr("id", "notif" + numeroNotif).attr("class", "notifications");
+        
         ++numeroNotif;
 
         Array.from(notifications).forEach((element) => {
@@ -1009,20 +1015,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     let notifDetail = d3.select("#vueNotificationMessage");
 
                     notifDetail.selectAll("*").remove();
+
                     let notifTraite = notificationsSauvegarder[element.textContent];
 
                     if (notifDetail.style("display") == "none"){
                         notifDetail.append("p").text(notifTraite.texte);
                         if(notifTraite.type == "commerce"){
 
-                            notifDetail.append("p").text("ressource demandées : " + notifTraite.quantitéDemandée +" "+notifTraite.ressourceDemandée
-                                +", ressource reçu : "+notifTraite.quantitéEnvoyée +" " +notifTraite.ressourcesEnvoyées);
+                            let echange = notifTraite.échange;
+
+                            notifDetail.append("p").text("ressource demandées : " + echange.quantitéDemandée +" "+echange.ressourceDemandée
+                                +", ressource reçu : "+echange.quantitéEnvoyée +" " +echange.ressourcesEnvoyées);
 
                             notifDetail.append("button").text("accepter").on("click",()=>{
-                                socket.on("retourTrade",{idRequête:notifDetail.idRequête,accepte:true});
+                                socket.emit("retourTrade",{idRequête:echange.idRequête,accepte:true});
                             });
                             notifDetail.append("button").text("refuser").on("click",()=>{
-                                socket.on("retourTrade",{idRequête:notifDetail.idRequête,accepte:false});
+                                socket.emit("retourTrade",{idRequête:echange.idRequête,accepte:false});
                             });
                         }
 
@@ -1061,13 +1070,20 @@ document.addEventListener("DOMContentLoaded", function () {
     socket.on("demandeHDV", (data) => { 
 
         let choisirEntrepot = d3.select("#choisirEntrepot");
+        let notifDetail = d3.select("#notificationDetail");
+
 
         data.forEach((entrepot) => {
             choisirEntrepot.append("label").attr("for", entrepot.position).text(entrepot.type+" : " +entrepot.position);
             choisirEntrepot.append("input").attr("type", "radio").attr("name", "mesEntrepots")
                 .attr("value", entrepot.position).attr("id", "e" + entrepot.position);
-
             choisirEntrepot.append("br");
+
+
+            notifDetail.append("label").attr("for", entrepot.position).text(entrepot.type + " : " + entrepot.position);
+            notifDetail.append("input").attr("type", "radio").attr("name", "entrepotsNotif")
+                .attr("value", entrepot.position).attr("id", "notif" + entrepot.position);
+            notifDetail.append("br");
 
         });
 
