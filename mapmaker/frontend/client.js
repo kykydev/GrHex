@@ -3,7 +3,7 @@ const socket = io('http://localhost:8888');
 
 
 var width;var height
-
+const unites = ["hoplite","archer","paysanne","mineur","bûcheron","tour","forge","mur","hôtel de ville","champ","mine","maison"]
 //-------------------Création d'hexagone sous forme de tableau de points----------------------------------------
 
 function creerHexagone(rayon) {
@@ -17,9 +17,108 @@ function creerHexagone(rayon) {
     return points;
 }
 
+var positionsDépart = {
+    "beotie": 243,
+    "attique": 923,
+    "argolide": 137
+}
 //-------------------Création du damier d'hexagones----------------------------------------
 
+function mursAdjacentes(pos,board) {
+    pos = parseInt(pos, 10);
 
+    var retour = [];
+    if (board[pos] == undefined || board[pos] != "mur") { return retour }
+    var row = pos % height;
+    var col = Math.floor(pos / height);
+    if (col > 0) { // not left
+        if (!retour.includes("gauche") && board[pos - height] != undefined && board[pos - height] == "mur") { retour.push("gauche") }; // left
+    }
+    if (col < width - 1) { // not right
+        if (!retour.includes("droite") && board[pos + height] != undefined && board[pos + height] == "mur") { retour.push("droite") }; // right
+    }
+
+
+    if (col % 2 == 0) {//even col   
+
+        if (row % 2 == 0) {//even row
+            if (row > 0) {
+                if (col > 0) { if (!retour.includes("hautgauche") && board[pos - height - 1] != undefined && board[pos - height - 1] == "mur") { retour.push("hautgauche") }; }
+                if (!retour.includes("hautdroite") && board[pos - 1] != undefined && board[pos - 1] == "mur") { retour.push("hautdroite") }; // left
+
+            }
+            if (row < height - 1) {
+                if (col > 0) { if (!retour.includes("basgauche") && board[pos - height + 1] != undefined && board[pos - height + 1] == "mur") { retour.push("basgauche") }; }
+                if (!retour.includes("basdroite") && board[pos + 1] != undefined && board[pos + 1] == "mur") { retour.push("basdroite") }; // left
+
+
+
+            }
+        }
+        if (row % 2 != 0) {
+            if (row > 0) {
+                if (col > 0) {
+                    if (!retour.includes("hautdroite") && board[pos + height - 1] != undefined && board[pos + height - 1] == "mur") { retour.push("hautdroite") }; // left
+                }
+                if (!retour.includes("hautgauche") && board[pos - 1] != undefined && board[pos - 1] == "mur") { retour.push("hautgauche") };
+
+            }
+            if (row < height - 1) {
+                if (col < width - 1) {
+                    if (!retour.includes("basdroite") && board[pos + height + 1] != undefined && board[pos + height + 1] == "mur") { retour.push("basdroite") }; // left
+                }
+                if (!retour.includes("basgauche") && board[pos + 1] != undefined && board[pos + 1] == "mur") { retour.push("basgauche") }
+            }
+        }
+    }
+    if (col % 2 != 0) {//odd column
+
+        if (row % 2 == 0) {//even row
+            if (row > 0) {
+                if (col > 0) {
+                    if (!retour.includes("hautgauche") && board[pos - height - 1] != undefined && board[pos - height - 1] == "mur") { retour.push("hautgauche") };
+                }
+                if (!retour.includes("hautdroite") && board[pos - 1] != undefined && board[pos - 1] == "mur") { retour.push("hautdroite") }
+            }
+
+            if (row < height - 1) {
+                if (col > 0) { if (!retour.includes("basgauche") && board[pos - height + 1] != undefined && board[pos - height + 1] == "mur") { retour.push("basgauche") } }
+                if (!retour.includes("basdroite") && board[pos + 1] != undefined && board[pos + 1] == "mur") { retour.push("basdroite") }
+            }
+        }
+        if (row % 2 != 0) {//odd row
+
+            if (row > 0) {
+                if (col < width - 1) {
+                    if (!retour.includes("hautdroite") && board[pos + height - 1] != undefined && board[pos + height - 1] == "mur") { retour.push("hautdroite") }
+                }
+                if (!retour.includes("hautgauche") && board[pos - 1] != undefined && board[pos - 1] == "mur") { retour.push("hautgauche") }
+            }
+            if (row < height - 1) {
+                if (col > 0) { if (!retour.includes("basdroite") && board[pos + height + 1] != undefined && board[pos + height + 1] == "mur") { retour.push("basdroite") } }
+                if (!retour.includes("basgauche") && board[pos + 1] != undefined && board[pos + 1] == "mur") { retour.push("basgauche") }
+
+
+            }
+        }
+    }
+
+
+    var retouryahou = []
+    if (retour.length == 0) { retouryahou = ["centre"] } else { retouryahou.push("centre") }
+    if (retour.includes("hautdroite")) { retouryahou.push("hautdroite") }
+    if (retour.includes("hautgauche")) { retouryahou.push("hautgauche") }
+    if (retour.includes("droite")) { retouryahou.push("droite") }
+    if (retour.includes("gauche")) { retouryahou.push("gauche") }
+    if (retour.includes("basdroite")) { retouryahou.push("basdroite") }
+    if (retour.includes("basgauche")) { retouryahou.push("basgauche") }
+
+    return retouryahou;
+
+
+
+
+}
 
 function casesAdjacentes(pos, width, height) {
     pos = parseInt(pos, 10);
@@ -129,21 +228,17 @@ function créerDamier(nbColumns, nbLines, rayon) {
                 .attr("id", "h" + (l * nbColumns + c))
                 .on("click",function(){
                     const id = d3.select(this).attr("id").substring(1); 
-                    if (mode=="fill"){
-                        remplirSceau(id)
-                    }
-                    if (mode=="paint"){
-                        peindre(id)
-                    }
+                    clique(id)
+
+
                 })
                 .on("mouseover", function() {
                     d3.select(this)
                     .attr("stroke", "orange")
                     .style("stroke-width", 2)
-
-                    if (isDown==false || mode!="paint"){return}
                     const id = d3.select(this).attr("id").substring(1); 
-                    peindre(id)
+
+                   hoveur(id)
                 })
 
                 .on("mouseout", function() {
@@ -154,6 +249,7 @@ function créerDamier(nbColumns, nbLines, rayon) {
     }
 }
 
+
 document.addEventListener("mousedown", function(event) {
     isDown=true
 });
@@ -163,45 +259,40 @@ isDown=false
 });
 
 
+    function clique(id){
+        if (mode=="fill"){
+            remplirSceau(id)
+        }
+        if (mode=="paint"){
+            peindre(id)
+        }
+        if (mode=="placeUnit"){
+            addUnit(document.getElementById("uniSelec").value,id,document.getElementById("citeSelec").value)
+        }
+   
+             
+        if (mode=="posArgolide"){
+            positionsDépart["argolide"]=id
+            document.getElementById("posArgolide").innerText=("Argolide: "+positionsDépart["argolide"])
+        }     
+        if (mode=="posBeotie"){
+            positionsDépart["beotie"]=id
+            document.getElementById("posBeotie").innerText=("Beotie: "+positionsDépart["beotie"])
+        }
+        if (mode=="posAttique"){
+            positionsDépart["attique"]=id
+            document.getElementById("posAttique").innerText=("Attique: "+positionsDépart["attique"])
+        }
 
-function créerMiniMap(nbColumns, nbLines, rayon) {
-    document.getElementById("mini").style.visibility="visible";
-    document.getElementById("mini").innerHTML = "";
-    Hexagone = creerHexagone(rayon);
-
-    for (var l = 0; l < nbLines; l++) {
-        for (var c = 0; c < nbColumns; c++) {
-            var d = "";
-            var x, y;
-
-            for (var i = 0; i < 6; i++) {
-                h = Hexagone[i];
-                x = h[0] + (Hexagone[1][0] - Hexagone[0][0]) * l * 2;
-                if (c % 2 == 1) {
-                    x += (Hexagone[1][0] - Hexagone[0][0]);
-                }
-                y = h[1] + (Hexagone[1][1] - Hexagone[0][1]) * c * 3;
-
-                if (i == 0) {
-                    d += "M" + x + "," + y + " L";
-                } else {
-                    d += x + "," + y + " ";
-                }
-            }
-            d += "Z";
+    }
 
 
-
-            d3.select("#mini")
-                .append("path")
-                .attr("d", d)
-                .attr("stroke", "transparent")
-                .attr("shape-rendering", "crispEdges")
-                .attr("id", "m" + (l * nbColumns + c))
-
+function hoveur(id){
+        if (isDown==false){return}
+        if (mode=="paint"){        peindre(id)}
+        if (mode=="placeUnit"){addUnit(document.getElementById("uniSelec").value,id,document.getElementById("citeSelec").value)
         }
     }
-}
 
 //-------------------Coloriage d'un hexagone----------------------------------------
 
@@ -226,6 +317,154 @@ function actualiserMini(longueur, largeur, jeu) {
         fillMini(i, "url(#"+jeu[i]+"-pattern)")
     }
 }
+function dessineMur(pos,board, type) {
+    let directions = mursAdjacentes(pos,board);
+    let hexagone = document.getElementById("h" + pos);
+    let bbox = hexagone.getBBox();
+
+    const murs = {
+        "hautgauche": "murhautgauche.png",
+        "hautdroite": "murhautdroite.png",
+        "gauche": "murgauche.png",
+        "droite": "murdroite.png",
+        "basgauche": "murbasgauche.png",
+        "basdroite": "murbasdroite.png",
+        "centre": "mur.png",
+    };
+
+    directions.forEach(direction => {
+        if (murs[direction]) {
+            let image = d3.select("#jeu")
+                .append("image")
+                .attr("class", "unite")
+                .attr("xlink:href", `/img/murs/${murs[direction]}`)
+                .attr("x", `${bbox.x - 5}`)
+                .attr("y", `${bbox.y - 7}`)
+                .attr("width", "35")
+                .attr("height", "40")
+                .attr("id", "uni" + pos)
+                .on("mouseover", () => {
+                  
+                    d3.select(hexagone)
+                        .attr("stroke", `orange`)
+                        .style("stroke-width", 2);
+                })
+                .on("mouseout", () => {
+                    d3.select(hexagone)
+                        .attr("stroke", "transparent")
+                        .style("stroke-width", 0);
+                });
+
+        }
+    });
+}
+
+
+function afficherUnites(pos,nom,couleu,opacity = 1) {
+    let hexagone = document.getElementById("h" + pos);
+
+    var dam = "jeu"
+    if (hexagone) {
+        let bbox = hexagone.getBBox();
+        var couleur = "rouge"
+        switch (couleu) {
+            case "rouge":
+                couleur = "darkred";
+                break;
+            case "vert":
+                couleur = "green";
+                break;
+            case "bleu":
+                couleur = "blue";
+                break;
+            case "jaune":
+                couleur = "yellow";
+                break;
+            case "blanc":
+                couleur = "aliceblue"
+                break
+        }
+
+        let image = d3.select("#" + dam)
+            .append("image")
+            .attr("class", "unite")
+            .attr("xlink:href", `/img/personnages/${couleu}/${nom.toLowerCase()}.png`)
+            .attr("x", `${bbox.x - 5}`)
+            .attr("y", `${bbox.y - 7}`)
+            .attr("width", "35")
+            .attr("height", "40")
+            .attr("id", "uni" + pos)
+            .on("mouseover", () => {
+              
+                d3.select(hexagone)
+                    .attr("stroke", `${couleur}`)
+                    .style("stroke-width", 2);
+            })
+            .on("mouseout", () => {
+                d3.select(hexagone)
+                    .attr("stroke", "transparent")
+                    .style("stroke-width", 0)
+            })
+            .style("opacity", opacity) // opacité c'est entre 0 et 1
+            .on("click",function(){
+                const id = d3.select(this).attr("id").substring(3); 
+                clique(id)
+
+
+            })
+        }
+       
+
+}
+
+function supprUni() {
+    d3.selectAll(".unite").remove();
+}
+
+
+
+function ajouterUnites(board,couleur) {
+    for (let position of Object.keys(board)) {
+
+        if (board[position] == "mur") {
+            // console.log("mur"+position)
+            dessineMur(position,board, "bois")
+        }
+        else {
+            afficherUnites(position,board[position],couleur);
+        }
+    }
+}
+
+function dessinUnis(){
+    supprUni()
+    ajouterUnites(boardBeotie,"rouge")
+    ajouterUnites(boardArgolide,"bleu")
+    ajouterUnites(boardAttique,"vert")
+    
+}
+
+function addUnit(name,position,cite){
+    switch (cite){
+        case "beotie":
+            boardBeotie[position]=name
+            break
+        case "argolide":
+            boardArgolide[position]=name
+            break
+        case "attique":
+            boardAttique[position]=name
+            break
+
+        }
+
+
+        dessinUnis()
+
+
+    
+}
+
 
 function ajouterTextures(id, url) {
     let defs = d3.select("svg").append("defs");
@@ -249,7 +488,34 @@ var mode = "paint"
 
 function mapprint(){
     console.log(map)
-    socket.emit("saveçastp",{"map":map,"width":width,"height":height,"nom":document.getElementById("nomMap").value})
+    socket.emit("saveçastp",{
+        "nom":document.getElementById("nomMap").value,
+        "height":height,
+        "width":width,
+        "clustersMiniers": {
+            "copper": [
+                582
+            ],
+            "tin": [
+                615
+            ]
+        },
+        "positionsDépart": positionsDépart,
+        "boards": {
+            "boardNeutre": {},
+            "beotie":boardBeotie,
+            "hdvBeotie":[],
+            "mursBeotie":[],
+            "argolide":boardArgolide,
+            "hdvArgolide":[],
+            "mursArgolide":[],
+            "attique":boardAttique,
+            "hdvAttique":[],
+            "mursAttique":[],
+            
+        },
+        "map":map
+        })
 }
 
 function plaine(){
@@ -281,9 +547,26 @@ function paint(){
     mode="paint"
 }
 
+function placeunit() {
+    mode="placeUnit"
+}
+
 function fillmode(){
     mode = "fill"
 }
+
+function posBeotie(){
+    mode="posBeotie"
+    console.log("mode beotie")
+}
+
+function posArgolide(){
+    mode="posArgolide"
+}
+function posAttique(){
+    mode="posAttique"
+}
+
 
 function peindre(id){
 
@@ -329,13 +612,12 @@ function peindre(id){
 
 
 function remplirSceau(id){
-    console.log("a")
+    
     var patternebase = map[id]
     var atester = [id]
     var testees = []
     while (atester.length>0){
         var test = atester.shift()
-        console.log(test)
         if (map[test]==patternebase){
             testees.push(test)
             for (var z of casesAdjacentes(test,width,height)){
@@ -346,7 +628,6 @@ function remplirSceau(id){
         }
     }
     
-    console.log(testees)
 
     for (var z of testees){
 
@@ -466,7 +747,10 @@ function appelsAjoutTextures(){
 //--------------------------------------------------------------------------------------------------
 
 var map = []
-board = []
+boardNeutree = {}
+boardBeotie = {}
+boardArgolide = {}
+boardAttique = {}
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -483,4 +767,20 @@ document.addEventListener("DOMContentLoaded", function () {
         map = []
         for (z of data.infos){map.push(z.type)}
     })
+
+
+
+    var select = document.getElementById("uniSelec");
+    unites.forEach(uni => {
+        const option = document.createElement("option");
+        option.value = uni;
+        option.textContent = uni.charAt(0).toUpperCase() + uni.slice(1); 
+        select.appendChild(option);
+      });
+
+
+
+
+
+
 });

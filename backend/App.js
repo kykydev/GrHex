@@ -489,7 +489,7 @@ io.on('connection', (socket) => {
       var idJoueur = socket.idJoueur
       if (data.accepte!=true || idJoueur==undefined || partie==undefined){return false}
 
-      var check = partie.accepteTrade(idJoueur,data.idRequête)
+      var check = partie.accepteTrade(idJoueur,data.idRequête,data.hdv)
       if (check!=false && check!=undefined){
         socket.emit("evolution",check)
       }
@@ -499,7 +499,15 @@ io.on('connection', (socket) => {
 
     })
 
-
+    socket.on("citesPrésentes",data=>{
+      var partie = parties[socket.idPartie]
+      if (partie==undefined){return}
+      var retour = []
+      if (partie.citePrise("beotie")){retour.push("beotie")}
+      if (partie.citePrise("attique")){retour.push("attique")}
+      if (partie.citePrise("argolide")){retour.push("argolide")}
+      socket.emit("citesPrésentes",retour)
+    })
 
 
 });

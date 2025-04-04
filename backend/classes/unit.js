@@ -612,11 +612,40 @@ class chevaldetroie extends unit{
 
 class caravaneCommerce extends unit{
     constructor(position,player){
-        super(100,10,10,1,1,"Caravane de commerce",position,player,1,1)
+        super(30,0,2,0,2,"Caravane de commerce",position,player,1,0)
         this.tracked=false
         this.pacifist=true
-        
     }
+
+
+    findGoal(partie){
+        
+        if (this.phase==undefined ||this.objectif==undefined ){return this.position}
+
+        let c =  casesAdjacentes(this.objectif,partie.map.width,partie.map.height)
+        for (var z of c){
+            if (this.canGo(partie.map.infos[z].type)&&partie.board[z]==undefined){
+                return z 
+            }
+
+            return this.position
+        }
+
+
+
+
+        while (c.length>0){
+            var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
+            if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
+
+        }
+        return undefined
+    }
+
+
+
+
+
 }
 class bateauCommerce extends unit{
     constructor(position,player){

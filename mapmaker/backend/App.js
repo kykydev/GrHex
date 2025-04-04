@@ -79,14 +79,56 @@ io.on('connection', (socket) => {
 
   socket.on("saveçastp",data=>{
     const fs = require('fs');
-    
-    /*
-    savedstring = "["
-    for (z of data){savedstring=savedstring+'"'+z+"',"}
-    savedstring = savedstring[savedstring.length-1]="]"
+    var saved = data
+    for (var z of Object.keys(saved.boards.beotie)){
+      if (saved.boards.beotie[z]=="mur"){
+        delete saved.boards.beotie[z]
+        saved.boards.mursBeotie.push(z)
+      }
+      if (saved.boards.beotie[z]=="hôtel de ville"){
+        delete saved.boards.beotie[z]
+        saved.boards.hdvBeotie.push(z)
+      }
 
-    fs.writeFileSync('lastmap.json', savedstring);
-    */
-    fs.writeFileSync(data.nom+'.json', JSON.stringify(data));
+      for (var z of Object.keys(saved.boards.argolide)) {
+        if (saved.boards.argolide[z] == "mur") {
+          delete saved.boards.argolide[z];
+          saved.boards.mursArgolide.push(z);
+        }
+        if (saved.boards.argolide[z] == "hôtel de ville") {
+          console.log("aaaaa")
+          delete saved.boards.argolide[z];
+          saved.boards.hdvArgolide.push(z);
+        }
+      }
+
+      for (var z of Object.keys(saved.boards.attique)) {
+        if (saved.boards.attique[z] == "mur") {
+          delete saved.boards.attique[z];
+          saved.boards.mursAttique.push(z);
+        }
+        if (saved.boards.attique[z] == "hôtel de ville") {
+          delete saved.boards.attique[z];
+          saved.boards.hdvAttique.push(z);
+        }
+      }
+
+    }
+
+
+
+    saved.map[saved.positionsDépart["beotie"]]="plaine"
+    saved.boards.beotie[saved.positionsDépart["beotie"]]="stratege"
+    
+    saved.map[saved.positionsDépart["argolide"]]="plaine"
+    saved.boards.argolide[saved.positionsDépart["argolide"]]="stratege"
+    
+    saved.map[saved.positionsDépart["attique"]]="plaine"
+    saved.boards.attique[saved.positionsDépart["attique"]]="stratege"
+    
+
+
+
+    fs.writeFileSync(data.nom+'.json', JSON.stringify(saved,null,2));
   })
 });
