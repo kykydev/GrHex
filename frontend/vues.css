@@ -27,3 +27,8 @@
 #choisirMap * {
     text-align: center;
 }
+
+#vueEspions label {
+    display: inline-block;
+    width: 150px; /* Adjust the width as needed */
+}
