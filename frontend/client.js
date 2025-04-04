@@ -1022,16 +1022,24 @@ document.addEventListener("DOMContentLoaded", function () {
                         notifDetail.append("p").text(notifTraite.texte);
                         if(notifTraite.type == "commerce"){
 
+                            socket.emit("demandeHDV","");
+
                             let echange = notifTraite.échange;
+
+                            
 
                             notifDetail.append("p").text("ressource demandées : " + echange.quantitéDemandée +" "+echange.ressourceDemandée
                                 +", ressource reçu : "+echange.quantitéEnvoyée +" " +echange.ressourcesEnvoyées);
 
                             notifDetail.append("button").text("accepter").on("click",()=>{
-                                socket.emit("retourTrade",{idRequête:echange.idRequête,accepte:true});
+                                let entrepot = document.querySelector("input[name='entrepotsNotif']:checked").value;
+                                socket.emit("retourTrade",{idRequête:echange.idRequête,accepte:true,hdv:entrepot});
+                                // console.log("entrepot : "+entrepot);
                             });
                             notifDetail.append("button").text("refuser").on("click",()=>{
-                                socket.emit("retourTrade",{idRequête:echange.idRequête,accepte:false});
+                                let entrepot = document.querySelector("input[name='entrepotsNotif']:checked").value;
+                                socket.emit("retourTrade",{idRequête:echange.idRequête,accepte:false,hdv:entrepot});
+                                // console.log("entrepot : "+entrepot);
                             });
                         }
 
@@ -1070,7 +1078,7 @@ document.addEventListener("DOMContentLoaded", function () {
     socket.on("demandeHDV", (data) => { 
 
         let choisirEntrepot = d3.select("#choisirEntrepot");
-        let notifDetail = d3.select("#notificationDetail");
+        let notifDetail = d3.select("#vueNotificationMessage");
 
 
         data.forEach((entrepot) => {
