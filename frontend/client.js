@@ -422,7 +422,7 @@ document.addEventListener("DOMContentLoaded", function () {
         socket.emit("demandeDamier", idJoueur);
         socket.emit('ressources');
         socket.emit("demandeMines");
-        socket.emit("citesPrésentes");
+        socket.emit("citesPrésentes","");
 
 
         dicoPathUnite = {};
@@ -430,6 +430,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     socket.on("citesPrésentes",data=>{
+        console.log(data);
+    
         data.forEach((nom) => {
 
             if (maCite != nom) {

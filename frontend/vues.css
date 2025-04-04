@@ -32,3 +32,8 @@
     display: inline-block;
     width: 150px; /* Adjust the width as needed */
 }
+
+
+#choisirEntrepot { 
+    min-height: 150px;
+}
