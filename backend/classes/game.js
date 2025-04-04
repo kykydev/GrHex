@@ -903,6 +903,8 @@ class game {
                     this.moveTurn(uni)
                     if (uni!=undefined && uni.owner!="Système"){this.testDéposeRessources(uni)}
                     if (uni!=undefined && uni.owner!="Système" && uni.name=="Messager"){this.testMessager(uni)}
+                    if (uni!=undefined && uni.owner!="Système" && uni.name=="Caravane de commerce"){this.testCaravane(uni)}
+
                     break;
 
                 case "builderPickup":
@@ -1531,62 +1533,6 @@ while (index<nbLettres){
 
 }
 
-//newTrade ajoute une demande d'échange
-newTrade(data,idJoueur){
-    var joueur = this.players[idJoueur]
-    if (joueur==undefined){return false}
-    if (data.mesRessources==undefined || data.ville==undefined || data.ressourcesEnnemies==undefined || data.mesQuantites==undefined || data.quantitesEnnemies==undefined){return false}
-    
-    if (data.mesRessources=="or"){
-        if (joueur.gold<data.mesQuantites){return false}
-    }
-    else{
-    if (joueur.units[data.hdvStock]==undefined ||joueur.units[data.hdvStock][data.mesRessources]==undefined ||joueur.units[data.hdvStock][data.mesRessources]<data.mesQuantites){return false}
-    }
-    
-    for (var zk of Object.keys(this.players)){
-        var z = this.players[zk]
-        if (z.cite==data.ville){
-
-            var dist = 0
-   
-            var stratege1 = undefined
-            var stratege2 = undefined
-            for (var zz of Object.keys(joueur.units)){
-                if (joueur.units[zz].name=="Stratege"){stratege1=joueur.units[zz].position}
-            }
-            for (var zz of Object.keys(z.units)){
-                if (z.units[zz].name=="Stratege"){stratege2=z.units[zz].position}
-            }
-         
-
-
-            console.log("f"+dist)
-            var trade = {
-                "envoyeur":joueur.id,
-                "ressourcesEnvoyées":data.mesRessources,
-                "quantitéEnvoyée":data.mesQuantites,
-                "stockEnvoyeur":data.hdvStock,
-                "receveur": z.id,
-                "ressourceDemandée":data.ressourcesEnnemies,
-                "quantitéDemandée":data.quantitesEnnemies,
-                "idRequête":uuidv4()
-            }
-            this.trades[trade.idRequête]=trade
-            z.letters.push({"titre":"Demande d'échange de "+joueur.name,"expéditeur":joueur.name,"tours":dist,"échange":trade,"type":"commerce"})
-
-            
-            return true
-        }
-        
-    }
-     return false   
-    
-
-
-}
-
-
 
 addEspion(idJoueur,positionEspion){
     var joueur = this.players[idJoueur] ; if (joueur==undefined){return false}
@@ -1645,7 +1591,65 @@ récoltePoisson(position){
 
 }
 
-//Teste
+
+//newTrade ajoute une demande d'échange
+newTrade(data,idJoueur){
+    var joueur = this.players[idJoueur]
+    if (joueur==undefined){return false}
+    if (data.mesRessources==undefined || data.ville==undefined || data.ressourcesEnnemies==undefined || data.mesQuantites==undefined || data.quantitesEnnemies==undefined){return false}
+    
+    if (data.mesRessources=="or"){
+        if (joueur.gold<data.mesQuantites){return false}
+        joueur.gold-=data.mesQuantites
+    }
+    else{
+    if (joueur.units[data.hdvStock]==undefined ||joueur.units[data.hdvStock][data.mesRessources]==undefined ||joueur.units[data.hdvStock][data.mesRessources]<data.mesQuantites){return false}
+    joueur.units[data.hdvStock][data.mesRessources]-=data.mesQuantites
+}
+    
+    for (var zk of Object.keys(this.players)){
+        var z = this.players[zk]
+        if (z.cite==data.ville){
+
+            var dist = 0
+   
+            var stratege1 = undefined
+            var stratege2 = undefined
+            for (var zz of Object.keys(joueur.units)){
+                if (joueur.units[zz].name=="Stratege"){stratege1=joueur.units[zz].position}
+            }
+            for (var zz of Object.keys(z.units)){
+                if (z.units[zz].name=="Stratege"){stratege2=z.units[zz].position}
+            }
+
+            //dist = distance(stratege1,stratege2,PageTransitionEvent.map.height)
+         
+
+
+            var trade = {
+                "envoyeur":joueur.id,
+                "ressourcesEnvoyées":data.mesRessources,
+                "quantitéEnvoyée":data.mesQuantites,
+                "stockEnvoyeur":data.hdvStock,
+                "receveur": z.id,
+                "ressourceDemandée":data.ressourcesEnnemies,
+                "quantitéDemandée":data.quantitesEnnemies,
+                "idRequête":uuidv4()
+            }
+            this.trades[trade.idRequête]=trade
+            z.letters.push({"titre":"Demande d'échange de "+joueur.name,"expéditeur":joueur.name,"tours":dist,"échange":trade,"type":"commerce"})
+
+            
+            return true
+        }
+        
+    }
+     return false   
+    
+
+
+}
+
 
 waterTradePossible(pos1,pos2){
     var eauDépart = []
@@ -1722,6 +1726,62 @@ return false
 }
 
 
+
+
+
+
+créerCaravaneCommerce(position,idRequête){
+    var trade = this.trades[idRequête]
+    var receveur = this.players[trade.receveur]
+
+    var uni = new caravaneCommerce(position,receveur)
+    uni.currentTrade = trade
+    uni.phase="aller"
+    uni.objectif = trade.stockEnvoyeur
+    uni[trade.ressourceDemandée]=trade.quantitéDemandée
+    if (this.addUnit(uni,position,receveur)==false){return false}
+
+
+
+    return true
+    }
+
+
+
+    //Teste si une caravane est arrivée à destination et, si oui, en renvoie une
+    testCaravane(uni){
+        if (uni==undefined || uni.name!="Caravane de commerce"){return false}
+        
+        
+        if (casesAdjacentes(uni.position,this.map.width,this.map.height).includes(uni.objectif)){return false}
+        delete this.board[uni.position]
+        delete this.players[uni.owner].units[uni.position]
+        
+        var hdv = this.board[uni.objectif]
+        var trade = this.trades[uni.currentTrade]
+        if (trade==undefined||hdv==undefined){return false}
+        
+        if (uni.phase=="aller"){
+        hdv[trade.ressourceDemandée] += uni[trade.quantitéDemandée]
+        var envoyeur = this.players[trade.envoyeur]; if (envoyeur==undefined){return false}
+            var unix = new caravaneCommerce(position,envoyeur)
+            unix.currentTrade = trade
+            unix.phase="retour"
+            unix.objectif = trade.stockReceveur
+            uni[trade.ressourcesEnvoyées]=trade.quantitéEnvoyée
+
+            if (this.addUnit(unix,position,receveur)==false){return false}
+        }
+
+        else{
+            hdv[trade.ressourceDemandée] += uni[trade.quantitéDemandée]
+        }
+
+        return true
+
+
+    }
+
 /*
 var trade = {
     "envoyeur":joueur.idJoueur,
@@ -1736,32 +1796,11 @@ var trade = {
 */
 
 
-
-
-créerCaravaneCommerce(position,idRequête){
-    var trade = this.trades[idRequête]
-    var receveur = this.players[trade.receveur]
-
-    var uni = new caravaneCommerce(position,receveur)
-    uni.currentTrade = trade
-    uni.phase="aller"
-    uni.objectif = trade.stockEnvoyeur
-    if (this.addUnit(uni,position,receveur)==false){return false}
-
-
-
-
-
-
-
-    return true
-    }
-
 canAcceptTrade(idRequête,hdv){
     var trade = this.trades[idRequête]
     var hotel = this.board[hdv]
     if (trade==undefined || hotel==undefined){return false}
-    if (hotel[trade.ressourceDemandée]==undefined || hotel[trade.ressourceDemandée]<quantitéDemandée){return false}
+    if (hotel[trade.ressourceDemandée]==undefined || hotel[trade.ressourceDemandée]<trade.quantitéDemandée){return false}
 
 
     return true
@@ -1773,15 +1812,15 @@ canAcceptTrade(idRequête,hdv){
 //Fonction qui essaye de faire accepter un échange et renvoie la position de la caravane si acceptation possible
 accepteTrade(idJoueur,idRequête,hdv){
     var trade = this.trades[idRequête]
+    trade["stockReceveur"]=hdv
     console.log(trade)
     if (trade==undefined || idJoueur==undefined ||idJoueur!=trade.receveur){return false}
     var receveur = this.players[idJoueur]
     var envoyeur = this.players[trade.envoyeur]
     if (envoyeur==undefined || receveur==undefined){return false}
-    if (this.canAcceptTrade(trade.idRequête,hdvOrdre))
     //var hdvOrdre ==  this.board[hdv]
-    var hdvOrdre = receveur.hdv[0]
-    if (this.canOrder(receveur.idJoueur,hdvOrdre)==false){return false}
+    var hdvOrdre = hdv
+    if (this.canAcceptTrade(trade.idRequête,hdvOrdre))
 
 
     var waterCheck = this.waterTradePossible(hdvOrdre,trade.stockEnvoyeur)
@@ -1801,7 +1840,7 @@ accepteTrade(idJoueur,idRequête,hdv){
 
     if (groundCheck){
         this.créerCaravaneCommerce(groundCheck.depart,trade.idRequête)
-        return {"position":groundCheck.depart,"newUnit":"cCaravane de commerce"}
+        return {"position":groundCheck.depart,"newUnit":"Caravane de commerce"}
     }
     
     return false
