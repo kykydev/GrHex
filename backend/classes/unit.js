@@ -612,7 +612,7 @@ class chevaldetroie extends unit{
 
 class caravaneCommerce extends unit{
     constructor(position,player){
-        super(30,0,2,0,20,"Caravane de commerce",position,player,1,0)
+        super(30,0,2,0,3,"Caravane de commerce",position,player,1,0)
         this.tracked=false
         this.pacifist=true
     }
@@ -642,7 +642,7 @@ class caravaneCommerce extends unit{
 }
 class bateauCommerce extends unit{
     constructor(position,player){
-        super(100,10,10,1,1,"Navire de commerce",position,player,1,1)
+        super(100,10,10,0,5,"Navire de commerce",position,player,1,1)
         this.tracked=false
         this.pacifist=true
 

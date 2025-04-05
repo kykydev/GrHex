@@ -1622,7 +1622,7 @@ newTrade(data,idJoueur){
                 if (z.units[zz].name=="Stratege"){stratege2=z.units[zz].position}
             }
 
-            //dist = distance(stratege1,stratege2,PageTransitionEvent.map.height)
+            dist = distance(stratege1,stratege2,PageTransitionEvent.map.height)/10
          
 
 
