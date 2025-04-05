@@ -204,9 +204,9 @@ document.addEventListener("DOMContentLoaded", function () {
             d3.select("#vueInfoHdv").style("display", "none");
             selectionPositionEspion = true;
 
-            d3.select("#placeUnEspionStp").text("Places un Espion sur le damier");
+            // d3.select("#placeUnEspionStp").text("Places un Espion sur le damier");
             
-
+            dialogue("Placez un Espion sur le damier","messager","rouge")
         });
 
     d3.select("#bouttonEspions")
@@ -422,12 +422,17 @@ document.addEventListener("DOMContentLoaded", function () {
         socket.emit("demandeDamier", idJoueur);
         socket.emit('ressources');
         socket.emit("demandeMines");
+        socket.emit("citesPrésentes","");
 
 
         dicoPathUnite = {};
 
+    });
 
-        Object.keys(cite).forEach((nom) => {
+    socket.on("citesPrésentes",data=>{
+        console.log(data);
+    
+        data.forEach((nom) => {
 
             if (maCite != nom) {
 
@@ -438,9 +443,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 d3.select("#selectionnerCitePourMail").append("br");
 
 
+                d3.select("#selectionnerVille").append("label").text(nom)
+                    .append("input")
+                    .attr("type","radio").attr("name","ville").attr("value",nom).attr("id",nom);
+                d3.select("#selectionnerVille").append("br")
             }
         });
-    })
+    });
 
     //----------------Pour test, faudra faire ça mieux plus tard-------------------
     /*socket.on("finTour",data=>{
@@ -461,7 +470,7 @@ document.addEventListener("DOMContentLoaded", function () {
         dialogue(msg, "pierris pompidoris", "blanc");
     });
 
-    socket.on("dialogue",data=>{
+    socket.on("dialogue",data=>{dialogue
         dialogue(data.message, data.unite, data.couleur);
     })
 
@@ -680,6 +689,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         // console.log("position hdv : " , event.target.id.supprimerPrefixId("uni"));
 
                         socket.emit("mail", { objet: objetMail.value, contenu: contenuMail.value, cite: cite.value, hdv: event.target.id.supprimerPrefixId("uni") });
+
+                        objetMail.value="";
+                        contenuMail.value="";
+
                     });
 
                     // socket espion
@@ -995,13 +1008,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         dialogue("Général, un message vous a été adressé !", "messager", "rouge");
 
-        if(!notif.titre.startsWith("Demande d'échange de ")){
-            notificationsSauvegarder[notif.titre] = notif;
-            d3.select("#vueNotifications").append("p").text(notif.titre).attr("id", "notif" + numeroNotif).attr("class", "notifications");
-        }else{
-            notificationsSauvegarder[notif.échange.idRequête] = notif;
-            d3.select("#vueNotifications").append("p").text(notif.échange.idRequête).attr("id", "notif" + numeroNotif).attr("class", "notifications");
-        }
+
+            notificationsSauvegarder[(notif.échange ? notif.échange.idRequête : "notif"+numeroNotif)] = notif;
+            d3.select("#vueNotifications").append("p").text(notif.titre).attr("id", (notif.échange ? notif.échange.idRequête : "notif"+numeroNotif)).attr("class", "notifications");
 
         
         ++numeroNotif;
@@ -1016,7 +1025,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     notifDetail.selectAll("*").remove();
 
-                    let notifTraite = notificationsSauvegarder[element.textContent];
+                    let notifTraite = notificationsSauvegarder[element.id];
 
                     if (notifDetail.style("display") == "none"){
                         notifDetail.append("p").text(notifTraite.texte);
@@ -1035,11 +1044,20 @@ document.addEventListener("DOMContentLoaded", function () {
                                 let entrepot = document.querySelector("input[name='entrepotsNotif']:checked").value;
                                 socket.emit("retourTrade",{idRequête:echange.idRequête,accepte:true,hdv:entrepot});
                                 // console.log("entrepot : "+entrepot);
+
+                                dialogue("Échange accepté","messager","rouge");
+
+                                notifDetail.style("display","none");
+                                
                             });
+
                             notifDetail.append("button").text("refuser").on("click",()=>{
                                 let entrepot = document.querySelector("input[name='entrepotsNotif']:checked").value;
                                 socket.emit("retourTrade",{idRequête:echange.idRequête,accepte:false,hdv:entrepot});
                                 // console.log("entrepot : "+entrepot);
+
+                                dialogue("Échange refusé","messager","rouge");
+                                notifDetail.style("display","none");
                             });
                         }
 
