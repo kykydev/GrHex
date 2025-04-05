@@ -612,7 +612,7 @@ class chevaldetroie extends unit{
 
 class caravaneCommerce extends unit{
     constructor(position,player){
-        super(30,0,2,0,2,"Caravane de commerce",position,player,1,0)
+        super(30,0,2,0,20,"Caravane de commerce",position,player,1,0)
         this.tracked=false
         this.pacifist=true
     }
@@ -627,19 +627,12 @@ class caravaneCommerce extends unit{
             if (this.canGo(partie.map.infos[z].type)&&partie.board[z]==undefined){
                 return z 
             }
-
+        }
             return this.position
-        }
 
 
 
 
-        while (c.length>0){
-            var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
-            if (partie.board[z]==undefined && this.canGo(partie.map.infos[z].type) && z!=this.position){return z}
-
-        }
-        return undefined
     }
 
 
