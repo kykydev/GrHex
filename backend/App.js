@@ -484,16 +484,17 @@ io.on('connection', (socket) => {
 
 
     socket.on("retourTrade",data=>{
-      console.log(data)
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
-      if (data.accepte!=true || idJoueur==undefined || partie==undefined){return false}
+      if (idJoueur==undefined || partie==undefined){return false}
 
+      if (data.accepte==false){partie.refuseTrade(idJoueur,data.idRequête)}
+      else{
       var check = partie.accepteTrade(idJoueur,data.idRequête,data.hdv)
       if (check!=false && check!=undefined){
         socket.emit("evolution",check)
       }
-
+    }
 
 
 

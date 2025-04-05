@@ -1622,7 +1622,7 @@ newTrade(data,idJoueur){
                 if (z.units[zz].name=="Stratege"){stratege2=z.units[zz].position}
             }
 
-            dist = distance(stratege1,stratege2,PageTransitionEvent.map.height)/10
+            dist = Math.floor(distance(stratege1,stratege2,this.map.height)/10)
          
 
 
@@ -1638,8 +1638,7 @@ newTrade(data,idJoueur){
             }
             this.trades[trade.idRequête]=trade
             z.letters.push({"titre":"Demande d'échange de "+joueur.name,"expéditeur":joueur.name,"tours":dist,"échange":trade,"type":"commerce"})
-
-            
+          
             return true
         }
         
@@ -1752,6 +1751,8 @@ créerCaravaneCommerce(position,idRequête){
     testCaravane(uni){
         if (uni==undefined || uni.name!="Caravane de commerce"){return false}
 
+        if (this.board[uni.objectif]==undefined){ delete this.board[uni.position];delete this.players[uni.owner].units[uni.position]}
+
         var arrivé = false ;for (var z of casesAdjacentes(uni.position,this.map.width,this.map.height)){if (z==uni.objectif){arrivé=true}}
 
         if (arrivé==false){return false}
@@ -1772,8 +1773,6 @@ créerCaravaneCommerce(position,idRequête){
             unix[trade.ressourcesEnvoyées]=trade.quantitéEnvoyée
             
             if (this.addUnit(unix,unix.position,envoyeur)==false){return false}
-            if (trade.ressourcesEnvoyées=="or"){envoyeur.gold-=trade.quantitéEnvoyée}
-            else{hdv[trade.quantitéEnvoyée] -=trade.quantitéEnvoyée}
         }
         
         else{
@@ -1813,7 +1812,20 @@ canAcceptTrade(idRequête,hdv){
 
 }
 
+refuseTrade(idJoueur,idRequête){
+    let joueur = this.players[idJoueur]
+    let trade = this.trades[idRequête]
+    if (joueur==undefined ||trade==undefined){return false}
+    let envoyeur = this.players[trade.envoyeur];if(envoyeur==undefined){return false}
+    if (trade.ressourcesEnvoyées=="or"){envoyeur.gold+=trade.quantitéEnvoyée}
+    else{
+        var hdv = this.board[trade.stockEnvoyeur]
+        if (hdv==undefined){return false}
+        hdv[trade.ressourcesEnvoyées] +=trade.quantitéEnvoyée}
+    delete this.trades[idRequête]
 
+    return true
+}
 
 //Fonction qui essaye de faire accepter un échange et renvoie la position de la caravane si acceptation possible
 accepteTrade(idJoueur,idRequête,hdv){
