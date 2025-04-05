@@ -237,6 +237,8 @@ class bucheron extends unit{
         super(25,10,5,2,2,"Bûcheron",position,player,1,1)
         this.wood=0
         this.maxWood=10
+        this.copper=0
+        this.tin=0
         this.knownForests = []
         this.base = player.hdv[0]//endroit où déposer les ressources
         this.fieldRevenu=2
@@ -276,6 +278,24 @@ class bucheron extends unit{
     }
 
     findGoal(partie){//Retourne la meilleure destination possible pour l'unité
+
+
+        //Test entrée champ
+        if (this.objectif!=undefined){
+            if (partie.board[this.objectif]==undefined || partie.board[this.objectif].name!="Champ" || partie.board[this.objectif].workers.length>=partie.board[this.objectif].maxworkers){console.log("ono");this.objectif=undefined}
+            else{
+                let meilleureCase = undefined
+                for (var z of casesAdjacentes(this.objectif,partie.map.width,partie.map.height)){
+                    if (partie.board[z]==undefined && (partie.pathfindToDestination(this.position,z,this.owner)!=false) && this.canGo(partie.map.terrain[z]) && (meilleureCase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleureCase,partie.map.height)))){
+                        meilleureCase=z
+                        }
+                }
+                if (meilleureCase!=undefined){return meilleureCase}
+            }
+        }
+
+
+
         if (this.canRécolte(partie)==false){
 
             let meilleurebase = undefined
@@ -360,6 +380,24 @@ class mineur extends unit{
 
     
     findGoal(partie){//Retourne la meilleure destination possible pour l'unité
+
+        //Test entrée mine
+        if (this.objectif!=undefined){
+            if (partie.board[this.objectif]==undefined ||(  partie.board[this.objectif].name!="Champ"&&partie.board[this.objectif].name!="Mine") || partie.board[this.objectif].workers.length>=partie.board[this.objectif].maxworkers){console.log("ono");this.objectif=undefined}
+            else{
+                let meilleureCase = undefined
+                for (var z of casesAdjacentes(this.objectif,partie.map.width,partie.map.height)){
+                    if (partie.board[z]==undefined && (partie.pathfindToDestination(this.position,z,this.owner)!=false) && this.canGo(partie.map.terrain[z]) && (meilleureCase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleureCase,partie.map.height)))){
+                        meilleureCase=z
+                        }
+                }
+                if (meilleureCase!=undefined){return meilleureCase}
+            }
+        }
+
+
+
+
         if (this.canRécolte(partie)==false){
             let meilleurebase = undefined
             for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
@@ -480,6 +518,23 @@ class paysanne extends unit{
 
     findGoal(partie){
         
+        //Test entrée mine et champ
+        if (this.objectif!=undefined){
+            if (partie.board[this.objectif]==undefined || (partie.board[this.objectif].name!="Champ"&&partie.board[this.objectif].name!="Mine") || partie.board[this.objectif].workers.length>=partie.board[this.objectif].maxworkers){console.log("ono");this.objectif=undefined}
+            else{
+                let meilleureCase = undefined
+                for (var z of casesAdjacentes(this.objectif,partie.map.width,partie.map.height)){
+                    if (partie.board[z]==undefined && (partie.pathfindToDestination(this.position,z,this.owner)!=false) && this.canGo(partie.map.terrain[z]) && (meilleureCase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleureCase,partie.map.height)))){
+                        meilleureCase=z
+                        }
+                }
+                if (meilleureCase!=undefined){return meilleureCase}
+            }
+        }
+
+
+
+
         if (this.canRécolte(partie)==false){
             let meilleurebase = undefined
             for (var z of casesAdjacentes(this.base,partie.map.width,partie.map.height)){
@@ -724,12 +779,13 @@ class mine extends building{
         super(35,0,5,0,"Mine",position,player,0,0)
         this.workers = []
         this.mineral = undefined
+        this.maxworkers=2
     }
 
     addWorker(pos,partie){//Ajoute une unité pour travailler dans ce champ
-        if (this.workers.length>=2){return false}
+        if (this.workers.length==this.maxworkers){return false}
         var uni = partie.board[pos]
-        if (uni==undefined || (uni.name!="Mineur")){return false}
+        if (uni==undefined || ((uni.name!="Mineur") && uni.name!="Paysanne")){return false}
         this.workers.push(uni)
         delete partie.players[uni.owner].units[pos]
         delete partie.board[pos]
@@ -746,9 +802,10 @@ class champ extends building{
     constructor(position,player){
         super(20,0,5,0,"Champ",position,player,0,0)
         this.workers=[]
+        this.maxworkers=2
     }
     addWorker(pos,partie){//Ajoute une unité pour travailler dans ce champ
-        if (this.workers.length>=2){return false}
+        if (this.workers.length>=this.maxworkers){return false}
         var uni = partie.board[pos]
         if (uni==undefined || (uni.name!="Bûcheron" && uni.name!="Paysanne" && uni.name!="Mineur" )){return false}
         this.workers.push(uni)

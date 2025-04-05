@@ -212,6 +212,11 @@ io.on('connection', (socket) => {
             return
             }
           }
+          else{
+            if (["Mineur","Paysanne","Bûcheron"].includes(partie.board[départ].name) && partie.board[arrivée].workers.length<partie.board[arrivée].maxworkers){partie.board[départ].objectif=arrivée;}
+
+            return
+          }
         }
               //Cas de changement de la base d'une unité
       if (partie.board[arrivée]!=undefined && (partie.board[arrivée].name=="Hôtel de ville" || partie.board[arrivée].name=="Entrepôt") && partie.board[arrivée].owner==idJoueur){
@@ -228,6 +233,7 @@ io.on('connection', (socket) => {
         
       let route = partie.pathfindToDestination(départ, arrivée, idJoueur)
       partie.board[départ].destination = arrivée
+      if (["Mineur","Paysanne","Bûcheron"].includes(partie.board[départ].name)){partie.board[départ].objectif=undefined}
       if (route == false) { return false }
       partie.board[départ].path = route
       socket.emit("mouvement", route)

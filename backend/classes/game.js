@@ -743,6 +743,14 @@ class game {
         }
     }
 
+    //Vérifie si l'unité peut entrer dans la mine/le champ voulu
+    testEntre(uni){
+        var dest = this.board[uni.objectif];
+        if (dest==undefined || uni==undefined){return false}
+        if (casesAdjacentes(uni.position,this.map.width,this.map.height).includes(uni.objectif)==false){return false}
+        dest.addWorker(uni.position,this)
+    }
+
 
     testRécup(unité){//Prend la position d'un ouvrier en entrée. Teste si l'ouvrier peut récupérer les ressources nécessaires à son chantier
         if (unité==undefined){return}
@@ -904,6 +912,7 @@ class game {
                     if (uni!=undefined && uni.owner!="Système"){this.testDéposeRessources(uni)}
                     if (uni!=undefined && uni.owner!="Système" && uni.name=="Messager"){this.testMessager(uni)}
                     if (uni!=undefined && uni.owner!="Système" && uni.name=="Caravane de commerce"){this.testCaravane(uni)}
+                    if (uni!=undefined && uni.owner!="Système" && (uni.name=="Paysanne"||uni.name=="Mineur"||uni.name=="Bûcheron")&&uni.objectif!=undefined){this.testEntre(uni)}
 
                     break;
 
@@ -1463,6 +1472,7 @@ sortirChamp(unite,position,idJoueur,index){//A CONTINUER: ADAPTER POUR SORTIR L4
         if (this.board[zz]==undefined && uni.canGo(this.map.terrain[zz])){
             if (this.addUnit(uni,zz,joueur)){
                 cham.workers.splice(index,1)
+                uni.objectif=undefined
                 uni.position=zz
                 return {"position":zz,"newUnit":uni.name}
             }
