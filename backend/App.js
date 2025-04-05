@@ -40,35 +40,6 @@ var parties = {}
 
 
 
-//------------------------------
-/*
-var partie   = new game(2,100,"z")
-
-partie.addPlayer()
-partie.players[Object.keys(partie.players)[0]].choseCite("beotie")
-partie.addPlayer()
-partie.players[Object.keys(partie.players)[1]].choseCite("argolide")
-parties[partie.id]=partie
-partie.init()
-
-var trade = {
-  "envoyeur":partie.players[Object.keys(partie.players)[0]].id,
-  "ressourcesEnvoyées":"wood",
-  "quantitéEnvoyée":1,
-  "stockEnvoyeur":573,
-  "receveur": partie.players[Object.keys(partie.players)[1]].id,
-  "ressourceDemandée":"wood",
-  "quantitéDemandée":1,
-  "idRequête":1
-}
-partie.trades[1]=trade
-partie.accepteTrade(trade.receveur,1)
-
-*/
-//------------------------------
-
-
-
 
 //-----------------------Fonctions de gestion des parties-----------------------------
 
@@ -87,6 +58,44 @@ if (partie.canStart()){
 //---------------------SOCKET------------------------------
 
 io.on('connection', (socket) => {
+
+
+  socket.on("disconnect",data=>{
+    var lobby = lobbies[socket.idPartie]
+    if (lobby!=undefined){
+      if (lobby.players[socket.idJoueur]!=undefined){
+        delete lobby.players[socket.idJoueur]
+        if (Object.keys(lobby.players).length<=0){delete lobbies[socket.idPartie]}
+      }
+      return 
+    }
+    
+    var partie = parties[socket.idPartie]
+    if (partie!=undefined){
+      partie.removePlayer(socket.idJoueur)
+      if (Object.keys(partie.players).length<=0){delete parties[socket.idPartie];return}
+      if (partie.canTour()){
+        var winner = partie.tour()
+       
+  
+  
+        if (winner!=false){
+          console.log("PARTIE "+partie.id+" TERMINEE, VAINQUEUR(S): | "+winner)
+          io.to(partie.id).emit("PARTIEFINIE",winner)
+          delete parties[socket.idPartie]
+        }
+        else{ 
+          io.to(partie.id).emit("finTour",partie.actionsThisTurn)
+  
+        }
+      }
+      
+    }
+  
+  })
+
+
+
 
   socket.on('nouvellemap', (data) => {
   });

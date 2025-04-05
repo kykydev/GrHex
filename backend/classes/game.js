@@ -1036,6 +1036,11 @@ class game {
     }
 
 
+    removePlayer(idJoueur){
+        var joueur = this.players[idJoueur]; if (joueur==undefined){return false}
+        this.eliminate(joueur)
+           }
+
 
 getTurnWinner(){//Récupère le (ou les) joueur qui a le plus d'or, utilisé en cas de fin de partie par tours
     var winner = undefined;
