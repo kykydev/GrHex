@@ -124,6 +124,11 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('accueil').style.display = 'flex';
     });
 
+    // tutoriel
+    let boutonTuto = d3.select("#afficherTutoriel");
+    boutonTuto.on("click", () => {
+        d3.select("#tuto").style("display", (d3.select("#tuto").style("display") == "flex" ? "none" : "flex"));
+    });
 
     // notifications
 

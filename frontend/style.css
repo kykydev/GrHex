@@ -185,7 +185,7 @@ body {
 .partie {
     width: 100vw;
     height: 100vh;
-    display: none
+    display: none;
 }
 
 .rejoindrePartie {
@@ -456,4 +456,58 @@ body {
 }
 .gauche img:active{
     transform: scale(0.9);
+}
+
+/* Tutoriel */
+
+.tutorielContainer {
+    color: wheat;
+    display: none;
+    height: 800px;
+    width: 1000px;
+    background-color: #000000e3;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    border: 4px double #212529;
+    overflow: auto;
+    transition: 0.25s all, 0.1s background-position;
+}
+
+.titreTutoContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 40%;
+    background-color: black;
+    overflow: auto;
+}
+
+.titreTuto1, .titreTuto2{
+    display: flex;
+    align-items: center;
+    height: 13%;
+    width: 100%;
+    gap: 50px;
+}
+
+.titreTuto1{
+    background-color: rgb(23, 23, 23);
+}
+.titreTuto2{
+    background-color: rgb(31, 30, 30);
+}
+
+.titreTuto1:hover,
+.titreTuto2:hover {
+    background-color: #393c3f;
+    cursor: pointer;
+}
+
+.titreTutoImage img{
+    height: 100%;
+    width: 75px;
+    margin-left: 10px;
 }
