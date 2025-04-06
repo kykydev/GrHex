@@ -2,6 +2,7 @@
 const socket = io('http://localhost:8888');
 
 
+
 var width;var height
 const unites = ["hoplite","archer","paysanne","mineur","bûcheron","tour","forge","mur","hôtel de ville","champ","mine","maison"]
 //-------------------Création d'hexagone sous forme de tableau de points----------------------------------------
@@ -18,9 +19,13 @@ function creerHexagone(rayon) {
 }
 
 var positionsDépart = {
-    "beotie": 243,
-    "attique": 923,
-    "argolide": 137
+    "beotie": 1,
+    "attique": 2,
+    "argolide": 3
+}
+var clustersMiniers = {
+    copper:[],
+    tin:[]
 }
 //-------------------Création du damier d'hexagones----------------------------------------
 
@@ -263,12 +268,16 @@ isDown=false
         if (mode=="fill"){
             remplirSceau(id)
         }
+        if (mode=="removeuni"){enleverUnit(id)}
         if (mode=="paint"){
             peindre(id)
         }
         if (mode=="placeUnit"){
             addUnit(document.getElementById("uniSelec").value,id,document.getElementById("citeSelec").value)
         }
+        if (mode=="copper"){ajoutCopper(id)}
+        if (mode=="tin"){ajoutTin(id)}
+        if (mode=="removeMinerai"){enleverMinerai(id)}
    
              
         if (mode=="posArgolide"){
@@ -289,8 +298,12 @@ isDown=false
 
 function hoveur(id){
         if (isDown==false){return}
-        if (mode=="paint"){        peindre(id)}
+        if (mode=="paint"){peindre(id)}
+        if (mode=="copper"){ajoutCopper(id)}
+        if (mode=="tin"){ajoutTin(id)}
+        if (mode=="removeMinerai"){enleverMinerai(id)}
         if (mode=="placeUnit"){addUnit(document.getElementById("uniSelec").value,id,document.getElementById("citeSelec").value)
+        if (mode=="removeuni"){enleverUnit(id)}
         }
     }
 
@@ -399,6 +412,7 @@ function afficherUnites(pos,nom,couleu,opacity = 1) {
                 d3.select(hexagone)
                     .attr("stroke", `${couleur}`)
                     .style("stroke-width", 2);
+                    
             })
             .on("mouseout", () => {
                 d3.select(hexagone)
@@ -492,17 +506,10 @@ function mapprint(){
         "nom":document.getElementById("nomMap").value,
         "height":height,
         "width":width,
-        "clustersMiniers": {
-            "copper": [
-                582
-            ],
-            "tin": [
-                615
-            ]
-        },
+        "clustersMiniers": clustersMiniers,
         "positionsDépart": positionsDépart,
         "boards": {
-            "boardNeutre": {},
+            "boardNeutre": boardNeutre,
             "beotie":boardBeotie,
             "hdvBeotie":[],
             "mursBeotie":[],
@@ -546,6 +553,18 @@ function eau(){
 function paint(){
     mode="paint"
 }
+function copper(){
+    mode="copper"
+}
+function tin(){
+    mode="tin"
+}
+function removeMinerai(){
+    mode="removeMinerai"
+}
+function removeUni(){
+    mode="removeuni"
+}
 
 function placeunit() {
     mode="placeUnit"
@@ -567,6 +586,30 @@ function posAttique(){
     mode="posAttique"
 }
 
+function peindreMine(id){
+        if (clustersMiniers.tin.includes(id)){d3.select("#h" + id).style("filter", " opacity(0.6) grayscale(100%) brightness(85%) contrast(110%) sepia(20%) saturate(80%)");}
+        else{if (clustersMiniers.copper.includes(id)){d3.select("#h" + id).style("filter", " opacity(0.6) sepia(100%) saturate(500%) hue-rotate(-20deg) brightness(90%) contrast(120%)");}
+        else{d3.select("#h" + id).style("filter", "");console.log("azer")
+        }}
+    }
+function enleverMinerai(id){
+    console.log(id)
+    for (var z in clustersMiniers.copper){
+        if (clustersMiniers.copper[z]==id){clustersMiniers.copper.splice(z,1);console.log("a");}
+    }
+    for (var z in clustersMiniers.tin){
+        if (clustersMiniers.tin[z]==id){clustersMiniers.tin.splice(z,1);console.log("b");}
+    }
+    peindreMine(id)
+}
+
+function enleverUnit(id){
+    delete boardNeutre[id]
+    delete boardArgolide[id]
+    delete boardBeotie[id]
+    delete boardAttique[id]
+    dessinUnis()
+}
 
 function peindre(id){
 
@@ -607,9 +650,21 @@ function peindre(id){
     if (map.length > id) {
         map[id] = terrain;
     }
+    peindreMine(id)
+}
+
+function ajoutCopper(id){
+    if (clustersMiniers.copper.includes(id)){return}
+    clustersMiniers.copper.push(id)
+    peindreMine(id)
 }
 
 
+function ajoutTin(id){
+    if (clustersMiniers.tin.includes(id)){return}
+    clustersMiniers.tin.push(id)
+    peindreMine(id)
+}
 
 function remplirSceau(id){
     
@@ -747,7 +802,7 @@ function appelsAjoutTextures(){
 //--------------------------------------------------------------------------------------------------
 
 var map = []
-boardNeutree = {}
+boardNeutre = {}
 boardBeotie = {}
 boardArgolide = {}
 boardAttique = {}
