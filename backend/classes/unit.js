@@ -759,6 +759,23 @@ class maison extends building{
         return false
     }
 }
+class cabane extends building{
+    constructor(position,player){
+        super(20,0,0,0,"cabane",position,player,0,0)
+    }
+
+    generatePecheur(position,player,game){
+        var cases = casesAdjacentes(position,game.map.width,game.map.height)
+        for (var z of cases){
+            if (game.board[z]==undefined && game.map.infos[z].type!="eau"  && game.map.infos[z].type!="montagne"){
+            let uni = new pecheur(z,player)
+            game.addUnit(uni,z,player)
+            return true
+            }
+        }
+        return false
+    }
+}
 
 class tour extends building{
     constructor(position,player){
@@ -956,4 +973,4 @@ class discipleathneutre extends creatureNeutre{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce};
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane};

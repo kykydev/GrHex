@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce} = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane} = require('./unit')
 const {buildings} = require('../gamedatas/buildingInfos')
 
 
@@ -66,6 +66,7 @@ class game {
             this.board[position] = unit
             player.addUnit(unit, position)
             if (this.board[position].name=="Maison"){this.board[position].generateVillager(position,player,this);}
+            if (this.board[position].name=="Cabane de pêcheur"){this.board[position].generatePecheur(position,player,this);}
             if (this.board[position].name=="Hôtel de ville" || this.board[position].name=="Entrepôt"){player.hdv.push(parseInt(position))}
             if (this.board[position].name=="Mine"){this.board[position].mineral = this.map.mines[position]}
             return true
