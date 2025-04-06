@@ -11,8 +11,9 @@
     <script src="/script/affichage.js" type="text/javascript"></script>
 
     <link href="/script/style.css" rel="stylesheet" />
-    <link href="./script/vues.css"rel="stylesheet" />
-    
+    <link href="./script/vues.css" rel="stylesheet" />
+    <link href="./script/accueil.css" rel="stylesheet" />
+
     <title>GrHex</title>
 </head>
 
@@ -22,47 +23,44 @@
 
     <div class="accueil" id="accueil">
 
-        <h1 id="titreP2">Creer une nouvelle partie</h1>
+        <div class="centercontainer">
 
-        <div id="form2">
-            <label for="nbJ">Nombre de Joueurs</label>
-            <select name="nbJ" id="nbJoueurs">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-            </select>
-            <label for="nbTours">Nombre de tours</label>
-            <input type="number" name="nbTours" min="5" step="1" id="nbTours" value="500">
+            <div class="creationcontainer">
+                <div id="form2">
+                    <label for="nbJ">Nombre de Joueurs</label>
+                    <select name="nbJ" class="selectblack" id="nbJoueurs">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <label for="nbTours">Nombre de tours</label>
+                    <input type="number" name="nbTours" min="5" step="1" id="nbTours" value="100" class="selectblack">
 
-            <label >Choisir une map</label>
-            <select id="choisirMap">
-                
-            </select>
-            <button id="creerPartie" onsubmit="return false">Creer</button>
+                    <label for="nbRess">Multiplicateur de ressources</label>
+                    <input type="number" name="nbRess" min="1" max="3" step="1" id="nbRess" value="1"
+                        class="selectblack">
+
+                    <label>Choisir une map</label>
+                    <select id="choisirMap" class="selectblack">
+
+                    </select>
+                    <button id="creerPartie" class="buttonblack" onsubmit="return false">Creer</button>
+                </div>
+            </div>
+
+            <div class="imagecontainer">
+                <img src="img/autre/tpose.png">
+            </div>
+
+            <div class="rejoindrecontainer">
+                <div class="textcontainer">
+                </div>
+            </div>
+
         </div>
-
-        <h2 id="titreP2-2">Liste des parties existantes</h2>
-
-        <div id="divListeJoueurs">
-            <table id="listeJoueurs">
-                <tr>
-                    <th>
-                        nom partie
-                    </th>
-                    <th>
-                        nombre de tours
-                    </th>
-                    <th>
-                        nombre de joueurs
-                    </th>
-                    <th>
-                        Rejoindre
-                    </th>
-                </tr>
-            </table>
-        </div>
-
     </div>
+
+    <!-- Partie rejointe, preview -->
 
     <div class="rejoindrePartie" id="rejoindrePartie">
 
@@ -91,6 +89,8 @@
 
     </div>
 
+    
+    <!-- Partie -->
 
     <div class="partie" id="partie">
 
@@ -124,7 +124,6 @@
                 </div>
 
                 <div id="vueOuvrier">
-                    <!--  -->
                     <div style="position: relative; display: inline-block; text-align: center; margin: 0px auto;">
                         <img src="/img/personnages/rouge/ouvrier.png" width="125" height="150" id="imgOuvrier">
                         <p style="position: absolute; top: 0px; right: 0px; margin: 0px;">
@@ -136,17 +135,17 @@
                 </div>
 
                 <div id="vueDiplomatie">
-                    <div id ="flexDiplomatie">
+                    <div id="flexDiplomatie">
                         <p>Ma cite</p>
 
 
                         <p>Cités ennemies : </p>
                         <form id="selectionnerCitePourMail">
-                            
+
                         </form>
 
-                        <input type="text" placeholder="Objet" id="objetMail"/> <br>
-        
+                        <input type="text" placeholder="Objet" id="objetMail" /> <br>
+
                         <textarea id="contenuMail"></textarea>
                         <button id="envoyerMail" class="buttonblack">Envoyer</button>
                     </div>
@@ -163,31 +162,31 @@
 
                 </div>
 
-                <div id="vueEspions" > 
+                <div id="vueEspions">
                     <!-- c'est la vue échange -->
-                    <div id="flexEchange"> 
+                    <div id="flexEchange">
 
                         <p>Mes ressources</p>
                         <form id="mesRessourcesForm">
                             <label for="bois">Bois:</label>
                             <input type="radio" id="bois" name="mesRessources" value="wood"><br>
-                            
+
                             <label for="cuivre">Cuivre:</label>
                             <input type="radio" id="cuivre" name="mesRessources" value="copper"><br>
-                            
+
                             <label for="etain">Étain:</label>
                             <input type="radio" id="etain" name="mesRessources" value="tin"><br>
-                            
+
                             <label for="or">Or:</label>
                             <input type="radio" id="or" name="mesRessources" value="or"><br>
-                            
+
                             <label for="pierre">Pierre:</label>
                             <input type="radio" id="pierre" name="mesRessources" value="stone"><br>
 
                         </form>
                         <label for="quantite">Quantité:</label>
                         <input type="number" id="mesQuantites" name="quantite" min="0" step="1" value="1"><br>
-                    
+
                         <p>Choisir mon entrepot</p>
                         <form id="choisirEntrepot">
 
@@ -195,23 +194,23 @@
 
                         <p>Villes Disponibles</p>
                         <form id="selectionnerVille">
-                        
+
                         </form>
 
                         <p>Ressources Ennemies</p>
                         <form id="ressourcesEnnemiesForm">
                             <label for="bois">Bois:</label>
                             <input type="radio" id="bois" name="ressourcesEnnemies" value="wood"><br>
-                            
+
                             <label for="cuivre">Cuivre:</label>
                             <input type="radio" id="cuivre" name="ressourcesEnnemies" value="copper"><br>
-                            
+
                             <label for="etain">Étain:</label>
                             <input type="radio" id="etain" name="ressourcesEnnemies" value="tin"><br>
-                            
+
                             <label for="or">Or:</label>
                             <input type="radio" id="or" name="ressourcesEnnemies" value="or"><br>
-                            
+
                             <label for="pierre">Pierre:</label>
                             <input type="radio" id="pierre" name="ressourcesEnnemies" value="stone"><br>
 
@@ -220,7 +219,7 @@
                         <input type="number" id="quantitesEnnemies" name="quantite" min="0" step="1" value="1"><br>
 
                         <button id="bouttonEchange" class="buttonblack">Proposer un échange</button>
-                        
+
                     </div>
 
                 </div>

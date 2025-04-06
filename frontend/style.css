@@ -26,7 +26,8 @@ body {
 }
 
 /* From Uiverse.io by SelfMadeSystem */
-.buttonblack, .selectblack {
+.buttonblack,
+.selectblack {
     position: relative;
     cursor: pointer;
     padding: 4px 8px;
@@ -44,7 +45,8 @@ body {
         0.1s background-position;
 }
 
-.buttonblack::after, .selectblack::after {
+.buttonblack::after,
+.selectblack::after {
     content: "";
     position: absolute;
     z-index: -1;
@@ -57,7 +59,8 @@ body {
     transition: inherit;
 }
 
-.buttonblack::before, .selectblack::before {
+.buttonblack::before,
+.selectblack::before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -70,7 +73,8 @@ body {
     transition: inherit;
 }
 
-.buttonblack:hover, .selectblack:hover {
+.buttonblack:hover,
+.selectblack:hover {
     box-shadow:
         inset 0px 4px 4px -3px #fff5,
         inset 0px -3px 4px -3px #fff;
@@ -90,7 +94,8 @@ body {
     opacity: 0;
 }
 
-.buttonblack:active, .selectblack:active {
+.buttonblack:active,
+.selectblack:active {
     box-shadow:
         inset 0px 4px 4px -3px #000,
         inset 0px -4px 4px -3px #000c,
@@ -98,11 +103,13 @@ body {
     background-position: 1px 1px;
 }
 
-.buttonblack div, .selectblack div {
+.buttonblack div,
+.selectblack div {
     transition: 0.1s translate;
 }
 
-.buttonblack:active div, .selectblack:active div {
+.buttonblack:active div,
+.selectblack:active div {
     translate: 1px 1px;
 }
 
@@ -172,201 +179,19 @@ body {
     margin-right: auto;
 }
 
-/*----------Page d'accueil + vues----------*/
+/*----------Vues prev et partie----------*/
 
-.accueil {
-    background-color: #9f9f9f;
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-    font-family: 'Courier New', monospace;
-    color: #000000;
-}
 
 .partie {
-    background-color: #adb5bd;
     width: 100vw;
     height: 100vh;
     display: none
 }
 
 .rejoindrePartie {
-    background-color: #adb5bd;
     width: 100vw;
     height: 100vh;
     display: none
-}
-
-#titreP2 {
-    font-size: 6vh;
-    color: #000000;
-    text-align: center;
-    margin-bottom: 3vh;
-    text-shadow: 1px 1px 2px #000;
-}
-
-#titreP2-2 {
-    font-size: 3.5vh;
-    color: #000000;
-    text-align: center;
-    text-shadow: 1px 1px 2px #000;
-}
-
-
-#form2 {
-    background-color: #767474;
-    border: solid #444 3px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-}
-
-#form2 label {
-    font-size: 3.5vh;
-    color: #000000;
-}
-
-#form2 select {
-    background-color: #b5b4b4;
-    color: #000000;
-    border: solid #555 2px;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 2.5vh;
-    width: 100%;
-}
-
-#form2 input[type="number"] {
-    background-color: #b5b4b4;
-    color: #000000;
-    border: solid #555 2px;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 2.5vh;
-    width: 100%;
-}
-
-#form2 button {
-    font-family: inherit;
-    border: none;
-    outline: 1px dotted rgb(37, 37, 37);
-    outline-offset: -4px;
-    background: hsl(0deg 0% 75%);
-    box-shadow: inset -1px -1px #292929, inset 1px 1px #fff, inset -2px -2px rgb(158, 158, 158), inset 2px 2px #ffffff;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 5px 30px;
-}
-
-#form2 button:hover {
-    background-color: #5a5a5a;
-    transform: scale(1.1);
-}
-
-
-
-/* Tableau */
-
-#divListeJoueurs {
-    overflow-y: auto;
-    border: 2px solid #403f3f;
-    background-color: #5a5a5a;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    height: 200px;
-}
-
-
-#listeJoueurs {
-    width: 100%;
-}
-
-#listeJoueurs th {
-    background-color: #c0bfbf;
-    color: #000000;
-    padding: 10px 15px;
-    text-align: left;
-    border-bottom: 2px solid #444;
-    position: static;
-    top: 0;
-    z-index: 1;
-}
-
-
-#listeJoueurs td {
-    padding: 10px 15px;
-    border-bottom: 1px solid #000000;
-    text-align: left;
-}
-
-
-
-#listeJoueurs tr:nth-child(even) {
-    background-color: #b7b5b5;
-}
-
-#listeJoueurs tr:nth-child(odd) {
-    background-color: #727070;
-}
-
-#listeJoueurs tr:hover {
-    background-color: #979494;
-}
-
-#listeJoueurs td:last-child {
-    text-align: center;
-}
-
-.btn-rejoindre {
-    font-family: inherit;
-    border: none;
-    outline: 1px dotted rgb(37, 37, 37);
-    outline-offset: -4px;
-    background: hsl(0deg 0% 75%);
-    box-shadow: inset -1px -1px #292929, inset 1px 1px #fff, inset -2px -2px rgb(158, 158, 158), inset 2px 2px #ffffff;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 5px 30px;
-}
-
-.btn-rejoindre:hover {
-    background-color: #5a5a5a;
-    transform: scale(1.1);
-    cursor: pointer;
-}
-
-button:hover {
-
-    cursor: pointer;
-}
-
-#creerPartie {
-    justify-self: center;
-    align-self: center;
-}
-
-.radioInput {
-    font-family: inherit;
-    border: none;
-    outline: 1px dotted rgb(37, 37, 37);
-    outline-offset: -4px;
-    background: hsl(0deg 0% 75%);
-    box-shadow: inset -1px -1px #292929, inset 1px 1px #fff, inset -2px -2px rgb(158, 158, 158), inset 2px 2px #ffffff;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 5px 30px;
 }
 
 /* Jeu */
@@ -404,7 +229,7 @@ button:hover {
     transition: 0.25s all, 0.1s background-position;
 }
 
-#vueNoificationMessage p{
+#vueNoificationMessage p {
     word-wrap: break-word;
 }
 
@@ -605,7 +430,7 @@ button:hover {
     z-index: 6;
 }
 
-.uniteMode{
+.uniteMode {
     display: flex;
     flex-direction: row;
 }

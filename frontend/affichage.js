@@ -489,7 +489,7 @@ function fstatsUnite(unite) {
     if (unite.stone !== undefined) { stats.append("div").attr("id", "uniteStone").text("Pierres : " + unite.stone); }
     if (unite.copper !== undefined) { stats.append("div").attr("id", "uniteCuivre").text("Cuivre : " + unite.copper); }
     if (unite.tin !== undefined) { stats.append("div").attr("id", "uniteTin").text("Etain : " + unite.tin); }
-    if (unite.fish !== undefined) { stats.append("div").attr("id", "uniteFish").text("Poissons : " + unite.fish+" de valeur valeur "+unite.fishValue); }
+    if (unite.fish !== undefined) { stats.append("div").attr("id", "uniteFish").text("Poissons : " + unite.fish + " de valeur valeur " + unite.fishValue); }
 
     if (unite.buildingInfos) {
         if (unite.buildingInfos.coûtBois !== undefined) { stats.append("div").attr("id", "uniteWoodCost").text("Coût en bois : " + unite.buildingInfos.coûtBois); }
@@ -720,24 +720,51 @@ function ajouterUnites(board, dam, width, height) {
  * @param {Array} data - liste de parties
  */
 function afficherListeParties(data) {
-    document.getElementById("listeJoueurs").innerHTML = "<tr><th>nom partie</th><th>nombre de tours</th><th>nombre de joueurs</th><th>Rejoindre</th></tr>";
+    const container = document.querySelector(".rejoindrecontainer");
+    container.innerHTML = "";
 
-    for (partie of data) {
-        d3.select("#listeJoueurs").append("tr").attr("id", "tr" + partie.idPartie).append("td").text(partie.nom);
-        d3.select("#tr" + partie.idPartie).append("td").text(partie.nbTours);
-        d3.select("#tr" + partie.idPartie).append("td").text(partie.currentPlayers + "/" + partie.nbJoueurs);
-        d3.select("#tr" + partie.idPartie)
-            .append("td")
-            .append("button")
-            .attr("class", "btn-rejoindre")
-            .text("Rejoindre")
-            .on("click", () => {
+    if (data.length === 0) {
+        const textContainer = document.createElement("div");
+        textContainer.classList.add("textcontainer");
+        const message = document.createElement("p");
+        message.textContent = "Aucune partie";
+        textContainer.appendChild(message);
+        container.appendChild(textContainer);
+    } else {
+        data.forEach((partie, index) => {
+            const partieContainer = document.createElement("div");
+            partieContainer.classList.add(index % 2 === 0 ? "partiecontainer1" : "partiecontainer2");
+
+            const infoGame = document.createElement("div");
+            infoGame.classList.add("infoGame");
+
+            const nomPartie = document.createElement("p");
+            nomPartie.textContent = `Nom de la partie : ${partie.nom}`;
+            infoGame.appendChild(nomPartie);
+
+            const nbJoueurs = document.createElement("p");
+            nbJoueurs.textContent = `Joueurs : ${partie.currentPlayers}/${partie.nbJoueurs}`;
+            infoGame.appendChild(nbJoueurs);
+
+            const nbTours = document.createElement("p");
+            nbTours.textContent = `Tours : ${partie.nbTours}`;
+            infoGame.appendChild(nbTours);
+
+            const map = document.createElement("p");
+            map.textContent = `Carte : ${partie.map || "Inconnue"}`;
+            infoGame.appendChild(map);
+
+            partieContainer.appendChild(infoGame);
+            container.appendChild(partieContainer);
+
+            partieContainer.addEventListener("click", () => {
                 socket.emit("rejoindreLobby", partie.idPartie);
             });
+        });
     }
-
-
 }
+
+
 
 /**
  * affiche le nom de la partie haut de la page
