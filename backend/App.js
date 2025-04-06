@@ -7,7 +7,7 @@ const io = new require("socket.io")(server);
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
 const {createMap, getMapList} = require('./modules/mapGeneration')
 const {game} = require('./classes/game')
-const {buildings} = require('./modules/buildingInfos')
+const {buildings} = require('./gameDatas/buildingInfos')
 const { turnAction,moveAction,newUnitAction,buildAction} = require('./classes/turnAction')
 app.use(express.static(__dirname));
 
