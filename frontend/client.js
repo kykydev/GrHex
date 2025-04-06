@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // notifications
 
-    let boutonNotif = d3.select("#afficherNotif");
+    let boutonNotif = d3.select("#afficherNotifs");
     let vueNotifications = d3.select("#vueNotifications");
 
     let notifDetail = d3.select("#vueNotificationMessage");

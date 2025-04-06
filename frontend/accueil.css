@@ -33,6 +33,7 @@
 .imagecontainer img {
     max-width: 175%;
     max-height: 175%;
+    z-index: 3;
 }
 
 .rejoindrecontainer {
@@ -119,7 +120,7 @@
 
 #form2 {
     color: wheat;
-    background-color: rgb(31, 30, 30);
+    background-color: rgba(31, 30, 30, 0.702);
     border: 2px solid #212529;
     padding: 20px;
     display: flex;

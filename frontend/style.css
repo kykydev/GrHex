@@ -434,3 +434,26 @@ body {
     display: flex;
     flex-direction: row;
 }
+
+.gauche{
+    display: flex;
+    flex-direction: column;
+    background-color: #000;
+    position: fixed;
+    right: 0;
+    top: 40%;
+}
+
+.gauche img{
+    width: 75px;
+    height: 75px;
+    margin: 5px;
+}
+
+.gauche img:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+.gauche img:active{
+    transform: scale(0.9);
+}
