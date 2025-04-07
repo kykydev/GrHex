@@ -1709,12 +1709,12 @@ groundTradePossible(pos1,pos2){
     var solArrivée = []
 
 for (var z of casesAdjacentes(pos1,this.map.width,this.map.height)){
-    if (this.map.infos[z].type!="montagne" && this.map.infos[z].type!="eau"){
+    if (this.map.infos[z].type!="montagne" && this.map.infos[z].type!="eau"  && this.board[z]==undefined){
         solDépart.push(z)
     }
 }
 for (var z of casesAdjacentes(pos2,this.map.width,this.map.height)){
-    if (this.map.infos[z].type!="montagne" && this.map.infos[z].type!="eau"){
+    if (this.map.infos[z].type!="montagne" && this.map.infos[z].type!="eau" && this.board[z]==undefined){
         solArrivée.push(z)
     }
 }
@@ -1722,12 +1722,12 @@ for (var z of casesAdjacentes(pos2,this.map.width,this.map.height)){
 var rules = []
 
 for (var z in this.map.terrain){
-    if (this.map.infos[z].type=="montagne" | this.map.infos[z].type=="eau"){ rules.push("X") }
+    if (this.map.infos[z].type=="montagne" || this.map.infos[z].type=="eau" || this.board[z]!=undefined){ rules.push("X") }
     else { rules.push(1) }
 }
 
 
-for (var dep of solDépart){
+for (var dep of solDépart){ 
     for (var arr of solArrivée){
         var route = pathFind(dep,arr,this.map.height,this.map.width,rules)
         if (route!=false&&route!=undefined){return {"dist":route.length,"depart":dep}}   
