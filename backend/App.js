@@ -41,6 +41,27 @@ var parties = {}
 
 
 
+//TEST
+
+
+var part = new game(2,100,"towers")
+parties[part.id] = part
+part.addPlayer()
+part.addPlayer()
+part.players[Object.keys(part.players)[0]].choseCite("beotie")
+part.players[Object.keys(part.players)[1]].choseCite("attique")
+part.init()
+console.log(part.waterTradePossible(297,1134))
+
+
+
+
+//TEST
+
+
+
+
+
 //-----------------------Fonctions de gestion des parties-----------------------------
 
 function testStartPartie(partie,io){
@@ -146,7 +167,7 @@ io.on('connection', (socket) => {
       var retour = []
          for (z of Object.keys(lobbies)){
           par = lobbies[z]
-          retour.push({"nom":par.name,"nbJoueurs":par.nbJoueurs,"nbTours":par.nbTours,"idPartie":par.id,"currentPlayers":Object.keys(par.players).length})
+          retour.push({"nom":par.name,"nbJoueurs":par.nbJoueurs,"nbTours":par.nbTours,"idPartie":par.id,"map":par.map.nom,"currentPlayers":Object.keys(par.players).length})
          }
          socket.emit("getListeParties",retour)
   })

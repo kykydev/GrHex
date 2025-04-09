@@ -1,5 +1,5 @@
 {
-    "nom":"Peloponnese",
+    "nom":"Towers",
     "height":30,
     "width":40,
     "clustersMiniers" :
@@ -22,8 +22,9 @@
             "323":"maison",
             "386":"paysanne",
             "235":"bucheron",
-            "353":"hoplite"
-        },
+            "353":"hoplite",
+            "359":"port"
+                },
         "hdvBeotie":[297],
         "mursBeotie": [],
 
@@ -50,10 +51,12 @@
            "1043":"stratege",
            "1102":"tour",
            "30":"hoplite",
-           "1194":"maison",
+           "1195":"maison",
            "1162":"paysanne",
            "1013":"bucheron",
-           "1009":"hoplite"
+           "1009":"hoplite",
+           "1048":"port",
+           "1075":"tour"
         },
         "hdvAttique":[1134],
         "mursAttique":[],

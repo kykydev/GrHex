@@ -672,6 +672,12 @@ class caravaneCommerce extends unit{
         this.pacifist=true
     }
 
+    
+    canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
+        if (dest=="X" || dest=="eau"){return false}
+        return true
+    }
+
 
     findGoal(partie){
         
@@ -679,7 +685,7 @@ class caravaneCommerce extends unit{
 
         let c =  casesAdjacentes(this.objectif,partie.map.width,partie.map.height)
         for (var z of c){
-            if (this.canGo(partie.map.infos[z].type)&&partie.board[z]==undefined){
+            if (this.canGo(partie.map.infos[z].type)&&partie.board[z]==undefined && partie.pathfindToDestination(this.position,z,this.owner)!=false){
                 return z 
             }
         }
@@ -697,11 +703,31 @@ class caravaneCommerce extends unit{
 }
 class bateauCommerce extends unit{
     constructor(position,player){
-        super(100,10,10,0,5,"Navire de commerce",position,player,1,1)
+        super(100,0,10,0,15,"Navire de commerce",position,player,1,1)
         this.tracked=false
         this.pacifist=true
 
     }
+
+    
+    canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
+        if (dest!="eau"){return false}
+        return true
+    }
+
+    findGoal(partie){
+        
+        if (this.phase==undefined ||this.objectif==undefined ){return this.position}
+
+        let c =  casesAdjacentes(this.objectif,partie.map.width,partie.map.height)
+        for (var z of c){
+            if (this.canGo(partie.map.infos[z].type)&&partie.board[z]==undefined && partie.pathfindToDestination(this.position,z,this.owner)!=false){
+                return z 
+            }
+        }
+            return this.position
+    }
+
 }
 
 
@@ -863,9 +889,26 @@ class chantier extends building{
         this.turnsToBuild = buildingInfos.turnsToBuild
         this.buildingInfos = JSON.parse(JSON.stringify(buildingInfos));
     }
-
-
 }
+
+
+class port extends building{
+    constructor(position,player,buildingInfos){
+        super(60,0,3,0,"Port",position,player,0,0)
+    }
+
+    canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
+        if (dest!="eau"){return false}
+        return true
+    }
+
+
+    
+}
+
+
+
+
 
 
 class creatureNeutre{
@@ -973,4 +1016,4 @@ class discipleathneutre extends creatureNeutre{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane};
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane,port};

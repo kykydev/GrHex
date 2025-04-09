@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane} = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane,port} = require('./unit')
 const {buildings} = require('../gameDatas/buildingInfos')
 
 
@@ -94,8 +94,6 @@ class game {
 
 
             for (var position of Object.keys(boardBeotie)) {
-                this.map.infos[position] = new hexagon("plaine", "plaine_1", position)    
-                this.map.terrain[position] = this.map.infos[position].pattern
                 this.addUnit(new (eval(boardBeotie[position]))(position, joueur), position, joueur);
                 for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
                     if (this.map.infos[z].type=="montagne"){
@@ -132,8 +130,6 @@ class game {
 
 
         for (var position of Object.keys(boardArgolide)) {
-            this.map.infos[position] = new hexagon("plaine", "plaine_1", position)    
-            this.map.terrain[position] = this.map.infos[position].pattern
             this.addUnit(new (eval(boardArgolide[position]))(position, joueur), position, joueur);
             for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
                 if (this.map.infos[z].type=="montagne"){
@@ -164,8 +160,7 @@ class game {
 
 
         for (var position of Object.keys(boardAttique)) {
-            this.map.infos[position] = new hexagon("plaine", "plaine_1", position)    
-            this.map.terrain[position] = this.map.infos[position].pattern
+
             this.addUnit(new (eval(boardAttique[position]))(position, joueur), position, joueur);
             for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
                 if (this.map.infos[z].type=="montagne"){
@@ -912,7 +907,7 @@ class game {
                     this.moveTurn(uni)
                     if (uni!=undefined && uni.owner!="Système"){this.testDéposeRessources(uni)}
                     if (uni!=undefined && uni.owner!="Système" && uni.name=="Messager"){this.testMessager(uni)}
-                    if (uni!=undefined && uni.owner!="Système" && uni.name=="Caravane de commerce"){this.testCaravane(uni)}
+                    if (uni!=undefined && uni.owner!="Système" && uni.name=="Caravane de commerce" || uni.name=="Navire de commerce"){this.testCaravane(uni)}
                     if (uni!=undefined && uni.owner!="Système" && (uni.name=="Paysanne"||uni.name=="Mineur"||uni.name=="Bûcheron")&&uni.objectif!=undefined){this.testEntre(uni)}
 
                     break;
@@ -1168,7 +1163,7 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
     var pos = parseInt(pos)
     if (nomBat==undefined || pos==undefined || joueur==undefined){return false}
     //Checks pour voir si c'est bon
-    if (this.map.terrain[pos]=="montagne" || this.map.terrain[pos]=="eau"){return false}
+    if (this.map.terrain[pos]=="montagne" || (this.map.terrain[pos]=="eau" && nomBat!="Port")){return false}
     if (this.board[pos]!=undefined){return false}
     let batInfos = undefined
     for (var z of buildings){
@@ -1638,7 +1633,7 @@ newTrade(data,idJoueur){
                 if (z.units[zz].name=="Stratege"){stratege2=z.units[zz].position}
             }
 
-            dist = Math.floor(distance(stratege1,stratege2,this.map.height)/10)
+            //dist = Math.floor(distance(stratege1,stratege2,this.map.height)/10)
          
 
 
@@ -1666,36 +1661,106 @@ newTrade(data,idJoueur){
 }
 
 
-waterTradePossible(pos1,pos2){
-    var eauDépart = []
-    var eauArrivée = []
+waterTradePossible(pos1,pos2){ 
+    var hdv1 = this.board[pos1];var hdv2=this.board[pos2]; if (hdv1==undefined || hdv2==undefined){return false} 
+    var joueur1 = this.players[hdv1.owner];var joueur2=this.players[hdv2.owner]; if (joueur1==undefined || joueur2==undefined){return false}
 
-for (var z of casesAdjacentes(pos1,this.map.width,this.map.height)){
-    if (this.map.infos[z].type=="eau"){
-        eauDépart.push(z)
+
+    //Règles pathfinding d'une caravane
+    var rules = []
+    for (var z in this.map.terrain){
+        if (this.map.infos[z].type=="X" || this.map.infos[z].type=="eau"){rules.push("X")}
+        else { rules.push(1) }
     }
-}
-for (var z of casesAdjacentes(pos2,this.map.width,this.map.height)){
-    if (this.map.infos[z].type=="eau"){
-        eauArrivée.push(z)
+
+    //Récupération des ports accessibles depuis l'hdv1
+    var portsDépart = {}//Clé=position du port, valeur=distance à l'hdv
+    var départSelonPort = {}
+    for (var z of Object.keys(joueur1.units)){
+        var uni = joueur1.units[z]
+        if (uni.name!="Port"){continue}
+        for (var c1 of casesAdjacentes(uni.position,this.map.width,this.map.height)){
+            if (c1!=uni.position){
+                for (var c2 of casesAdjacentes(hdv1.position,this.map.width,this.map.height)){
+                    if (c2!=hdv1.position){
+                        var route = pathFind(c1,c2,this.map.height,this.map.width,rules)
+                        if (route!=false && (portsDépart[uni.position]==undefined || portsDépart[uni.position]>route.length)){
+                            portsDépart[uni.position]=route.length
+                            départSelonPort[uni.position]=c2
+                            
+                        }
+                    }
+                }
+            }
+        }
     }
-}
 
-var rules = []
 
+
+
+    portsDépart=    Object.fromEntries(Object.entries(portsDépart).sort(([, a], [, b]) => a - b))
+
+
+ //Récupération des ports accessibles depuis l'hdv2
+ var portsArrivée = {}//Clé=position du port, valeur=distance à l'hdv
+ for (var z of Object.keys(joueur2.units)){
+     var uni = joueur2.units[z]
+     if (uni.name!="Port"){continue}
+     for (var c1 of casesAdjacentes(uni.position,this.map.width,this.map.height)){
+         if ( c1!=uni.position){
+             for (var c2 of casesAdjacentes(hdv2.position,this.map.width,this.map.height)){
+                 if (c2!=hdv2.position){
+                     var route = pathFind(c1,c2,this.map.height,this.map.width,rules)
+                     if (route!=false && (portsArrivée[uni.position]==undefined || portsArrivée[uni.position]>route.length)){
+                         portsArrivée[uni.position]=route.length
+                         
+                     }
+                 }
+             }
+         }
+     }
+ }
+
+
+ portsArrivée = Object.fromEntries(Object.entries(portsArrivée).sort(([, a], [, b]) => a - b)
+);
+
+//Création des règles pour le pathfind dans l'eau
+var ruleswater = []
 for (var z in this.map.terrain){
-    if (this.map.terrain[z] == "eau") { rules.push(1) }
-    else { rules.push("X") }
+    if (this.map.infos[z].type!="eau"){ruleswater.push("X")}
+    else { ruleswater.push(1) }
 }
 
 
+ var meilleurPortDep = undefined; var meilleurPortArr = undefined;var meilleuredist = undefined
 
-for (var dep of eauDépart){
-    for (var arr of eauArrivée){
-        var route = pathFind(dep,arr,this.map.height,this.map.width,rules)
-        if (route!=false&&route!=undefined){return {"dist":route.length,"depart":dep}}   
+ for (var portd of Object.keys(portsDépart)){
+    for (var porta of Object.keys(portsArrivée)){
+        for (var c1 of casesAdjacentes(portd,this.map.width,this.map.height)){
+            if ( c1!=portd){
+                for (var c2 of casesAdjacentes(porta,this.map.width,this.map.height)){
+                    if (c2!=porta){
+                        var route = pathFind(c1,c2,this.map.height,this.map.width,ruleswater)
+                        if (route!=false && (meilleurPortDep==undefined || meilleuredist>route.length/2+portsDépart[portd]+portsDépart[portd])){
+                            meilleurPortDep=portd;meilleurPortArr=porta;meilleuredist=portsDépart[portd]+portsArrivée[porta]+route.length/2                            
+                        }
+                    }
+                }
+            }
+        }
     }
-}
+ }
+
+
+ if (meilleurPortDep!=undefined){
+    
+    
+    
+    return {"port1":meilleurPortDep,"port2":meilleurPortArr,"dist":meilleuredist,"depart":départSelonPort[meilleurPortDep]}}
+
+
+
 
 
 return false
@@ -1722,7 +1787,7 @@ for (var z of casesAdjacentes(pos2,this.map.width,this.map.height)){
 var rules = []
 
 for (var z in this.map.terrain){
-    if (this.map.infos[z].type=="montagne" || this.map.infos[z].type=="eau" || this.board[z]!=undefined){ rules.push("X") }
+    if (this.map.infos[z].type=="X" || this.map.infos[z].type=="eau"){rules.push("X")}
     else { rules.push(1) }
 }
 
@@ -1739,6 +1804,25 @@ return false
 
 
 }
+
+
+
+créerCaravaneVersPort(position,port1,port2,idRequête){
+    var trade = this.trades[idRequête]
+    var receveur = this.players[trade.receveur]
+
+    var uni = new caravaneCommerce(position,receveur)
+    uni.currentTrade = trade
+    uni.phase="allerVersPort"
+    uni.objectif = port1
+    uni.port2=port2
+    uni[trade.ressourceDemandée]=trade.quantitéDemandée
+    if (this.addUnit(uni,position,receveur)==false){return false}
+
+    return true
+}
+
+
 
 
 
@@ -1765,7 +1849,7 @@ créerCaravaneCommerce(position,idRequête){
 
     //Teste si une caravane est arrivée à destination et, si oui, en renvoie une
     testCaravane(uni){
-        if (uni==undefined || uni.name!="Caravane de commerce"){return false}
+        if (uni==undefined || (uni.name!="Caravane de commerce" && uni.name!="Navire de commerce")){return false}
 
         if (this.board[uni.objectif]==undefined){ delete this.board[uni.position];delete this.players[uni.owner].units[uni.position]}
 
@@ -1777,6 +1861,9 @@ créerCaravaneCommerce(position,idRequête){
         var hdv = this.board[uni.objectif]
         var trade = uni.currentTrade
         if (trade==undefined||hdv==undefined){return false}
+
+
+        //----échange dircet
         if (uni.phase=="aller"){
             var envoyeur = this.players[trade.envoyeur]; if (envoyeur==undefined){return false}
             if (trade.ressourceDemandée=="or"){envoyeur.gold+=trade.quantitéDemandée}
@@ -1786,16 +1873,166 @@ créerCaravaneCommerce(position,idRequête){
             unix.currentTrade = trade
             unix.phase="retour"
             unix.objectif = trade.stockReceveur
-            unix[trade.ressourcesEnvoyées]=trade.quantitéEnvoyée
+            if (trade.ressourcesEnvoyées!="or"){unix[trade.ressourcesEnvoyées]=trade.quantitéEnvoyée}
             
             if (this.addUnit(unix,unix.position,envoyeur)==false){return false}
         }
         
-        else{
+        if (uni.phase=="retour"){
             var receveur = this.players[trade.receveur]; if (receveur==undefined){return false}
             if (trade.ressourcesEnvoyées=="or"){receveur.gold+=trade.quantitéEnvoyée}
             else{hdv[trade.ressourcesEnvoyées] += uni[trade.ressourcesEnvoyées]}
           
+        }
+        //--------échange maritime
+
+        if (uni.phase=="allerVersPort"){
+            var ruleswater = []
+            for (var z in this.map.terrain){
+                if (this.map.infos[z].type!="eau" ||(this.board[z]!=undefined&&this.board[z].movement==0)){ruleswater.push("X")}
+                else { ruleswater.push(1) }
+            }
+            var receveur = this.players[trade.receveur]; if (receveur==undefined){return false}
+           
+
+            for (var z of casesAdjacentes(uni.objectif,this.map.width,this.map.height)){
+                for (var zz of casesAdjacentes(uni.port2,this.map.width,this.map.height)){
+                    if (this.board[z]==undefined && this.board[zz]==undefined && this.map.terrain[z]=="eau" && this.map.terrain[zz]=="eau"){
+                        //Recherche position spawn
+                        if (pathFind(z,zz,this.map.height,this.map.width,ruleswater)!=false){
+                            var unix = new bateauCommerce(z,receveur)
+                            unix.currentTrade = trade
+                            unix.phase="allerBateau"
+                            unix.port2 = uni.objectif
+                            unix.objectif = uni.port2
+                            
+                            if (trade.ressourceDemandée!="or"){unix[trade.ressourceDemandée]=uni[trade.ressourceDemandée]}
+
+                            if (this.addUnit(unix,unix.position,receveur)==false){return false}
+                            return true
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if (uni.phase=="allerBateau"){
+
+        //Création de la caravane qui ira du port à l'hdv
+        var rules = []
+
+        for (var z in this.map.terrain){
+            if (this.map.infos[z].type=="X" || this.map.infos[z].type=="eau"){rules.push("X")}
+            else { rules.push(1) }
+        }
+        var receveur = this.players[trade.receveur]; if (receveur==undefined){return false}
+
+        for (var z of casesAdjacentes(uni.objectif,this.map.width,this.map.height)){
+            for (var zz of casesAdjacentes(trade.stockEnvoyeur,this.map.width,this.map.height)){
+                if (this.board[z]==undefined && this.board[zz]==undefined && this.map.terrain[z]!="eau" && this.map.terrain[zz]!="eau"){
+                    //Recherche position spawn
+                    if (pathFind(z,zz,this.map.height,this.map.width,rules)!=false){
+                        var unix = new caravaneCommerce(z,receveur)
+                        unix.currentTrade = trade
+                        unix.phase="allerDepuisPort"
+                        unix.port1 = uni.objectif
+                        unix.port2 = uni.port2
+                        unix.objectif = trade.stockEnvoyeur
+                        if (trade.ressourceDemandée!="or"){unix[trade.ressourceDemandée]=uni[trade.ressourceDemandée]}
+                        if (this.addUnit(unix,unix.position,receveur)==false){return false}
+                        return true
+                    }
+                }
+            }
+        }
+
+
+
+        }
+
+
+
+        if (uni.phase=="allerDepuisPort"){
+
+            var envoyeur = this.players[trade.envoyeur]; if (envoyeur==undefined){return false}
+            if (trade.ressourceDemandée=="or"){envoyeur.gold+=trade.quantitéDemandée}
+            else{hdv[trade.ressourceDemandée] += uni[trade.ressourceDemandée]}
+            var unix = new caravaneCommerce(uni.position,envoyeur)
+            //POSITION N'EST PAS DEFINI A L AIDE
+            unix.currentTrade = trade
+            unix.phase="retourVersPort"
+            unix.objectif = uni.port1
+            unix.port2 = uni.port2
+            if (trade.ressourcesEnvoyées!="or"){unix[trade.ressourcesEnvoyées]=trade.quantitéEnvoyée}
+            
+            if (this.addUnit(unix,unix.position,envoyeur)==false){return false}
+        }
+
+
+
+        if (uni.phase=="retourVersPort"){
+        var ruleswater = []
+        for (var z in this.map.terrain){
+            if (this.map.infos[z].type!="eau" ||(this.board[z]!=undefined&&this.board[z].movement==0)){ruleswater.push("X")}
+            else { ruleswater.push(1) }
+        }
+        var envoyeur = this.players[trade.envoyeur];if (envoyeur==undefined){return false}
+       
+        for (var z of casesAdjacentes(uni.objectif,this.map.width,this.map.height)){
+            for (var zz of casesAdjacentes(uni.port2,this.map.width,this.map.height)){
+                if (this.board[z]==undefined && this.board[zz]==undefined && this.map.terrain[z]=="eau" && this.map.terrain[zz]=="eau"){
+                    //Recherche position spawn
+                    if (pathFind(z,zz,this.map.height,this.map.width,ruleswater)!=false){
+                        var unix = new bateauCommerce(z,envoyeur)
+                        unix.currentTrade = trade
+                        unix.phase="retourBateau"
+                        unix.objectif = uni.port2
+                        if (trade.ressourcesEnvoyées!="or"){unix[trade.ressourcesEnvoyées]=uni[trade.ressourcesEnvoyées]}
+
+                        if (this.addUnit(unix,unix.position,envoyeur)==false){return false}
+                        return true
+                    }
+                }
+            }
+        }
+
+
+
+        }
+
+        if (uni.phase=="retourBateau"){
+
+
+        //Création de la caravane qui ira du port à l'hdv
+        var rules = []
+
+        for (var z in this.map.terrain){
+            if (this.map.infos[z].type=="X" || this.map.infos[z].type=="eau"){rules.push("X")}
+            else { rules.push(1) }
+        }
+        var envoyeur = this.players[trade.envoyeur]; if (envoyeur==undefined){return false}
+
+        for (var z of casesAdjacentes(uni.objectif,this.map.width,this.map.height)){
+            for (var zz of casesAdjacentes(trade.stockReceveur,this.map.width,this.map.height)){
+                if (this.board[z]==undefined && this.board[zz]==undefined && this.map.terrain[z]!="eau" && this.map.terrain[zz]!="eau"){
+                    //Recherche position spawn
+                    if (pathFind(z,zz,this.map.height,this.map.width,rules)!=false){
+                        var unix = new caravaneCommerce(z,envoyeur)
+                        unix.currentTrade = trade
+                        unix.phase="retour"
+                        unix.objectif = trade.stockReceveur
+                        if (trade.ressourceDemandée!="or"){unix[trade.ressourcesEnvoyées]=uni[trade.ressourcesEnvoyées]}
+                        if (this.addUnit(unix,unix.position,envoyeur)==false){return false}
+                        return true
+                    }
+                }
+            }
+        }
+
+
+
+
         }
 
         return true
@@ -1847,7 +2084,6 @@ refuseTrade(idJoueur,idRequête){
 accepteTrade(idJoueur,idRequête,hdv){
     var trade = this.trades[idRequête]
     trade["stockReceveur"]=hdv
-    console.log(trade)
     if (trade==undefined || idJoueur==undefined ||idJoueur!=trade.receveur){return false}
     var receveur = this.players[idJoueur]
     var envoyeur = this.players[trade.envoyeur]
@@ -1859,19 +2095,14 @@ accepteTrade(idJoueur,idRequête,hdv){
 
     var waterCheck = this.waterTradePossible(hdvOrdre,trade.stockEnvoyeur)
     var groundCheck = this.groundTradePossible(hdvOrdre,trade.stockEnvoyeur)
-    console.log("départ "+hdvOrdre+" arrivée: "+trade.stockEnvoyeur)
-    //if (waterCheck!=undefined && waterCheck!=false){}    
-    console.log("ROUTE MARITIME TROUVEE: ")
-    console.log(waterCheck)
-    console.log("ROUTE TERRESTRE TROUVEE: ")
-    console.log(groundCheck)
-
-    
 
     if (((groundCheck==undefined||groundCheck==false) && waterCheck!=undefined && waterCheck!=false )||( waterCheck!=undefined && waterCheck!=false&&(waterCheck.dist<groundCheck.dist))){
-        createTradeBoat(waterCheck.depart,trade.idRequête)
+        this.créerCaravaneVersPort(waterCheck.depart,waterCheck.port1,waterCheck.port2,trade.idRequête)
+        trade["stockReceveur"]=hdvOrdre
+        if (trade.ressourceDemandée=="or"){receveur.gold-=trade.quantitéDemandée}
+        else{ this.board[hdvOrdre][trade.ressourceDemandée] -=trade.quantitéDemandée}
 
-        return {"position":waterCheck.depart,"newUnit":"Navire de commerce"}
+        return {"position":waterCheck.depart,"newUnit":"Caravane de commerce"}
     }
 
     if (groundCheck){
