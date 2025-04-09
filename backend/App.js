@@ -44,16 +44,6 @@ var parties = {}
 //TEST
 
 
-var part = new game(2,100,"towers")
-parties[part.id] = part
-part.addPlayer()
-part.addPlayer()
-part.players[Object.keys(part.players)[0]].choseCite("beotie")
-part.players[Object.keys(part.players)[1]].choseCite("attique")
-part.init()
-console.log(part.waterTradePossible(297,1134))
-
-
 
 
 //TEST

@@ -1633,7 +1633,7 @@ newTrade(data,idJoueur){
                 if (z.units[zz].name=="Stratege"){stratege2=z.units[zz].position}
             }
 
-            //dist = Math.floor(distance(stratege1,stratege2,this.map.height)/10)
+            dist = Math.floor(distance(stratege1,stratege2,this.map.height)/10)
          
 
 
@@ -2076,6 +2076,8 @@ refuseTrade(idJoueur,idRequête){
         if (hdv==undefined){return false}
         hdv[trade.ressourcesEnvoyées] +=trade.quantitéEnvoyée}
     delete this.trades[idRequête]
+    var receveur = this.players[trade.receveur]
+    envoyeur.letters.push({"titre":"Réponse commerciale !","texte":receveur.name+" a REFUSE votre demande d'échange !","tours":0,"expéditeur":receveur.name,"type":"diplomatique"})
 
     return true
 }
@@ -2101,7 +2103,8 @@ accepteTrade(idJoueur,idRequête,hdv){
         trade["stockReceveur"]=hdvOrdre
         if (trade.ressourceDemandée=="or"){receveur.gold-=trade.quantitéDemandée}
         else{ this.board[hdvOrdre][trade.ressourceDemandée] -=trade.quantitéDemandée}
-
+        
+        envoyeur.letters.push({"titre":"Réponse commerciale !","texte":receveur.name+" a accepté votre demande d'échange !","tours":0,"expéditeur":receveur.name,"type":"diplomatique"})
         return {"position":waterCheck.depart,"newUnit":"Caravane de commerce"}
     }
 
@@ -2110,7 +2113,7 @@ accepteTrade(idJoueur,idRequête,hdv){
         if (trade.ressourceDemandée=="or"){receveur.gold-=trade.quantitéDemandée}
         else{ this.board[hdvOrdre][trade.ressourceDemandée] -=trade.quantitéDemandée}
 
-       
+        envoyeur.letters.push({"titre":"Réponse commerciale !","texte":receveur.name+" a accepté votre demande d'échange !","tours":0,"expéditeur":receveur.name,"type":"diplomatique"})
         return {"position":groundCheck.depart,"newUnit":"Caravane de commerce"}
     }
     

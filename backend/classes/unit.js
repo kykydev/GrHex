@@ -703,7 +703,7 @@ class caravaneCommerce extends unit{
 }
 class bateauCommerce extends unit{
     constructor(position,player){
-        super(100,0,10,0,15,"Navire de commerce",position,player,1,1)
+        super(100,0,10,0,5,"Navire de commerce",position,player,1,1)
         this.tracked=false
         this.pacifist=true
 
