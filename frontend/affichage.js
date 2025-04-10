@@ -1,4 +1,4 @@
-const socket = io('http://elouand.fr');
+const socket = io('http://grhex.elouand.fr');
 
 //-------------------Création d'hexagone sous forme de tableau de points----------------------------------------
 /**

@@ -6,7 +6,7 @@ const server = http.createServer(app);
 const socketIo = require("socket.io");
 const io = socketIo(server, {
   cors: {
-    origin: "http://elouand.fr",  // Replace with the actual origin of your front-end app
+    origin: "http://grhex.elouand.fr",  // Replace with the actual origin of your front-end app
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,  // Set to true if you're sending cookies, sessions, etc.
