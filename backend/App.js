@@ -3,15 +3,8 @@ const app = express();
 const http = require('http');
 const fs = require('fs');
 const server = http.createServer(app);
-const socketIo = require("socket.io");
-const io = socketIo(server, {
-  cors: {
-    origin: "http://grhex.elouand.fr",  // Replace with the actual origin of your front-end app
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,  // Set to true if you're sending cookies, sessions, etc.
-  },
-});const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
+const io = new require("socket.io")(server);
+const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
 const {createMap, getMapList} = require('./modules/mapGeneration')
 const {game} = require('./classes/game')
 const {buildings} = require('./gameDatas/buildingInfos')
