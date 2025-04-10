@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http');
+const fs = require('fs');
 const { isNumberObject } = require('util/types');
 const server = http.createServer(app);
 const io = new require("socket.io")(server);
@@ -540,6 +541,7 @@ io.on('connection', (socket) => {
     socket.on("demandeTuto",data=>{
 
           var retour = fs.readFileSync("./gamedatas/tutoriel.json");
+          console.log(retour  )
           if (retour!=undefined){socket.emit("demandeTuto",JSON.parse(retour))};
 
 
