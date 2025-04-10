@@ -3,11 +3,8 @@ const app = express();
 const http = require('http');
 const fs = require('fs');
 const server = http.createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: "http://elouand.fr"
-  }
-});const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
+const io = new require("socket.io")(server);
+const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
 const {createMap, getMapList} = require('./modules/mapGeneration')
 const {game} = require('./classes/game')
 const {buildings} = require('./gameDatas/buildingInfos')
