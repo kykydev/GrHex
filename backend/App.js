@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const fs = require('fs');
-const { isNumberObject } = require('util/types');
 const server = http.createServer(app);
 const io = new require("socket.io")(server);
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
