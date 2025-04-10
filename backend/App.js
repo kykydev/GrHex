@@ -3,18 +3,11 @@ const app = express();
 const http = require('http');
 const fs = require('fs');
 const server = http.createServer(app);
-const io = require("socket.io")(server, {
-  handlePreflightRequest: (req, res) => {
-      const headers = {
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Origin": req.headers.origin, //or the specific origin you want to give access to,
-          "Access-Control-Allow-Credentials": true
-      };
-      res.writeHead(200, headers);
-      res.end();
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://elouand.fr"
   }
-});
-const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
+});const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
 const {createMap, getMapList} = require('./modules/mapGeneration')
 const {game} = require('./classes/game')
 const {buildings} = require('./gameDatas/buildingInfos')
