@@ -14,7 +14,17 @@
     margin-right: 10px;
 }
 
+.echange-colonne{
+    gap: 3px;
+}
 
+.echange-colonne label {
+    margin-top: 7px; 
+}
+
+#bouttonEchange{
+    margin-top: 4px;
+}
 
 
 #flexDiplomatie{
