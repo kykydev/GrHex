@@ -1,19 +1,99 @@
 {
-    "Forge" :{
-        "chemin" : "img/personnages/rouge/forge.png",
-        "titre" : "Utiliser la forge",
-        "description" : "txtforge"
+    "Or":{
+        "image" : "img/autre/or.png",
+        "titre" : "Les pièces d'or",
+        "obtention" : "txtor",
+        "utilisation" : "txtor2"
     },
 
-    "Maison" :{
-        "chemin" : "img/personnages/rouge/maison.png",
-        "titre" : "L'utilité des maisons",
-        "description" : "txtmaison"
+    "Bois":{
+        "image" : "img/autre/bois.png",
+        "titre" : "Le bois",
+        "obtention" : "txtbois",
+        "utilisation" : "txtbois2"
+    },
+
+    "Pierre":{
+        "image" : "img/autre/pierre.png",
+        "titre" : "La pierre",
+        "obtention" : "txtpierre",
+        "utilisation" : "txtpierre2"
+    },
+
+    "Cuivre" :{
+        "image" : "img/autre/cuivre.png",
+        "titre" : "Les lingots de cuivre",
+        "obtention" : "txtcuivre",
+        "utilisation" : "txtcuivre2"
+    },
+
+    "Etain":{
+        "image" : "img/autre/etain.png",
+        "titre" : "Les lingots d'étain",
+        "obtention" : "txtétain",
+        "utilisation" : "txtétain2"
+    },
+
+    "HDV" :{
+        "image" : "img/personnages/rouge/hôtel de ville.png",
+        "titre" : "L'Hôtel de Ville",
+        "obtention" : "txthdv",
+        "utilisation" : "txthdv2"
+    },
+
+    "Forge" :{
+        "image" : "img/personnages/rouge/forge.png",
+        "titre" : "La forge",
+        "obtention" : "txtforge",
+        "utilisation" : "txtforge2"
     },
 
     "Tour" :{
-        "chemin" : "img/personnages/rouge/tour.png",
-        "titre" : "Se repérer grâce aux tours",
-        "description" : "txttour"
+        "image" : "img/personnages/rouge/tour.png",
+        "titre" : "La tour",
+        "obtention" : "txttour",
+        "utilisation" : "txttour2"
+    },
+
+    "Maison" :{
+        "image" : "img/personnages/rouge/maison.png",
+        "titre" : "La maison",
+        "obtention" : "txtmaison",
+        "utilisation" : "txtmaison2"
+    },
+
+    "Mine" :{
+        "image" : "img/personnages/rouge/mine.png",
+        "titre" : "La mine",
+        "obtention" : "txtmine",
+        "utilisation" : "txtmine2"
+    },
+
+    "Entrepôt" :{
+        "image" : "img/personnages/rouge/entrepôt.png",
+        "titre" : "L'entrepôt",
+        "obtention" : "txtentrepôt",
+        "utilisation" : "txtentrepôt2"
+    },
+
+    "Port" :{
+        "image" : "img/personnages/rouge/port.png",
+        "titre" : "Le port",
+        "obtention" : "txtport",
+        "utilisation" : "txtport2"
+    },
+
+    "Cabane":{
+        "image" : "img/personnages/rouge/cabane.png",
+        "titre" : "La cabane",
+        "obtention" : "txtcabane",
+        "utilisation" : "txtcabane2"
+    },
+
+    "Champ" :{
+        "image" : "img/personnages/rouge/champ.png",
+        "titre" : "Le champ",
+        "obtention" : "txtchamp",
+        "utilisation" : "txtchamp2"
     }
 }

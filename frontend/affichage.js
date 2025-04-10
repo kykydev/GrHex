@@ -720,8 +720,8 @@ function ajouterUnites(board, dam, width, height) {
  * @param {Array} data - liste de parties
  */
 function afficherListeParties(data) {
-    const container = document.querySelector(".rejoindrecontainer");
-    container.innerHTML = "";
+    const tutorielContainer = document.querySelector(".rejoindrecontainer");
+    tutorielContainer.innerHTML = "";
 
     if (data.length === 0) {
         const textContainer = document.createElement("div");
@@ -729,7 +729,7 @@ function afficherListeParties(data) {
         const message = document.createElement("p");
         message.textContent = "Aucune partie";
         textContainer.appendChild(message);
-        container.appendChild(textContainer);
+        tutorielContainer.appendChild(textContainer);
     } else {
         data.forEach((partie, index) => {
             const partieContainer = document.createElement("div");
@@ -755,7 +755,7 @@ function afficherListeParties(data) {
             infoGame.appendChild(map);
 
             partieContainer.appendChild(infoGame);
-            container.appendChild(partieContainer);
+            tutorielContainer.appendChild(partieContainer);
 
             partieContainer.addEventListener("click", () => {
                 socket.emit("rejoindreLobby", partie.idPartie);
@@ -897,4 +897,94 @@ function rendreDeplacable(element, conteneur) {
         }
         estImageCliquee = false;
     });
+}
+
+
+function tutorielJSON(data) {
+    //class tutorielContainer
+    let tutorielContainer = document.createElement("div");
+    tutorielContainer.className = "tutorielContainer";
+    tutorielContainer.id = "tuto";
+
+    //class titreTutoContainer
+    let titreContainer = document.createElement("div");
+    titreContainer.className = "titreTutoContainer";
+
+    let index = 0;
+    for (let key in data) {
+        console.log(data);
+        console.log(key);
+        console.log(data[key]);
+        let item = data[key];
+        let numeroTitre = (index % 2 === 0) ? "1" : "2";
+
+        let titreTutoContainer = document.createElement("div");
+        titreTutoContainer.className = `titreTuto${numeroTitre}`;
+        titreTutoContainer.id = `tuto${key}`;
+        titreTutoContainer.onclick = () => {
+            //je recup contenututotexte et les p associés
+            let obtention = d3.select("#obtention");
+            obtention.text(item.obtention);
+            let utilisation = d3.select("#utilisation");
+            utilisation.text(item.utilisation);
+        }
+
+        let titreTutoImage = document.createElement("div");
+        titreTutoImage.className = "titreTutoImage";
+        let img = document.createElement("img");
+        img.src = item.image;
+        img.id = `imgTuto${key}`;
+        titreTutoImage.appendChild(img);
+
+        let titreTutoText = document.createElement("div");
+        titreTutoText.className = "titreTutoText";
+        let p = document.createElement("p");
+        p.id = `titreTuto${key}`;
+        p.textContent = item.titre;
+        titreTutoText.appendChild(p);
+
+        titreTutoContainer.appendChild(titreTutoImage);
+        titreTutoContainer.appendChild(titreTutoText);
+        titreContainer.appendChild(titreTutoContainer);
+
+        index++;
+    }
+
+    tutorielContainer.appendChild(titreContainer);
+
+        //class contenuTutoContainer
+        let contenuTutoContainer = document.createElement("div");
+        contenuTutoContainer.className = "contenuTutoContainer";
+    
+        let sections = [
+            { title: "Comment l'obtenir?", id: "obtention" },
+            { title: "Comment l'utiliser?", id: "utilisation" }
+        ];
+    
+        sections.forEach(section => {
+            let contenuTuto = document.createElement("div");
+            contenuTuto.className = "contenuTuto";
+    
+            let contenuTutoTitre = document.createElement("div");
+            contenuTutoTitre.className = "contenuTutoTitre";
+            contenuTutoTitre.innerHTML = `<p>${section.title}</p>`;
+    
+            let contenuTutoTexte = document.createElement("div");
+            contenuTutoTexte.className = "contenuTutoTexte";
+            contenuTutoTexte.id = section.id;
+    
+            let p = document.createElement("p");
+            p.id = section.id;
+            p.textContent = "En cliquant sur un élément du tutoriel, tu auras la réponse a cette question.";
+            contenuTutoTexte.appendChild(p);
+    
+            contenuTuto.appendChild(contenuTutoTitre);
+            contenuTuto.appendChild(contenuTutoTexte);
+    
+            contenuTutoContainer.appendChild(contenuTuto);
+        });
+    
+        tutorielContainer.appendChild(contenuTutoContainer);
+
+    document.body.appendChild(tutorielContainer);
 }

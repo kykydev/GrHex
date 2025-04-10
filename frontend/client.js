@@ -124,23 +124,21 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('accueil').style.display = 'flex';
     });
 
-    // tutoriel
+    // tutoriel (emit seulement si json pas encore reçu)
     let boutonTuto = d3.select("#afficherTutoriel");
+    let booltuto = false;
     boutonTuto.on("click", () => {
+        if(!booltuto){
+        booltuto = true;
         socket.emit("demandeTuto");
+        socket.on("demandeTuto", data => {
+            tutorielJSON(data);
+        });
         d3.select("#tuto").style("display", (d3.select("#tuto").style("display") == "flex" ? "none" : "flex"));
-    });
-
-    socket.on("demandeTuto", data => {
-        console.log(data);
-    });
-
-
-
-    let pTuto = d3.select("#txttuto");
-    let tutoMaison = d3.select("#tutoMaison");
-    tutoMaison.on("click", () => {
-        pTuto.text("C'est comme ça qu'on utilise les maisons");
+        }
+        else{
+            d3.select("#tuto").style("display", (d3.select("#tuto").style("display") == "flex" ? "none" : "flex"));
+        }
     });
 
     // notifications

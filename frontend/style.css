@@ -462,6 +462,10 @@ body {
 
 /* Tutoriel */
 
+#tuto{
+    display: flex;
+}
+
 .tutorielContainer {
     color: wheat;
     display: none;
@@ -475,16 +479,46 @@ body {
     border: 4px double #212529;
     overflow: auto;
     transition: 0.25s all, 0.1s background-position;
+    border-radius: 24px;
 }
 
-.contenuTutoContainer{
+.contenuTutoContainer {
     display: flex;
-    align-items: center;
+    flex-direction: column; 
+    align-items: center; 
     justify-content: center;
     height: 100%;
     width: 60%;
     background-color: #000000e3;
     overflow: auto;
+    margin: auto;
+}
+
+.contenuTuto {
+    height: 20%;
+    width: 80%;
+    border-radius: 16px;
+    background-color: #393c3fb2;
+    margin: 5%;
+    position: relative;
+}
+
+.contenuTutoTitre {
+    display: flex;
+    align-items: center;
+    height: 20%;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: -8%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgb(152, 129, 88);
+}
+
+.contenuTutoTexte{
+    margin: 15px;
 }
 
 .titreTutoContainer {
