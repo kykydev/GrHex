@@ -1163,7 +1163,7 @@ build(nomBat,pos,joueur){//Tente de faire construire le bâtiment à la position
     var pos = parseInt(pos)
     if (nomBat==undefined || pos==undefined || joueur==undefined){return false}
     //Checks pour voir si c'est bon
-    if (this.map.terrain[pos]=="montagne" || (this.map.terrain[pos]=="eau" && nomBat!="Port")){return false}
+    if (this.map.terrain[pos]=="montagne" || (this.map.terrain[pos]!="eau" && nomBat=="Port")||(this.map.terrain[pos]=="eau" && nomBat!="Port")){return false}
     if (this.board[pos]!=undefined){return false}
     let batInfos = undefined
     for (var z of buildings){

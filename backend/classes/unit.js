@@ -889,6 +889,13 @@ class chantier extends building{
         this.turnsToBuild = buildingInfos.turnsToBuild
         this.buildingInfos = JSON.parse(JSON.stringify(buildingInfos));
     }
+
+    canGo(dest){
+        if (dest=="X"){return false}
+        return true
+    }
+
+
 }
 
 
