@@ -3,8 +3,11 @@ const app = express();
 const http = require('http');
 const fs = require('fs');
 const server = http.createServer(app);
-const io = new require("socket.io")(server);
-const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*',
+  }
+});const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
 const {createMap, getMapList} = require('./modules/mapGeneration')
 const {game} = require('./classes/game')
 const {buildings} = require('./gameDatas/buildingInfos')
