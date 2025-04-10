@@ -901,7 +901,9 @@ class game {
             switch (act.type) {
                 case "movement":
                      uni = this.board[act.pos]
-                     if (uni.type != "building") { uni.path = this.pathfindToDestination(uni.position, uni.destination, uni.owner);
+                     if (uni.type != "building") { 
+                        if (uni.name=="Navire de commerce"){uni.path = this.pathfindBoatToDestination(uni.position,uni.destination,uni.owner)}
+                        else{ uni.path = this.pathfindToDestination(uni.position, uni.destination, uni.owner);}
                         if (uni.path==false){uni.path=undefined}
                         else{uni.path.shift()}}
                     this.moveTurn(uni)
@@ -988,6 +990,30 @@ class game {
             let route = pathFind(départ, arrivée, this.map.height, this.map.width, rules)
             return route
     }
+
+    pathfindBoatToDestination(départ, arrivée, owner) {
+        var rules = []
+        var uni = this.board[départ];if (uni==undefined){return}
+
+                for (var z in this.map.terrain){
+                    let zz = this.map.terrain[z]
+                    //CAbottage
+                    var terreAdj = false
+                    for (var zzz of casesAdjacentes(z,this.map.width,this.map.height)){if ((this.board[zzz]!=undefined && this.board[zzz].name=="Port") || (this.map.terrain[zzz]!="eau" && this.map.terrain[zzz]!="X")){
+                        terreAdj=true
+                    }
+                }
+
+                    if (uni.canGo(zz)==false || terreAdj==false ||this.board[z] != undefined) { rules.push("X") }
+                    else { rules.push(1) }
+                }
+
+            
+            let route = pathFind(départ, arrivée, this.map.height, this.map.width, rules)
+            return route
+    }
+
+
 
 
     moveTurn(uni) {//Fait jouer le tour de l'unité (la déplace case par case vers sa destination. Si le pathfind n'a pas été fait, le fait aussi)
