@@ -127,8 +127,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // tutoriel
     let boutonTuto = d3.select("#afficherTutoriel");
     boutonTuto.on("click", () => {
+        socket.emit("demandeTuto");
         d3.select("#tuto").style("display", (d3.select("#tuto").style("display") == "flex" ? "none" : "flex"));
     });
+
+    socket.on("demandeTuto", data => {
+        console.log(data);
+    });
+
+
 
     let pTuto = d3.select("#txttuto");
     let tutoMaison = d3.select("#tutoMaison");
