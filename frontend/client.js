@@ -130,6 +130,12 @@ document.addEventListener("DOMContentLoaded", function () {
         d3.select("#tuto").style("display", (d3.select("#tuto").style("display") == "flex" ? "none" : "flex"));
     });
 
+    let pTuto = d3.select("#txttuto");
+    let tutoMaison = d3.select("#tutoMaison");
+    tutoMaison.on("click", () => {
+        pTuto.text("C'est comme ça qu'on utilise les maisons");
+    });
+
     // notifications
 
     let boutonNotif = d3.select("#afficherNotifs");

@@ -463,9 +463,8 @@ body {
 .tutorielContainer {
     color: wheat;
     display: none;
-    height: 800px;
-    width: 1000px;
-    background-color: #000000e3;
+    height: 80%;
+    width: 55%;
     position: fixed;
     left: 50%;
     top: 50%;
@@ -474,6 +473,16 @@ body {
     border: 4px double #212529;
     overflow: auto;
     transition: 0.25s all, 0.1s background-position;
+}
+
+.contenuTutoContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 60%;
+    background-color: #000000e3;
+    overflow: auto;
 }
 
 .titreTutoContainer {

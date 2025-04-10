@@ -1,0 +1,19 @@
+{
+    "Forge" :{
+        "chemin" : "img/personnages/rouge/forge.png",
+        "titre" : "Utiliser la forge",
+        "description" : "txtforge"
+    },
+
+    "Maison" :{
+        "chemin" : "img/personnages/rouge/maison.png",
+        "titre" : "L'utilité des maisons",
+        "description" : "txtmaison"
+    },
+
+    "Tour" :{
+        "chemin" : "img/personnages/rouge/tour.png",
+        "titre" : "Se repérer grâce aux tours",
+        "description" : "txttour"
+    }
+}
