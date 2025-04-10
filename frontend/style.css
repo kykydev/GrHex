@@ -442,6 +442,8 @@ body {
     position: fixed;
     right: 0;
     top: 40%;
+    border-end-start-radius: 25%;
+    border-start-start-radius: 25%;
 }
 
 .gauche img{
