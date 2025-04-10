@@ -537,4 +537,16 @@ io.on('connection', (socket) => {
     })
 
 
+    socket.on("demandeTuto",data=>{
+
+          var retour = fs.readFileSync("./gamedatas/tutoriel.json");
+          if (retour!=undefined){socket.emit("demandeTuto",JSON.parse(retour))};
+
+
+
+
+    })
+
+
+
 });
