@@ -2,98 +2,210 @@
     "Or":{
         "image" : "img/autre/or.png",
         "titre" : "Les pièces d'or",
-        "obtention" : "txtor",
-        "utilisation" : "txtor2"
+        "obtention" : "Les pièces d'or peuvent être obtenues en marchandant avec les autres joueurs ou en vendant des ressources récupérables grâce à la pêche ou l'agriculture.",
+        "utilisation" : "Condition de victoire du jeu, on les utilise pour acheter des ressources aux autres joueurs, former des troupes.."
     },
 
     "Bois":{
         "image" : "img/autre/bois.png",
         "titre" : "Le bois",
-        "obtention" : "txtbois",
-        "utilisation" : "txtbois2"
+        "obtention" : "Le bois peut être obtenu en abattant des arbres avec un bûcheron ou par le biais d'échanges avec les autres joueurs.",
+        "utilisation" : "On l'utilise pour construire des bâtiments."
     },
 
     "Pierre":{
         "image" : "img/autre/pierre.png",
         "titre" : "La pierre",
-        "obtention" : "txtpierre",
-        "utilisation" : "txtpierre2"
+        "obtention" : "La pierre peut être obtenu en travaillant les carrières avec un mineur ou par le biais d'échanges avec les autres joueurs.",
+        "utilisation" : "On l'utilise pour construire des bâtiments."
     },
 
     "Cuivre" :{
         "image" : "img/autre/cuivre.png",
         "titre" : "Les lingots de cuivre",
-        "obtention" : "txtcuivre",
-        "utilisation" : "txtcuivre2"
+        "obtention" : "Le cuivre peut être obtenu dans les mines (placés sur les gisements correspondants) avec un mineur ou par le biais d'échanges avec les autres joueurs.",
+        "utilisation" : "On l'utilise pour construire des bâtiments et former des troupes."
     },
 
     "Etain":{
         "image" : "img/autre/etain.png",
         "titre" : "Les lingots d'étain",
-        "obtention" : "txtétain",
-        "utilisation" : "txtétain2"
+        "obtention" : "L'étain peut être obtenu dans les mines (placés sur les gisements correspondants) avec un mineur ou par le biais d'échanges avec les autres joueurs.",
+        "utilisation" : "On l'utilise pour construire des bâtiments et former des troupes."
+    },
+
+    "Stratège" :{
+        "image" : "img/personnages/rouge/stratege.png",
+        "titre" : "Le stratège",
+        "obtention" : "Le stratège apparaît en début de partie, au même moment ou vous la rejoignez.",
+        "utilisation" : "Il est le personnage que vous incarnez dans le jeu. Il est le chef de votre ville, il vous donne la vision et permet d'établir la stratégie de votre ville. Attention, il est très important de le protéger car si il meurt, vous perdez la partie !"
+    },
+
+    "Messager" :{
+        "image" : "img/personnages/rouge/messager.png",
+        "titre" : "Le messager",
+        "obtention" : "Le messager apparaîtra lorsque vous essaierez de communiquer avec un autre joueur ou déplacer vos troupes distantes.",
+        "utilisation" : "Il permet de communiquer avec les autres joueurs mais aussi aves ses troupes distantes. Il est très important de l'utiliser pour établir des alliances, des échanges ou tout simplement discuter avec les autres joueurs. Il est très important de le protéger car si il meurt, votre message ne verra jamais le jour !"
+    },
+
+    "Caravane de commerce" :{
+        "image" : "img/personnages/rouge/caravane de commerce.png",
+        "titre" : "La caravane de commerce",
+        "obtention" : "La caravane de commerce apparaîtra après avoir accepté un échange avec un autre joueur. Elle est très importante pour établir des échanges entre les joueurs.",
+        "utilisation" : "Elle permet d'acheminer des ressources entre deux villes par voie terrestre. Elle est très importante pour établir des échanges entre les joueurs. Il est très important de la protéger car si elle est détruite, les ressources n'arriveront jamais a destination!"
+    },
+
+    "Navire de commerce" :{
+        "image" : "img/personnages/rouge/Navire de commerce.png",
+        "titre" : "Le navire de commerce",
+        "obtention" : "Le navire de commerce apparaîtra après avoir accepté un échange avec un autre joueur. Il est très important pour établir des échanges entre les joueurs.",
+        "utilisation" : "Il permet d'acheminer des ressources entre deux villes par voie maritime. Il est très important pour établir des échanges entre les joueurs. Il est très important de le protéger car si il est détruit, les ressources n'arriveront jamais a destination!"
+    },
+
+    "Ouvrier" :{
+        "image" : "img/personnages/rouge/ouvrier.png",
+        "titre" : "L'ouvrier",
+        "obtention" : "L'ouvrier s'obtient contre des pièces d'or a l'hôtel de ville.",
+        "utilisation" : "Il réalise la contruction de bâtiments et de murs."
+    },
+
+    "Hoplite" :{
+        "image" : "img/personnages/rouge/hoplite.png",
+        "titre" : "Le hoplite",
+        "obtention" : "Le hoplite s'obtient en enrolant un bûcheron/mineur dans la forge contre des pièces d'or.",
+        "utilisation" : "Il est une unité de combat de mêlée très efficace contre les unités adverse ou les grands méchants loups."
+    },
+
+    "Archer" :{
+        "image" : "img/personnages/rouge/archer.png",
+        "titre" : "L'archer",
+        "obtention" : "L'archer s'obtient en enrolant un bûcheron/mineur dans la forge contre des pièces d'or.",
+        "utilisation" : "Il est une unité de combat à distance très efficace contre les unités adverse ou les grands méchants loups."
+    },
+
+    "Cheval de troie" :{
+        "image" : "img/personnages/rouge/cheval de troie.png",
+        "titre" : "Le cheval de Troie",
+        "obtention" : "Le cheval de troie ne peut pas encore être obtenu dans le jeu.",
+        "utilisation" : "Il est une unité de combat de mêlée très lente et résistante"
+    },
+
+    "Bucheron" :{
+        "image" : "img/personnages/rouge/bûcheron.png",
+        "titre" : "Le bûcheron",
+        "obtention" : "Le bûcheron a une grande chance d'être obtenu lorsque vous construisez une maison.",
+        "utilisation" : "Il permet de récolter du bois, peut travailler dans les champs et a la possibilité de s'enrôler."
+    },
+
+    "Mineur" :{
+        "image" : "img/personnages/rouge/mineur.png",
+        "titre" : "Le mineur",
+        "obtention" : "Le mineur a une grande chance d'être obtenu lorsque vous construisez une maison.",
+        "utilisation" : "Il permet de récolter de la pierre, est indispensable pour le travail dans les mines, peut travailler dans les champs et a la possibilité de s'enrôler."
+    },
+
+    "Paysanne" :{
+        "image" : "img/personnages/rouge/paysanne.png",
+        "titre" : "La paysanne",
+        "obtention" : "La paysanne a une grande chance d'être obtenu lorsque vous construisez une maison.",
+        "utilisation" : "Polyvalente, elle permet de récolter du bois et de la pierre et peut travailler dans les champs. Elle reste moins efficace que le bûcheron et le mineur."
+    },
+
+    "Pêcheur" :{
+        "image" : "img/personnages/rouge/pêcheur.png",
+        "titre" : "Le pêcheur",
+        "obtention" : "Le pêcheur s'obtient en construisant une cabane.",
+        "utilisation" : "Il pêche différents types de poissons! Certaines variétés de poissons peuvent rapporter grandement plus d'or que d'autres."
+    },
+
+    "Loup" :{
+        "image" : "img/personnages/blanc/loup.png",
+        "titre" : "Le loup",
+        "obtention" : "Il n'est pas possible d'apprivoiser un loup.",
+        "utilisation" : "Un conseil.. restez loin de lui si vous n'avez pas de quoi vous défendre."
+    },
+
+    "Pierris Pompidoris" :{
+        "image" : "img/personnages/blanc/pierris pompidoris.png",
+        "titre" : "Pierris Pompidoris",
+        "obtention" : "Il n'est pas possible de convaincre Mr. Pompidoris de vous rejoindre.",
+        "utilisation" : "FUYEZ !"
+    },
+
+    "Disciple d'athéna" :{
+        "image" : "img/personnages/blanc/disciple d'athéna.png",
+        "titre" : "Le disciple d'Athéna",
+        "obtention" : "La disciple d'Athena n'est pas encore disponible dans le jeu.",
+        "utilisation" : "Elle est une unité défensive très efficace."
     },
 
     "HDV" :{
         "image" : "img/personnages/rouge/hôtel de ville.png",
         "titre" : "L'Hôtel de Ville",
-        "obtention" : "txthdv",
-        "utilisation" : "txthdv2"
+        "obtention" : "L'hôtel de ville apparaît lorsque vous rejoignez une partie, mais il est possible d'en construire d'autres via l'onglet de construction des bâtiments.",
+        "utilisation" : "Il est le bâtiment principal de votre ville. Il vous permet de stocker vos ressources, d'acheter des ouvriers et de gérer la diplomatie avec les autres cités. Il est très important de le protéger car si il est détruit, vous perdez la partie !"
+    },
+
+    "Les murs" :{
+        "image" : "img/personnages/rouge/mur.png",
+        "titre" : "Les murs",
+        "obtention" : "Les murs peuvent être construits via l'onglet de construction des bâtiments.",
+        "utilisation" : "Ils sont indispensables pour protéger votre ville. Ils permettent de ralentir les unités adverses et de les empêcher d'atteindre l'hôtel de ville. Il est très important de les construire au fur et à mesure de la partie."
     },
 
     "Forge" :{
         "image" : "img/personnages/rouge/forge.png",
         "titre" : "La forge",
-        "obtention" : "txtforge",
-        "utilisation" : "txtforge2"
+        "obtention" : "La forge peut être construite via l'onglet de construction des bâtiments.",
+        "utilisation" : "Elle permet d'enrôler des unités de combat. Indispensable si vous souhaitez écraser vos adversaires !"
     },
 
     "Tour" :{
         "image" : "img/personnages/rouge/tour.png",
         "titre" : "La tour",
-        "obtention" : "txttour",
-        "utilisation" : "txttour2"
+        "obtention" : "La tour peut être construites via l'onglet de construction des bâtiments.",
+        "utilisation" : "Elles permettent d'étendre sa vision sur la carte."
     },
 
     "Maison" :{
         "image" : "img/personnages/rouge/maison.png",
         "titre" : "La maison",
-        "obtention" : "txtmaison",
-        "utilisation" : "txtmaison2"
+        "obtention" : "La maison peut être construite via l'onglet de construction des bâtiments.",
+        "utilisation" : "Elle permet d'accueillir de nouveaux habitants dans votre ville. Plus vous en construisez, plus vous aurez des bûcherons, mineurs et paysans."
     },
 
     "Mine" :{
         "image" : "img/personnages/rouge/mine.png",
         "titre" : "La mine",
-        "obtention" : "txtmine",
-        "utilisation" : "txtmine2"
+        "obtention" : "La mine peut être construite via l'onglet de construction des bâtiments.",
+        "utilisation" : "Elle permet de récolter du cuivre et de l'étain. Il est nécessaire de la construire sur un gisement de cuivre ou d'étain sans quoi le mineur ne pourra rien en tirer."
     },
 
     "Entrepôt" :{
         "image" : "img/personnages/rouge/entrepôt.png",
         "titre" : "L'entrepôt",
-        "obtention" : "txtentrepôt",
-        "utilisation" : "txtentrepôt2"
+        "obtention" : "L'entrepôt peut être construit via l'onglet de construction des bâtiments.",
+        "utilisation" : "Il permet de stocker vos ressources."
     },
 
     "Port" :{
         "image" : "img/personnages/rouge/port.png",
         "titre" : "Le port",
-        "obtention" : "txtport",
-        "utilisation" : "txtport2"
+        "obtention" : "Le port peut être construit via l'onglet de construction des bâtiments.",
+        "utilisation" : "Indispensable pour le commerce maritime!"
     },
 
     "Cabane":{
         "image" : "img/personnages/rouge/cabane.png",
         "titre" : "La cabane",
-        "obtention" : "txtcabane",
-        "utilisation" : "txtcabane2"
+        "obtention" : "La cabane peut être construite via l'onglet de construction des bâtiments.",
+        "utilisation" : "Elle permet d'accueillir de nouveaux pêcheurs dans votre ville. Plus vous en construisez, plus vous aurez de pêcheurs."
     },
 
     "Champ" :{
         "image" : "img/personnages/rouge/champ.png",
         "titre" : "Le champ",
-        "obtention" : "txtchamp",
-        "utilisation" : "txtchamp2"
+        "obtention" : "Le champ peut être construit via l'onglet de construction des bâtiments.",
+        "utilisation" : "On peut y faire travailler des bûcherons, des mineurs et des paysannes pour récolter du blé. Il est très important de le construire au fur et à mesure de la partie."
     }
 }

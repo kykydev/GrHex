@@ -45,6 +45,8 @@
 
     overflow-y: auto;
     overflow-x: hidden;
+
+    border-radius: 24px;
 }
 
 .textcontainer {
@@ -70,6 +72,8 @@
 
     background-color: black;
     border: 4px double #212529;
+
+    border-radius: 24px;
 }
 
 .rejoindrecontainer p {
