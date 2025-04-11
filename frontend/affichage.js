@@ -1,4 +1,4 @@
-const socket = io('http://localhost:8888');
+const socket = io();
 
 //-------------------Création d'hexagone sous forme de tableau de points----------------------------------------
 /**

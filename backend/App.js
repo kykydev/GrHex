@@ -3,7 +3,26 @@ const app = express();
 const http = require('http');
 const fs = require('fs');
 const server = http.createServer(app);
-const io = new require("socket.io")(server);
+const socketIo = new require("socket.io");
+const origines = [
+  "https://grhex.elouand.fr",
+  "http://localhost:3000",   // your local frontend
+  "http://localhost:8888",   // optional, if testing frontend served by backend
+];
+
+const io = require("socket.io")(server, {
+  cors: {
+    origin: (origin, callback) => {
+      if (!origin || origines.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  },
+});
+
 const { casesAdjacentes, getX, getY, getCoords, offset_to_cube, distance, pathFind } = require('./modules/backendHex');
 const {createMap, getMapList} = require('./modules/mapGeneration')
 const {game} = require('./classes/game')
