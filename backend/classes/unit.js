@@ -659,8 +659,7 @@ class pecheur extends unit{
 
 class chevaldetroie extends unit{
     constructor(position,player){
-        //super(50,20,10,1,1,"Cheval de Troie",position,player,1,1)
-        super(1,0,10,1,1,"Cheval de Troie",position,player,1,1)
+        super(40,10,10,1,1,"Cheval de Troie",position,player,1,1)
         this.tracked=true
         this.strategy="agression"
 
