@@ -591,6 +591,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     , "jeu",0.5);
 
                     d3.select("#placeUnEspionStp").text("");
+
+                    selectionPositionEspion="";
                     
 
                 } else
@@ -1114,6 +1116,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let choisirEntrepot = d3.select("#choisirEntrepot");
         let notifDetail = d3.select("#vueNotificationMessage");
+
+        choisirEntrepot.selectAll("*").remove();
+        notifDetail.selectAll("*").remove();
 
 
         data.forEach((entrepot) => {
