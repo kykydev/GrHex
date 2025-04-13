@@ -1585,7 +1585,8 @@ changeStrat(idJoueur,position,newStrat){
     var uni = this.board[position]
     if (uni==undefined){return false}
     if (uni.owner!=idJoueur){return false}
-    if (!["prudence","agression","modere"].includes(newStrat)){return}
+    if (uni.name=="Caravane de commerce" || uni.name=="Navire de commerce"){return false}
+    if (!["prudence","agression","modere"].includes(newStrat)){return true}
 
 
     uni.strategy=newStrat
