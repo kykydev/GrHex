@@ -350,6 +350,9 @@ class mineur extends unit{
     getForgeEvos(){
         return [{"nom":"Hoplite","gold":10,"wood":5, "stone":5},{"nom":"Archer","gold":25,"wood":5, "stone":5}]
     }
+    canEvolve(){
+        return true
+    }
 
     updateBase(game){
         if (this.base!=undefined){return this.base}
@@ -364,9 +367,7 @@ class mineur extends unit{
         if (dest=="X" || dest=="eau" || dest=="montagne"){return false}
         return true
     }
-    canEvolve(){
-        return true
-    }
+
 
     canRécolte(partie){
         return (this.stone<this.maxStone)
@@ -446,7 +447,7 @@ class paysanne extends unit{
 
         if (Math.random()<0.05){
             this.élue=true
-            this.forgeEvos=[{"nom":"Disciple d'Athéna","gold":200}]
+            this.forgeEvos=[{"nom":"Disciple d'Athéna","gold":50}]
         }
 
     }
@@ -658,8 +659,10 @@ class pecheur extends unit{
 
 class chevaldetroie extends unit{
     constructor(position,player){
-        super(100,10,10,1,1,"Cheval de Troie",position,player,1,1)
+        //super(50,20,10,1,1,"Cheval de Troie",position,player,1,1)
+        super(1,0,10,1,1,"Cheval de Troie",position,player,1,1)
         this.tracked=true
+        this.strategy="agression"
 
     }
 }
@@ -703,7 +706,7 @@ class caravaneCommerce extends unit{
 }
 class bateauCommerce extends unit{
     constructor(position,player){
-        super(100,0,10,0,4,"Navire de commerce",position,player,1,1)
+        super(100,0,10,0,5,"Navire de commerce",position,player,1,1)
         this.tracked=false
         this.pacifist=true
 
