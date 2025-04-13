@@ -241,6 +241,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     
+    let imgTroie = document.getElementById("imgTroie");
+ 
+
+    imgTroie.addEventListener("click", () => {
+ 
+
+        // console.log("recruterOuvrier");
+ 
+
+        socket.emit('recruteChevalDeTroie', hdvSelectionne);
+ 
+
+    });
 
     let bouttonEchange = document.getElementById("bouttonEchange");
 
