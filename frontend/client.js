@@ -234,6 +234,13 @@ document.addEventListener("DOMContentLoaded", function () {
             d3.select("#vueEspions").style("display", "block");
         });
 
+    let imgOuvrier = document.getElementById("imgOuvrier");
+    imgOuvrier.addEventListener("click", () => {
+        // console.log("recruterOuvrier");
+        socket.emit('recruterOuvrier', hdvSelectionne);
+    });
+
+    
 
     let bouttonEchange = document.getElementById("bouttonEchange");
 
@@ -690,10 +697,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     // pour ouvrier
                     hdvSelectionne = event.target.id.supprimerPrefixId("uni");
 
-                    let imgOuvrier = document.getElementById("imgOuvrier");
-                    imgOuvrier.addEventListener("click", () => {
-                        socket.emit('recruterOuvrier', hdvSelectionne);
-                    });
                     // vueInfoHdv variable D3
 
 
@@ -890,6 +893,8 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
     socket.on("recruterOuvrier", data => {
+        // console.log("recruter ouvrier : ",data);
+
         let bbox = document.getElementById("h" + data).getBBox();
         d3.select("#jeu")
             .append("image")
