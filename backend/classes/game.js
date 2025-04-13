@@ -914,9 +914,10 @@ class game {
         //Activation des actions
         for (var act of this.actions) {
             let uni
+            uni = this.board[act.pos]
+            if (uni!=undefined){
             switch (act.type) {
                 case "movement":
-                     uni = this.board[act.pos]
                      if (uni.type != "building") { 
                         if (uni.name=="Navire de commerce"){uni.path = this.pathfindBoatToDestination(uni.position,uni.destination,uni.owner)}
                         else{ uni.path = this.pathfindToDestination(uni.position, uni.destination, uni.owner);}
@@ -946,6 +947,7 @@ class game {
                     break;
             }
         }
+    }
 
 
 
