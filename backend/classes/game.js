@@ -914,10 +914,10 @@ class game {
         //Activation des actions
         for (var act of this.actions) {
             let uni
-            uni = this.board[act.pos]
-            if (uni!=undefined){
             switch (act.type) {
                 case "movement":
+                     uni = this.board[act.pos]
+                     if (uni!=undefined){
                      if (uni.type != "building") { 
                         if (uni.name=="Navire de commerce"){uni.path = this.pathfindBoatToDestination(uni.position,uni.destination,uni.owner)}
                         else{ uni.path = this.pathfindToDestination(uni.position, uni.destination, uni.owner);}
@@ -928,26 +928,27 @@ class game {
                     if (uni!=undefined && uni.owner!="Système" && uni.name=="Messager"){this.testMessager(uni)}
                     if (uni!=undefined && uni.owner!="Système" && uni.name=="Caravane de commerce" || uni.name=="Navire de commerce"){this.testCaravane(uni)}
                     if (uni!=undefined && uni.owner!="Système" && (uni.name=="Paysanne"||uni.name=="Mineur"||uni.name=="Bûcheron")&&uni.objectif!=undefined){this.testEntre(uni)}
-
+                     }
                     break;
 
                 case "builderPickup":
                 uni = act.uni
+                if (uni!=undefined){
                 if (uni!=undefined && uni.owner!="Système"){
                     this.testRécup(uni)}    
+                }
                 break
-
                 case "builderBuild":
                 uni = act.uni
+                if (uni!=undefined){
                 if (uni!=undefined && uni.owner!="Système"){
                     this.testBuild(uni)}    
+                }
                 break
-
                 default:
                     break;
             }
         }
-    }
 
 
 
