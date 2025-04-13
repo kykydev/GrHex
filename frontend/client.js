@@ -1123,7 +1123,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let notifDetail = d3.select("#vueNotificationMessage");
 
         choisirEntrepot.selectAll("*").remove();
-        notifDetail.selectAll("*").remove();
+        // notifDetail.selectAll("*").remove();
 
 
         data.forEach((entrepot) => {
