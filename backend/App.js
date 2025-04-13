@@ -380,6 +380,33 @@ io.on('connection', (socket) => {
     socket.emit("citésDispo",retour)
 
   })
+  socket.on("recruteChevalDeTroie",data=>{
+    let partie = parties[socket.idPartie]
+    if (partie==undefined){return}
+    if (socket.idJoueur==undefined){return}
+
+    if (partie.canOrder(socket.idJoueur,data)==false){return }
+
+
+    var res = partie.recruteChevalDeTroie(data)
+    if (res!=false){
+      socket.emit("dialogue",{"message":"C'est l'heure de passer à l'attaque !", "unite":"cheval de troie","couleur": "rouge"})
+      socket.emit("evolution",{"position":res,"newUnit":"cheval de troie"}); 
+      return}
+  })
+
+  socket.on("citésDispo",data=>{
+    var partie = parties[socket.idPartie]
+    var idJoueur = socket.idJoueur
+   
+    if (partie==undefined || idJoueur==undefined){return}
+    var retour = []
+    if (partie.citePrise("beotie")==false){retour.push("beotie")}
+    if (partie.citePrise("argolide")==false){retour.push("argolide")}
+    if (partie.citePrise("attique")==false){retour.push("attique")}
+    socket.emit("citésDispo",retour)
+
+  })
 
     socket.on("demandeUnitesForge",data=>{//Socket qui prend comme data une case contenant une forge et renvoie les untiés qui peuvent évoluer avec
       var partie = parties[socket.idPartie]

@@ -86,8 +86,8 @@
     "Cheval de troie" :{
         "image" : "img/personnages/rouge/cheval de troie.png",
         "titre" : "Le cheval de Troie",
-        "obtention" : "Le cheval de troie ne peut pas encore être obtenu dans le jeu.",
-        "utilisation" : "Il est une unité de combat de mêlée très lente et résistante"
+        "obtention" : "Le cheval de troie peut être construit à l'hôtel de ville... Mais attention à vos réserves de bois !",
+        "utilisation" : "Cette unité est lente, mais très puissante. Une surprise attend quiconque réussit à en venir à bout..."
     },
 
     "Bucheron" :{

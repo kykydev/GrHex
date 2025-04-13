@@ -466,6 +466,7 @@ class game {
         this.actionsThisTurn.push({ "type": "mort", "position": unit.position })
         delete this.board[unit.position]
         if (this.players[unit.owner]!=undefined && this.players[unit.owner].units[unit.position]!=undefined){delete this.players[unit.owner].units[unit.position]}
+        if (unit.name=="Cheval de Troie"){this.mortChevalDeTroie(unit.position,this.players[unit.owner])}
         if (unit.name=="Hôtel de ville" || unit.name=="Entrepôt"){
             for (var z in  this.players[unit.owner].hdv ){
                 this.players[unit.owner].hdv.splice(z,1);break}
@@ -473,6 +474,21 @@ class game {
         return true
     }
 
+    mortChevalDeTroie(position,joueur){
+        console.log("aaa")
+        if (position==undefined||joueur==undefined){return false}
+        for (var z of casesAdjacentes(position,this.map.width,this.map.height)){
+            if (this.board[z]==undefined){
+                console.log(z)
+                let uni = new hoplite(z,joueur)
+                uni.attack = 10
+                uni.hp=5
+                uni.defense=0
+                this.addUnit(uni,z,joueur)
+            }
+
+        }
+    }
 
 
     combat(unit1, unit2) {//Fait se battre l'unité 1 avec l'unité 2. Renvoie false s'il n'y a pas de mort, 1 ou 2 pour dire qui est mort si un seul et 3 si les deux unités sont mortes
@@ -1252,6 +1268,25 @@ recruteOuvrier(pos){
     return false
 }
 
+recruteChevalDeTroie(pos){
+    if (this.board[pos]==undefined || this.board[pos].name!="Hôtel de ville"){return false}
+    var joueur = this.players[this.board[pos].owner]
+
+    if (this.board[pos].wood<50){return false}
+    
+    for (var z of casesAdjacentes(pos,this.map.width,this.map.height)){
+        if (this.board[z]==undefined){
+            var uni = new chevaldetroie(z,joueur)
+            if (this.addUnit(uni,z,joueur)){            
+                this.board[pos].wood-=50;
+                   return z}
+        }
+    }
+
+
+    return false   
+}
+
 
 evolve(uniPos,evo ){//Tente de faire évoluer l'unité en position pos
     var uni = this.board[uniPos]; if (uni==undefined){return false}
@@ -1585,7 +1620,8 @@ changeStrat(idJoueur,position,newStrat){
     var uni = this.board[position]
     if (uni==undefined){return false}
     if (uni.owner!=idJoueur){return false}
-    if (!["prudence","agression","modere"].includes(newStrat)){return}
+    if (uni.name=="Caravane de commerce" || uni.name=="Navire de commerce"){return false}
+    if (!["prudence","agression","modere"].includes(newStrat)){return true}
 
 
     uni.strategy=newStrat

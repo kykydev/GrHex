@@ -226,7 +226,7 @@ document.addEventListener("DOMContentLoaded", function () {
             dialogue("Placez un Espion sur le damier","messager","rouge")
         });
 
-    d3.select("#bouttonEspions")
+    d3.select("#boutonEchange")
         .on("click", () => {
             d3.select("#vueOuvrier").style("display", "none");
             d3.select("#vueDiplomatie").style("display", "none");
@@ -240,6 +240,11 @@ document.addEventListener("DOMContentLoaded", function () {
         socket.emit('recruterOuvrier', hdvSelectionne);
     });
 
+    let imgTroie = document.getElementById("imgTroie");
+    imgTroie.addEventListener("click", () => {
+        // console.log("recruterOuvrier");
+        socket.emit('recruteChevalDeTroie', hdvSelectionne);
+    });
     
 
     let bouttonEchange = document.getElementById("bouttonEchange");
