@@ -1525,7 +1525,7 @@ sortirChamp(unite,position,idJoueur,index){//A CONTINUER: ADAPTER POUR SORTIR L4
     var cham = this.board[position]
     if (cham.name!="Champ"&&cham.name!="Mine"){return false}
     if (cham.workers==undefined){return false}
-    if (index>cham.workers.length || cham.workers[index].name!=unite){return false}
+    if (index>=cham.workers.length || cham.workers[index].name!=unite){return false}
     
     var uni = cham.workers[index]
     for (var zz of casesAdjacentes(position,this.map.width,this.map.height)){

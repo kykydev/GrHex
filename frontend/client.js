@@ -176,14 +176,14 @@ document.addEventListener("DOMContentLoaded", function () {
     bouttonOuvrier.addEventListener("click", (event) => {
         d3.select("#vueDiplomatie").style("display", "none");
         d3.select("#vueOuvrier").style("display", "block");
-        d3.select("#vueEspions").style("display", "none");
+        d3.select("#vueEchange").style("display", "none");
         d3.select("#vueEspionnage").style("display", "none");
     });
 
     bouttonDiplomatie.addEventListener("click", (event) => {
         d3.select("#vueOuvrier").style("display", "none");
         d3.select("#vueDiplomatie").style("display", "block");
-        d3.select("#vueEspions").style("display", "none");
+        d3.select("#vueEchange").style("display", "none");
         d3.select("#vueEspionnage").style("display", "none");
     });
 
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .on("click", () => {
             d3.select("#vueOuvrier").style("display", "none");
             d3.select("#vueDiplomatie").style("display", "none");
-            d3.select("#vueEspions").style("display", "none");
+            d3.select("#vueEchange").style("display", "none");
             d3.select("#vueEspionnage").style("display", "block");
         });
 
@@ -226,12 +226,12 @@ document.addEventListener("DOMContentLoaded", function () {
             dialogue("Placez un Espion sur le damier","messager","rouge")
         });
 
-    d3.select("#bouttonEspions")
+    d3.select("#bouttonVueEchange")
         .on("click", () => {
             d3.select("#vueOuvrier").style("display", "none");
             d3.select("#vueDiplomatie").style("display", "none");
             d3.select("#vueEspionnage").style("display", "none");
-            d3.select("#vueEspions").style("display", "block");
+            d3.select("#vueEchange").style("display", "block");
         });
 
     let imgOuvrier = document.getElementById("imgOuvrier");
