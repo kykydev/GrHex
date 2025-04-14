@@ -1,4 +1,9 @@
 const { casesAdjacentes, distance } = require("../modules/backendHex")
+const fs = require('fs');
+const path = require('path');
+const stats = JSON.parse(fs.readFileSync(path.join(__dirname,"../gameDatas/unitsStats.json")))
+ 
+
 
 class unit {
     constructor(hp,attack,defense,initiative,movement,name,position,player,vision, range){
@@ -21,6 +26,25 @@ class unit {
         this.tracked=false
         this.fieldRevenu=0 //Attribut qui donne le nombre de pièces générées dans un champ
         this.strategy = "prudence"
+
+        //Chargement des statistiques custom
+
+        if (stats[this.name]!=undefined){
+            this.maxhp = stats[this.name].maxhp
+            this.attack = stats[this.name].attack
+            this.defense = stats[this.name].defense
+            this.initiative = stats[this.name].initiative
+            this.movement = stats[this.name].movement
+            this.range = stats[this.name].range
+            this.vision = stats[this.name].vision
+            this.fieldRevenu=stats[this.name].fieldRevenu
+            
+            
+            this.hp = this.maxhp
+            this.movementLeft=this.movement
+        }
+
+        
     }
 
     canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
@@ -795,7 +819,7 @@ class maison extends building{
 }
 class cabane extends building{
     constructor(position,player){
-        super(20,0,0,0,"cabane",position,player,0,0)
+        super(20,0,0,0,"Cabane",position,player,0,0)
     }
 
     generatePecheur(position,player,game){
@@ -814,6 +838,12 @@ class cabane extends building{
 class tour extends building{
     constructor(position,player){
         super(50,0,10,0,"Tour",position,player,5,0)
+    }
+}
+class tourarcher extends building{
+    constructor(position,player){
+        super(50,0,10,0,"Tour d'archer",position,player,5,0)
+        this.workers = []
     }
 }
 
@@ -1031,4 +1061,4 @@ class discipleathneutre extends creatureNeutre{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane,port};
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane,port,tourarcher};

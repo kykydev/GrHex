@@ -1,0 +1,319 @@
+{
+    "Stratege":{
+        "maxhp" : 100,
+         "attack" : 15,
+         "defense" : 5,
+         "initiative" : 0,
+         "movement" : 3,
+         "vision" : 4,
+         "range" : 1,
+         "fieldRevenu" : 0
+ },
+
+
+
+
+
+    "Hoplite":{
+           "maxhp" : 50,
+            "attack" : 25,
+            "defense" : 5,
+            "initiative" : 5,
+            "movement" : 2,
+            "vision" : 1,
+            "range" : 2,
+            "fieldRevenu" : 0
+    },
+
+    "Archer":{
+        "maxhp" : 30,
+         "attack" : 20,
+         "defense" : 0,
+         "initiative" : 1,
+         "movement" : 2,
+         "vision" : 2,
+         "range" : 2,
+         "fieldRevenu" : 0
+ },
+
+ "Disciple d'Athéna":{
+    "maxhp" : 50,
+     "attack" : 12,
+     "defense" : 20,
+     "initiative" : 1,
+     "movement" : 1,
+     "vision" : 2,
+     "range" : 1,
+     "fieldRevenu" : 0
+},
+
+
+
+"Cheval de Troie":{
+    "maxhp" : 70,
+     "attack" : 20,
+     "defense" : 10,
+     "initiative" : 1,
+     "movement" : 2,
+     "vision" : 1,
+     "range" : 1,
+     "fieldRevenu" : 0
+},
+
+
+"Messager":{
+    "maxhp" : 30,
+     "attack" : 0,
+     "defense" : 5,
+     "initiative" : 7,
+     "movement" : 3,
+     "vision" : 2,
+     "range" : 1,
+     "fieldRevenu" : 0
+},
+
+
+"Ouvrier":{
+    "maxhp" : 30,
+     "attack" : 0,
+     "defense" : 2,
+     "initiative" : 10,
+     "movement" : 4,
+     "vision" : 2,
+     "range" : 1,
+     "fieldRevenu" : 0
+},
+
+
+"Bûcheron":{
+    "maxhp" : 25,
+     "attack" : 10,
+     "defense" : 5,
+     "initiative" : 7,
+     "movement" : 3,
+     "vision" : 1,
+     "range" : 1,
+     "fieldRevenu" : 2
+},
+
+
+
+"Mineur":{
+    "maxhp" : 25,
+     "attack" : 10,
+     "defense" : 5,
+     "initiative" : 7,
+     "movement" : 3,
+     "vision" : 1,
+     "range" : 1,
+     "fieldRevenu" : 2
+},
+
+
+
+"Paysanne":{
+    "maxhp" : 15,
+     "attack" : 7,
+     "defense" : 0,
+     "initiative" : 5,
+     "movement" : 3,
+     "vision" : 1,
+     "range" : 1,
+     "fieldRevenu" : 1
+},
+
+"Pêcheur":{
+    "maxhp" : 20,
+     "attack" : 8,
+     "defense" : 3,
+     "initiative" : 4,
+     "movement" : 2,
+     "vision" : 1,
+     "range" : 1,
+     "fieldRevenu" : 0
+},
+
+
+"Caravane de commerce":{
+    "maxhp" : 30,
+     "attack" : 0,
+     "defense" : 2,
+     "initiative" : 0,
+     "movement" : 4,
+     "vision" : 1,
+     "range" : 1,
+     "fieldRevenu" : 0
+},
+
+
+"Navire de commerce":{
+    "maxhp" : 35,
+     "attack" : 0,
+     "defense" : 5,
+     "initiative" : 2,
+     "movement" : 8,
+     "vision" : 1,
+     "range" : 1,
+     "fieldRevenu" : 0
+},
+
+
+
+"Navire de commerce":{
+    "maxhp" : 35,
+     "attack" : 0,
+     "defense" : 5,
+     "initiative" : 2,
+     "movement" : 8,
+     "vision" : 1,
+     "range" : 1,
+     "fieldRevenu" : 0
+},
+
+
+"Mur":{
+    "maxhp" : 40,
+     "attack" : 0,
+     "defense" : 10,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 1,
+     "range" : 0,
+     "fieldRevenu" : 0
+},
+
+"Hôtel de ville":{
+    "maxhp" : 110,
+     "attack" : 0,
+     "defense" : 15,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 2,
+     "range" : 0,
+     "fieldRevenu" : 0
+},
+
+"Maison":{
+    "maxhp" : 25,
+     "attack" : 0,
+     "defense" : 10,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 0,
+     "range" : 0,
+     "fieldRevenu" : 0
+},
+"Cabane":{
+    "maxhp" : 20,
+     "attack" : 0,
+     "defense" : 0,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 0,
+     "range" : 0,
+     "fieldRevenu" : 0
+},
+
+"Tour":{
+    "maxhp" : 30,
+     "attack" : 0,
+     "defense" : 5,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 5,
+     "range" : 0,
+     "fieldRevenu" : 0
+},
+
+"Tour d'Archer":{
+    "maxhp" : 30,
+     "attack" : 5,
+     "defense" : 5,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 5,
+     "range" : 2,
+     "maxworkers":2,
+     "fieldRevenu" : 0
+},
+
+"Forge":{
+    "maxhp" : 30,
+     "attack" : 0,
+     "defense" : 5,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 0,
+     "range" : 0,
+     "fieldRevenu" : 0
+},
+
+"Mine":{
+    "maxhp" : 35,
+     "attack" : 0,
+     "defense" : 5,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 0,
+     "range" : 0,
+     "maxworkers":2,
+     "fieldRevenu" : 0
+},
+
+
+"Champ":{
+    "maxhp" : 20,
+     "attack" : 0,
+     "defense" : 5,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 0,
+     "range" : 0,
+     "maxworkers":2,
+     "fieldRevenu" : 0
+},
+
+
+"Entrepôt":{
+    "maxhp" : 50,
+     "attack" : 0,
+     "defense" : 5,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 0,
+     "range" : 0,
+     "fieldRevenu" : 0
+},
+
+"Chantier":{
+    "maxhp" : 40,
+     "attack" : 0,
+     "defense" : 3,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 0,
+     "range" : 0,
+     "fieldRevenu" : 0
+},
+
+"Port":{
+    "maxhp" : 60,
+     "attack" : 0,
+     "defense" : 10,
+     "initiative" : 0,
+     "movement" : 0,
+     "vision" : 0,
+     "range" : 0,
+     "fieldRevenu" : 0
+}
+
+
+
+
+
+
+
+
+
+
+}
