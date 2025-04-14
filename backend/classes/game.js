@@ -1330,7 +1330,7 @@ evolve(uniPos,evo ){//Tente de faire évoluer l'unité en position pos
 SpawnLoup(){//Fait apparaître un nombre aléatoire de loups sur des cases aléatoires de la carte
 let nbLoups=0
 var rand = Math.random()
-if (rand<0.03){nbLoups=1}
+if (rand<0.05){nbLoups=1}
 if (rand>0.99){nbLoups=2}
 
     while (nbLoups>0){

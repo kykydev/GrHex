@@ -54,7 +54,7 @@ class unit {
 
 class hoplite extends unit{
     constructor(position,player){
-        super(50,15,5,5,2,"Hoplite",position,player,2,1)
+        super(50,25,5,5,2,"Hoplite",position,player,2,1)
         this.tracked=true
         this.origin = false//Attribut qui stocke ce qu'était l'unité avant pour le désenrôlement
         this.strategy = "agression"
@@ -67,7 +67,7 @@ class hoplite extends unit{
 
 class stratege extends unit{
     constructor(position,player){
-        super(100,10,5,0,3,"Stratege",position,player,3,1)
+        super(100,10,5,0,3,"Stratege",position,player,4,1)
         this.tracked=true
 
     }
@@ -75,7 +75,7 @@ class stratege extends unit{
 
 class archer extends unit{
     constructor(position,player){
-        super(30,15,0,1,2,"Archer",position,player,2,2)
+        super(30,20,0,1,2,"Archer",position,player,2,2)
         this.tracked=true
         this.origin = false//Attribut qui stocke ce qu'était l'unité avant pour le désenrôlement
         this.strategy = "agression"
@@ -659,10 +659,15 @@ class pecheur extends unit{
 
 class chevaldetroie extends unit{
     constructor(position,player){
-        super(70,20,10,1,1,"Cheval de Troie",position,player,1,1)
+        super(70,20,10,1,2,"Cheval de Troie",position,player,1,1)
         this.tracked=true
         this.strategy="agression"
 
+    }
+
+    canGo(dest){
+        if (dest=="X" || dest=="eau" || dest=="montagne"){return false}
+        return true
     }
 }
 
@@ -807,7 +812,7 @@ class cabane extends building{
 
 class tour extends building{
     constructor(position,player){
-        super(50,0,10,0,"Tour",position,player,4,0)
+        super(50,0,10,0,"Tour",position,player,5,0)
     }
 }
 
