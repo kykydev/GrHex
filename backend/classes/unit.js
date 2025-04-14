@@ -38,7 +38,7 @@ class unit {
             this.range = stats[this.name].range
             this.vision = stats[this.name].vision
             this.fieldRevenu=stats[this.name].fieldRevenu
-            
+            this.maxworkers=stats[this.name].maxworkers
             
             this.hp = this.maxhp
             this.movementLeft=this.movement
@@ -105,6 +105,23 @@ class archer extends unit{
         this.strategy = "agression"
 
     }
+
+    findGoal(partie){
+        if (this.destination!=undefined){return this.destination}
+        if (this.objectif!=undefined){
+            if (partie.board[this.objectif]==undefined ||( partie.board[this.objectif].name!="Tour" &&  partie.board[this.objectif].name!="Tour d'archer" ) || (partie.board[this.objectif].name=="Tour d'archer" && partie.board[this.objectif].workers.length>=partie.board[this.objectif].maxworkers)){this.objectif=undefined}
+            else{
+                let meilleureCase = undefined
+                for (var z of casesAdjacentes(this.objectif,partie.map.width,partie.map.height)){
+                    if (partie.board[z]==undefined && (partie.pathfindToDestination(this.position,z,this.owner)!=false) && this.canGo(partie.map.terrain[z]) && (meilleureCase==undefined || (distance(this.position,z,partie.map.height)<distance(this.position,meilleureCase,partie.map.height)))){
+                        meilleureCase=z
+                        }
+                }
+                if (meilleureCase!=undefined){return meilleureCase}
+            }
+        }
+    }
+
     getForgeEvos(){
         return this.origin
     }
@@ -844,7 +861,28 @@ class tourarcher extends building{
     constructor(position,player){
         super(50,0,10,0,"Tour d'archer",position,player,5,0)
         this.workers = []
+        this.strategy="agression"
     }
+
+    addWorker(pos,partie){//Ajoute une unité pour travailler dans ce champ
+        if (this.workers.length>=this.maxworkers){return false}
+        var uni = partie.board[pos]
+        if (uni==undefined || ((uni.name!="Archer") && uni.name!="Frondeur")){return false}
+        this.workers.push(uni)
+        delete partie.players[uni.owner].units[pos]
+        delete partie.board[pos]
+        return true
+    }
+
+
+    getUnis(){
+        var ret = []
+        for (var z of this.workers){ret.push(z.name)}
+        return {"couleur":this.couleur,"unites":ret}
+        
+    }
+
+
 }
 
 class forge extends building{
@@ -973,7 +1011,30 @@ class creatureNeutre{
         this.vision=vision
         this.destination = undefined
         this.path = undefined
-        this.type="unit"    }
+        this.type="unit"    
+    
+    
+        if (stats[this.name]!=undefined){
+            this.maxhp = stats[this.name].maxhp
+            this.attack = stats[this.name].attack
+            this.defense = stats[this.name].defense
+            this.initiative = stats[this.name].initiative
+            this.movement = stats[this.name].movement
+            this.range = stats[this.name].range
+            this.vision = stats[this.name].vision
+            this.fieldRevenu=stats[this.name].fieldRevenu
+            this.maxworkers=stats[this.name].maxworkers
+            
+            this.hp = this.maxhp
+            this.movementLeft=this.movement
+        }
+    
+    
+    
+    
+    
+    
+    }
 
         canGo(dest){//Prend un terrain et renvoie true ou false selon si l'unité peut s'y rendre. Par défaut, l'eau est interdite mais pour les bâteaux ce sera l'inverse
             if (dest=="X" || dest=="eau"){return false}

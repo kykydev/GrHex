@@ -529,10 +529,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const vueBatiments = document.getElementById('vueBatiments');
         const damierjeu = document.getElementById('damierjeu');
         const vueMine = document.getElementById("vueMine");
+        const vueTour = document.getElementById("vueTour");
 
         rendreDeplacable(vueBatiments, damierjeu);
         rendreDeplacable(statsUnite, damierjeu);
         rendreDeplacable(vueMine, damierjeu);
+        rendreDeplacable(vueTour, damierjeu);
 
         // document.getElementById("recolteButton").addEventListener("click", function() {
         //     attaqueAnim(185, 215, "-9");
@@ -757,7 +759,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 }
-                else if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" || (data.board[event.target.id.supprimerPrefixId("uni")].name == "Mine")) && uniteSelectionnee) {
+                else if ((data.board[event.target.id.supprimerPrefixId("uni")].name == "Champ" || (data.board[event.target.id.supprimerPrefixId("uni")].name == "Mine")||data.board[event.target.id.supprimerPrefixId("uni")].name == "Tour"||data.board[event.target.id.supprimerPrefixId("uni")].name == "Tour d'archer") && uniteSelectionnee) {
 
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                     socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
@@ -789,6 +791,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     let vueMine = d3.select("#vueMine");
                     vueMine.style("display", (vueMine.style("display") == "none" ? "block" : "none"))
+                        .attr("class", event.target.id.supprimerPrefixId("uni"));
+                }
+                else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Tour d'archer" && !uniteSelectionnee) {
+                    socket.emit("demandeUnitesTour", event.target.id.supprimerPrefixId("uni"));
+                    let vueTour = d3.select("#vueTour");
+                    vueTour.style("display", (vueTour.style("display") == "none" ? "block" : "none"))
                         .attr("class", event.target.id.supprimerPrefixId("uni"));
                 }
                 else if (uniteSelectionnee && uniteSelectionnee == event.target.id.supprimerPrefixId("uni")) {
@@ -1007,6 +1015,27 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     });
+
+
+    socket.on("demandeUnitesTour", data => {
+        let vueMine = d3.select("#vueTour");
+        vueMine.selectAll("*:not(.hautvue):not(#boutonTour):not(#txthautvue):not(#titreVueTour):not(#txthauvue)").remove();
+
+        let titreMine = d3.select("#titreVueTour");
+
+        data.unites.forEach((uni, index) => {
+            vueMine.append("img").attr("src", "/img/personnages/"+data.couleur+"/archer.png")
+                .attr("width", "125").attr("height", "150")
+                .on("click", () => {
+                    socket.emit("sortirChamp", { unite: "Archer", position: vueMine.attr("class"), index: index });
+                });
+            vueMine.append("p").text(uni.minerai);
+        });
+
+    });
+
+
+
 
     socket.on("evolution", data => {
         let bbox = document.getElementById("h" + data.position).getBBox();

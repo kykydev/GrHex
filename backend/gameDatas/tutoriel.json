@@ -164,7 +164,13 @@
         "image" : "img/personnages/rouge/tour.png",
         "titre" : "La tour",
         "obtention" : "La tour peut être construites via l'onglet de construction des bâtiments.",
-        "utilisation" : "Elles permettent d'étendre sa vision sur la carte."
+        "utilisation" : "Si la tour est à portée du stratège, elle étend sa vision. Les tours à portée les unes des autres forment une chaîne de tours. En envoyant un archer sur une tour, on peut créer une tour d'archer."
+    },
+    "Tour d'archer" :{
+        "image" : "img/personnages/rouge/tour d'archer.png",
+        "titre" : "La tour d'archer",
+        "obtention" : "La tour d'archer peut être obtenue en plaçant un archer dans une tour.",
+        "utilisation" : "La tour d'archer agit comme une tour, mais elle attaque en plus les unités ennemies à portée."
     },
 
     "Maison" :{

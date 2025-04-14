@@ -214,6 +214,7 @@ body {
 #vueForge,
 #vueChamp,
 #vueMine,
+#vueTour,
 #vueNotificationMessage {
     color: wheat;
     display: none;

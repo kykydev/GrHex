@@ -235,19 +235,24 @@ io.on('connection', (socket) => {
     if (check==true){//Check la distance
 
       //Cas où on met quelqu'un dans un champ ou une mine
-      if (partie.board[arrivée]!=undefined && (partie.board[arrivée].name=="Champ" || partie.board[arrivée].name=="Mine") && partie.board[arrivée].owner==idJoueur){
-          if (casesAdjacentes(départ,partie.map.width,partie.map.height).includes(arrivée)){
-          if (partie.board[arrivée].addWorker(départ,partie)){
+   
+
+
+      if (partie.board[arrivée]!=undefined && (partie.board[arrivée].name=="Champ" || partie.board[arrivée].name=="Mine" ||  partie.board[arrivée].name=="Tour" ||  partie.board[arrivée].name=="Tour d'archer") && partie.board[arrivée].owner==idJoueur){
+        if (["Mineur","Paysanne","Bûcheron","Archer","Frondeur"].includes(partie.board[départ].name)){
+          partie.board[départ].objectif=arrivée
+          if (partie.testEntre(partie.board[départ])){
             socket.emit("désafficherUnité",départ)
             return
             }
-          }
+          
           else{
-            if (["Mineur","Paysanne","Bûcheron"].includes(partie.board[départ].name) && partie.board[arrivée].workers.length<partie.board[arrivée].maxworkers){partie.board[départ].objectif=arrivée;}
+            if (partie.board[arrivée].name=="Tour" ||partie.board[arrivée].workers.length<partie.board[arrivée].maxworkers){partie.board[départ].objectif=arrivée;}
 
             return
           }
         }
+      }
               //Cas de changement de la base d'une unité
       if (partie.board[arrivée]!=undefined && (partie.board[arrivée].name=="Hôtel de ville" || partie.board[arrivée].name=="Entrepôt") && partie.board[arrivée].owner==idJoueur){
         partie.board[départ].base=arrivée
@@ -451,6 +456,30 @@ io.on('connection', (socket) => {
       if (retour != undefined && retour != false){socket.emit("demandeUnitesMine",retour)}
 
     })
+
+    socket.on("demandeUnitesTour",data=>{
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data==undefined || partie==undefined || idJoueur==undefined){return}
+
+      var retour = partie.getUnitesMine(data,idJoueur)
+      if (retour != undefined && retour != false){socket.emit("demandeUnitesTour",retour)}
+
+    })
+
+
+    socket.on("sortirTour",data=>{
+      var partie = parties[socket.idPartie]
+      var idJoueur = socket.idJoueur
+      if (data==undefined || partie==undefined || idJoueur==undefined){return}
+      var check = partie.sortirTour(data.unite,data.position,idJoueur,data.index)
+      if (check!=false){
+        socket.emit("evolution",check)
+        return
+      }
+    })
+    
+
 
     socket.on("sortirChamp",data=>{
       var partie = parties[socket.idPartie]

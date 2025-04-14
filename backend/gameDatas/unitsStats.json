@@ -159,17 +159,6 @@
 
 
 
-"Navire de commerce":{
-    "maxhp" : 35,
-     "attack" : 0,
-     "defense" : 5,
-     "initiative" : 2,
-     "movement" : 8,
-     "vision" : 1,
-     "range" : 1,
-     "fieldRevenu" : 0
-},
-
 
 "Mur":{
     "maxhp" : 40,
@@ -305,7 +294,33 @@
      "vision" : 0,
      "range" : 0,
      "fieldRevenu" : 0
+},
+
+
+"Pierris Pompidoris":{
+    "maxhp" : 150,
+     "attack" : 20,
+     "defense" : 15,
+     "initiative" : 0,
+     "movement" : 1,
+     "vision" : 2,
+     "range" : 1,
+     "fieldRevenu" : 0
+},
+
+
+"Loup":{
+    "maxhp" : 20,
+     "attack" : 15,
+     "defense" : 4,
+     "initiative" : 10,
+     "movement" : 1,
+     "vision" : 2,
+     "range" : 1,
+     "fieldRevenu" : 0
 }
+
+
 
 
 

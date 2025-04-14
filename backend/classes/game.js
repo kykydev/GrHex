@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane,port} = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane,port,tourarcher} = require('./unit')
 const {buildings} = require('../gameDatas/buildingInfos')
 
 
@@ -314,7 +314,7 @@ class game {
 
             var unité = joueur.units[uni]
             visions[uni]=this.calculVision(unité)
-            if (unité.name=="Tour"){
+            if (unité.name=="Tour" || unité.name=="Tour d'archer"){
                 tours.push(uni)
                 }
             if (unité.name=="Stratege"){posStratège=uni}
@@ -335,7 +335,7 @@ class game {
 
             for (var z of tours){//Déterminer les chaînes de tours
                 for (var posTest of visions[z]){
-                    if (joueur.units[posTest.info.pos]!=undefined && comps[z]!=comps[posTest.info.pos] && posTest.board.name=="Tour"){
+                    if (joueur.units[posTest.info.pos]!=undefined && comps[z]!=comps[posTest.info.pos] && (posTest.board.name=="Tour d'archer"||posTest.board.name=="Tour")){
                         comps[posTest.info.pos]=comps[z]
                         for (var zz of Object.keys(comps)){
                             if (comps[zz]==comps[posTest.info.pos]){
@@ -760,7 +760,14 @@ class game {
         var dest = this.board[uni.objectif];
         if (dest==undefined || uni==undefined){return false}
         if (casesAdjacentes(uni.position,this.map.width,this.map.height).includes(uni.objectif)==false){return false}
+        if (dest.name=="Tour" && uni.name=="Archer"){
+            var newtour = new tourarcher(dest.position,this.players[dest.owner])
+            this.players[dest.owner][dest.position]=newtour
+            this.board[dest.position]=newtour
+            dest = newtour
+        }
         dest.addWorker(uni.position,this)
+        return true
     }
 
 
@@ -885,6 +892,7 @@ class game {
             this.board[uni].movementLeft = this.board[uni].movement
             if (this.board[uni].name=="Champ"){this.revenuChamp(this.board[uni])}
             if (this.board[uni].name=="Mine"){this.tourMine(this.board[uni])}
+            if (this.board[uni].name=="Tour d'archer"){this.tourTourArcher(this.board[uni])}
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
             this.board[uni].destination = this.board[uni].findGoal(this)      
             if (this.board[uni].destination != undefined) {//Reset les path 
@@ -927,7 +935,7 @@ class game {
                     if (uni!=undefined && uni.owner!="Système"){this.testDéposeRessources(uni)}
                     if (uni!=undefined && uni.owner!="Système" && uni.name=="Messager"){this.testMessager(uni)}
                     if (uni!=undefined && uni.owner!="Système" && uni.name=="Caravane de commerce" || uni.name=="Navire de commerce"){this.testCaravane(uni)}
-                    if (uni!=undefined && uni.owner!="Système" && (uni.name=="Paysanne"||uni.name=="Mineur"||uni.name=="Bûcheron")&&uni.objectif!=undefined){this.testEntre(uni)}
+                    if (uni!=undefined && uni.owner!="Système" && (uni.name=="Paysanne"||uni.name=="Mineur"||uni.name=="Bûcheron" ||uni.name=="Archer" || uni.name=="Frondeur")&&uni.objectif!=undefined){this.testEntre(uni)}
                      }
                     break;
 
@@ -1183,6 +1191,43 @@ tourMine(unite){
     }
 }
 
+tourTourArcher(unite){
+    if (unite.strategy=="prudence"){return false}
+    var cases = [unite.position]
+    var newCases = [unite.position]
+    for (let i=0;i<unite.vision;i++){
+         var ajouter = []
+         for (var z of newCases){
+            for (var c of casesAdjacentes(z,this.map.width,this.map.height)){
+                if (!cases.includes(c)){ajouter.push(c)}
+            }
+        if (!cases.includes(z)){cases.push(z)}
+         }
+         newCases=ajouter
+
+    }
+
+
+    for (var z of unite.workers){
+    for (var x of cases){
+        if (this.board[x]!=undefined && this.board[x].owner!=unite.owner){
+            var damage = Math.floor(z.attack/1.5)
+            damage -= this.board[x].defense
+            if (damage<0){damage=0}
+            this.board[x].hp-=damage
+            if (this.board[x].hp<=0){this.kill(this.board[x])}
+            this.actionsThisTurn.push({ "type": "combat", "départ": unite.position, "arrivée":x,"dégâts":"-"+damage})
+
+            break
+        }
+    }
+    }
+
+
+    
+}
+
+
 unbuild(pos,idJoueur,socket){//Détruit un bâtiment
     var pos = parseInt(pos)
     if (pos==undefined || idJoueur==undefined){return false}
@@ -1422,6 +1467,11 @@ getUnitesMine(position,idJoueur){
     return retour
 }
 
+getUnitesMine(position,idJoueur){
+    var tor = this.board[position]; if (tor==undefined || tor.owner!=idJoueur){return false}
+    if (tor.name!="Tour d'archer"){return false}
+    return (tor.getUnis())
+}
 
 
 getRevenuChamp(position,idJoueur){
@@ -1439,7 +1489,7 @@ canOrder(idJoueur,posDépart){//Prend un IDJOUEUR et une position et dit si le j
     var joueur = this.players[idJoueur]; if (joueur==undefined){return undefined}
     var comps = {}; var posStratège=undefined
     for (var z of Object.keys(joueur.units)){//Trouver les tours et le stratège
-        if (this.board[z].name=="Stratege" || this.board[z].name=="Tour"){
+        if (this.board[z].name=="Stratege" || this.board[z].name=="Tour" || this.board[z].name=="Tour d'archer"){
             comps[z] = z
             if (this.board[z].name=="Stratege"){posStratège=z}
         }
@@ -1523,7 +1573,7 @@ sortirChamp(unite,position,idJoueur,index){//A CONTINUER: ADAPTER POUR SORTIR L4
     if (unite==undefined || position==undefined||index==undefined){return false}
     var joueur = this.players[idJoueur];if (joueur==undefined){return false}
     var cham = this.board[position]
-    if (cham.name!="Champ"&&cham.name!="Mine"){return false}
+    if (cham.name!="Champ"&&cham.name!="Mine" && cham.name!="Tour d'archer"){return false}
     if (cham.workers==undefined){return false}
     if (index>=cham.workers.length || cham.workers[index].name!=unite){return false}
     
@@ -1534,6 +1584,12 @@ sortirChamp(unite,position,idJoueur,index){//A CONTINUER: ADAPTER POUR SORTIR L4
                 cham.workers.splice(index,1)
                 uni.objectif=undefined
                 uni.position=zz
+                if (cham.name=="Tour d'archer" && cham.workers.length<=0){
+                    var newtour = new tour(cham.position,this.players[cham.owner])
+                    this.players[cham.owner][position]=newtour
+                    this.board[cham.position]=newtour
+                }
+
                 return {"position":zz,"newUnit":uni.name}
             }
         }

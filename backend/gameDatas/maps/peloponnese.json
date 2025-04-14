@@ -44,7 +44,8 @@
             "483": "maison",
             "570": "maison",
             "664": "maison",
-            "636": "maison",        
+            "636": "maison",   
+            "604":"archer",     
             
             "524":"hoplite",
             "434":"hoplite",
@@ -98,7 +99,6 @@
         "mursAttique":[889,918,917,976,1006,1005,1035,1065,1095,1125],
         
         "boardNeutre":{
-
         }
         
         
