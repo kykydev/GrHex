@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelector('.accueil').style.display = 'none';
         document.querySelector('.rejoindrePartie').style.display = 'block';
+        d3.select("#vueEchange").style("display", "none");
 
     });
 

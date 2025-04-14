@@ -134,7 +134,7 @@ class messager extends unit{
 
 class builder extends unit{
     constructor(position,player){
-        super(30,0,2,10,2,"Ouvrier",position,player,2,1)
+        super(30,0,2,10,4,"Ouvrier",position,player,2,1)
         this.tracked=false
         this.currentBuilding = undefined//currentBuilding est la position du building actuellement attribué
         this.phase = undefined //Phase qui dit si le builder va chercher les ressources ou s'il va construire.
@@ -234,7 +234,7 @@ class builder extends unit{
 
 class bucheron extends unit{
     constructor(position,player){
-        super(25,10,5,2,2,"Bûcheron",position,player,1,1)
+        super(25,10,5,7,3,"Bûcheron",position,player,1,1)
         this.wood=0
         this.maxWood=10
         this.copper=0
@@ -334,7 +334,7 @@ class bucheron extends unit{
 
 class mineur extends unit{
     constructor(position,player){
-        super(25,10,5,2,2,"Mineur",position,player,1,1)
+        super(25,20,5,10,3,"Mineur",position,player,1,1)
         this.stone=0
         this.maxStone=12
         this.copper=0;
@@ -434,7 +434,7 @@ class mineur extends unit{
 
 class paysanne extends unit{
     constructor(position,player){
-        super(15,0,0,1,2,"Paysanne",position,player,1,1)
+        super(15,15,0,5,3,"Paysanne",position,player,1,1)
         this.wood=0
         this.stone=0
         this.maxRessources = 7
@@ -543,11 +543,12 @@ class paysanne extends unit{
             }
             if (meilleurebase!=undefined){return meilleurebase}
         }
-        let c =  casesAdjacentes(this.position,partie.map.width,partie.map.height)
+
         
         var objectifWood = this.findGoalWood(partie)
         var objectifStone = this.findGoalStone(partie)
-
+        
+        let c =  casesAdjacentes(this.position,partie.map.width,partie.map.height)
         if (objectifStone==undefined && objectifWood==undefined){
             while (c.length>0){
                 var z = c.splice(Math.floor(Math.random()*c.length),1)[0]
