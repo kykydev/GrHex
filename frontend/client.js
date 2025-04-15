@@ -1102,7 +1102,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             let echange = notifTraite.échange;
 
-                            
+                            switch (echange.ressourceDemandée) {
+                                case "gold":
+                                    echange.ressourceDemandée = "or";
+                                    break;
+                                case "wood":
+                                    echange.ressourceDemandée = "bois";
+                                    break;
+                                case "stone":
+                                    echange.ressourceDemandée = "pierre";
+                                    break;
+                                case "copper":
+                                    echange.ressourceDemandée = "cuivre";
+                                    break;
+                                case "tin":
+                                    echange.ressourceDemandée = "étain";
+                                    break;
+                            }
+
+                            switch (echange.ressourcesEnvoyées) {
+                                case "gold":
+                                    echange.ressourcesEnvoyées = "or";
+                                    break;
+                                case "wood":
+                                    echange.ressourcesEnvoyées = "bois";
+                                    break;
+                                case "stone":
+                                    echange.ressourcesEnvoyées = "pierre";
+                                    break;
+                                case "copper":
+                                    echange.ressourcesEnvoyées = "cuivre";
+                                    break;
+                                case "tin":
+                                    echange.ressourcesEnvoyées = "étain";
+                                    break;
+                            }
 
                             notifDetail.append("p").text("ressource demandées : " + echange.quantitéDemandée +" "+echange.ressourceDemandée
                                 +", ressource reçu : "+echange.quantitéEnvoyée +" " +echange.ressourcesEnvoyées);
