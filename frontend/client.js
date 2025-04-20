@@ -1203,8 +1203,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         data.forEach((entrepot) => {
-            choisirEntrepot.append("label").attr("for", entrepot.position).text(entrepot.type+" : " +entrepot.position);
-            choisirEntrepot.append("input").attr("type", "radio").attr("name", "mesEntrepots")
+            choisirEntrepot.append("label").attr("for", entrepot.position).text(entrepot.type+" : " +entrepot.position).append("input").attr("type", "radio").attr("name", "mesEntrepots")
                 .attr("value", entrepot.position).attr("id", "e" + entrepot.position);
 
 
