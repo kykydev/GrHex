@@ -115,19 +115,60 @@
 
             <svg id="jeu"></svg>
             <div id="vueInfoHdv">
-                <div class="hautvue" id="titreVueHdv">
-                    <p id="txthautvue"> Gestionnaire de l'HDV </p>
 
-                    <button id="bouttonOuvrier" class="buttonblack">Recrutement</button>
-                    <button id="bouttonDiplomatie" class="buttonblack">Diplomatie</button>
-                    <button id="bouttonEspionnage" class="buttonblack">Espionnage</button>
-                    <button id="bouttonVueEchange" class="buttonblack">Échange</button>
+                <div class="HdvNavigationContainer" id="titreVueHdv">
 
-                    <button id="bouttonChamp" class="buttonblack"
-                        onclick="document.getElementById('vueInfoHdv').style.display = (document.getElementById('vueInfoHdv').style.display == 'none' ? 'block' : 'none');">Quitter</button>
+                    <div id="bouttonOuvrier" class="HdvNavigationDiv1">Recrutement</div>
+                    <div id="bouttonDiplomatie" class="HdvNavigationDiv2">Diplomatie</div>
+                    <div id="bouttonVueEchange" class="HdvNavigationDiv1">Échange</div>
+                    <div id="bouttonChamp" class="HdvNavigationDiv2"
+                        onclick="document.getElementById('vueInfoHdv').style.display = 'none';">Quitter</div>
                 </div>
 
+                <!-- <button id="bouttonChamp" class="buttonblack"
+                        onclick="document.getElementById('vueInfoHdv').style.display = (document.getElementById('vueInfoHdv').style.display == 'none' ? 'block' : 'none');">Quitter</button>
+                </div> -->
+
                 <div id="vueOuvrier">
+                    <div class="HdvRecrutementContainer">
+                        <div class="HdvRecrutementContainerTitre">
+                            <p>Recruter une unité</p>
+                        </div>
+
+                        <div class="HdvRecrutementDiv1" id="imgOuvrier">
+                            <div class="HdvRecrutementImage">
+                                <img src="/img/personnages/rouge/ouvrier.png" width="125" height="150">
+                            </div>
+                            <div class="HdvRecrutementTexte">
+                                <p>Embaucher un ouvrier</p>
+                                <p>30<img src="/img/autre/or.png" style="height: 50px; vertical-align: middle;"></p>
+                            </div>
+                        </div>
+
+                        <div class="HdvRecrutementDiv2" id="imgTroie">
+                            <div class="HdvRecrutementImage">
+                                <img src="/img/personnages/rouge/cheval de troie.png" width="125" height="150"">
+                        </div>
+                        <div class=" HdvRecrutementTexte">
+                                <p>Construire un cheval de troie</p>
+                                <p>50<img src="/img/autre/bois.png" style="height: 50px; vertical-align: middle;"></p>
+                            </div>
+                        </div>
+
+                        <div class="HdvRecrutementDiv1" id="bouttonRecruter">
+                            <div class="HdvRecrutementImage">
+                                <img src="/img/personnages/rouge/messager.png" width="125" height="150">
+                            </div>
+                            <div class="HdvRecrutementTexte">
+                                <p>Envoyer un espion</p>
+                                <p>25<img src="/img/autre/or.png" style="height: 50px; vertical-align: middle;"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- <div id="vueOuvrier">
                     <div style="position: relative; display: inline-block; text-align: center; margin: 0px auto;">
                         <img src="/img/personnages/rouge/ouvrier.png" width="125" height="150" id="imgOuvrier">
                         <p style="position: absolute; top: 0px; right: 0px; margin: 0px;">
@@ -144,7 +185,7 @@
                                 style="height: 50px; margin-right: 10px; vertical-align: middle;">
                         </p>
                     </div>
-                </div>
+                </div> -->
 
                 <div id="vueDiplomatie">
                     <div id="flexDiplomatie">
@@ -163,7 +204,7 @@
                     </div>
                 </div>
 
-                <div id="vueEspionnage">
+                <!-- <div id="vueEspionnage">
                     <p>Coût pour recruter un espion 25 ors</p>
                     <button id="bouttonRecruter" class="buttonblack">Recruter un espion</button>
 
@@ -172,7 +213,7 @@
                     <p>Positions</p>
                     <p id="positions"></p>
 
-                </div>
+                </div> -->
 
                 <div id="vueEchange">
                     <!-- c'est la vue échange -->

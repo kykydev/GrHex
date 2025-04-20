@@ -176,14 +176,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     bouttonOuvrier.addEventListener("click", (event) => {
         d3.select("#vueDiplomatie").style("display", "none");
-        d3.select("#vueOuvrier").style("display", "block");
+        d3.select("#vueOuvrier").style("display", "flex");
         d3.select("#vueEchange").style("display", "none");
         d3.select("#vueEspionnage").style("display", "none");
     });
 
     bouttonDiplomatie.addEventListener("click", (event) => {
         d3.select("#vueOuvrier").style("display", "none");
-        d3.select("#vueDiplomatie").style("display", "block");
+        d3.select("#vueDiplomatie").style("display", "flex");
         d3.select("#vueEchange").style("display", "none");
         d3.select("#vueEspionnage").style("display", "none");
     });
@@ -209,13 +209,13 @@ document.addEventListener("DOMContentLoaded", function () {
     let hdvSelectionnePourEspion;
 
 
-    d3.select("#bouttonEspionnage")
-        .on("click", () => {
-            d3.select("#vueOuvrier").style("display", "none");
-            d3.select("#vueDiplomatie").style("display", "none");
-            d3.select("#vueEchange").style("display", "none");
-            d3.select("#vueEspionnage").style("display", "block");
-        });
+    // d3.select("#bouttonEspionnage")
+    //     .on("click", () => {
+    //         d3.select("#vueOuvrier").style("display", "none");
+    //         d3.select("#vueDiplomatie").style("display", "none");
+    //         d3.select("#vueEchange").style("display", "none");
+    //         d3.select("#vueEspionnage").style("display", "block");
+    //     });
 
     d3.select("#bouttonRecruter")
         .on("click", () => {
@@ -555,7 +555,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let vueInfoForge = d3.select("#vueForge");
         let vueChamp = d3.select("#vueChamp");
 
-        [vueInfoForge, vueInfoHdv, vueChamp].forEach(vue => rendreDeplacable(vue.node(), damierjeu));
+        // [vueInfoForge, vueInfoHdv, vueChamp].forEach(vue => rendreDeplacable(vue.node(), damierjeu));
 
         let uniteSelectionnee = "";
         let hexagoneSelectionnee = "";
