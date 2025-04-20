@@ -147,9 +147,9 @@
 
                         <div class="HdvRecrutementDiv2" id="imgTroie">
                             <div class="HdvRecrutementImage">
-                                <img src="/img/personnages/rouge/cheval de troie.png" width="125" height="150"">
-                        </div>
-                        <div class=" HdvRecrutementTexte">
+                                <img src="/img/personnages/rouge/cheval de troie.png" width="125" height="150">
+                            </div>
+                            <div class=" HdvRecrutementTexte">
                                 <p>Construire un cheval de troie</p>
                                 <p>50<img src="/img/autre/bois.png" style="height: 50px; vertical-align: middle;"></p>
                             </div>
@@ -187,7 +187,7 @@
                     </div>
                 </div> -->
 
-                <div id="vueDiplomatie">
+                <!-- <div id="vueDiplomatie">
                     <div id="flexDiplomatie">
                         <p>Ma cite</p>
 
@@ -202,6 +202,55 @@
                         <textarea id="contenuMail"></textarea>
                         <button id="envoyerMail" class="buttonblack">Envoyer</button>
                     </div>
+                </div> -->
+
+                <div id="vueDiplomatie">
+
+                    <div class="HdvDiplomatieChoixContainer">
+                        <div class="HdvDiplomatieChoixContainerTitre">
+                            <p>Destination du message</p>
+                        </div>
+
+                        <div class="HdvDiplomatieChoixOption">
+                            <form id="selectionnerCitePourMail">
+                                <!-- <label>
+                                    <input type="radio" name="destination" value="beotie">
+                                    Béotie
+                                </label>
+                                <label>
+                                    <input type="radio" name="destination" value="attique">
+                                    Attique
+                                </label>
+                                <label>
+                                    <input type="radio" name="destination" value="argolide">
+                                    Argolide
+                                </label> -->
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <div class="HdvDiplomatieObjetContainer">
+                        <div class="HdvDiplomatieObjetContainerTitre">
+                            <p>Objet</p>
+                        </div>
+                        <input class="HdvDiplomatieObjetInput" type="text"
+                            placeholder="Exemple : Proposition d'alliance" id="objetMail" />
+                    </div>
+
+                    <div class="HdvDiplomatieMessageContainer">
+                        <div class="HdvDiplomatieMessageContainerTitre">
+                            <p>Contenu</p>
+                        </div>
+                        <textarea class="HdvDiplomatieContenuInput"
+                            placeholder="Exemple : Béotie représente une menace pour la paix entre nos trois cités, allions nous pour éviter tout danger!"
+                            id="contenuMail">
+                        </textarea>
+                        <div class="HdvEnvoyerContainer" id="envoyerMail">
+                            <img src="/img/autre/fleche.png" width="50" height="50">
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- <div id="vueEspionnage">
@@ -216,7 +265,98 @@
                 </div> -->
 
                 <div id="vueEchange">
-                    <!-- c'est la vue échange -->
+
+                    <div class="HdvEchangeChoixCiteContainer">
+                        <div class="HdvEchangeChoixCiteContainerTitre">
+                            <p>Cité impliquée dans l'échange</p>
+                        </div>
+
+                        <div class="HdvEchangeChoixCiteOption">
+                            <form id="selectionnerVille">
+                                <!-- <label>
+                                    <input type="radio" name="destination" value="beotie">
+                                    Béotie
+                                </label>
+                                <label>
+                                    <input type="radio" name="destination" value="attique">
+                                    Attique
+                                </label>
+                                <label>
+                                    <input type="radio" name="destination" value="argolide">
+                                    Argolide
+                                </label> -->
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="HdvEchangeRessourceContainer1">
+                        <div class="HdvEchangeRessourceContainerTitre1">
+                            <p>Ce que je donne</p>
+                        </div>
+                        <div class="HdvEchangeForm1">
+                            <form id="mesRessourcesForm">
+                                <select name="mesRessources" id="mesRessources">
+                                    <option value="or" id="or">Or</option>
+                                    <option value="bois" id="bois">Bois</option>
+                                    <option value="pierre" id="pierre">Pierre</option>
+                                    <option value="cuivre" id="cuivre">Cuivre</option>
+                                    <option value="etain" id="etain">Étain</option>
+                                </select>
+                                </label>
+                            </form>
+
+                            <input type="number" id="mesQuantites" name="quantite" min="1" step="1" value="1">
+
+                        </div>
+                    </div>
+
+                    <div class="HdvEchangeChoixHDVContainer">
+                        <div class="HdvEchangeChoixHDVContainerTitre">
+                            <p>A partir de</p>
+                        </div>
+
+                        <div class="HdvEchangeChoixHDVOption">
+                            
+                            <form id="choisirEntrepot">
+                                <!-- <label>
+                                    <input type="radio" name="destination" value="beotie">
+                                    Hôtel de ville 572
+                                </label>
+                                <label>
+                                    <input type="radio" name="destination" value="attique">
+                                    Hôtel de ville 573
+                                </label> -->
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="HdvEchangeRessourceContainer2">
+                        <div class="HdvEchangeRessourceContainerTitre2">
+                            <p>Ce que je reçois</p>
+                        </div>
+                        <div class="HdvEchangeForm1">
+                            <form id="ressourcesEnnemiesForm">
+                                <select name="ressourcesEnnemies" id="ressourcesEnnemies">
+                                    <option value="or" id="or">Or</option>
+                                    <option value="bois" id="bois">Bois</option>
+                                    <option value="pierre" id="pierre">Pierre</option>
+                                    <option value="cuivre" id="cuivre">Cuivre</option>
+                                    <option value="etain" id="etain">Étain</option>
+                                </select>
+                                </label>
+                            </form>
+
+                            <input type="number" id="quantitesEnnemies" name="quantite" min="1" step="1" value="1">
+
+                        </div>
+                        <div class="HdvEnvoyerContainer" id="bouttonEchange">
+                            <img src="/img/autre/fleche.png" width="50" height="50">
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- <div id="vueEchange">
                     <div id="flexEchange">
 
                         <div class="echange-colonne">
@@ -278,7 +418,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> -->
             </div>
 
             <div id="vueForge">

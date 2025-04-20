@@ -190,17 +190,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    let envoyerMail = document.getElementById("envoyerMail");
+    // let envoyerMail = document.getElementById("envoyerMail");
 
 
 
-    document.getElementById("objetMail").addEventListener("click", (event) => {
-        event.stopImmediatePropagation();
-    });
+    // document.getElementById("objetMail").addEventListener("click", (event) => {
+    //     event.stopImmediatePropagation();
+    // });
 
-    document.getElementById("contenuMail").addEventListener("click", (event) => {
-        event.stopImmediatePropagation();
-    });
+    // document.getElementById("contenuMail").addEventListener("click", (event) => {
+    //     event.stopImmediatePropagation();
+    // });
 
 
     // vue Espionnage
@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
             d3.select("#vueOuvrier").style("display", "none");
             d3.select("#vueDiplomatie").style("display", "none");
             d3.select("#vueEspionnage").style("display", "none");
-            d3.select("#vueEchange").style("display", "block");
+            d3.select("#vueEchange").style("display", "flex");
         });
 
     let imgOuvrier = document.getElementById("imgOuvrier");
@@ -259,11 +259,11 @@ document.addEventListener("DOMContentLoaded", function () {
     let bouttonEchange = document.getElementById("bouttonEchange");
 
     bouttonEchange.addEventListener("click", () => {
-        let mesRessources = document.querySelector("input[name='mesRessources']:checked").value;
+        let mesRessources = document.getElementById("mesRessources").value;
 
         let ville = document.querySelector("input[name='ville']:checked").value;
 
-        let ressourcesEnnemies = document.querySelector("input[name='ressourcesEnnemies']:checked").value;
+        let ressourcesEnnemies = document.getElementById("ressourcesEnnemies").value;
 
 
         let mesQuantites = document.getElementById("mesQuantites").value;
@@ -474,17 +474,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (maCite != nom) {
 
-                d3.select("#selectionnerCitePourMail").append("label").text(nom)
+                d3.select("#selectionnerCitePourMail").append("label")
+                    .text(nom.charAt(0).toUpperCase() + nom.slice(1))
                     .append("input")
-                    .attr("type", "radio").attr("name", "choixCiteMail").attr("value", nom)
-
-                d3.select("#selectionnerCitePourMail").append("br");
+                    .attr("type", "radio").attr("name", "choixCiteMail").attr("value", nom);
 
 
-                d3.select("#selectionnerVille").append("label").text(nom)
+                d3.select("#selectionnerVille").append("label")
+                    .text(nom.charAt(0).toUpperCase() + nom.slice(1))
                     .append("input")
                     .attr("type","radio").attr("name","ville").attr("value",nom).attr("id",nom);
-                d3.select("#selectionnerVille").append("br")
             }
         });
     });
@@ -1207,7 +1206,6 @@ document.addEventListener("DOMContentLoaded", function () {
             choisirEntrepot.append("label").attr("for", entrepot.position).text(entrepot.type+" : " +entrepot.position);
             choisirEntrepot.append("input").attr("type", "radio").attr("name", "mesEntrepots")
                 .attr("value", entrepot.position).attr("id", "e" + entrepot.position);
-            choisirEntrepot.append("br");
 
 
             notifDetail.append("label").attr("for", entrepot.position).text(entrepot.type + " : " + entrepot.position);

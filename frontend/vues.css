@@ -1,4 +1,4 @@
-#flexEchange{
+/* #flexEchange{
     display: flex;
     flex-wrap: wrap;
 
@@ -12,38 +12,454 @@
     max-width: 250px;
     margin-left: 10px;
     margin-right: 10px;
-}
+} */
 
-.echange-colonne{
+/* .echange-colonne{
     gap: 3px;
 }
 
 .echange-colonne label {
     margin-top: 7px; 
-}
+} */
 
-#bouttonEchange{
+/* #bouttonEchange{
     margin-top: 4px;
-}
+} */
 
 
-#flexDiplomatie{
+/* #flexDiplomatie{
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     gap: 10px;
-}
+} */
 
 #choisirMap * {
     text-align: center;
 }
 
-#vueEspions label {
+/* #vueEspions label {
     display: inline-block;
     width: 150px; /* Adjust the width as needed */
-}
-
+/* }
 
 #choisirEntrepot { 
     min-height: 150px;
+} */
+
+/*VUES HDV*/
+
+#vueInfoHdv {
+    color: wheat;
+    background-color: #000000e3;
+    display: none;
+    height: 60%;
+    width: 35%;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    border: 4px double #212529;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+/*VUE RECRUTEMENT*/
+
+.HdvNavigationContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 10%;
+    width: 100%;
+    background-color: #104478;
+    box-sizing: border-box;
+}
+
+.HdvNavigationDiv1,
+.HdvNavigationDiv2 {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: wheat;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+.HdvNavigationDiv1:hover,
+.HdvNavigationDiv2:hover {
+    background-color: #393c3f;
+    cursor: pointer;
+}
+
+.HdvNavigationDiv1 {
+    background-color: rgb(23, 23, 23)
+}
+
+.HdvNavigationDiv2 {
+    background-color: rgb(31, 30, 30);
+    ;
+}
+
+#vueOuvrier {
+    color: wheat;
+    background-color: #000000e3;
+    display: flex;
+    height: 90%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.HdvRecrutementContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 80%;
+    width: 100%;
+    border-radius: 16px;
+    background-color: #393c3fb2;
+    margin: 5%;
+}
+
+.HdvRecrutementContainerTitre {
+    display: flex;
+    align-items: center;
+    height: 20%;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 9.2%;
+    left: 55%;
+    transform: translateX(-50%);
+    color: rgb(152, 129, 88);
+}
+
+.HdvRecrutementDiv1,
+.HdvRecrutementDiv2 {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 50px;
+    box-sizing: border-box;
+}
+
+.HdvRecrutementDiv1 {
+    background-color: rgb(23, 23, 23);
+}
+
+.HdvRecrutementDiv2 {
+    background-color: rgb(31, 30, 30);
+}
+
+.HdvRecrutementDiv1:hover,
+.HdvRecrutementDiv2:hover {
+    background-color: #393c3f;
+    cursor: pointer;
+}
+
+.HdvRecrutementImage img {
+    height: 100%;
+    width: 91px;
+    margin-left: 10px;
+}
+
+.HdvRecrutementTexte {
+    font-weight: bold;
+}
+
+#imgOuvrier {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+#bouttonRecruter {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+/*VUE DIPLOMATIE*/
+
+#vueDiplomatie {
+    color: wheat;
+    background-color: #000000e3;
+    display: none;
+    height: 90%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+
+.HdvDiplomatieChoixContainer,
+.HdvDiplomatieObjetContainer,
+.HdvDiplomatieMessageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    border-radius: 16px;
+    background-color: #393c3fb2;
+    margin: 1% 0;
+}
+
+.HdvDiplomatieChoixContainer {
+    height: 20%;
+}
+
+.HdvDiplomatieObjetContainer {
+    height: 15%;
+}
+
+.HdvDiplomatieMessageContainer {
+    height: 40%;
+}
+
+.HdvDiplomatieChoixContainerTitre,
+.HdvDiplomatieObjetContainerTitre,
+.HdvDiplomatieMessageContainerTitre {
+    display: flex;
+    align-items: center;
+    height: 20%;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 9.2%;
+    left: 55%;
+    transform: translateX(-50%);
+    color: rgb(152, 129, 88);
+}
+
+.HdvDiplomatieChoixContainerTitre {
+    top: 9.2%;
+}
+
+.HdvDiplomatieObjetContainerTitre {
+    top: 29.8%;
+}
+
+.HdvDiplomatieMessageContainerTitre {
+    top: 45%;
+}
+
+.HdvDiplomatieObjetInput {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    background-color: transparent;
+    color: wheat;
+    padding: 10px;
+    z-index: 1;
+    border: none;
+    outline: none;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.HdvDiplomatieContenuInput {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    background-color: transparent;
+    color: wheat;
+    padding: 10px;
+    z-index: 1;
+    border: none;
+    outline: none;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+    resize: none;
+    margin: 3%;
+}
+
+
+.HdvDiplomatieChoixOption {
+    display: flex;
+    z-index: 5;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    text-align: center;
+    height: 100%;
+}
+
+.HdvDiplomatieChoixOption input {
+    margin: 0 5px;
+}
+
+.HdvDiplomatieChoixOption label {
+    font-weight: bold;
+    color: wheat;
+    margin: 25px;
+}
+
+.HdvEnvoyerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #393c3f;
+    bottom: 7%;
+    right: -1%;
+    transform: translateX(-50%);
+    color: rgb(152, 129, 88);
+    position: absolute;
+}
+
+.HdvEnvoyerContainer:hover {
+    background-color: rgb(23, 23, 23);
+    cursor: pointer;
+}
+
+.HdvEnvoyerContainer img:active {
+    width: 45px;
+    height: 45px;
+}
+
+/*VUE ECHANGE*/
+
+#vueEchange {
+    color: wheat;
+    background-color: #000000e3;
+    display: none;
+    height: 90%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+
+.HdvEchangeChoixCiteContainer,
+.HdvEchangeRessourceContainer1,
+.HdvEchangeChoixHDVContainer,
+.HdvEchangeRessourceContainer2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    border-radius: 16px;
+    background-color: #393c3fb2;
+    margin: 1% 0;
+}
+
+.HdvEchangeChoixCiteContainer {
+    height: 16%;
+}
+
+.HdvEchangeRessourceContainer1 {
+    height: 20%;
+}
+
+.HdvEchangeChoixHDVContainer {
+    height: 16%;
+}
+
+.HdvEchangeRessourceContainer2 {
+    height: 20%;
+}
+
+.HdvEchangeChoixCiteContainerTitre,
+.HdvEchangeRessourceContainerTitre1,
+.HdvEchangeChoixHDVContainerTitre,
+.HdvEchangeRessourceContainerTitre2 {
+    display: flex;
+    align-items: center;
+    height: 20%;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 9.2%;
+    left: 55%;
+    transform: translateX(-50%);
+    color: rgb(152, 129, 88);
+}
+
+.HdvEchangeChoixCiteContainerTitre {
+    top: 9.5%;
+}
+
+.HdvEchangeRessourceContainerTitre1 {
+    top: 25.9%;
+}
+
+.HdvEchangeChoixHDVContainerTitre {
+    top: 46.4%;
+}
+
+.HdvEchangeRessourceContainerTitre2 {
+    top: 63%;
+}
+
+.HdvEchangeChoixCiteOption,
+.HdvEchangeChoixHDVOption {
+    z-index: 10;
+}
+
+.HdvEchangeChoixCiteContainer,
+.HdvEchangeChoixHDVContainer {
+    display: flex;
+    z-index: 5;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    text-align: center;
+}
+
+.HdvEchangeChoixCiteContainer input,
+.HdvEchangeChoixHDVContainer input {
+    margin: 0 5px;
+}
+
+.HdvEchangeChoixCiteContainer label,
+.HdvEchangeChoixHDVContainer label {
+    font-weight: bold;
+    color: wheat;
+    margin: 25px;
+}
+
+.HdvEchangeForm1 {
+    display: flex;
+    z-index: 5;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    text-align: center;
+}
+
+.HdvEchangeForm1 input, .HdvEchangeForm1 select {
+    margin: 0 5px;
+    width: 100%;
+    height: 100%;
+    border-radius:16px;
+    background-color: #393c3f;
+    color: wheat;
+    padding:10px;
+    z-index: 1;
+    border:none;
+    outline:none;
+    box-sizing: border-box;
+    font-weight: bold;
+}
+
+.HdvEchangeForm1 select {
+    width: auto;
 }
