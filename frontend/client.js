@@ -350,12 +350,11 @@ document.addEventListener("DOMContentLoaded", function () {
             entrepotArrive: entrepotArrive
         });
 
-        socket.emit("transfertRessourcesEntrepot", {
+        socket.emit("transfertRessources", {
             ressourcesTransfert: ressourcesTransfert,
             quantiteTransfert: quantiteTransfert,
             entrepotDepart: entrepotDepart,
             entrepotArrive: entrepotArrive,
-            hdv: hdvSelectionne
         });
     });
 
