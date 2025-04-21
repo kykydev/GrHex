@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let pseudo;
 
     let hdvSelectionne;
+    let portSelectionne; 
+    let entrepotSelectionne;
 
     const beotie = document.getElementById("beotie");
     const attique = document.getElementById("attique");
@@ -174,6 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let bouttonOuvrier = document.getElementById("bouttonOuvrier");
     let bouttonDiplomatie = document.getElementById("bouttonDiplomatie");
     let bouttonTransfert = document.getElementById("bouttonVueTransfert");
+    
 
     bouttonOuvrier.addEventListener("click", (event) => {
         d3.select("#vueDiplomatie").style("display", "none");
@@ -326,10 +329,41 @@ document.addEventListener("DOMContentLoaded", function () {
             ressourcesTransfert: ressourcesTransfert,
             quantiteTransfert: quantiteTransfert,
             entrepotDepart: entrepotDepart,
-            entrepotArrive: entrepotArrive
+            entrepotArrive: entrepotArrive,
+            hdv:hdvSelectionne
         });
     });
 
+
+    let boutonEnvoyerTransfertEntrepot = document.getElementById("boutonEnvoyerTransfertEntrepot");
+    boutonEnvoyerTransfertEntrepot.addEventListener("click", () => {
+        let ressourcesTransfert = document.getElementById("ressourcesTransfertEntrepot").value;
+        let quantiteTransfert = document.getElementById("quantiteTransfertEntrepot").value;
+
+        let entrepotDepart = entrepotSelectionne;
+        let entrepotArrive = document.querySelector("input[name='entrepotArriveEntrepot']:checked").value;
+
+        console.log({
+            ressourcesTransfert: ressourcesTransfert,
+            quantiteTransfert: quantiteTransfert,
+            entrepotDepart: entrepotDepart,
+            entrepotArrive: entrepotArrive
+        });
+
+        socket.emit("transfertRessourcesEntrepot", {
+            ressourcesTransfert: ressourcesTransfert,
+            quantiteTransfert: quantiteTransfert,
+            entrepotDepart: entrepotDepart,
+            entrepotArrive: entrepotArrive,
+            hdv: hdvSelectionne
+        });
+    });
+
+    let boutonCreerBateau = document.getElementById("boutonCreerBateau");
+    boutonCreerBateau.addEventListener("click",()=>{
+        console.log("port",portSelectionne);
+        socket.emit("créerBateau",portSelectionne);
+    })
 
     socket.on("finTour", data => {
         //console.log(data);
@@ -565,11 +599,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const damierjeu = document.getElementById('damierjeu');
         const vueMine = document.getElementById("vueMine");
         const vueTour = document.getElementById("vueTour");
+        const vuePortD = document.getElementById("vuePort");
 
         rendreDeplacable(vueBatiments, damierjeu);
         rendreDeplacable(statsUnite, damierjeu);
         rendreDeplacable(vueMine, damierjeu);
         rendreDeplacable(vueTour, damierjeu);
+        rendreDeplacable(vuePortD,damierjeu);
+        rendreDeplacable(document.getElementById("vueEntrepot"),damierjeu);
 
         // document.getElementById("recolteButton").addEventListener("click", function() {
         //     attaqueAnim(185, 215, "-9");
@@ -589,6 +626,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let vueInfoHdv = d3.select("#vueInfoHdv");
         let vueInfoForge = d3.select("#vueForge");
         let vueChamp = d3.select("#vueChamp");
+
+        let vuePort = d3.select("#vuePort");
 
         // [vueInfoForge, vueInfoHdv, vueChamp].forEach(vue => rendreDeplacable(vue.node(), damierjeu));
 
@@ -787,6 +826,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     vueInfoForge.style("display", (vueInfoForge.style("display") == "none" ? "block" : "none"));
 
 
+                }else if((data.board[event.target.id.supprimerPrefixId("uni")].name == "Port" && !uniteSelectionnee)){
+                    vuePort.style("display", (vuePort.style("display") == "none" ? "block" : "none"));
+
+                    socket.emit("demandeBateaux",event.target.id.supprimerPrefixId("uni"));
+
+                    portSelectionne = event.target.id.supprimerPrefixId("uni");
+
+                }else if((data.board[event.target.id.supprimerPrefixId("uni")].name == "Entrepôt" && !uniteSelectionnee)){
+                    let vueEntrepot = d3.select("#vueEntrepot");
+
+                    vueEntrepot.style("display", (vueEntrepot.style("display") == "none" ? "block" : "none"));
+
+
+                    entrepotSelectionne = event.target.id.supprimerPrefixId("uni");
                 }
                 else if (((data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" || (data.board[event.target.id.supprimerPrefixId("uni")].name == "Entrepôt")) && uniteSelectionnee)) {
                     // le changement de base
@@ -1234,17 +1287,20 @@ document.addEventListener("DOMContentLoaded", function () {
         let choisirEntrepot = d3.select("#choisirEntrepot");
         let notifDetail = d3.select("#vueNotificationMessage");
         
-        let entrepotDepart = d3.select("#entrepotDepart");
-        let entrepotArrive = d3.select("#entrepotArrive");
+        let entrepotDepart = d3.select("#entrepotDepartSelect");
+        let entrepotArrive = d3.select("#entrepotArriveSelect");
         
+        let entrepotArriveEntrepot = d3.select("#entrepotArriveSelectEntrepot");
 
 
         choisirEntrepot.selectAll("*").remove();
         // notifDetail.selectAll("*").remove();
 
 
-        entrepotArrive.selectAll("*").remove();
-        entrepotDepart.selectAll("*").remove();
+        entrepotArrive.selectAll("*:not(p)").remove();
+        entrepotDepart.selectAll("*:not(p)").remove();
+        entrepotArriveEntrepot.selectAll("*:not(p)").remove();
+        
 
 
         data.forEach((entrepot) => {
@@ -1265,6 +1321,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .attr("name", "entrepotDepart")
             .attr("value", entrepot.position).attr("id", "e" + entrepot.position);
 
+            entrepotArriveEntrepot.append("label").attr("for", entrepot.position).text(entrepot.type+" : " +entrepot.position).append("input").attr("type", "radio")
+            .attr("name", "entrepotArriveEntrepot")
+            .attr("value", entrepot.position).attr("id", "e" + entrepot.position);
 
         });
 
@@ -1277,6 +1336,13 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach((nom)=>{
             choisirMap.append("option").attr("value",nom).text(nom);
         });
+
+    });
+
+    socket.on("demandeBateaux",data=>{
+        let nbBateaux = d3.select("#nbBateaux");
+
+        nbBateaux.text(data);
 
     });
 

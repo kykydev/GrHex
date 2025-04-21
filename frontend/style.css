@@ -214,7 +214,9 @@ body {
 #vueChamp,
 #vueMine,
 #vueTour,
-#vueNotificationMessage {
+#vueNotificationMessage,
+#vuePort,
+#vueEntrepot {
     color: wheat;
     display: none;
     height: 500px;
@@ -556,4 +558,74 @@ body {
     height: 100%;
     width: 75px;
     margin-left: 10px;
+}
+
+
+#nbBateaux{
+    background-color: #393c3fb2;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    font-size: large;
+    width: 50%;
+    height: 50px;
+
+}
+
+#titreNbBateaux{
+    margin-bottom: -10px;
+    font-size: x-large;
+}
+
+#boutonCreerBateau{
+    border-radius: 16px;
+    background-color: #393c3f;
+    color: wheat;
+    padding: 10px;
+    z-index: 1;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    font-weight: bold;
+
+    margin: 5%;
+
+    width: 30%;
+    cursor: pointer;
+}
+
+#entrepotArriveSelectEntrepot{
+    background-color: #393c3fb2;
+    border-radius: 16px;
+    padding: 15px;
+    width: 70%;
+}
+
+#containerBoutonTEntre{
+    display: flex;
+    flex-direction: row-reverse ;
+}
+
+#boutonEnvoyerTransfertEntrepot{
+    border-radius: 16px;
+    background-color: #393c3f;
+    color: wheat;
+    padding: 10px;
+    z-index: 1;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    font-weight: bold;
+    margin: 5%;
+    width: 30%;
+}
+#entrepotArriveSelectEntrepot{
+    background-color: #393c3fb2;
+    border-radius: 16px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
 }

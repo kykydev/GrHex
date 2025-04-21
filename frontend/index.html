@@ -124,7 +124,7 @@
                     <div id="bouttonDiplomatie" class="HdvNavigationDiv2">Diplomatie</div>
                     <div id="bouttonVueEchange" class="HdvNavigationDiv1">Échange</div>
                     <div id="bouttonVueTransfert" class="HdvNavigationDiv2">Transfert</div>
-                    <div id="bouttonChamp" class="HdvNavigationDiv2"
+                    <div id="bouttonChamp" class="HdvNavigationDiv1"
                         onclick="document.getElementById('vueInfoHdv').style.display = 'none';">Quitter</div>
                 </div>
 
@@ -424,10 +424,10 @@
                 </div> -->
 
                 <div id="vueHdvChangerEntrepot">
-                    <div id="ressourcesEtQuantites">
+                    <p class="titreTransfert">Ressources</p>
+                    <div id="ressourcesEtQuantitesHdv">
 
-                
-                        <select name="" id="ressourcesTransfert">
+                        <select name="" id="ressourcesTransfertHdv">
                             <option value="or" id="or">Or</option>
                             <option value="bois" id="bois">Bois</option>
                             <option value="pierre" id="pierre">Pierre</option>
@@ -435,25 +435,27 @@
                             <option value="etain" id="etain">Étain</option>
                         </select>
                         
-                        <input type="number" step="1" value="0"  min="0" id="quantiteTransfert"/>
+                        <input type="number" step="1" value="0"  min="0" id="quantiteTransfertHdv"/>
                      
                     </div>
                     
                     <div id="changerEntrepot">
-                        <form>
-                            <div id="entrepotDepart">
-                                <select id="entrepotDepart"></select>
-                            </div>
-                            
-                        </form>
-                        <form>
 
-                            <div id="entrepotArrive">
-                                <select id="entrepotArrive" ></select>
-                            </div>
-                        </form>
+                        <div id="entrepotDepart">
+                            <p class="titreTransfert">Entrepot de départ</p>
+                            <div id="entrepotDepartSelect"></div>
+                        </div>
+                        
+
+
+                        <div id="entrepotArrive">
+                            <p class="titreTransfert">Entrepot d'arrivé</p>
+                            <div id="entrepotArriveSelect" ></div>
+                        </div>
                     </div>
-                    <button id="bouttonEnvoyerTransfert">Transférer</button>
+                    <div id="containerEnvoyerTransfert">
+                        <button id="bouttonEnvoyerTransfert">Transférer</button>
+                    </div>
                 </div>
 
             </div>
@@ -491,6 +493,55 @@
                 <div id="titreVueTour"></div>
 
             </div>
+            <div id="vuePort">
+                <div class="hautvue">
+                    <p id="txthautvue"> Vue du port </p>
+                    <button id="boutonPort" class="buttonblack"
+                        onclick="document.getElementById('vuePort').style.display = (document.getElementById('vuePort').style.display == 'none' ? 'block' : 'none');">Quitter</button>
+                </div>
+                <div id="containerNbBateaux">
+                    <p id="titreNbBateaux">Nombre total de bateaux</p>
+                    <div id="nbBateaux"></div>
+                </div>
+
+                <button id="boutonCreerBateau">Créer un bateau</button>
+
+                <div id="titreVuePort"></div>
+            </div>
+
+            <div id="vueEntrepot">
+                <div class="hautvue">
+                    <p id="txthautvue"> Vue de l'entrepôt</p>
+                    <button id="boutonPort" class="buttonblack"
+                        onclick="document.getElementById('vueEntrepot').style.display = (document.getElementById('vueEntrepot').style.display == 'none' ? 'block' : 'none');">Quitter</button>
+                </div>
+
+                <p class="titreTransfert">Ressources</p>
+                <div id="ressourcesEtQuantitesEntrepot">
+
+                    <select name="" id="ressourcesTransfertEntrepot">
+                        <option value="or" id="or">Or</option>
+                        <option value="bois" id="bois">Bois</option>
+                        <option value="pierre" id="pierre">Pierre</option>
+                        <option value="cuivre" id="cuivre">Cuivre</option>
+                        <option value="etain" id="etain">Étain</option>
+                    </select>
+                    
+                    <input type="number" step="1" value="0"  min="0" id="quantiteTransfertEntrepot"/>
+                 
+                </div>
+                <div id="entrepotArriveEntrepot">
+                    <p class="titreTransfert">Envoyer les ressources dans un autre entrepot</p>
+                    <div id="entrepotArriveSelectEntrepot" ></div>
+                </div>
+                <div id="containerBoutonTEntre">
+                    <button id="boutonEnvoyerTransfertEntrepot">Transférer</button>
+                </div>
+
+
+                <div id="titreVueEntrepot"></div>
+            </div>
+
         </div>
         <div id="vueDialogue"></div>
 
