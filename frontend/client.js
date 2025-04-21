@@ -173,12 +173,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let bouttonOuvrier = document.getElementById("bouttonOuvrier");
     let bouttonDiplomatie = document.getElementById("bouttonDiplomatie");
+    let bouttonTransfert = document.getElementById("bouttonVueTransfert");
 
     bouttonOuvrier.addEventListener("click", (event) => {
         d3.select("#vueDiplomatie").style("display", "none");
         d3.select("#vueOuvrier").style("display", "flex");
         d3.select("#vueEchange").style("display", "none");
         d3.select("#vueEspionnage").style("display", "none");
+        d3.select("#vueHdvChangerEntrepot").style("display","none");
     });
 
     bouttonDiplomatie.addEventListener("click", (event) => {
@@ -186,8 +188,17 @@ document.addEventListener("DOMContentLoaded", function () {
         d3.select("#vueDiplomatie").style("display", "flex");
         d3.select("#vueEchange").style("display", "none");
         d3.select("#vueEspionnage").style("display", "none");
+        d3.select("#vueHdvChangerEntrepot").style("display","none");
     });
 
+    bouttonTransfert.addEventListener("click", (event) => {
+        d3.select("#vueDiplomatie").style("display", "none");
+        d3.select("#vueOuvrier").style("display", "none");
+        d3.select("#vueEchange").style("display", "none");
+        d3.select("#vueEspionnage").style("display", "none");
+        d3.select("#vueHdvChangerEntrepot").style("display","flex");
+
+    });
 
 
     // let envoyerMail = document.getElementById("envoyerMail");
@@ -291,6 +302,31 @@ document.addEventListener("DOMContentLoaded", function () {
             quantitesEnnemies: quantitesEnnemies,
             hdv: hdvSelectionne,
             hdvStock: entrepot
+        });
+    });
+
+
+    let bouttonEnvoyerTransfert = document.getElementById("bouttonEnvoyerTransfert");
+
+    bouttonEnvoyerTransfert.addEventListener("click",()=>{
+        let ressourcesTransfert = document.getElementById("ressourcesTransfert").value;
+        let quantiteTransfert = document.getElementById("quantiteTransfert").value;
+
+        let entrepotDepart = document.querySelector("input[name='entrepotDepart']:checked").value;
+        let entrepotArrive = document.querySelector("input[name='entrepotArrive']:checked").value;
+
+        console.log({
+            ressourcesTransfert: ressourcesTransfert,
+            quantiteTransfert: quantiteTransfert,
+            entrepotDepart: entrepotDepart,
+            entrepotArrive: entrepotArrive
+        });
+
+        socket.emit("transfertRessources",{
+            ressourcesTransfert: ressourcesTransfert,
+            quantiteTransfert: quantiteTransfert,
+            entrepotDepart: entrepotDepart,
+            entrepotArrive: entrepotArrive
         });
     });
 
@@ -1197,9 +1233,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let choisirEntrepot = d3.select("#choisirEntrepot");
         let notifDetail = d3.select("#vueNotificationMessage");
+        
+        let entrepotDepart = d3.select("#entrepotDepart");
+        let entrepotArrive = d3.select("#entrepotArrive");
+        
+
 
         choisirEntrepot.selectAll("*").remove();
         // notifDetail.selectAll("*").remove();
+
+
+        entrepotArrive.selectAll("*").remove();
+        entrepotDepart.selectAll("*").remove();
 
 
         data.forEach((entrepot) => {
@@ -1211,6 +1256,15 @@ document.addEventListener("DOMContentLoaded", function () {
             notifDetail.append("input").attr("type", "radio").attr("name", "entrepotsNotif")
                 .attr("value", entrepot.position).attr("id", "notif" + entrepot.position);
             notifDetail.append("br");
+
+            entrepotArrive.append("label").attr("for", entrepot.position).text(entrepot.type+" : " +entrepot.position).append("input").attr("type", "radio")
+            .attr("name", "entrepotArrive")
+            .attr("value", entrepot.position).attr("id", "e" + entrepot.position);
+
+            entrepotDepart.append("label").attr("for", entrepot.position).text(entrepot.type+" : " +entrepot.position).append("input").attr("type", "radio")
+            .attr("name", "entrepotDepart")
+            .attr("value", entrepot.position).attr("id", "e" + entrepot.position);
+
 
         });
 

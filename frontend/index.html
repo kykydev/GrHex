@@ -13,6 +13,8 @@
     <link href="/script/style.css" rel="stylesheet" />
     <link href="./script/vues.css" rel="stylesheet" />
     <link href="./script/accueil.css" rel="stylesheet" />
+    <link href="./script/styles/vueHdvChangerEntrepot.css" rel="stylesheet" />
+
 
     <title>GrHex</title>
 </head>
@@ -121,6 +123,7 @@
                     <div id="bouttonOuvrier" class="HdvNavigationDiv1">Recrutement</div>
                     <div id="bouttonDiplomatie" class="HdvNavigationDiv2">Diplomatie</div>
                     <div id="bouttonVueEchange" class="HdvNavigationDiv1">Échange</div>
+                    <div id="bouttonVueTransfert" class="HdvNavigationDiv2">Transfert</div>
                     <div id="bouttonChamp" class="HdvNavigationDiv2"
                         onclick="document.getElementById('vueInfoHdv').style.display = 'none';">Quitter</div>
                 </div>
@@ -419,6 +422,40 @@
                     </div>
 
                 </div> -->
+
+                <div id="vueHdvChangerEntrepot">
+                    <div id="ressourcesEtQuantites">
+
+                
+                        <select name="" id="ressourcesTransfert">
+                            <option value="or" id="or">Or</option>
+                            <option value="bois" id="bois">Bois</option>
+                            <option value="pierre" id="pierre">Pierre</option>
+                            <option value="cuivre" id="cuivre">Cuivre</option>
+                            <option value="etain" id="etain">Étain</option>
+                        </select>
+                        
+                        <input type="number" step="1" value="0"  min="0" id="quantiteTransfert"/>
+                     
+                    </div>
+                    
+                    <div id="changerEntrepot">
+                        <form>
+                            <div id="entrepotDepart">
+                                <select id="entrepotDepart"></select>
+                            </div>
+                            
+                        </form>
+                        <form>
+
+                            <div id="entrepotArrive">
+                                <select id="entrepotArrive" ></select>
+                            </div>
+                        </form>
+                    </div>
+                    <button id="bouttonEnvoyerTransfert">Transférer</button>
+                </div>
+
             </div>
 
             <div id="vueForge">
