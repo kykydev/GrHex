@@ -1981,8 +1981,16 @@ créerCaravaneCommerce(position,idRequête){
         delete this.players[uni.owner].units[uni.position]
         var hdv = this.board[uni.objectif]
         var trade = uni.currentTrade
-        if (trade==undefined||hdv==undefined){return false}
+        if ((trade==undefined && uni.phase!="transfert")||hdv==undefined){return false}
 
+
+
+        //Transfert interne
+
+        if (uni.phase=="transfert"){
+            hdv[uni.marchandise]+=uni[uni.marchandise]
+            return true
+        }
 
         //----échange dircet
         if (uni.phase=="aller"){
@@ -2245,6 +2253,44 @@ accepteTrade(idJoueur,idRequête,hdv){
     //return {"position":zz,"newUnit":uni.name}
 
 }
+
+
+transfertRessources(data,idJoueur){
+    var joueur = this.players[idJoueur]; if (idJoueur==undefined){return false}
+        /* socket.emit("transfertRessources", {
+            ressourcesTransfert: ressourcesTransfert,
+            quantiteTransfert: quantiteTransfert,
+            entrepotDepart: entrepotDepart,
+            entrepotArrive: entrepotArrive,
+        });*/
+
+    //--------------Checks:
+    var hdv = this.board[data.entrepotDepart]
+    if (hdv==undefined || (hdv.name!="Hôtel de ville" && hdv.name!="Entrepôt")){return false}
+    if (hdv[data.ressourcesTransfert]==undefined || hdv[data.ressourcesTransfert]<data.quantiteTransfert){return false}
+    var position = undefined
+    for (var z of casesAdjacentes(hdv.position,this.map.width,this.map.height)){
+        if (this.map.terrain[z]!="eau" && this.map.terrain[z]!="X" && this.board[z]==undefined){
+            if (position==undefined || (distance(z,data.entrepotArrive,this.map.height)<distance(position,data.entrepotArrive,this.map.height))){
+                
+                position = z}
+            }
+        }
+        if (position==undefined){return false}
+
+    //Création de l'unité:
+    var uni = new caravaneCommerce(position,joueur)
+    uni.phase="transfert"
+    uni.objectif = data.entrepotArrive
+    uni.marchandise = data.ressourcesTransfert
+    uni[data.ressourcesTransfert]=parseInt(data.quantiteTransfert)
+    hdv[data.ressourcesTransfert]-=parseInt(data.quantiteTransfert)
+    if (this.addUnit(uni,position,joueur)==false){return false}
+        return {"position":uni.position,"newUnit":"Caravane de commerce"}
+
+}   
+
+
 
 
 

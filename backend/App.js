@@ -624,4 +624,18 @@ io.on('connection', (socket) => {
 
 
 
+      socket.on("transfertRessources",data=>{
+        console.log(data)
+        var partie = parties[socket.idPartie]
+        if (partie==undefined){return}
+        if (partie.canOrder(socket.idJoueur,data.hdv)==false || data.entrepotDepart==undefined || data.entrepotArrive==undefined || data.entrepotDepart==data.entrepotArrive){return}
+        var check = partie.transfertRessources(data,socket.idJoueur)
+
+        if (check){
+          socket.emit("dialogue",{"message":"Très bien, j'y serai en un rien de temps.", "unite":"caravane de commerce","couleur": "rouge"})
+          socket.emit("evolution",check)
+        }
+      })
+
+
 });
