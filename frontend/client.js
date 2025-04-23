@@ -312,8 +312,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let bouttonEnvoyerTransfert = document.getElementById("bouttonEnvoyerTransfert");
 
     bouttonEnvoyerTransfert.addEventListener("click",()=>{
-        let ressourcesTransfert = document.getElementById("ressourcesTransfert").value;
-        let quantiteTransfert = document.getElementById("quantiteTransfert").value;
+        let ressourcesTransfert = document.getElementById("ressourcesTransfertHdv").value;
+        let quantiteTransfert = document.getElementById("quantiteTransfertHdv").value;
 
         let entrepotDepart = document.querySelector("input[name='entrepotDepart']:checked").value;
         let entrepotArrive = document.querySelector("input[name='entrepotArrive']:checked").value;

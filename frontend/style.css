@@ -620,6 +620,11 @@ body {
     margin: 5%;
     width: 30%;
 }
+#boutonEnvoyerTransfertEntrepot:hover{
+    cursor: pointer;
+    background-color: rgb(23, 23, 23);
+}
+
 #entrepotArriveSelectEntrepot{
     background-color: #393c3fb2;
     border-radius: 16px;
