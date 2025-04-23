@@ -39,6 +39,7 @@ class unit {
             this.vision = stats[this.name].vision
             this.fieldRevenu=stats[this.name].fieldRevenu
             this.maxworkers=stats[this.name].maxworkers
+            this.turnsToRespawn = stats[this.name].turnsToRespawn
             
             this.hp = this.maxhp
             this.movementLeft=this.movement
@@ -818,6 +819,8 @@ class hdv extends building{
 class maison extends building{
     constructor(position,player){
         super(30,0,0,0,"Maison",position,player,0,0)
+        if (this.turnsToRespawn==undefined){this.turnsToRespawn=3}
+        this.cooldown = this.turnsToRespawn
     }
 
     generateVillager(position,player,game){
@@ -827,7 +830,9 @@ class maison extends building{
         for (var z of cases){
             if (game.board[z]==undefined && game.map.infos[z].type!="eau"  && game.map.infos[z].type!="montagne"){
             let uni = new (eval(villageoisChois))(z,player)
+            this.habitant=uni
             game.addUnit(uni,z,player)
+            this.cooldown = this.turnsToRespawn
             return true
             }
         }

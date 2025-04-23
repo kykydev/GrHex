@@ -897,6 +897,7 @@ class game {
             if (this.board[uni].name=="Champ"){this.revenuChamp(this.board[uni])}
             if (this.board[uni].name=="Mine"){this.tourMine(this.board[uni])}
             if (this.board[uni].name=="Tour d'archer"){this.tourTourArcher(this.board[uni])}
+            if (this.board[uni].name=="Maison"){this.tourMaison(this.board[uni])}
             if (this.board[uni].destination == this.board[uni].position) { this.board[uni].destination = undefined }
             this.board[uni].destination = this.board[uni].findGoal(this)      
             if (this.board[uni].destination != undefined) {//Reset les path 
@@ -1231,6 +1232,17 @@ tourTourArcher(unite){
     
 }
 
+
+tourMaison(uni){
+    if (uni.habitant!=undefined && this.board[uni.habitant.position]!=undefined){return false}
+
+    if (uni.cooldown==0){
+        uni.generateVillager(uni.position,this.players[uni.owner],this)
+        return
+    }
+    uni.cooldown--
+
+}
 
 unbuild(pos,idJoueur,socket){//Détruit un bâtiment
     var pos = parseInt(pos)

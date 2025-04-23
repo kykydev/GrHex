@@ -190,7 +190,8 @@
      "movement" : 0,
      "vision" : 0,
      "range" : 0,
-     "fieldRevenu" : 0
+     "fieldRevenu" : 0,
+     "turnsToRespawn":2
 },
 "Cabane":{
     "maxhp" : 20,
