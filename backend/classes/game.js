@@ -327,9 +327,13 @@ class game {
             if (this.board[uni].tracked){this.créeVisionDifférée(joueur,visions ,uni,posStratège)}
             }
             for (var espion of joueur.espions){
-                var esp = [{ "info": this.map.infos[espion], "terrain": this.map.infos[espion].pattern, "board": this.board[espion] }]
+                joueur.visionsDiff.push( new visionDiff([{ "info": this.map.infos[espion], "terrain": this.map.infos[espion].pattern, "board": this.board[espion] }],1))
                 
-                joueur.visionsDiff.push(new visionDiff(esp,1))
+                for (var z of casesAdjacentes(espion,this.map.width,this.map.height)){
+                    
+                    var esp = [{ "info": this.map.infos[z], "terrain": this.map.infos[z].pattern, "board": this.board[z] }]
+                    joueur.visionsDiff.push(new visionDiff(esp,1))
+                }
             }
 
 
