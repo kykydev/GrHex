@@ -268,7 +268,7 @@ io.on('connection', (socket) => {
         
       let route = partie.pathfindToDestination(départ, arrivée, idJoueur)
       partie.board[départ].destination = arrivée
-      if (["Mineur","Paysanne","Bûcheron"].includes(partie.board[départ].name)){partie.board[départ].objectif=undefined}
+      if (["Mineur","Paysanne","Bûcheron","Archer","Frondeur"].includes(partie.board[départ].name)){partie.board[départ].objectif=undefined}
       if (route == false) { return false }
       partie.board[départ].path = route
       socket.emit("mouvement", route)

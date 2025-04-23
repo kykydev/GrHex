@@ -77,7 +77,7 @@ function casesAdjacentes(pos, width, height) {
 }
 
 
-//The following functions respectively return the X and Y coordinates and [X,Y] as a table with pos being the number of the hexagon (id) and height the height of a column
+
 function getX(pos,height){return Math.floor(pos/height);}
 function getY(pos,height){return pos%height}
 function getCoords(pos,height){return [getX(pos,height),getY(pos,height)]}
@@ -85,7 +85,7 @@ function getCoords(pos,height){return [getX(pos,height),getY(pos,height)]}
 
 
 
-function offset_to_cube(pos,height){//This function will convert our hexagon's coordinates from the X-Y ones to cube ones, allowing for more complex algorithms to be used
+function offset_to_cube(pos,height){
     var q = getX(pos,height) - (getY(pos,height) - (getY(pos,height)&1)) / 2
     var r = getY(pos,height)
     return [q, r, -q-r]
@@ -103,44 +103,44 @@ function distance(pos1,pos2,height){
 
 
 function pathFind(pos1, pos2, height, width, rules) {
-    const open = new MinHeap((a, b) => a.f - b.f); // Use a priority queue for open list
-    const closed = new Set(); // Closed set to track visited nodes
-    const cameFrom = {}; // To reconstruct the path
+    let open = new MinHeap((a, b) => a.f - b.f); 
+    let closed = new Set(); 
+    let vientDe = {};
 
     open.insert({ pos: pos1, g: 0, h: distance(pos1, pos2, height), f: distance(pos1, pos2, height) });
 
     while (!open.isEmpty()) {
-        const current = open.extractMin(); // Get the node with the lowest f-score
-        const { pos, g } = current;
+        let current = open.extractMin(); 
+        let { pos, g } = current;
 
         if (pos === pos2) {
-            // Reconstruct path
-            const path = [];
+
+            let path = [];
             let currentPos = pos2;
             while (currentPos !== undefined) {
                 path.push(currentPos);
-                currentPos = cameFrom[currentPos];
+                currentPos = vientDe[currentPos];
             }
-            return path.reverse(); // Return the path from start to end
+            return path.reverse(); 
         }
 
         closed.add(pos);
 
-        for (const neighbor of casesAdjacentes(pos, width, height)) {
+        for (let neighbor of casesAdjacentes(pos, width, height)) {
             if (closed.has(neighbor) || rules[neighbor] == "X") {
                 continue; 
             }
 
-            const tentativeG = g /*+1 peut-être nécessaire*/+ rules[neighbor];
-            const h = distance(neighbor, pos2, height);
-            const f = tentativeG + h;
+            let tentativeG = g + rules[neighbor];
+            let h = distance(neighbor, pos2, height);
+            let f = tentativeG + h;
 
-            const existing = open.find(n => n.pos === neighbor);
+            let existing = open.find(n => n.pos === neighbor);
             if (existing && tentativeG >= existing.g) {
                 continue;
             }
 
-            cameFrom[neighbor] = pos; 
+            vientDe[neighbor] = pos; 
             open.insert({ pos: neighbor, g: tentativeG, h, f });
         }
     }
