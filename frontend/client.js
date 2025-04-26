@@ -928,9 +928,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 } else if (uniteSelectionnee) {
                     uniteSelectionnee = event.target.id.supprimerPrefixId("uni");
+                    batimentSelectionne="";
+
                     //socket.emit("mouvement",{départ:uniteSelectionnee,arrivée:hexagoneSelectionnee});
                 } else if (data.board[event.target.id.supprimerPrefixId("uni")].movement > 0) {
                     uniteSelectionnee = event.target.id.supprimerPrefixId("uni");
+                    batimentSelectionne="";
 
                 }
 
