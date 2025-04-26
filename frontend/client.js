@@ -124,7 +124,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("quitter2").addEventListener("click", () => {
         socket.emit("quitterPartie");
         document.getElementById('partie').style.display = 'none';
-        document.getElementById('tuto').style.display = 'none';
+        if (document.getElementById('tuto')) {
+            document.getElementById('tuto').style.display = 'none';
+        }
         document.getElementById('accueil').style.display = 'flex';
     });
 
@@ -238,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // d3.select("#placeUnEspionStp").text("Places un Espion sur le damier");
             
-            dialogue("Placez un Espion sur le damier","messager","rouge")
+            dialogue("Placez un Espion sur le damier","espionne","rouge")
         });
 
     d3.select("#bouttonVueEchange")
@@ -468,6 +470,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelector('.ressources').innerHTML = ressources;
 
+    });
+
+    socket.on("choixDieu", data => {
+        d3.select("#vueChoixDieu").style("display", "flex");
+
+        let dieuSelectionne;
+
+        document.querySelectorAll("#vueChoixDieu img").forEach(img => {
+            img.addEventListener("click", () => {
+                dieuSelectionne = img.id;
+                socket.emit("choixDieu", { dieu: dieuSelectionne });
+                d3.select("#vueChoixDieu").style("display", "none");
+                console.log(dieuSelectionne);
+            });
+        });
     });
 
     socket.on("lobbyPartie", (data) => {

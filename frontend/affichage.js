@@ -912,9 +912,6 @@ function tutorielJSON(data) {
 
     let index = 0;
     for (let key in data) {
-        console.log(data);
-        console.log(key);
-        console.log(data[key]);
         let item = data[key];
         let numeroTitre = (index % 2 === 0) ? "1" : "2";
 
