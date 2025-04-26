@@ -543,6 +543,7 @@ document.addEventListener("DOMContentLoaded", function () {
         socket.emit('ressources');
         socket.emit("demandeMines");
         socket.emit("citesPrésentes","");
+        socket.emit("messageDieu");
 
 
         dicoPathUnite = {};

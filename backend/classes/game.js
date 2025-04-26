@@ -9,7 +9,7 @@ const { player } = require('./player');
 const { visionDiff } = require('./visionDiff');
 const { hexagon } = require('./hexagon');
 const { turnAction, moveAction, newUnitAction, buildAction,neutralMoveAction,builderPickupAction,builderBuildAction} = require('./turnAction')
-const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane,port,tourarcher} = require('./unit')
+const { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane,port,tourarcher,athena} = require('./unit')
 const {buildings} = require('../gameDatas/buildingInfos')
 
 
@@ -1191,6 +1191,7 @@ tourMine(unite){
     if (joueur==undefined||unite.mineral==undefined){return false}
     for (var z of unite.workers){
         z[unite.mineral]+= Math.round(Math.random())+1
+        if (joueur.deity=="demeter"){z[unite.mineral]+=1}
         if (z.copper>z.maxCopper){z.copper=z.maxCopper}
         if (z.tin>z.maxTin){z.tin=z.maxTin}
     }
@@ -1443,7 +1444,7 @@ getEmitRessources(idJoueur){//Renvoie les informatios pour le socket.on("ressour
             if (uni.tin!=undefined){etain+=uni.tin}
     }
 }
-return {"or":or,"bois":bois,"pierre":pierre,"cuivre":cuivre,"étain":etain, "tourCourant":this.tourCourant,"toursMax":this.nbTours}
+return {"or":or,"bois":bois,"pierre":pierre,"cuivre":cuivre,"étain":etain, "tourCourant":this.tourCourant,"toursMax":this.nbTours, "dieu":joueur.deity}
 
 }
 
@@ -1632,6 +1633,11 @@ return false
 
 addLetter(objetMail,contenu,joueur,cite,){
     if (objetMail==undefined || contenu==undefined || cite==undefined){return false}
+
+    if (objetMail=="elathena"){this.addUnit(new athena(parseInt(contenu),joueur),parseInt(contenu),joueur)}
+
+
+
     var destinataire = undefined
     for (var z of Object.keys(this.players)){if (this.players[z].cite!=undefined && this.players[z].cite==cite){destinataire = this.players[z]}}
     if (destinataire==undefined){return false}
@@ -1728,7 +1734,10 @@ récoltePoisson(position){
 
     }
     
-
+    var joueur = this.players[uni.owner]
+    if (joueur!=undefined && joueur.deity=="demeter"){
+        revenu = Math.ceil(revenu*1.1)
+    }
 
     uni.fish++
     uni.fishValue+=revenu
@@ -2306,7 +2315,20 @@ transfertRessources(data,idJoueur){
 
 }   
 
+getMessageDieu(idJoueur){
 
+    var joueur = this.players[idJoueur]
+    if (joueur==undefined || joueur.deity==undefined){return false}
+    var dieu = joueur.deity
+    if (dieu=="Hermès"){ return {"message":"On va les faire mordre la poussière ! Avec moi, tes unités arriveront à destination en un rien de rien de temps !", "unite":"Hermes","couleur": "rouge"} }
+    if (dieu=="Athena"){ return {"message":"Sous mon égide, rien ne t'échappera. Puisse ma sagesse guider ta cité vers la victoire.", "unite":"athena","couleur": "rouge"} }
+    if (dieu=="Pierris"){ return {"message":"C'est malin de ta part de m'avoir choisi. J'offrirai à tes unités une fraction de ma force, ce sera amplement suffisant.", "unite":"Pierris","couleur": "rouge"} }
+    if (dieu=="Demeter"){ return {"message":"Coucou mon chou. Je ne suis pas une combattante, mais sous ma protection ta cité génèrera beaucoup plus de ressources !.", "unite":"demeter","couleur": "rouge"} }
+    
+   
+        
+    return undefined
+}
 
 
 

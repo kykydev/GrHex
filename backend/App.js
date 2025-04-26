@@ -197,8 +197,9 @@ io.on('connection', (socket) => {
         if (player.choseCite(data.maCite)==false){
           socket.emit("rejoindrePartie",false);
         }
-        else{
+        else{//Choix réussi
           player.name=data.nom
+          player.deity = "Pierris"
           socket.emit("rejoindrePartie",true);
           testStartPartie(partie,io)
         }
@@ -530,7 +531,7 @@ io.on('connection', (socket) => {
       if (data==undefined || partie==undefined || idJoueur==undefined){return}
       var check = partie.canOrder(idJoueur,data.hdv)
       if (check==true){if (partie.addEspion(idJoueur,data.positionEspion)){
-        socket.emit("dialogue",{"message":"Ils ne vont rien voir venir 🕵️", "unite":"pecheur","couleur": "rouge"})
+        socket.emit("dialogue",{"message":"Ils ne vont rien voir venir 🕵️", "unite":"espionne","couleur": "rouge"})
 
         socket.emit("nouveauEspeion",true)}}
     })
@@ -637,5 +638,14 @@ io.on('connection', (socket) => {
         }
       })
 
+
+
+      //Affichage des messages de dieu
+      socket.on("messageDieu",data=>{
+        var partie = parties[socket.idPartie]
+        if (partie==undefined){return}
+        var retour = partie.getMessageDieu(socket.idJoueur)
+        if (retour!=undefined){socket.emit("dialogue",retour)}
+      })
 
 });
