@@ -246,6 +246,16 @@ function afficherUnites(unite, dam, opacity = 1) {
             .attr("width", "70")
             .attr("height", "80")
             .attr("id", "uni" + unite.position)
+            .on("click", () => {
+                if (unite.type == "unit") {
+                    image.transition()
+                    .duration(100)
+                    .style("filter", "brightness(1000%) saturate(0%)")
+                    .on("end", () => {
+                    image.style("filter", "none");
+                    });
+                }
+            })
             .on("mouseover", () => {
                 fstatsUnite(unite);
                 d3.select(hexagone)
