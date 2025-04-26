@@ -752,28 +752,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 d3.select("#uniteTemp").remove();
 
 
-                if (batimentSelectionne) {
-                    // console.log(batimentSelectionne, hexagoneSelectionnee);
-
-                    afficherUnites({
-                        couleur:"rouge",
-                        name:batimentSelectionne,
-                        position: event.target.id.supprimerPrefixId("issue"), // c'est normal sera modifié quand une solution sera trouver
-                        type:"building"}, 
-                        "jeu",
-                        0.5,
-                        ()=>{
-                            console.log("Construction du bâtiment:", { nomBat: batimentSelectionne, position: event.target.id.supprimerPrefixId("uni") });
-                            socket.emit("construireBâtiment", { nomBat: batimentSelectionne, position: event.target.id.supprimerPrefixId("uni") });
-                            batimentSelectionne = "";
-                            hexagoneSelectionnee = "";
-                        },
-                        ()=>{
-                            d3.select("#uni"+event.target.id.supprimerPrefixId("uni")).remove();
-                        }
-                        
-                    );
-                } else if (uniteSelectionnee != event.target.id.supprimerPrefixId("uni") && !event.target.id.startsWith("uniteTemp")) {
+                if (uniteSelectionnee != event.target.id.supprimerPrefixId("uni") && !event.target.id.startsWith("uniteTemp")) {
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                 }
 
@@ -831,13 +810,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             element.addEventListener("click", (event) => {
 
-                if(batimentSelectionne ){
-                    console.log("Construction du bâtiment et destruction : ", { nomBat: batimentSelectionne, position: event.target.id.supprimerPrefixId("uni") });
-                    socket.emit("croix", event.target.id.supprimerPrefixId("uni"));
-                    socket.emit("construireBâtiment", { nomBat: batimentSelectionne, position: event.target.id.supprimerPrefixId("uni") });
-                    batimentSelectionne = "";
-                    hexagoneSelectionnee = "";
-                }else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" && !uniteSelectionnee) {
+                 if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" && !uniteSelectionnee) {
 
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
 
