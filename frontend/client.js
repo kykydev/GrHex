@@ -472,9 +472,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-    socket.on("choixDieu", data => {
-        d3.select("#vueChoixDieu").style("display", "flex");
-
         let dieuSelectionne;
 
         document.querySelectorAll("#vueChoixDieu img").forEach(img => {
@@ -485,7 +482,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(dieuSelectionne);
             });
         });
-    });
 
     socket.on("lobbyPartie", (data) => {
         //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}

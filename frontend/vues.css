@@ -469,7 +469,7 @@
 #vueChoixDieu {
     color: wheat;
     background-color: #000000;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     height: 20%;
