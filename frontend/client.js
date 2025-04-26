@@ -681,9 +681,29 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
 
 
+                }else if (batimentSelectionne) {
+                    // console.log(batimentSelectionne, hexagoneSelectionnee);
+
+                    afficherUnites({
+                        couleur:"rouge",
+                        name:batimentSelectionne,
+                        position: event.target.id.supprimerPrefixId("h"),
+                        type:"building"}, 
+                        "jeu",
+                        0.5,
+                        ()=>{
+                            console.log("Construction du bâtiment:", { nomBat: batimentSelectionne, position: event.target.id.supprimerPrefixId("h") });
+                            socket.emit("construireBâtiment", { nomBat: batimentSelectionne, position: event.target.id.supprimerPrefixId("h") });
+                            batimentSelectionne = "";
+                            hexagoneSelectionnee = "";
+                        },
+                        ()=>{
+                            d3.select("#uni"+event.target.id.supprimerPrefixId("h")).remove();
+                        }
+                        
+                    );
                 }
             });
-
             element.addEventListener("click", (event) => {
                 hexagoneSelectionnee = event.target.id.supprimerPrefixId("h");
 
@@ -704,19 +724,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     selectionPositionEspion="";
                     
 
-                } else
+                } else if (uniteSelectionnee && hexagoneSelectionnee) {
+                    socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
+                    uniteSelectionnee = "";
+                    hexagoneSelectionnee = "";
 
-                    if (uniteSelectionnee && hexagoneSelectionnee) {
-                        socket.emit("mouvement", { départ: uniteSelectionnee, arrivée: hexagoneSelectionnee });
-                        uniteSelectionnee = "";
-                        hexagoneSelectionnee = "";
+                } else if (batimentSelectionne) {
+                    // console.log(batimentSelectionne, hexagoneSelectionnee);
 
-                    } else if (batimentSelectionne) {
-                        // console.log(batimentSelectionne, hexagoneSelectionnee);
-                        socket.emit("construireBâtiment", { nomBat: batimentSelectionne, position: hexagoneSelectionnee });
-                        batimentSelectionne = "";
-                        hexagoneSelectionnee = "";
-                    }
+                    socket.emit("construireBâtiment", { nomBat: batimentSelectionne, position: hexagoneSelectionnee });
+                    batimentSelectionne = "";
+                    hexagoneSelectionnee = "";
+                }
             });
         });
 
@@ -731,7 +750,29 @@ document.addEventListener("DOMContentLoaded", function () {
             element.addEventListener("mouseover", (event) => {
                 d3.select("#uniteTemp").remove();
 
-                if (uniteSelectionnee != event.target.id.supprimerPrefixId("uni") && !event.target.id.startsWith("uniteTemp")) {
+
+                if (batimentSelectionne) {
+                    // console.log(batimentSelectionne, hexagoneSelectionnee);
+
+                    afficherUnites({
+                        couleur:"rouge",
+                        name:batimentSelectionne,
+                        position: event.target.id.supprimerPrefixId("issue"), // c'est normal sera modifié quand une solution sera trouver
+                        type:"building"}, 
+                        "jeu",
+                        0.5,
+                        ()=>{
+                            console.log("Construction du bâtiment:", { nomBat: batimentSelectionne, position: event.target.id.supprimerPrefixId("uni") });
+                            socket.emit("construireBâtiment", { nomBat: batimentSelectionne, position: event.target.id.supprimerPrefixId("uni") });
+                            batimentSelectionne = "";
+                            hexagoneSelectionnee = "";
+                        },
+                        ()=>{
+                            d3.select("#uni"+event.target.id.supprimerPrefixId("uni")).remove();
+                        }
+                        
+                    );
+                } else if (uniteSelectionnee != event.target.id.supprimerPrefixId("uni") && !event.target.id.startsWith("uniteTemp")) {
                     hexagoneSelectionnee = event.target.id.supprimerPrefixId("uni");
                 }
 
@@ -789,7 +830,13 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             element.addEventListener("click", (event) => {
 
-                if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" && !uniteSelectionnee) {
+                if(batimentSelectionne ){
+                    console.log("Construction du bâtiment et destruction : ", { nomBat: batimentSelectionne, position: event.target.id.supprimerPrefixId("uni") });
+                    socket.emit("croix", event.target.id.supprimerPrefixId("uni"));
+                    socket.emit("construireBâtiment", { nomBat: batimentSelectionne, position: event.target.id.supprimerPrefixId("uni") });
+                    batimentSelectionne = "";
+                    hexagoneSelectionnee = "";
+                }else if (data.board[event.target.id.supprimerPrefixId("uni")].name == "Hôtel de ville" && !uniteSelectionnee) {
 
                     vueInfoHdv.style("display", (vueInfoHdv.style("display") == "none" ? "block" : "none"));
 

@@ -213,7 +213,7 @@ function appelsAjoutTextures(selected) {
  * @param {Object} unite - Object ayant les attributs name, couleur, position, etc
  * @param {String} dam - id du damier sur lequel mettre l'unité 
  */
-function afficherUnites(unite, dam, opacity = 1) {
+function afficherUnites(unite, dam, opacity = 1,eventClick=()=>{},eventOut=()=>{}) {
     let hexagone = document.getElementById("h" + unite.position);
     if (hexagone) {
         let bbox = hexagone.getBBox();
@@ -247,6 +247,8 @@ function afficherUnites(unite, dam, opacity = 1) {
             .attr("height", "80")
             .attr("id", "uni" + unite.position)
             .on("click", () => {
+                eventClick();
+
                 if (unite.type == "unit") {
                     image.transition()
                     .duration(100)
@@ -255,6 +257,7 @@ function afficherUnites(unite, dam, opacity = 1) {
                     image.style("filter", "none");
                     });
                 }
+
             })
             .on("mouseover", () => {
                 fstatsUnite(unite);
@@ -263,9 +266,13 @@ function afficherUnites(unite, dam, opacity = 1) {
                     .style("stroke-width", 2);
             })
             .on("mouseout", () => {
+                eventOut();
+
                 d3.select(hexagone)
                     .attr("stroke", "transparent")
                     .style("stroke-width", 0)
+
+               
             })
             .style("opacity", opacity); // opacité c'est entre 0 et 1
 
