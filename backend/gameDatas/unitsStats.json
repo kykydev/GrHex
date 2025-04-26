@@ -93,7 +93,8 @@
      "movement" : 3,
      "vision" : 1,
      "range" : 1,
-     "fieldRevenu" : 2
+     "fieldRevenu" : 2,
+     "maxWood":10
 },
 
 
@@ -106,7 +107,10 @@
      "movement" : 3,
      "vision" : 1,
      "range" : 1,
-     "fieldRevenu" : 2
+     "fieldRevenu" : 2,
+     "maxStone":10,
+     "maxTin":10,
+     "maxCopper":10
 },
 
 
@@ -119,7 +123,10 @@
      "movement" : 3,
      "vision" : 1,
      "range" : 1,
-     "fieldRevenu" : 1
+     "fieldRevenu" : 1,
+     "maxRessources":8,
+     "maxTin":5,
+     "maxCopper":5
 },
 
 "Pêcheur":{
@@ -130,7 +137,8 @@
      "movement" : 2,
      "vision" : 1,
      "range" : 1,
-     "fieldRevenu" : 0
+     "fieldRevenu" : 0,
+     "maxFish":5
 },
 
 
@@ -319,6 +327,17 @@
      "vision" : 2,
      "range" : 1,
      "fieldRevenu" : 0
+},
+
+"Athéna, déesse de la sagesse":{
+    "maxhp" : 230,
+     "attack" : 35,
+     "defense" : 99,
+     "initiative" : 150,
+     "movement" : 4,
+     "vision" : 5,
+     "range" : 2,
+     "fieldRevenu" : 50
 }
 
 

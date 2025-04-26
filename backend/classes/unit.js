@@ -39,11 +39,46 @@ class unit {
             this.vision = stats[this.name].vision
             this.fieldRevenu=stats[this.name].fieldRevenu
             this.maxworkers=stats[this.name].maxworkers
+            this.maxRessources = stats[this.name].maxRessources
+            this.maxWood = stats[this.name].maxWood
+            this.maxStone = stats[this.name].maxStone
+            this.maxCopper = stats[this.name].maxCopper
+            this.maxTin = stats[this.name].maxTin
+            this.maxFish=stats[this.name].maxFish
             this.turnsToRespawn = stats[this.name].turnsToRespawn
-            
-            this.hp = this.maxhp
-            this.movementLeft=this.movement
         }
+
+        //Impact du dieu:
+
+        switch (player.deity){
+
+            case "Hermès":
+                this.movement++
+                break
+            case "Pierris":
+                this.maxhp+= Math.ceil(this.maxhp*0.1)
+                this.attack+= Math.ceil(this.attack*0.1)
+                this.defense+= Math.ceil(this.defense*0.05)
+                break
+            case "Athena":
+                this.vision++
+                if (this.name=="Tour" || this.name=="Tour d'Archer"){this.vision++}
+                break
+            case "Demeter":
+                if (this.maxworkers!=undefined && this.maxworkers!=0){this.maxworkers++}
+                if (this.maxRessources!=undefined){this.maxRessources+=4}
+                if (this.maxStone!=undefined){this.maxStone+=2}
+                if (this.maxWood!=undefined){this.maxWood+=2}
+                if (this.maxFish!=undefined){this.maxFish+=3}
+                this.fieldRevenu++
+
+            default:
+                break
+
+        }
+
+        this.hp = this.maxhp
+        this.movementLeft=this.movement
 
         
     }
@@ -135,6 +170,15 @@ class discipleath extends unit{
     this.tracked=true
     this.origin = false//Attribut qui stocke ce qu'était l'unité avant pour le désenrôlement
     this.strategy = "agression"
+
+}
+}
+
+class athena extends unit{
+    constructor(position,player){
+    super(440,2,10,0,1,"Athéna, déesse de la sagesse",position,player,2,1)
+    this.tracked=true
+    this.strategy = "prudence"
 
 }
 }
@@ -278,12 +322,10 @@ class bucheron extends unit{
     constructor(position,player){
         super(25,10,5,7,3,"Bûcheron",position,player,1,1)
         this.wood=0
-        this.maxWood=10
         this.copper=0
         this.tin=0
         this.knownForests = []
         this.base = player.hdv[0]//endroit où déposer les ressources
-        this.fieldRevenu=2
     }
     canDépose(){return true}
 
@@ -378,13 +420,11 @@ class mineur extends unit{
     constructor(position,player){
         super(25,20,5,10,3,"Mineur",position,player,1,1)
         this.stone=0
-        this.maxStone=12
         this.copper=0;
         this.tin=0;
         this.knownCarrieres = []
         this.base=player.hdv[0]
        
-        this.fieldRevenu=2
     }
 
     canDépose(){return true}
@@ -479,11 +519,9 @@ class paysanne extends unit{
         super(15,15,0,5,3,"Paysanne",position,player,1,1)
         this.wood=0
         this.stone=0
-        this.maxRessources = 7
         this.knownForests = []
         this.knownCarrieres = []
         this.base=player.hdv[0]
-        this.fieldRevenu=1
         this.élue = false
         this.forgeEvos=false
 
@@ -1127,4 +1165,4 @@ class discipleathneutre extends creatureNeutre{
 
 
 
-module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane,port,tourarcher};
+module.exports = { hoplite,stratege,archer,messager,paysanne,building,hdv,bucheron,mineur,maison,forge,tour,champ,loup,pierris,entrepôt,chantier,builder,pecheur,discipleathneutre,discipleath,mur,mine,chevaldetroie,caravaneCommerce,bateauCommerce,cabane,port,tourarcher,athena};
