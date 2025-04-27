@@ -2320,7 +2320,7 @@ getMessageDieu(idJoueur){
     var joueur = this.players[idJoueur]
     if (joueur==undefined || joueur.deity==undefined){return false}
     var dieu = joueur.deity
-    if (dieu=="Hermès"){ return {"message":"On va les faire mordre la poussière ! Avec moi, tes unités arriveront à destination en un rien de rien de temps !", "unite":"Hermes","couleur": "rouge"} }
+    if (dieu=="Hermès"){ return {"message":"On va les faire mordre la poussière ! Avec moi, tes unités arriveront à destination en un rien de rien de temps !", "unite":"Hermès","couleur": "rouge"} }
     if (dieu=="Athena"){ return {"message":"Sous mon égide, rien ne t'échappera. Puisse ma sagesse guider ta cité vers la victoire.", "unite":"athena","couleur": "rouge"} }
     if (dieu=="Pierris"){ return {"message":"C'est malin de ta part de m'avoir choisi. J'offrirai à tes unités une fraction de ma force, ce sera amplement suffisant.", "unite":"Pierris","couleur": "rouge"} }
     if (dieu=="Demeter"){ return {"message":"Coucou mon chou. Je ne suis pas une combattante, mais sous ma protection ta cité génèrera beaucoup plus de ressources !.", "unite":"demeter","couleur": "rouge"} }

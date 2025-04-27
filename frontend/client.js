@@ -477,7 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <p>${data.cuivre} <img src="/img/autre/cuivre.png"/></p>
             <p>${data.étain} <img src="/img/autre/etain.png"/></p>
             <p>${data.tourCourant} / ${data.toursMax} <img src="/img/autre/sablier.png"/></p>
-            <p><img src="/img/dieux/${data.dieu}.png"/></p>`
+            <p><img src="/img/personnages/dieux/${data.dieu}.png"/></p>`
 
         document.querySelector('.ressources').innerHTML = ressources;
 

@@ -199,7 +199,7 @@ io.on('connection', (socket) => {
         }
         else{//Choix réussi
           player.name=data.nom
-          player.deity = "Pierris"
+          player.deity = data.dieu
           socket.emit("rejoindrePartie",true);
           testStartPartie(partie,io)
         }
