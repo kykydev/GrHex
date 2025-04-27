@@ -1444,7 +1444,7 @@ getEmitRessources(idJoueur){//Renvoie les informatios pour le socket.on("ressour
             if (uni.tin!=undefined){etain+=uni.tin}
     }
 }
-return {"or":or,"bois":bois,"pierre":pierre,"cuivre":cuivre,"étain":etain, "tourCourant":this.tourCourant,"toursMax":this.nbTours, "dieu":joueur.deity}
+return {"or":or,"bois":bois,"pierre":pierre,"cuivre":cuivre,"étain":etain, "tourCourant":this.tourCourant,"toursMax":this.nbTours, "dieu":joueur.deity.toLowerCase()}
 
 }
 
