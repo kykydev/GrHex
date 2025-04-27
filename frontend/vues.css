@@ -1,51 +1,7 @@
-/* #flexEchange{
-    display: flex;
-    flex-wrap: wrap;
-
-    
-    height: 450px;
-   
-    flex-direction: column;
-}
-
-#vueEspions *,#vueDiplomatie *  {
-    max-width: 250px;
-    margin-left: 10px;
-    margin-right: 10px;
-} */
-
-/* .echange-colonne{
-    gap: 3px;
-}
-
-.echange-colonne label {
-    margin-top: 7px; 
-} */
-
-/* #bouttonEchange{
-    margin-top: 4px;
-} */
-
-
-/* #flexDiplomatie{
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    gap: 10px;
-} */
 
 #choisirMap * {
     text-align: center;
 }
-
-/* #vueEspions label {
-    display: inline-block;
-    width: 150px; /* Adjust the width as needed */
-/* }
-
-#choisirEntrepot { 
-    min-height: 150px;
-} */
 
 /*VUES HDV*/
 
@@ -466,7 +422,19 @@
 
 /*VUE CHOIXDIEU*/
 
-#vueChoixDieu, #vueChoixCite {
+#vueChoixPseudo {
+    z-index: 5;
+}
+
+#vueChoixDieu{
+    z-index: 4;
+}
+
+#vueChoixCite{
+    z-index: 3;
+}
+
+#vueChoixDieu, #vueChoixCite, #vueChoixPseudo {
     color: wheat;
     background-color: #000000;
     display: flex;
@@ -478,7 +446,6 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: 4;
     border: 4px double #212529;
     border-radius: 24px;
     overflow: hidden;

@@ -70,14 +70,28 @@
 
         <div class="haut">
             <div id="nomPartie"></div>
-            <div id="whoami"></div>
-            <input type="text" id="usernameInput" class="inputblack" placeholder="Username" maxlength="15" required>
-            <button id="quitter1" class="buttonblack">Quitter</button>
+            <!-- <div id="whoami"></div> -->
+            <div id="quitter1" class="boutonHaut1">
+                <p>Quitter</p>
+            </div>
         </div>
 
         <div class="damier" id="damierPrev">
             <svg id="jeuprev"></svg>
             
+            <div id="vueChoixPseudo">
+                <div class="CDContainer">
+                    <div class="CDContainerTitre">
+                        <p>Saisissez votre nom</p>  
+                    </div>
+                    <input type="text" id="usernameInput" class="inputDA" placeholder="Pseudo, ex : Pythagore" maxlength="15" required>
+                    <div class="HdvEnvoyerContainer" id="envoyerPseudo">
+                        <img src="/img/autre/fleche.png" width="50" height="50">
+                    </div>
+                </div>
+            </div>
+            
+
             <div id="vueChoixCite">
                 <div class="CDContainer">
                     <div class="CDContainerTitre">
@@ -115,12 +129,17 @@
             <div class="ressources"></div>
             <p id="placeUnEspionStp"></p>
 
-            <button id="finTour" class="buttonblack">Fin de tour</button>
-            <div class="txtfintour">
-                <p></p>
+            <div id="finTour" class="boutonHaut1">
+                <p>Fin de tour</p>
             </div>
 
-            <button id="quitter2" class="buttonblack">Quitter la partie</button>
+            <!-- <div class="txtfintour">
+                <p></p>
+            </div> -->
+
+            <div id="quitter2" class="boutonHaut2">
+                <p>Quitter</p>
+            </div>
         </div>
 
         <div class="damier" id="damierjeu">

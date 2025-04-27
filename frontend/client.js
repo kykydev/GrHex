@@ -79,9 +79,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // rejoindre le lobby
     document.getElementById("choixdialogue").addEventListener("click", () => {
-        pseudo = pseudoInput.value;
         socket.emit("rejoindrePartie", { "idPartie": idPartie, "idJoueur": idJoueur, "maCite": maCite, "nom": pseudoInput.value,  "dieu" : dieuSelectionne });
         console.log("rejoindrePartie", { "idPartie": idPartie, "idJoueur": idJoueur, "maCite": maCite, "nom": pseudoInput.value, "dieu" : dieuSelectionne });
+    });
+
+    document.getElementById("envoyerPseudo").addEventListener("click", () => {
+        pseudo = pseudoInput.value;
+        d3.select("#vueChoixPseudo").style("display", "none");
+        dialogue("Ici, chaque stratège vénère un dieu. Choisissez le vôtre pour la partie.", "pierris", "rouge");
     });
 
     document.querySelectorAll("#vueChoixDieu img").forEach(img => {
@@ -453,7 +458,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             d3.select("#vueBatiments").style("display", "flex");
             d3.select("#statsUnite").style("display", "flex");
-            d3.select("#finTour").style("display", "block");
+            // d3.select("#finTour").style("display", "block");
             jouerAnimationSuivante();
         } else {
             d3.select(".txtfintour").selectAll("p").remove();
@@ -494,7 +499,7 @@ document.addEventListener("DOMContentLoaded", function () {
         créerDamier(data.map.height, data.map.width, 32, "jeuprev", "prev");
         appelsAjoutTextures("jeuprev")
         actualiserDamier(data.map.width, data.map.height, data.map.terrain, "prev");
-        dialogue("Bienvenue dans le Péloponnèse ! Chaque stratège vénère un dieu. Choisissez le vôtre pour la partie.", "pierris", "rouge");
+        dialogue("Bienvenue dans le Péloponnèse ! Par quel nom devrions nous vous appeler?", "pierris", "rouge");
 
         cite = data.positionCites;
         map = data.map;
@@ -514,8 +519,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("rejoindrePartie", data => {
         if (data) {
-            document.getElementById("whoami").innerHTML = "";
-            d3.select("#whoami").append("p").text("Connecté en tant que " + pseudo);
+            // document.getElementById("whoami").innerHTML = "";
+            // d3.select("#whoami").append("p").text("Connecté en tant que " + pseudo);
 
             switch (maCite) {
                 case "beotie":
