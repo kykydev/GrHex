@@ -364,41 +364,23 @@ body {
 
 /* Prev */
 
-.dialoguebox {
-    position: fixed;
-    left: 0%;
-    bottom: 0%;
-    height: 20%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.750);
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    z-index: 5;
-}
-
-.dialoguebox img {
-    height: 750px;
-}
-
-#textedialogue {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    left: 35%;
-    color: wheat;
-    font-size: 18px;
-    text-align: center;
-}
-
-.choixdialogue {
-    margin-left: 25%;
-}
-
-.choixdialogue p:hover {
+#choixdialogue p:hover {
     cursor: pointer;
     user-select: none;
-    color: green;
+    color: white;
+}
+
+#choixdialogue {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#choixdialogue p {
+    margin: 20%;
+    color: wheat;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 #usernameInput {

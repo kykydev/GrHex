@@ -88,10 +88,10 @@ document.addEventListener("DOMContentLoaded", function () {
         img.addEventListener("click", () => {
             dieuSelectionne = img.id;
             d3.select("#vueChoixDieu").style("display", "none");
+            dialogue(`Tu as fait le bon choix, quelle cité vas-tu diriger en mon honneur ?`, dieuSelectionne.toLowerCase(), "rouge");
             console.log(dieuSelectionne);
         });
     });
-
 
     // séléction des citées dans le lobby d'une partie
     beotie.addEventListener("click", () => {
@@ -477,7 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <p>${data.cuivre} <img src="/img/autre/cuivre.png"/></p>
             <p>${data.étain} <img src="/img/autre/etain.png"/></p>
             <p>${data.tourCourant} / ${data.toursMax} <img src="/img/autre/sablier.png"/></p>
-            <p><img src="/img/personnages/dieux/${data.dieu}.png"/></p>`
+            <p><img src="/img/personnages/dieux/${data.dieu.toLowerCase()}.png"/></p>`
 
         document.querySelector('.ressources').innerHTML = ressources;
 
@@ -494,6 +494,7 @@ document.addEventListener("DOMContentLoaded", function () {
         créerDamier(data.map.height, data.map.width, 32, "jeuprev", "prev");
         appelsAjoutTextures("jeuprev")
         actualiserDamier(data.map.width, data.map.height, data.map.terrain, "prev");
+        dialogue("Bienvenue dans le Péloponnèse ! Chaque stratège vénère un dieu. Choisissez le vôtre pour la partie.", "pierris", "rouge");
 
         cite = data.positionCites;
         map = data.map;
@@ -532,7 +533,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     socket.on("commencerPartie", data => {
-        //document.querySelector('.rejoindrePartie').innerHTML = ""
         document.querySelector('.rejoindrePartie').style.display = 'none';
         document.querySelector('.partie').style.display = 'block';
         document.getElementById("jeuprev").innerHTML = "";

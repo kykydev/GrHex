@@ -62,6 +62,8 @@
         </div>
     </div>
 
+    <div id="vueDialogue"></div>
+
     <!-- Partie rejointe, preview -->
 
     <div class="rejoindrePartie" id="rejoindrePartie">
@@ -75,19 +77,20 @@
 
         <div class="damier" id="damierPrev">
             <svg id="jeuprev"></svg>
-            <div class="dialoguebox">
-                <div id="textedialogue">
-                    <p>Bienvenue dans le péloponnèse. Commence par sélectionner la cité dont tu souhaites devenir le
-                        stratège !</p>
-                    <div class="choixdialogue" id="choixdialogue">
-                        <p id="beotie" class="choix-cite" tabindex="0">Béotie</p>
-                        <p id="attique" class="choix-cite" tabindex="0">Attique</p>
-                        <p id="argolide" class="choix-cite" tabindex="0">Argolide</p>
+            
+            <div id="vueChoixCite">
+                <div class="CDContainer">
+                    <div class="CDContainerTitre">
+                        <p>Sélectionnez votre cité</p>  
+                    </div>
+                    <div id="choixdialogue">
+                        <p id="beotie">Béotie</p>
+                        <p id="attique">Attique</p>
+                        <p id="argolide">Argolide</p>
                     </div>
                 </div>
-                <img src="img/personnages/blanc/pierris pompidoris.png">
             </div>
-            
+
             <div id="vueChoixDieu">
                 <div class="CDContainer">
                     <div class="CDContainerTitre">
@@ -554,7 +557,6 @@
             </div>
 
         </div>
-        <div id="vueDialogue"></div>
 
         <div id="vueBatiments"></div>
 

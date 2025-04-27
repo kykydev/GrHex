@@ -697,18 +697,43 @@ function dialogue(message, unite, couleur) {
     vueDialogue.selectAll("*").remove();
     vueDialogue.style("display", "block");
 
+    vueDialogue.on("click", () => {
+        vueDialogue.style("display", "none");
+    });
+
     vueDialogue.html(`
-            <div class="dialoguebox">
-                <div id="textedialogue">
-                    <p>${message}</p>
+            <div class="DialogueContainer">
+                <img src="img/personnages/${couleur}/${unite.toLowerCase()}.png" class="DialogueImage">
+                <div class="DialogueContainerTexte">
+                    <div class="DialogueContainerTitre">
+                        <p>${unite.charAt(0).toUpperCase() + unite.slice(1)}</p>  
+                    </div>
+                    <p id="dialogueText"></p>
                 </div>
-                <img src="img/personnages/${couleur}/${unite.toLowerCase()}.png">
             </div>
     `);
 
-    document.getElementById("vueDialogue").onclick = () => {
-        vueDialogue.style("display", "none");
-    };
+    let dialogueImage = document.querySelector(".DialogueImage");
+    dialogueImage.style.position = "relative";
+    dialogueImage.style.bottom = "-100px";
+    dialogueImage.style.transition = "bottom 0.5s ease-out";
+
+    setTimeout(() => {
+        dialogueImage.style.bottom = "0";
+    }, 0);
+
+    let dialogueText = document.getElementById("dialogueText");
+    let index = 0;
+
+    function AjouteLettre() {
+        if (index < message.length) {
+            dialogueText.textContent += message.charAt(index);
+            index++;
+            setTimeout(AjouteLettre, 25);
+        }
+    }
+
+    AjouteLettre();
 }
 
 /**
