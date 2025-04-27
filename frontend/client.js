@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let idJoueur;
     let maCite;
     let pseudo;
+    let dieuSelectionne;
 
     let hdvSelectionne;
     let portSelectionne; 
@@ -77,9 +78,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // rejoindre le lobby
-    document.getElementById("rejoindrePartie").addEventListener("click", () => {
+    document.getElementById("choixdialogue").addEventListener("click", () => {
         pseudo = pseudoInput.value;
-        socket.emit("rejoindrePartie", { "idPartie": idPartie, "idJoueur": idJoueur, "maCite": maCite, nom: pseudoInput.value });
+        socket.emit("rejoindrePartie", { "idPartie": idPartie, "idJoueur": idJoueur, "maCite": maCite, "nom": pseudoInput.value,  "dieu" : dieuSelectionne });
+        console.log("rejoindrePartie", { "idPartie": idPartie, "idJoueur": idJoueur, "maCite": maCite, "nom": pseudoInput.value, "dieu" : dieuSelectionne });
+    });
+
+    document.querySelectorAll("#vueChoixDieu img").forEach(img => {
+        img.addEventListener("click", () => {
+            dieuSelectionne = img.id;
+            d3.select("#vueChoixDieu").style("display", "none");
+            console.log(dieuSelectionne);
+        });
     });
 
 
@@ -466,22 +476,12 @@ document.addEventListener("DOMContentLoaded", function () {
             <p>${data.pierre} <img src="/img/autre/pierre.png"/></p>
             <p>${data.cuivre} <img src="/img/autre/cuivre.png"/></p>
             <p>${data.étain} <img src="/img/autre/etain.png"/></p>
-            <p>${data.tourCourant} / ${data.toursMax} <img src="/img/autre/sablier.png"/></p>`;
+            <p>${data.tourCourant} / ${data.toursMax} <img src="/img/autre/sablier.png"/></p>
+            <p><img src="/img/dieux/${data.dieu}.png"/></p>`
 
         document.querySelector('.ressources').innerHTML = ressources;
 
     });
-
-        let dieuSelectionne;
-
-        document.querySelectorAll("#vueChoixDieu img").forEach(img => {
-            img.addEventListener("click", () => {
-                dieuSelectionne = img.id;
-                socket.emit("choixDieu", { dieu: dieuSelectionne });
-                d3.select("#vueChoixDieu").style("display", "none");
-                console.log(dieuSelectionne);
-            });
-        });
 
     socket.on("lobbyPartie", (data) => {
         //{"terrain":la map,"width":int,"height":int,"positionsCites":{"béotie":215,"attique":1072,"argolide":297},"idPartie":int,"idJoueur":int}
