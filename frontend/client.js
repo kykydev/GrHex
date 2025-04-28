@@ -131,18 +131,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // quitter la partie
     document.getElementById("quitter1").addEventListener("click", () => {
-        document.getElementById('rejoindrePartie').style.display = 'none';
-        document.getElementById('accueil').style.display = 'flex';
-        socket.emit("quitterPartie");
+        window.location.reload();
     });
 
     document.getElementById("quitter2").addEventListener("click", () => {
-        socket.emit("quitterPartie");
-        document.getElementById('partie').style.display = 'none';
-        if (document.getElementById('tuto')) {
-            document.getElementById('tuto').style.display = 'none';
-        }
-        document.getElementById('accueil').style.display = 'flex';
+        window.location.reload();
     });
 
     // tutoriel (emit seulement si json pas encore reçu)
