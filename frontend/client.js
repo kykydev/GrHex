@@ -138,6 +138,21 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.reload();
     });
 
+    //afficher vue stats unite
+    let statsUnite = document.getElementById("statsUnite");
+
+    let statsUniteBouton = document.getElementById("afficherVueUnite");
+    statsUniteBouton.addEventListener("click", () => {
+        statsUnite.style.display = (statsUnite.style.display == "none" ? "flex" : "none");
+    });
+
+    // afficher vue batiments
+    let vueBatiments = document.getElementById("vueBatiments");
+    let vueBatimentsBouton = document.getElementById("afficherVueBatiment");
+    vueBatimentsBouton.addEventListener("click", () => {
+        vueBatiments.style.display = (vueBatiments.style.display == "none" ? "flex" : "none");
+    });
+
     // tutoriel (emit seulement si json pas encore reçu)
     let boutonTuto = d3.select("#afficherTutoriel");
     let booltuto = false;
@@ -602,10 +617,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 resetFiltreDamier(map.terrain,data);
             }
             blinkCount++;
-            if (blinkCount >= 4) {
+            if (blinkCount >= 2) {
                 clearInterval(interval);
             }
-        }, 300);
+        }, 175);
 
     });
 
