@@ -473,7 +473,7 @@ document.addEventListener("DOMContentLoaded", function () {
             d3.select(".txtfintour").append("p").text("En attente des autres joueurs");
             //d3.select("#vueBatiments").style("display","none");
             //d3.select("#statsUnite").style("display","block");
-            d3.select("#finTour").style("display", "none");
+            // d3.select("#finTour").style("display", "none");
         }
 
 
