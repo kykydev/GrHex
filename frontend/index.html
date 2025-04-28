@@ -62,32 +62,49 @@
         </div>
     </div>
 
+    <div id="vueDialogue"></div>
+
     <!-- Partie rejointe, preview -->
 
     <div class="rejoindrePartie" id="rejoindrePartie">
 
         <div class="haut">
             <div id="nomPartie"></div>
-            <div id="whoami"></div>
-            <input type="text" id="usernameInput" class="inputblack" placeholder="Username" maxlength="15" required>
-            <button id="quitter1" class="buttonblack">Quitter</button>
+            <!-- <div id="whoami"></div> -->
+            <div id="quitter1" class="boutonHaut1">
+                <p>Quitter</p>
+            </div>
         </div>
 
         <div class="damier" id="damierPrev">
             <svg id="jeuprev"></svg>
-            <div class="dialoguebox">
-                <div id="textedialogue">
-                    <p>Bienvenue dans le péloponnèse. Commence par sélectionner la cité dont tu souhaites devenir le
-                        stratège !</p>
-                    <div class="choixdialogue" id="choixdialogue">
-                        <p id="beotie" class="choix-cite" tabindex="0">Béotie</p>
-                        <p id="attique" class="choix-cite" tabindex="0">Attique</p>
-                        <p id="argolide" class="choix-cite" tabindex="0">Argolide</p>
+            
+            <div id="vueChoixPseudo">
+                <div class="CDContainer">
+                    <div class="CDContainerTitre">
+                        <p>Saisissez votre nom</p>  
+                    </div>
+                    <input type="text" id="usernameInput" class="inputDA" placeholder="Pseudo, ex : Pythagore" maxlength="15" required>
+                    <div class="HdvEnvoyerContainer" id="envoyerPseudo">
+                        <img src="/img/autre/fleche.png" width="50" height="50">
                     </div>
                 </div>
-                <img src="img/personnages/blanc/pierris pompidoris.png">
             </div>
             
+
+            <div id="vueChoixCite">
+                <div class="CDContainer">
+                    <div class="CDContainerTitre">
+                        <p>Sélectionnez votre cité</p>  
+                    </div>
+                    <div id="choixdialogue">
+                        <p id="beotie">Béotie</p>
+                        <p id="attique">Attique</p>
+                        <p id="argolide">Argolide</p>
+                    </div>
+                </div>
+            </div>
+
             <div id="vueChoixDieu">
                 <div class="CDContainer">
                     <div class="CDContainerTitre">
@@ -96,6 +113,7 @@
                         <img src="/img/personnages/dieux/athena.png" id="Athena" width="115" height="150">
                         <img src="/img/personnages/dieux/pierris.png" id="Pierris" width="115" height="150">
                         <img src="/img/personnages/dieux/hermès.png" id="Hermès" width="115" height="150">
+                        <img src="/img/personnages/dieux/demeter.png" id="Demeter" width="115" height="150">
                 </div>
             </div>
             
@@ -112,20 +130,27 @@
             <div class="ressources"></div>
             <p id="placeUnEspionStp"></p>
 
-            <button id="finTour" class="buttonblack">Fin de tour</button>
-            <div class="txtfintour">
-                <p></p>
+            <div class="boutonHaut3">
+                <img src="img/autre/lettre.png" id="afficherNotifs">
+                <img src="img/autre/livre.png" id="afficherTutoriel">
+                <img src="img/autre/loupe1.png" id="afficherVueUnite">
+                <img src="img/autre/loupe2.png" id="afficherVueBatiment">
             </div>
 
-            <button id="quitter2" class="buttonblack">Quitter la partie</button>
+            <div id="finTour" class="boutonHaut2">
+                <p>Fin de tour</p>
+            </div>
+
+            <!-- <div class="txtfintour">
+                <p></p>
+            </div> -->
+
+            <div id="quitter2" class="boutonHaut1">
+                <p>Quitter</p>
+            </div>
         </div>
 
         <div class="damier" id="damierjeu">
-
-            <div class="gauche">
-                <img src="img/autre/lettre.png" id="afficherNotifs">
-                <img src="img/autre/livre.png" id="afficherTutoriel">
-            </div>
 
             <svg id="jeu"></svg>
 
@@ -313,10 +338,10 @@
                             <form id="mesRessourcesForm">
                                 <select name="mesRessources" id="mesRessources">
                                     <option value="or" id="or">Or</option>
-                                    <option value="bois" id="bois">Bois</option>
-                                    <option value="pierre" id="pierre">Pierre</option>
-                                    <option value="cuivre" id="cuivre">Cuivre</option>
-                                    <option value="etain" id="etain">Étain</option>
+                                    <option value="wood" id="bois">Bois</option>
+                                    <option value="stone" id="pierre">Pierre</option>
+                                    <option value="copper" id="cuivre">Cuivre</option>
+                                    <option value="tin" id="etain">Étain</option>
                                 </select>
                                 </label>
                             </form>
@@ -354,10 +379,10 @@
                             <form id="ressourcesEnnemiesForm">
                                 <select name="ressourcesEnnemies" id="ressourcesEnnemies">
                                     <option value="or" id="or">Or</option>
-                                    <option value="bois" id="bois">Bois</option>
-                                    <option value="pierre" id="pierre">Pierre</option>
-                                    <option value="cuivre" id="cuivre">Cuivre</option>
-                                    <option value="etain" id="etain">Étain</option>
+                                    <option value="wood" id="bois">Bois</option>
+                                    <option value="stone" id="pierre">Pierre</option>
+                                    <option value="copper" id="cuivre">Cuivre</option>
+                                    <option value="tin" id="etain">Étain</option>
                                 </select>
                                 </label>
                             </form>
@@ -554,9 +579,14 @@
             </div>
 
         </div>
-        <div id="vueDialogue"></div>
 
-        <div id="vueBatiments"></div>
+        <div id="vueBatiments">
+            <div id="BatimentsContainerID" class="BatimentsContainer">
+                <div class="BatimentsContainerTitre">
+                    <p>Bâtiments à contruire</p>
+                </div>
+            </div>
+        </div>
 
         <div id="vueNotifications"></div>
 
@@ -567,21 +597,27 @@
         </div>
 
         <div id="statsUnite">
-            <img id="uniteImage" src="" width="180" height="150" />
-            <div id="unitStats">
-                <p id="uniteName">Nom : </p>
-                <p id="position">Position : </p>
-                <p id="mov">Mouvement : </p>
-                <p id="uniteHp">Points de vie : </p>
-                <p id="uniteStrat">Stratégie : </p>
-                <div class="uniteMode">
-                    <select id="uniteMode"></select>
-                    <button id="uniteModeButton" class="buttonblack">Appliquer</button>
+            <div class="unitStatsContainer">
+                
+                <div class="unitStatsContainerTitre">
+                    <p>Statistiques de l'unité</p>
                 </div>
-                <p id="uniteAttack">Attaque : </p>
-                <p id="uniteDefence">Défense : </p>
-                <div id="uniteWood">Bois : </div>
-                <div id="uniteStone">Pierres : </div>
+
+                <div id="unitStats">
+                    <p id="uniteName"></p>
+                    <p id="position"></p>
+                    <p id="mov"></p>
+                    <p id="uniteHp"></p>
+                    <p id="uniteStrat"></p>
+                    <!-- <div class="uniteMode">
+                        <select id="uniteMode"></select>
+                        <button id="uniteModeButton" class="buttonblack">Appliquer</button>
+                    </div> -->
+                    <p id="uniteAttack"></p>
+                    <p id="uniteDefence"></p>
+                    <p id="uniteWood"></p>
+                    <p id="uniteStone"></p>
+                </div>
             </div>
         </div>
 

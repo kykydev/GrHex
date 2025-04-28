@@ -79,19 +79,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // rejoindre le lobby
     document.getElementById("choixdialogue").addEventListener("click", () => {
-        pseudo = pseudoInput.value;
         socket.emit("rejoindrePartie", { "idPartie": idPartie, "idJoueur": idJoueur, "maCite": maCite, "nom": pseudoInput.value,  "dieu" : dieuSelectionne });
         console.log("rejoindrePartie", { "idPartie": idPartie, "idJoueur": idJoueur, "maCite": maCite, "nom": pseudoInput.value, "dieu" : dieuSelectionne });
+    });
+
+    document.getElementById("envoyerPseudo").addEventListener("click", () => {
+        pseudo = pseudoInput.value;
+        d3.select("#vueChoixPseudo").style("display", "none");
+        dialogue("Ici, chaque stratège vénère un dieu. Choisissez le vôtre pour la partie.", "pierris", "rouge");
     });
 
     document.querySelectorAll("#vueChoixDieu img").forEach(img => {
         img.addEventListener("click", () => {
             dieuSelectionne = img.id;
             d3.select("#vueChoixDieu").style("display", "none");
+            dialogue(`Tu as fait le bon choix, quelle cité vas-tu diriger en mon honneur ?`, dieuSelectionne.toLowerCase(), "rouge");
             console.log(dieuSelectionne);
         });
     });
-
 
     // séléction des citées dans le lobby d'une partie
     beotie.addEventListener("click", () => {
@@ -126,18 +131,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // quitter la partie
     document.getElementById("quitter1").addEventListener("click", () => {
-        document.getElementById('rejoindrePartie').style.display = 'none';
-        document.getElementById('accueil').style.display = 'flex';
-        socket.emit("quitterPartie");
+        window.location.reload();
     });
 
     document.getElementById("quitter2").addEventListener("click", () => {
-        socket.emit("quitterPartie");
-        document.getElementById('partie').style.display = 'none';
-        if (document.getElementById('tuto')) {
-            document.getElementById('tuto').style.display = 'none';
-        }
-        document.getElementById('accueil').style.display = 'flex';
+        window.location.reload();
+    });
+
+    //afficher vue stats unite
+    let statsUnite = document.getElementById("statsUnite");
+
+    let statsUniteBouton = document.getElementById("afficherVueUnite");
+    statsUniteBouton.addEventListener("click", () => {
+        statsUnite.style.display = (statsUnite.style.display == "none" ? "flex" : "none");
+    });
+
+    // afficher vue batiments
+    let vueBatiments = document.getElementById("vueBatiments");
+    let vueBatimentsBouton = document.getElementById("afficherVueBatiment");
+    vueBatimentsBouton.addEventListener("click", () => {
+        vueBatiments.style.display = (vueBatiments.style.display == "none" ? "flex" : "none");
     });
 
     // tutoriel (emit seulement si json pas encore reçu)
@@ -453,14 +466,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
             d3.select("#vueBatiments").style("display", "flex");
             d3.select("#statsUnite").style("display", "flex");
-            d3.select("#finTour").style("display", "block");
+            // d3.select("#finTour").style("display", "block");
             jouerAnimationSuivante();
         } else {
             d3.select(".txtfintour").selectAll("p").remove();
             d3.select(".txtfintour").append("p").text("En attente des autres joueurs");
             //d3.select("#vueBatiments").style("display","none");
             //d3.select("#statsUnite").style("display","block");
-            d3.select("#finTour").style("display", "none");
+            // d3.select("#finTour").style("display", "none");
         }
 
 
@@ -477,7 +490,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <p>${data.cuivre} <img src="/img/autre/cuivre.png"/></p>
             <p>${data.étain} <img src="/img/autre/etain.png"/></p>
             <p>${data.tourCourant} / ${data.toursMax} <img src="/img/autre/sablier.png"/></p>
-            <p><img src="/img/personnages/dieux/${data.dieu}.png"/></p>`
+            <p><img src="/img/personnages/dieux/${data.dieu.toLowerCase()}.png"/></p>`
 
         document.querySelector('.ressources').innerHTML = ressources;
 
@@ -494,6 +507,7 @@ document.addEventListener("DOMContentLoaded", function () {
         créerDamier(data.map.height, data.map.width, 32, "jeuprev", "prev");
         appelsAjoutTextures("jeuprev")
         actualiserDamier(data.map.width, data.map.height, data.map.terrain, "prev");
+        dialogue("Bienvenue dans le Péloponnèse ! Par quel nom devrions nous vous appeler?", "pierris", "rouge");
 
         cite = data.positionCites;
         map = data.map;
@@ -513,8 +527,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     socket.on("rejoindrePartie", data => {
         if (data) {
-            document.getElementById("whoami").innerHTML = "";
-            d3.select("#whoami").append("p").text("Connecté en tant que " + pseudo);
+            // document.getElementById("whoami").innerHTML = "";
+            // d3.select("#whoami").append("p").text("Connecté en tant que " + pseudo);
 
             switch (maCite) {
                 case "beotie":
@@ -532,7 +546,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     socket.on("commencerPartie", data => {
-        //document.querySelector('.rejoindrePartie').innerHTML = ""
         document.querySelector('.rejoindrePartie').style.display = 'none';
         document.querySelector('.partie').style.display = 'block';
         document.getElementById("jeuprev").innerHTML = "";
@@ -582,6 +595,33 @@ document.addEventListener("DOMContentLoaded", function () {
     // ajoute un chemin dans le dico des déplacements
     socket.on("mouvement", data => {
         dicoPathUnite[data[0]] = data
+
+        // afficher la data reçu 
+        for (let i = 0; i < data.length; ++i) {
+            if(!map.terrain[data[i]].startsWith("?"))
+                d3.select("#h" + data[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
+        }
+
+        // destination
+        d3.select("#h" + data[data.length-1]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
+
+        let blinkCount = 1;
+        let interval = setInterval(() => {
+
+            if(blinkCount % 2 === 0){
+                for (let i = 0; i < data.length; ++i) {
+                    if(!map.terrain[data[i]].startsWith("?"))
+                        d3.select("#h" + data[i]).style("filter",  "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)" );
+                }
+            }else{
+                resetFiltreDamier(map.terrain,data);
+            }
+            blinkCount++;
+            if (blinkCount >= 2) {
+                clearInterval(interval);
+            }
+        }, 175);
+
     });
 
     // termine une partie 
@@ -768,8 +808,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     d3.select("#h" + event.target.id.supprimerPrefixId("uni")).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
 
                     for (let i = 0; i < path.length; ++i) {
-                        d3.select("#h" + path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
+                        if(!map.terrain[path[i]].startsWith("?"))
+                            d3.select("#h" + path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
                     }
+
+                    // destination
+                    d3.select("#h" + path[path.length-1]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
 
                 }
 
@@ -785,27 +829,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     d3.select("#h" + event.target.id.supprimerPrefixId("uni")).style("filter", null);
 
-                    for (let i = 0; i < path.length; ++i) {
-                        d3.select("#h" + path[i]).style("filter", null);
-                        if (map.terrain[path[i]][0] == '?') {
-                            d3.select("#h" + path[i]).style("filter", "brightness(0.3")
+                    resetFiltreDamier(map.terrain,path);
 
-                        }
-                        else if (map.terrain[path[i]][0] == '!') {
-                            switch (map.terrain[path[i]][1]) {
-                                case "1":
-                                    d3.select("#h" + path[i]).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
-                                    break
-                                case "2":
-                                    d3.select("#h" + path[i]).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
-                                    break
-                                default:
-                                    d3.select("#h" + path[i]).style("filter", "brightness(0.3) sepia(1) saturate(5) hue-rotate(30deg)");
-                            }
-                            //d3.select("#h" + path[i]).style("filter", "sepia(1)").attr("id", "brouillard");
-                        }
-
-                    }
+                    
                 }
             });
             element.addEventListener("click", (event) => {
@@ -946,13 +972,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // batiments
     socket.on("demandeBâtiments", data => {
 
-        d3.select("#vueBatiments").selectAll("img").remove();
-        d3.select("#vueBatiments").append("img").attr("src", "/img/autre/" + "croix.png").attr("width", "100").attr("height", "100").attr("id", "croix").attr("class", "batiments");
+        d3.select("#BatimentsContainerID").selectAll("img").remove();
+        d3.select("#BatimentsContainerID").append("img").attr("src", "/img/autre/" + "croix.png").attr("width", "100").attr("height", "100").attr("id", "croix").attr("class", "batiments");
 
         // console.log(data);
 
         data.forEach(bat => {
-            d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/" + (bat.url).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", bat.nom).attr("class", "batiments")
+            d3.select("#BatimentsContainerID").append("img").attr("src", "/img/personnages/rouge/" + (bat.url).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", bat.nom).attr("class", "batiments")
                 .on("mouseover", () => {
                     fstatsBatiment(bat);
 

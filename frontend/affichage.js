@@ -212,6 +212,9 @@ function appelsAjoutTextures(selected) {
  * affiche une unitée sur le damier
  * @param {Object} unite - Object ayant les attributs name, couleur, position, etc
  * @param {String} dam - id du damier sur lequel mettre l'unité 
+ * @param {Number} opacity - détermine l'opacité de l'unité
+ * @param {Function} eventClick - fonction executé lors d'un click sur l'unité
+ * @param {Function} eventOut - fonction executé lorsque le curseur quitte l'unité
  */
 function afficherUnites(unite, dam, opacity = 1,eventClick=()=>{},eventOut=()=>{}) {
     let hexagone = document.getElementById("h" + unite.position);
@@ -462,21 +465,7 @@ function attaqueAnim(caseDepart, caseArrivee, chiffre, fun) {
  * @param {Object} unite - Object ayant les attributs name, attack, hp, defense
  */
 function fstatsUnite(unite) {
-    let statsimg = d3.select("#statsUnite");
-    statsimg.selectAll("*").remove();
-
-    if (unite.name == "Mur") {
-        statsimg.append("img")
-            .attr("src", "img/murs/murdroite.png")
-            .attr("width", 180).attr("height", 150);
-    }
-    else {
-        statsimg.append("img")
-            .attr("src", "img/personnages/" + unite.couleur + "/" + unite.name.toLowerCase() + ".png")
-            .attr("width", 180).attr("height", 150);
-    }
-
-    let stats = d3.select("#statsUnite").append("div").attr("id", "unitStats");
+    let stats = d3.select("#unitStats");
     stats.selectAll("*").remove();
 
     stats.append("p").attr("id", "uniteName").text("Nom : " + unite.name);
@@ -487,19 +476,6 @@ function fstatsUnite(unite) {
         stats.append("p").attr("id", "mov").text("Mouvement : " + unite.movement);
         stats.append("p").attr("id", "uniteAttack").text("Attaque : " + unite.attack);
         stats.append("p").attr("id", "uniteDefence").text("Défense : " + unite.defense);
-        if (unite.owner == socket.idJoueur) {
-            let unimode = stats.append("div").attr("id", "unimode");
-            unimode.append("p").attr("id", "uniteMode").text("Stratégie : ");
-            const selectMode = unimode.append("select").attr("class", "selectblack").attr("id", "uniteSelectMode")
-                .selectAll("option").data(["Agression", "Modere", "Prudence"]).enter().append("option").text(d => d).attr("value", d => d);
-
-            unimode.append("button").attr("id", "uniteModeButton").attr("class", "buttonblack").text("Appliquer").on("click", function () {
-                const selectedMode = d3.select("#uniteSelectMode").property("value");
-                console.log(selectedMode.toLowerCase());
-                console.log(unite.position);
-                socket.emit("Stratégie", { position: unite.position, newStrat: selectedMode.toLowerCase() });
-            });
-        }
     }
 
     if (unite.wood !== undefined) { stats.append("div").attr("id", "uniteWood").text("Bois : " + unite.wood); }
@@ -515,13 +491,25 @@ function fstatsUnite(unite) {
         if (unite.buildingInfos.coûtEtain !== undefined) { stats.append("div").attr("id", "uniteTinCost").text("Coût en étain : " + unite.buildingInfos.coûtEtain); }
     }
     if (unite.currentBuilding != undefined) { stats.append("div").attr("id", "uniteCurrentBuilding").text("Chantier en " + unite.currentBuilding); }
-    // console.log(unite)
     if (unite.base != undefined) { stats.append("div").attr("id", "uniteCurrentBase").text("Base: " + unite.base); }
     if (unite.phase != undefined) {
         if (unite.phase == "getRessources") { stats.append("div").attr("id", "unitePhase").text("Cherche des ressources"); }
         if (unite.phase == "buildBuilding") { stats.append("div").attr("id", "unitePhase").text("Construit un bâtiment"); }
     }
 
+    if (unite.type !== "building" && unite.owner == socket.idJoueur) {
+        let unimode = stats.append("div").attr("id", "unimode");
+        unimode.append("p").attr("id", "uniteMode").text("Stratégie : ");
+        const selectMode = unimode.append("select").attr("class", "inputDA").attr("id", "uniteSelectMode")
+            .selectAll("option").data(["Agression", "Modere", "Prudence"]).enter().append("option").text(d => d).attr("value", d => d);
+
+        unimode.append("button").attr("id", "uniteModeButton").attr("class", "inputDA").text("Appliquer").on("click", function () {
+            const selectedMode = d3.select("#uniteSelectMode").property("value");
+            console.log(selectedMode.toLowerCase());
+            console.log(unite.position);
+            socket.emit("Stratégie", { position: unite.position, newStrat: selectedMode.toLowerCase() });
+        });
+    }
 }
 
 /**
@@ -529,13 +517,13 @@ function fstatsUnite(unite) {
  * @param {Object} batiment
  */
 function fstatsBatiment(batiment) {
-    let statsimg = d3.select("#statsUnite");
-    statsimg.selectAll("*").remove();
-    statsimg.append("img")
-        .attr("src", "img/personnages/rouge/" + batiment.nom.toLowerCase() + ".png")
-        .attr("width", 180).attr("height", 150);
+    // let statsimg = d3.select("#statsUnite");
+    // statsimg.selectAll("*").remove();
+    // statsimg.append("img")
+    //     .attr("src", "img/personnages/rouge/" + batiment.nom.toLowerCase() + ".png")
+    //     .attr("width", 180).attr("height", 150);
 
-    let stats = d3.select("#statsUnite").append("div").attr("id", "unitStats");
+    let stats = d3.select("#unitStats");
     stats.selectAll("*").remove();
 
     stats.append("p").text("Nom : " + batiment.nom);
@@ -697,18 +685,43 @@ function dialogue(message, unite, couleur) {
     vueDialogue.selectAll("*").remove();
     vueDialogue.style("display", "block");
 
+    vueDialogue.on("click", () => {
+        vueDialogue.style("display", "none");
+    });
+
     vueDialogue.html(`
-            <div class="dialoguebox">
-                <div id="textedialogue">
-                    <p>${message}</p>
+            <div class="DialogueContainer">
+                <img src="img/personnages/${couleur}/${unite.toLowerCase()}.png" class="DialogueImage">
+                <div class="DialogueContainerTexte">
+                    <div class="DialogueContainerTitre">
+                        <p>${unite.charAt(0).toUpperCase() + unite.slice(1)}</p>  
+                    </div>
+                    <p id="dialogueText"></p>
                 </div>
-                <img src="img/personnages/${couleur}/${unite.toLowerCase()}.png">
             </div>
     `);
 
-    document.getElementById("vueDialogue").onclick = () => {
-        vueDialogue.style("display", "none");
-    };
+    let dialogueImage = document.querySelector(".DialogueImage");
+    dialogueImage.style.position = "relative";
+    dialogueImage.style.bottom = "-100px";
+    dialogueImage.style.transition = "bottom 0.5s ease-out";
+
+    setTimeout(() => {
+        dialogueImage.style.bottom = "0";
+    }, 0);
+
+    let dialogueText = document.getElementById("dialogueText");
+    let index = 0;
+
+    function AjouteLettre() {
+        if (index < message.length) {
+            dialogueText.textContent += message.charAt(index);
+            index++;
+            setTimeout(AjouteLettre, 25);
+        }
+    }
+
+    AjouteLettre();
 }
 
 /**
@@ -1001,4 +1014,35 @@ function tutorielJSON(data) {
         tutorielContainer.appendChild(contenuTutoContainer);
 
     document.body.appendChild(tutorielContainer);
+}
+
+
+/**
+ * Permet de réinitialiser les filtres d'un terrain parcouru par un chemin
+ * @param {Object} terrain - clé valeur : numéro de case , type de terrain
+ * @param {Array} chemin - liste de numéro de case 
+ */
+function resetFiltreDamier(terrain,chemin){
+    for (let i = 0; i < chemin.length; ++i) {
+        d3.select("#h" + chemin[i]).style("filter", null);
+        if (terrain[chemin[i]][0] == '?') {
+            d3.select("#h" + chemin[i]).style("filter", "brightness(0.3")
+
+        }
+        else if (terrain[chemin[i]][0] == '!') {
+            switch (terrain[chemin[i]][1]) {
+                case "1":
+                    d3.select("#h" + chemin[i]).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
+                    break
+                case "2":
+                    d3.select("#h" + chemin[i]).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
+                    break
+                default:
+                    d3.select("#h" + chemin[i]).style("filter", "brightness(0.3) sepia(1) saturate(5) hue-rotate(30deg)");
+            }
+            //d3.select("#h" + path[i]).style("filter", "sepia(1)").attr("id", "brouillard");
+        }
+
+        
+    }
 }
