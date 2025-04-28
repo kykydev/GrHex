@@ -580,6 +580,26 @@ document.addEventListener("DOMContentLoaded", function () {
     // ajoute un chemin dans le dico des déplacements
     socket.on("mouvement", data => {
         dicoPathUnite[data[0]] = data
+
+        // afficher la data reçu 
+
+        for (let i = 0; i < data.length; ++i) {
+            d3.select("#h" + data[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
+        }
+        let blinkCount = 1;
+        let interval = setInterval(() => {
+            for (let i = 0; i < data.length; ++i) {
+                d3.select("#h" + data[i]).style("filter", blinkCount % 2 === 0 ? "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)" : null);
+            }
+            blinkCount++;
+            if (blinkCount >= 4) {
+                clearInterval(interval);
+            }
+        }, 500);
+        for (let i = 0; i < path.length; ++i) {
+            d3.select("#h" + data[i]).style("filter", null);
+        }
+
     });
 
     // termine une partie 
