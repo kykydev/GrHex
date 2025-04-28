@@ -586,6 +586,10 @@ document.addEventListener("DOMContentLoaded", function () {
             if(!map.terrain[data[i]].startsWith("?"))
                 d3.select("#h" + data[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
         }
+
+        // destination
+        d3.select("#h" + data[data.length-1]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
+
         let blinkCount = 1;
         let interval = setInterval(() => {
 
@@ -792,6 +796,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         if(!map.terrain[path[i]].startsWith("?"))
                             d3.select("#h" + path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
                     }
+
+                    // destination
+                    d3.select("#h" + path[path.length-1]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
 
                 }
 
