@@ -465,21 +465,7 @@ function attaqueAnim(caseDepart, caseArrivee, chiffre, fun) {
  * @param {Object} unite - Object ayant les attributs name, attack, hp, defense
  */
 function fstatsUnite(unite) {
-    let statsimg = d3.select("#statsUnite");
-    statsimg.selectAll("*").remove();
-
-    if (unite.name == "Mur") {
-        statsimg.append("img")
-            .attr("src", "img/murs/murdroite.png")
-            .attr("width", 180).attr("height", 150);
-    }
-    else {
-        statsimg.append("img")
-            .attr("src", "img/personnages/" + unite.couleur + "/" + unite.name.toLowerCase() + ".png")
-            .attr("width", 180).attr("height", 150);
-    }
-
-    let stats = d3.select("#statsUnite").append("div").attr("id", "unitStats");
+    let stats = d3.select("#unitStats");
     stats.selectAll("*").remove();
 
     stats.append("p").attr("id", "uniteName").text("Nom : " + unite.name);
@@ -490,19 +476,6 @@ function fstatsUnite(unite) {
         stats.append("p").attr("id", "mov").text("Mouvement : " + unite.movement);
         stats.append("p").attr("id", "uniteAttack").text("Attaque : " + unite.attack);
         stats.append("p").attr("id", "uniteDefence").text("Défense : " + unite.defense);
-        if (unite.owner == socket.idJoueur) {
-            let unimode = stats.append("div").attr("id", "unimode");
-            unimode.append("p").attr("id", "uniteMode").text("Stratégie : ");
-            const selectMode = unimode.append("select").attr("class", "selectblack").attr("id", "uniteSelectMode")
-                .selectAll("option").data(["Agression", "Modere", "Prudence"]).enter().append("option").text(d => d).attr("value", d => d);
-
-            unimode.append("button").attr("id", "uniteModeButton").attr("class", "buttonblack").text("Appliquer").on("click", function () {
-                const selectedMode = d3.select("#uniteSelectMode").property("value");
-                console.log(selectedMode.toLowerCase());
-                console.log(unite.position);
-                socket.emit("Stratégie", { position: unite.position, newStrat: selectedMode.toLowerCase() });
-            });
-        }
     }
 
     if (unite.wood !== undefined) { stats.append("div").attr("id", "uniteWood").text("Bois : " + unite.wood); }
@@ -518,13 +491,25 @@ function fstatsUnite(unite) {
         if (unite.buildingInfos.coûtEtain !== undefined) { stats.append("div").attr("id", "uniteTinCost").text("Coût en étain : " + unite.buildingInfos.coûtEtain); }
     }
     if (unite.currentBuilding != undefined) { stats.append("div").attr("id", "uniteCurrentBuilding").text("Chantier en " + unite.currentBuilding); }
-    // console.log(unite)
     if (unite.base != undefined) { stats.append("div").attr("id", "uniteCurrentBase").text("Base: " + unite.base); }
     if (unite.phase != undefined) {
         if (unite.phase == "getRessources") { stats.append("div").attr("id", "unitePhase").text("Cherche des ressources"); }
         if (unite.phase == "buildBuilding") { stats.append("div").attr("id", "unitePhase").text("Construit un bâtiment"); }
     }
 
+    if (unite.type !== "building" && unite.owner == socket.idJoueur) {
+        let unimode = stats.append("div").attr("id", "unimode");
+        unimode.append("p").attr("id", "uniteMode").text("Stratégie : ");
+        const selectMode = unimode.append("select").attr("class", "inputDA").attr("id", "uniteSelectMode")
+            .selectAll("option").data(["Agression", "Modere", "Prudence"]).enter().append("option").text(d => d).attr("value", d => d);
+
+        unimode.append("button").attr("id", "uniteModeButton").attr("class", "inputDA").text("Appliquer").on("click", function () {
+            const selectedMode = d3.select("#uniteSelectMode").property("value");
+            console.log(selectedMode.toLowerCase());
+            console.log(unite.position);
+            socket.emit("Stratégie", { position: unite.position, newStrat: selectedMode.toLowerCase() });
+        });
+    }
 }
 
 /**
@@ -532,13 +517,13 @@ function fstatsUnite(unite) {
  * @param {Object} batiment
  */
 function fstatsBatiment(batiment) {
-    let statsimg = d3.select("#statsUnite");
-    statsimg.selectAll("*").remove();
-    statsimg.append("img")
-        .attr("src", "img/personnages/rouge/" + batiment.nom.toLowerCase() + ".png")
-        .attr("width", 180).attr("height", 150);
+    // let statsimg = d3.select("#statsUnite");
+    // statsimg.selectAll("*").remove();
+    // statsimg.append("img")
+    //     .attr("src", "img/personnages/rouge/" + batiment.nom.toLowerCase() + ".png")
+    //     .attr("width", 180).attr("height", 150);
 
-    let stats = d3.select("#statsUnite").append("div").attr("id", "unitStats");
+    let stats = d3.select("#unitStats");
     stats.selectAll("*").remove();
 
     stats.append("p").text("Nom : " + batiment.nom);
