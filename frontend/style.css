@@ -174,19 +174,6 @@ body {
     box-sizing: border-box;
 }
 
-.ressources {
-    display: flex;
-    gap: 10px;
-    margin-right: auto;
-    margin-left: 2%;
-}
-
-.ressources img {
-    height: 50px;
-    margin-right: 10px;
-    vertical-align: middle;
-}
-
 #nomPartie, #nomJoueur {
     margin-right: auto;
     background-color: rgb(31, 30, 30);
@@ -199,7 +186,7 @@ body {
     align-items: center;
 }
 
-.boutonHaut1, .boutonHaut2{
+.boutonHaut1, .boutonHaut2, .boutonHaut3, .ressources{
     background-color: rgb(31, 30, 30);
     width: 8%;
     height: 100%;
@@ -211,6 +198,20 @@ body {
     cursor: pointer;
 }
 
+.ressources {
+    width: auto;
+    margin-right: auto;
+    gap: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.ressources img {
+    height: 50px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
 .boutonHaut2{
     background-color: rgb(23, 23, 23);
 }
@@ -218,6 +219,22 @@ body {
 .boutonHaut1:hover, .boutonHaut2:hover {
     background-color: #393c3f;
 }
+
+.boutonHaut3 img, .boutonHaut3 img {
+    width: 75px;
+    height: 75px;
+    margin: 5px;
+}
+
+.boutonHaut3 img:hover, .boutonHaut3 img:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.boutonHaut3 img:active , .boutonHaut3 img:active {
+    transform: scale(0.9);
+}
+
 
 /*----------Vues prev et partie----------*/
 
@@ -455,32 +472,6 @@ body {
 .uniteMode {
     display: flex;
     flex-direction: row;
-}
-
-.gauche {
-    display: flex;
-    flex-direction: column;
-    background-color: #000;
-    position: fixed;
-    right: 0;
-    top: 40%;
-    border-end-start-radius: 25%;
-    border-start-start-radius: 25%;
-}
-
-.gauche img {
-    width: 75px;
-    height: 75px;
-    margin: 5px;
-}
-
-.gauche img:hover {
-    cursor: pointer;
-    transform: scale(1.1);
-}
-
-.gauche img:active {
-    transform: scale(0.9);
 }
 
 /* Tutoriel */
