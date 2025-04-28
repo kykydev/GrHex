@@ -893,6 +893,7 @@ class game {
         this.SpawnLoup()
         //------------Itère au travers des unités pour générer les actions du tour--------------
         for (let uni of Object.keys(this.board)) {
+            if (this.board[uni]==undefined){continue}
             this.board[uni].movementLeft = this.board[uni].movement
             if (this.board[uni].name=="Champ"){this.revenuChamp(this.board[uni])}
             if (this.board[uni].name=="Mine"){this.tourMine(this.board[uni])}

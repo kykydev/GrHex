@@ -510,6 +510,7 @@ io.on('connection', (socket) => {
 
 
       var partie = parties[socket.idPartie]
+      if (partie==undefined){return}
       var idJoueur = socket.idJoueur
       var joueur = partie.players[idJoueur]
       if (data==undefined || partie==undefined || idJoueur==undefined || joueur==undefined){return}
