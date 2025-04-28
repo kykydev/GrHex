@@ -582,7 +582,6 @@ document.addEventListener("DOMContentLoaded", function () {
         dicoPathUnite[data[0]] = data
 
         // afficher la data reçu 
-
         for (let i = 0; i < data.length; ++i) {
             if(!map.terrain[data[i]].startsWith("?"))
                 d3.select("#h" + data[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
@@ -951,13 +950,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // batiments
     socket.on("demandeBâtiments", data => {
 
-        d3.select("#vueBatiments").selectAll("img").remove();
-        d3.select("#vueBatiments").append("img").attr("src", "/img/autre/" + "croix.png").attr("width", "100").attr("height", "100").attr("id", "croix").attr("class", "batiments");
+        d3.select("#BatimentsContainerID").selectAll("img").remove();
+        d3.select("#BatimentsContainerID").append("img").attr("src", "/img/autre/" + "croix.png").attr("width", "100").attr("height", "100").attr("id", "croix").attr("class", "batiments");
 
         // console.log(data);
 
         data.forEach(bat => {
-            d3.select("#vueBatiments").append("img").attr("src", "/img/personnages/rouge/" + (bat.url).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", bat.nom).attr("class", "batiments")
+            d3.select("#BatimentsContainerID").append("img").attr("src", "/img/personnages/rouge/" + (bat.url).toLowerCase() + ".png").attr("width", "100").attr("height", "100").attr("id", bat.nom).attr("class", "batiments")
                 .on("mouseover", () => {
                     fstatsBatiment(bat);
 
