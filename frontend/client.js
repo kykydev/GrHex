@@ -584,21 +584,25 @@ document.addEventListener("DOMContentLoaded", function () {
         // afficher la data reçu 
 
         for (let i = 0; i < data.length; ++i) {
-            d3.select("#h" + data[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
+            if(!map.terrain[data[i]].startsWith("?"))
+                d3.select("#h" + data[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
         }
         let blinkCount = 1;
         let interval = setInterval(() => {
-            for (let i = 0; i < data.length; ++i) {
-                d3.select("#h" + data[i]).style("filter", blinkCount % 2 === 0 ? "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)" : null);
+
+            if(blinkCount % 2 === 0){
+                for (let i = 0; i < data.length; ++i) {
+                    if(!map.terrain[data[i]].startsWith("?"))
+                        d3.select("#h" + data[i]).style("filter",  "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)" );
+                }
+            }else{
+                resetFiltreDamier(map.terrain,data);
             }
             blinkCount++;
             if (blinkCount >= 4) {
                 clearInterval(interval);
             }
-        }, 500);
-        for (let i = 0; i < path.length; ++i) {
-            d3.select("#h" + data[i]).style("filter", null);
-        }
+        }, 300);
 
     });
 
@@ -786,7 +790,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     d3.select("#h" + event.target.id.supprimerPrefixId("uni")).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
 
                     for (let i = 0; i < path.length; ++i) {
-                        d3.select("#h" + path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
+                        if(!map.terrain[path[i]].startsWith("?"))
+                            d3.select("#h" + path[i]).style("filter", "brightness(1.2) sepia(0.5) saturate(5) opacity(0.5)");
                     }
 
                 }
@@ -803,27 +808,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     d3.select("#h" + event.target.id.supprimerPrefixId("uni")).style("filter", null);
 
-                    for (let i = 0; i < path.length; ++i) {
-                        d3.select("#h" + path[i]).style("filter", null);
-                        if (map.terrain[path[i]][0] == '?') {
-                            d3.select("#h" + path[i]).style("filter", "brightness(0.3")
+                    resetFiltreDamier(map.terrain,path);
 
-                        }
-                        else if (map.terrain[path[i]][0] == '!') {
-                            switch (map.terrain[path[i]][1]) {
-                                case "1":
-                                    d3.select("#h" + path[i]).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
-                                    break
-                                case "2":
-                                    d3.select("#h" + path[i]).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
-                                    break
-                                default:
-                                    d3.select("#h" + path[i]).style("filter", "brightness(0.3) sepia(1) saturate(5) hue-rotate(30deg)");
-                            }
-                            //d3.select("#h" + path[i]).style("filter", "sepia(1)").attr("id", "brouillard");
-                        }
-
-                    }
+                    
                 }
             });
             element.addEventListener("click", (event) => {

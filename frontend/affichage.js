@@ -212,6 +212,9 @@ function appelsAjoutTextures(selected) {
  * affiche une unitée sur le damier
  * @param {Object} unite - Object ayant les attributs name, couleur, position, etc
  * @param {String} dam - id du damier sur lequel mettre l'unité 
+ * @param {Number} opacity - détermine l'opacité de l'unité
+ * @param {Function} eventClick - fonction executé lors d'un click sur l'unité
+ * @param {Function} eventOut - fonction executé lorsque le curseur quitte l'unité
  */
 function afficherUnites(unite, dam, opacity = 1,eventClick=()=>{},eventOut=()=>{}) {
     let hexagone = document.getElementById("h" + unite.position);
@@ -1026,4 +1029,35 @@ function tutorielJSON(data) {
         tutorielContainer.appendChild(contenuTutoContainer);
 
     document.body.appendChild(tutorielContainer);
+}
+
+
+/**
+ * Permet de réinitialiser les filtres d'un terrain parcouru par un chemin
+ * @param {Object} terrain - clé valeur : numéro de case , type de terrain
+ * @param {Array} chemin - liste de numéro de case 
+ */
+function resetFiltreDamier(terrain,chemin){
+    for (let i = 0; i < chemin.length; ++i) {
+        d3.select("#h" + chemin[i]).style("filter", null);
+        if (terrain[chemin[i]][0] == '?') {
+            d3.select("#h" + chemin[i]).style("filter", "brightness(0.3")
+
+        }
+        else if (terrain[chemin[i]][0] == '!') {
+            switch (terrain[chemin[i]][1]) {
+                case "1":
+                    d3.select("#h" + chemin[i]).style("filter", "brightness(0.9) sepia(1) saturate(5) hue-rotate(30deg)");
+                    break
+                case "2":
+                    d3.select("#h" + chemin[i]).style("filter", "brightness(0.6) sepia(1) saturate(5) hue-rotate(30deg)");
+                    break
+                default:
+                    d3.select("#h" + chemin[i]).style("filter", "brightness(0.3) sepia(1) saturate(5) hue-rotate(30deg)");
+            }
+            //d3.select("#h" + path[i]).style("filter", "sepia(1)").attr("id", "brouillard");
+        }
+
+        
+    }
 }
