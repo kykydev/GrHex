@@ -911,6 +911,7 @@ class tourarcher extends building{
         if (this.workers.length>=this.maxworkers){return false}
         var uni = partie.board[pos]
         if (uni==undefined || ((uni.name!="Archer") && uni.name!="Frondeur")){return false}
+        uni.position=this.position
         this.workers.push(uni)
         delete partie.players[uni.owner].units[pos]
         delete partie.board[pos]
@@ -941,13 +942,14 @@ class mine extends building{
         super(35,0,5,0,"Mine",position,player,0,0)
         this.workers = []
         this.mineral = undefined
-        this.maxworkers=2
     }
 
     addWorker(pos,partie){//Ajoute une unité pour travailler dans ce champ
-        if (this.workers.length==this.maxworkers){return false}
+        if (this.workers.length>=this.maxworkers){return false}
         var uni = partie.board[pos]
         if (uni==undefined || ((uni.name!="Mineur") && uni.name!="Paysanne")){return false}
+        uni.position=this.position
+
         this.workers.push(uni)
         delete partie.players[uni.owner].units[pos]
         delete partie.board[pos]
@@ -970,7 +972,10 @@ class champ extends building{
         if (this.workers.length>=this.maxworkers){return false}
         var uni = partie.board[pos]
         if (uni==undefined || (uni.name!="Bûcheron" && uni.name!="Paysanne" && uni.name!="Mineur" )){return false}
+        uni.position=this.position
+
         this.workers.push(uni)
+
         delete partie.players[uni.owner].units[pos]
         delete partie.board[pos]
         return true

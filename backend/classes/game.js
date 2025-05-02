@@ -1236,7 +1236,8 @@ tourTourArcher(unite){
 
 
 tourMaison(uni){
-    if (uni.habitant!=undefined && this.board[uni.habitant.position]!=undefined){return false}
+    if (uni.habitant!=undefined && this.board[uni.habitant.position]!=undefined && (this.board[uni.habitant.position]==uni.habitant || ["Tour d'Archer","Mine","Champ"].includes(this.board[uni.habitant.position].name))){return false}
+    console.log(uni.habitant)
 
     if (uni.cooldown==0){
         uni.generateVillager(uni.position,this.players[uni.owner],this)
@@ -1369,6 +1370,11 @@ evolve(uniPos,evo ){//Tente de faire évoluer l'unité en position pos
                 delete joueur.units[uniPos]
                 if (this.addUnit(newUni,uniPos,joueur)){
                     if (z.gold!=undefined){joueur.gold-=z.gold}
+                    for (var u of Object.keys(joueur.units)){
+                        if (joueur.units[u].name=="Maison" && joueur.units[u].habitant==uni){
+                            joueur.units[u].habitant=newUni
+                        }
+                    }
                     return true
                 }
             }
@@ -1482,6 +1488,7 @@ getUnitesMine(position,idJoueur){
             retour.unites.push({"minerai":z.tin})
         }
     }
+    console.log(retour)
     return retour
 }
 
