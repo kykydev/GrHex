@@ -366,7 +366,7 @@ class bucheron extends unit{
 
         //Test entrée champ
         if (this.objectif!=undefined){
-            if (partie.board[this.objectif]==undefined || partie.board[this.objectif].name!="Champ" || partie.board[this.objectif].workers.length>=partie.board[this.objectif].maxworkers){console.log("ono");this.objectif=undefined}
+            if (partie.board[this.objectif]==undefined || partie.board[this.objectif].name!="Champ" || partie.board[this.objectif].workers.length>=partie.board[this.objectif].maxworkers){this.objectif=undefined}
             else{
                 let meilleureCase = undefined
                 for (var z of casesAdjacentes(this.objectif,partie.map.width,partie.map.height)){
@@ -466,7 +466,7 @@ class mineur extends unit{
 
         //Test entrée mine
         if (this.objectif!=undefined){
-            if (partie.board[this.objectif]==undefined ||(  partie.board[this.objectif].name!="Champ"&&partie.board[this.objectif].name!="Mine") || partie.board[this.objectif].workers.length>=partie.board[this.objectif].maxworkers){console.log("ono");this.objectif=undefined}
+            if (partie.board[this.objectif]==undefined ||(  partie.board[this.objectif].name!="Champ"&&partie.board[this.objectif].name!="Mine") || partie.board[this.objectif].workers.length>=partie.board[this.objectif].maxworkers){this.objectif=undefined}
             else{
                 let meilleureCase = undefined
                 for (var z of casesAdjacentes(this.objectif,partie.map.width,partie.map.height)){
@@ -601,7 +601,7 @@ class paysanne extends unit{
         
         //Test entrée mine et champ
         if (this.objectif!=undefined){
-            if (partie.board[this.objectif]==undefined || (partie.board[this.objectif].name!="Champ"&&partie.board[this.objectif].name!="Mine") || partie.board[this.objectif].workers.length>=partie.board[this.objectif].maxworkers){console.log("ono");this.objectif=undefined}
+            if (partie.board[this.objectif]==undefined || (partie.board[this.objectif].name!="Champ"&&partie.board[this.objectif].name!="Mine") || partie.board[this.objectif].workers.length>=partie.board[this.objectif].maxworkers){this.objectif=undefined}
             else{
                 let meilleureCase = undefined
                 for (var z of casesAdjacentes(this.objectif,partie.map.width,partie.map.height)){

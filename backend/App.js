@@ -133,7 +133,7 @@ io.on('connection', (socket) => {
   socket.on("creerPartie",data=>{
     var nbJoueurs = data.nbJoueurs
     var nbTours = data.nbTours
-
+    if (nbJoueurs==undefined ||nbJoueurs<1 || nbJoueurs>3 || nbTours==undefined || nbTours<1){return false}
     var partie = new game(nbJoueurs,nbTours,data.map)
     lobbies[partie.id]=partie
     
@@ -452,7 +452,6 @@ io.on('connection', (socket) => {
       var partie = parties[socket.idPartie]
       var idJoueur = socket.idJoueur
       if (data==undefined || partie==undefined || idJoueur==undefined){return}
-
       var retour = partie.getUnitesMine(data,idJoueur)
       if (retour != undefined && retour != false){socket.emit("demandeUnitesMine",retour)}
 
@@ -463,7 +462,7 @@ io.on('connection', (socket) => {
       var idJoueur = socket.idJoueur
       if (data==undefined || partie==undefined || idJoueur==undefined){return}
 
-      var retour = partie.getUnitesMine(data,idJoueur)
+      var retour = partie.getUnitesTour(data,idJoueur)
       if (retour != undefined && retour != false){socket.emit("demandeUnitesTour",retour)}
 
     })

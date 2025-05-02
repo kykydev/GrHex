@@ -1477,8 +1477,7 @@ getUnitesChamp(position,idJoueur){
 
 
 getUnitesMine(position,idJoueur){
-    var min = this.board[position]; if (min==undefined || min.owner!=idJoueur){return false}
-    if (min.name!="Mine"){return false}
+    var min = this.board[position]; if (min==undefined ||min.name!="Mine" || min.owner!=idJoueur){return false}
     var retour = {"minerai":min.mineral,"unites":[]}
     for (var z of min.workers){
         if (retour.minerai=="copper"){
@@ -1488,11 +1487,10 @@ getUnitesMine(position,idJoueur){
             retour.unites.push({"minerai":z.tin})
         }
     }
-    console.log(retour)
     return retour
 }
 
-getUnitesMine(position,idJoueur){
+getUnitesTour(position,idJoueur){
     var tor = this.board[position]; if (tor==undefined || tor.owner!=idJoueur){return false}
     if (tor.name!="Tour d'archer"){return false}
     return (tor.getUnis())
