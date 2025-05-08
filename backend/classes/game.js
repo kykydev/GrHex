@@ -835,7 +835,7 @@ class game {
         //Faire test dépôt des ressources dans le chantier, puis réduction tours si possible et enfin build quand tour=0
         var travail = this.board[uni.currentBuilding]
         if (casesAdjacentes(uni.position,this.map.width,this.map.height).includes(uni.currentBuilding)==false){return}
-        if (travail==undefined){return}
+        if (travail==undefined || travail.name!="Chantier"){return}
         if (travail.buildingInfos.coûtBois!=0){
             var depositedwood = uni.wood;
             if (depositedwood>travail.buildingInfos.coûtBois){depositedwood=travail.buildingInfos.coûtBois}
