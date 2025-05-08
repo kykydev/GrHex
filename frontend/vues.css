@@ -609,7 +609,6 @@
 }
 
 .BatimentsContainer img {
-    filter: grayscale(100%);
     transition: 0.3s;
 }
 
