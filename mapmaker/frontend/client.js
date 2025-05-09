@@ -1,5 +1,5 @@
 
-const socket = io('http://localhost:8888');
+const socket = io();
 
 
 
@@ -501,8 +501,7 @@ var isDown = false
 var mode = "paint"
 
 function mapprint(){
-    console.log(map)
-    socket.emit("saveçastp",{
+    var dataenvoi = {
         "nom":document.getElementById("nomMap").value,
         "height":height,
         "width":width,
@@ -522,7 +521,9 @@ function mapprint(){
             
         },
         "map":map
-        })
+        }
+    //socket.emit("saveçastp",dataenvoi)
+    sauvegarder(dataenvoi)
 }
 
 function plaine(){
@@ -548,6 +549,10 @@ function foret(){
 function eau(){
     console.log("choisi eau")
     outil= "eau"
+}
+function X(){
+    console.log("choisi x")
+    outil= "X"
 }
 
 function paint(){
@@ -640,6 +645,10 @@ function peindre(id){
         case "carriere":
             patterne = "carriere_1-pattern";
             terrain = "carriere";
+            break;
+        case "X":
+            patterne = "";
+            terrain = "X";
             break;
 
         default:
@@ -793,6 +802,64 @@ function appelsAjoutTextures(){
 }
 
 
+function sauvegarder(data){
+    var saved = data
+    for (var z of Object.keys(saved.boards.beotie)){
+      if (saved.boards.beotie[z]=="mur"){
+        delete saved.boards.beotie[z]
+        saved.boards.mursBeotie.push(z)
+      }
+      if (saved.boards.beotie[z]=="hôtel de ville"){
+        delete saved.boards.beotie[z]
+        saved.boards.hdvBeotie.push(z)
+      }
+
+      for (var z of Object.keys(saved.boards.argolide)) {
+        if (saved.boards.argolide[z] == "mur") {
+          delete saved.boards.argolide[z];
+          saved.boards.mursArgolide.push(z);
+        }
+        if (saved.boards.argolide[z] == "hôtel de ville") {
+          console.log("aaaaa")
+          delete saved.boards.argolide[z];
+          saved.boards.hdvArgolide.push(z);
+        }
+      }
+
+      for (var z of Object.keys(saved.boards.attique)) {
+        if (saved.boards.attique[z] == "mur") {
+          delete saved.boards.attique[z];
+          saved.boards.mursAttique.push(z);
+        }
+        if (saved.boards.attique[z] == "hôtel de ville") {
+          delete saved.boards.attique[z];
+          saved.boards.hdvAttique.push(z);
+        }
+      }
+
+    }
+
+
+
+    saved.map[saved.positionsDépart["beotie"]]="plaine"
+    saved.boards.beotie[saved.positionsDépart["beotie"]]="stratege"
+    
+    saved.map[saved.positionsDépart["argolide"]]="plaine"
+    saved.boards.argolide[saved.positionsDépart["argolide"]]="stratege"
+    
+    saved.map[saved.positionsDépart["attique"]]="plaine"
+    saved.boards.attique[saved.positionsDépart["attique"]]="stratege"
+    
+
+
+
+
+var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(saved,null,2));
+var dlAnchorElem = document.getElementById('downloadAnchorElem');
+dlAnchorElem.setAttribute("href",     dataStr     );
+dlAnchorElem.setAttribute("download", data.nom+".json");
+dlAnchorElem.click();
+}
 
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------

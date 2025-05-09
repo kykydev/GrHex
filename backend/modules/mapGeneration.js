@@ -320,6 +320,9 @@ for (z of mapBase){
         case "foret":
             hex = new forestHexagon(index)
         break
+        default:
+            hex = new hexagon("X","X",index)
+        break
 
 
 
