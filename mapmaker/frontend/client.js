@@ -283,14 +283,18 @@ isDown=false
         if (mode=="posArgolide"){
             positionsDépart["argolide"]=id
             document.getElementById("posArgolide").innerText=("Argolide: "+positionsDépart["argolide"])
+            addUnit("stratege",id,"argolide")
+            
         }     
         if (mode=="posBeotie"){
             positionsDépart["beotie"]=id
             document.getElementById("posBeotie").innerText=("Beotie: "+positionsDépart["beotie"])
+            addUnit("stratege",id,"beotie")
         }
         if (mode=="posAttique"){
             positionsDépart["attique"]=id
             document.getElementById("posAttique").innerText=("Attique: "+positionsDépart["attique"])
+            addUnit("stratege",id,"attique")
         }
 
     }
@@ -801,8 +805,7 @@ function appelsAjoutTextures(){
     
 }
 
-
-function sauvegarder(data){
+function dataToMap(data){
     var saved = data
     for (var z of Object.keys(saved.boards.beotie)){
       if (saved.boards.beotie[z]=="mur"){
@@ -813,7 +816,10 @@ function sauvegarder(data){
         delete saved.boards.beotie[z]
         saved.boards.hdvBeotie.push(z)
       }
-
+      if (saved.boards.beotie[z]=="bûcheron"){saved.boards.beotie[z]="bucheron"}
+    }
+      
+      
       for (var z of Object.keys(saved.boards.argolide)) {
         if (saved.boards.argolide[z] == "mur") {
           delete saved.boards.argolide[z];
@@ -824,6 +830,7 @@ function sauvegarder(data){
           delete saved.boards.argolide[z];
           saved.boards.hdvArgolide.push(z);
         }
+        if (saved.boards.argolide[z]=="bûcheron"){saved.boards.argolide[z]="bucheron"}
       }
 
       for (var z of Object.keys(saved.boards.attique)) {
@@ -835,9 +842,11 @@ function sauvegarder(data){
           delete saved.boards.attique[z];
           saved.boards.hdvAttique.push(z);
         }
+        if (saved.boards.attique[z]=="bûcheron"){saved.boards.attique[z]="bucheron"}
+
       }
 
-    }
+    
 
 
 
@@ -850,6 +859,10 @@ function sauvegarder(data){
     saved.map[saved.positionsDépart["attique"]]="plaine"
     saved.boards.attique[saved.positionsDépart["attique"]]="stratege"
     
+}
+
+function sauvegarder(data){
+  var saved = dataToMap(data)
 
 
 
