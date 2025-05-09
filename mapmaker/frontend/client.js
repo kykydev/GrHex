@@ -858,7 +858,7 @@ function dataToMap(data){
     
     saved.map[saved.positionsDépart["attique"]]="plaine"
     saved.boards.attique[saved.positionsDépart["attique"]]="stratege"
-    
+    return saved
 }
 
 function sauvegarder(data){
